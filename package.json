@@ -1,0 +1,16 @@
+{
+  "name": "chat-bot",
+  "version": "1.0.0",
+  "description": "cool messenger",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \\\"\"\u001b[DError: no test specified\" && exit 1"
+  },
+  "author": "Adedayo Ayodele",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2",
+    "request": "^2.80.0"
+  }
+}
