@@ -162,10 +162,10 @@ function welcomeMessage(recipientId, text) {
         }else{
 			var response =JSON.stringify(body);
 			var arr =JSON.parse(response);
-			//console.log(response);
+			console.log(arr);
 				//var surname = response.first_name; 
-				 sendMessage(recipientId, arr+"");
-				 /*
+				 //sendMessage(recipientId, arr+"");
+			
 			     message = {
                 "attachment": {
                     "type": "template",
@@ -190,8 +190,8 @@ function welcomeMessage(recipientId, text) {
                     }
                 }
             };
-			*/
-			//sendMessage(recipientId, message);
+			
+			sendMessage(recipientId, message);
             return true;		
 		}
 		});
