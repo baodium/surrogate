@@ -160,8 +160,8 @@ function welcomeMessage(recipientId, text) {
         }else{
 			var response =JSON.stringify(body);
 			//console.log(response);
-				var surname = response.first_name; 
-				sendMessage(recipientId, "Hello "+surname);
+				//var surname = response.first_name; 
+				sendMessage(recipientId, response);
 			     message = {
                 "attachment": {
                     "type": "template",
