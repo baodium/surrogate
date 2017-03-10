@@ -46,16 +46,19 @@ app.get('/', function (req, res) {
 			res.send(JSON.stringify(row));
 			});
 		*/	
-			
+		const query = client.query('CREATE TABLE items(id SERIAL PRIMARY KEY, text VARCHAR(40) not null, complete BOOLEAN)');
+		query.on('end', () => { client.end(); });
+		
+/*		
 		client.query('CREATE TABLE IF NOT EXISTS users (id int(20) NOT NULL AUTO_INCREMENT, facebook_id varchar(200) NOT NULL,name varchar(1024) NOT NULL,sex varchar(512) DEFAULT NULL,age varchar(512) DEFAULT NULL,email varchar(512) DEFAULT NULL,date_added datetime DEFAULT NULL,updated_at datetime NOT NULL, PRIMARY KEY (id));',  function (err, result) {
-		res.send(result);
+		//res.send(result);
 		if (err) {
 			res.send("Error connecting");
 		}
 
 			res.send("success");
 		});
-		
+		*/
 		});
 		
 		//client.query('INSERT INTO users (name, age) VALUES ($1, $2);', [user.name, user.age], function (err, result) {
