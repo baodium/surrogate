@@ -164,7 +164,7 @@ function welcomeMessage(recipientId, text) {
 			var arr =JSON.parse(response);
 			//console.log(response);
 				//var surname = response.first_name; 
-				 sendMessage(recipientId, arr.first_name+"");
+				 sendMessage(recipientId, arr+"");
 				 /*
 			     message = {
                 "attachment": {
