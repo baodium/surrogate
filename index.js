@@ -47,12 +47,13 @@ app.get('/', function (req, res) {
 			});
 		*/	
 			
-		client.query("create table `category` (`id` int auto_increment,`name` char(10),`description` varchar(45),primary key (`id`)) comment = 'expense category records' ;",  function (err, result) {
+		client.query('CREATE TABLE IF NOT EXISTS users (id int(20) NOT NULL AUTO_INCREMENT, facebook_id varchar(200) NOT NULL,name varchar(1024) NOT NULL,sex varchar(512) DEFAULT NULL,age varchar(512) DEFAULT NULL,email varchar(512) DEFAULT NULL,date_added datetime DEFAULT NULL,updated_at datetime NOT NULL, PRIMARY KEY (id));',  function (err, result) {
+		res.send(result);
 		if (err) {
 			res.send("Error connecting");
 		}
 
-			res.send(result);
+			res.send("success");
 		});
 		
 		});
