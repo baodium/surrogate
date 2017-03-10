@@ -171,7 +171,7 @@ function welcomeMessage(recipientId, text) {
                     "payload": {
                         "template_type": "generic",
                         "elements": [{
-                            "title": arr,
+                            "title": arr.first_name,
                             "buttons": [{
 								"type": "postback",
                                 "title": "Let's Go",
