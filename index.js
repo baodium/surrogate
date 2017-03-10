@@ -46,8 +46,13 @@ app.get('/', function (req, res) {
 			res.send(JSON.stringify(row));
 			});
 		*/	
-		const query = client.query('CREATE TABLE IF NOT EXISTS users (id int(20) NOT NULL AUTO_INCREMENT, facebook_id varchar(200) NOT NULL,name varchar(1024) NOT NULL,sex varchar(512) DEFAULT NULL,age varchar(512) DEFAULT NULL,email varchar(512) DEFAULT NULL,date_added datetime DEFAULT NULL,updated_at datetime NOT NULL, PRIMARY KEY (id))');
+		const query = client.query('CREATE TABLE IF NOT EXISTS users(id SERIAL PRIMARY KEY, name VARCHAR(256) not null, sex VARCHAR(256) null,age VARCHAR(256) null,email VARCHAR(256) null,date_added VARCHAR(256) null )');
 		query.on('end', () => { client.end(); });
+		
+		/*
+		const query = client.query('CREATE TABLE IF NOT EXISTS courses (cid int(20) NOT NULL AUTO_INCREMENT, uid varchar(200) NOT NULL,name varchar(1024) NOT NULL,sex varchar(512) DEFAULT NULL,age varchar(512) DEFAULT NULL,email varchar(512) DEFAULT NULL,date_added datetime DEFAULT NULL,updated_at datetime NOT NULL, PRIMARY KEY (id))');
+		query.on('end', () => { client.end(); });
+		*/
 		
 /*		
 		client.query('CREATE TABLE IF NOT EXISTS users (id int(20) NOT NULL AUTO_INCREMENT, facebook_id varchar(200) NOT NULL,name varchar(1024) NOT NULL,sex varchar(512) DEFAULT NULL,age varchar(512) DEFAULT NULL,email varchar(512) DEFAULT NULL,date_added datetime DEFAULT NULL,updated_at datetime NOT NULL, PRIMARY KEY (id));',  function (err, result) {
