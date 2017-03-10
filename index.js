@@ -158,7 +158,7 @@ function welcomeMessage(recipientId, text) {
         } else if (response.body.error) {
             console.log('Error: ', response.body.error);
         }else{
-			var response =JSON.stringify(body);
+			var response =JSON.stringify(response.body);
 			//console.log(response);
 				//var surname = response.first_name; 
 				//sendMessage(recipientId, response+"");
