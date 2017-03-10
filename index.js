@@ -23,10 +23,10 @@ app.get('/', function (req, res) {
         } else if (response.body.error) {
             console.log('Error: ', response.body.error);
         }else{
-			var response =JSON.stringify(body);
+			var response = '{ "title": "Recent Uploads tagged soccer", "link": "http:\/\/www.flickr.com\/photos\/tags\/soccer\/", "description": ""}';//JSON.stringify(body);
 			var arr =JSON.parse(response);
 			//console.log(response);
-			res.send(arr);
+			res.send(arr.title);
 		}
 		});
   // res.send('Test Bot');
@@ -164,14 +164,15 @@ function welcomeMessage(recipientId, text) {
 			var arr =JSON.parse(response);
 			//console.log(response);
 				//var surname = response.first_name; 
-				 sendMessage(recipientId, arr+"");
+				 sendMessage(recipientId, arr.first_name+"");
+				 /*
 			     message = {
                 "attachment": {
                     "type": "template",
                     "payload": {
                         "template_type": "generic",
                         "elements": [{
-                            "title": arr.first_name,
+                            "title": arr,
                             "buttons": [{
 								"type": "postback",
                                 "title": "Let's Go",
@@ -189,7 +190,8 @@ function welcomeMessage(recipientId, text) {
                     }
                 }
             };
-			sendMessage(recipientId, message);
+			*/
+			//sendMessage(recipientId, message);
             return true;		
 		}
 		});
