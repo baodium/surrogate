@@ -14,7 +14,7 @@ app.listen((process.env.PORT || 3000));
 //http://www.flickr.com/services/feeds/photos_public.gne?tags=soccer&format=json&jsoncallback=?
 app.get('/', function (req, res) {   
    		request({
-			url: 'https://graph.facebook.com/v2.6/10207444197928094?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=EAAJeiL9sIu4BANZAqkGafoMRa660rcdg9ViRLX75IFSvkZAZBe2TbgrSrdO2p5bt6psRcbNlrWSRu9GJOWXe9KdrjoB9LGznZASNP1AqWmjYKVeYHZCSjNcdxrtng8kwUk5BInXUsNKoYkfOE4ZCS5WRt0xdiLqb8a3j9zfIug5gZDZD',
+			url: 'http://www.flickr.com/services/feeds/photos_public.gne?tags=soccer&format=json&jsoncallback=?',
 			method: 'GET'
 		}, function(error, response, body) {
 		
@@ -24,10 +24,12 @@ app.get('/', function (req, res) {
             console.log('Error: ', response.body.error);
         }else{
 			var response =JSON.stringify(body);
-			console.log(response);
+			var arr =JSON.parse(response);
+			//console.log(response);
+			res.send(arr);
 		}
 		});
-   res.send('Test Bot');
+  // res.send('Test Bot');
 });
 
 // Facebook Webhook
@@ -158,17 +160,18 @@ function welcomeMessage(recipientId, text) {
         } else if (response.body.error) {
             console.log('Error: ', response.body.error);
         }else{
-			var response =JSON.stringify(response.body);
+			var response =JSON.stringify(body);
+			var arr =JSON.parse(response);
 			//console.log(response);
 				//var surname = response.first_name; 
-				//sendMessage(recipientId, response+"");
+				// sendMessage(recipientId, response+"");
 			     message = {
                 "attachment": {
                     "type": "template",
                     "payload": {
                         "template_type": "generic",
                         "elements": [{
-                            "title": response,
+                            "title": arr.first_name,
                             "buttons": [{
 								"type": "postback",
                                 "title": "Let's Go",
