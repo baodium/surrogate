@@ -47,7 +47,7 @@ app.get('/', function (req, res) {
 			});
 		*/	
 			
-		client.query("CREATE TABLE users (id bigint(20) NOT NULL PRIMARY KEY AUTO_INCREMENT, facebook_id varchar(200) NOT NULL,name varchar(1024) NOT NULL,sex varchar(512) DEFAULT NULL,age varchar(512) DEFAULT NULL,email varchar(512) DEFAULT NULL,date_added datetime DEFAULT NULL,updated_at datetime NOT NULL)",  function (err, result) {
+		client.query("CREATE TABLE users (id bigint(20) NOT NULL PRIMARY KEY AUTO_INCREMENT, facebook_id varchar(200) NOT NULL,name varchar(1024) NOT NULL,sex varchar(512) DEFAULT NULL,age varchar(512) DEFAULT NULL,email varchar(512) DEFAULT NULL,date_added datetime DEFAULT NULL,updated_at datetime NOT NULL);",  function (err, result) {
 		if (err) {
 			res.send("Error connecting");
 		}
