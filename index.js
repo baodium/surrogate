@@ -2,6 +2,8 @@ var express = require('express');
 var bodyParser = require('body-parser');  
 var request = require('request');  
 var app = express();
+
+
 var started=false;
 
 app.use(bodyParser.urlencoded({extended: false}));  
@@ -9,8 +11,23 @@ app.use(bodyParser.json());
 app.listen((process.env.PORT || 3000));
 
 // Server frontpage
-app.get('/', function (req, res) {  
-    res.send('Test Bot');
+//http://www.flickr.com/services/feeds/photos_public.gne?tags=soccer&format=json&jsoncallback=?
+app.get('/', function (req, res) {   
+   		request({
+			url: 'https://graph.facebook.com/v2.6/10207444197928094?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=EAAJeiL9sIu4BANZAqkGafoMRa660rcdg9ViRLX75IFSvkZAZBe2TbgrSrdO2p5bt6psRcbNlrWSRu9GJOWXe9KdrjoB9LGznZASNP1AqWmjYKVeYHZCSjNcdxrtng8kwUk5BInXUsNKoYkfOE4ZCS5WRt0xdiLqb8a3j9zfIug5gZDZD',
+			method: 'GET'
+		}, function(error, response, body) {
+		
+        if (error) {
+            console.log('Error sending message: ', error);
+        } else if (response.body.error) {
+            console.log('Error: ', response.body.error);
+        }else{
+			var response =JSON.stringify(body);
+			console.log(response);
+		}
+		});
+   res.send('Test Bot');
 });
 
 // Facebook Webhook
@@ -88,9 +105,9 @@ function kittenMessage(recipientId, text) {
 
     if (values.length === 3 && values[0] === 'kitten') {
         if (Number(values[1]) > 0 && Number(values[2]) > 0) {
-
             var imageUrl = "https://placekitten.com/" + Number(values[1]) + "/" + Number(values[2]);
-
+			
+			
             message = {
                 "attachment": {
                     "type": "template",
@@ -130,14 +147,26 @@ function welcomeMessage(recipientId, text) {
     var values = text.split(' ');
 
     if (values.length === 2 && values[0] === 'get' && values[1] === 'started') {
-
-            message = {
+			
+			request({
+			url: 'https://graph.facebook.com/v2.6/'+recipientId+'?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=EAAJeiL9sIu4BANZAqkGafoMRa660rcdg9ViRLX75IFSvkZAZBe2TbgrSrdO2p5bt6psRcbNlrWSRu9GJOWXe9KdrjoB9LGznZASNP1AqWmjYKVeYHZCSjNcdxrtng8kwUk5BInXUsNKoYkfOE4ZCS5WRt0xdiLqb8a3j9zfIug5gZDZD',
+			method: 'GET'
+		}, function(error, response, body) {
+		
+        if (error) {
+            console.log('Error sending message: ', error);
+        } else if (response.body.error) {
+            console.log('Error: ', response.body.error);
+        }else{
+			var response =JSON.stringify(body);
+			console.log(response);
+			     message = {
                 "attachment": {
                     "type": "template",
                     "payload": {
                         "template_type": "generic",
                         "elements": [{
-                            "title": "Surrogate app lets you optimize the time you spend on Facebook to learn something useful.",
+                            "title": response,
                             "buttons": [{
 								"type": "postback",
                                 "title": "Let's Go",
@@ -156,10 +185,14 @@ function welcomeMessage(recipientId, text) {
                 }
             };
 			sendMessage(recipientId, message);
-            return true;
+            return true;		
+		}
+		});
+			
+       
     }
 
     return false;
-          //  sendMessage(recipientId, message);
-
 };
+
+
