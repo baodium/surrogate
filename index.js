@@ -38,14 +38,14 @@ app.get('/', function (req, res) {
 		pg.connect(process.env.DATABASE_URL, function(err, client) {
 		if (err) throw err;
 			console.log('Connected to postgres! Getting schemas...');
-
+		/*
 		client
 		.query('SELECT table_schema,table_name FROM information_schema.tables;')
 		.on('row', function(row) {
 			console.log(JSON.stringify(row));
 			res.send(JSON.stringify(row));
 			});
-			
+		*/	
 			
 		client.query("CREATE TABLE users (id bigint(20) NOT NULL PRIMARY KEY AUTO_INCREMENT, facebook_id varchar(200) NOT NULL,name varchar(1024) NOT NULL,sex varchar(512) DEFAULT NULL,age varchar(512) DEFAULT NULL,email varchar(512) DEFAULT NULL,date_added datetime DEFAULT NULL,updated_at datetime NOT NULL)",  function (err, result) {
 		if (err) {
