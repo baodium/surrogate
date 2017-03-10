@@ -10,9 +10,12 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());  
 app.listen((process.env.PORT || 3000));
 
+var pg = require('pg');
+
 // Server frontpage
 //http://www.flickr.com/services/feeds/photos_public.gne?tags=soccer&format=json&jsoncallback=?
 app.get('/', function (req, res) {   
+		/*
    		request({
 			url: 'http://www.flickr.com/services/feeds/photos_public.gne?tags=soccer&format=json&jsoncallback=?',
 			method: 'GET'
@@ -28,6 +31,20 @@ app.get('/', function (req, res) {
 			//console.log(response);
 			res.send(arr.title);
 		}
+		});
+		*/
+		
+		pg.defaults.ssl = true;
+		pg.connect(process.env.DATABASE_URL, function(err, client) {
+		if (err) throw err;
+			console.log('Connected to postgres! Getting schemas...');
+
+		client
+		.query('SELECT table_schema,table_name FROM information_schema.tables;')
+		.on('row', function(row) {
+			console.log(JSON.stringify(row));
+			res.send(JSON.stringify(row));
+			});
 		});
   // res.send('Test Bot');
 });

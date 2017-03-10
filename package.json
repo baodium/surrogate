@@ -4,15 +4,15 @@
   "description": "cool messenger",
   "main": "index.js",
   "scripts": {
-	"start": "node index.js",
+    "start": "node index.js",
     "test": "echo \\\"\"\u001b[DError: no test specified\" && exit 1"
   },
-  
   "author": "Adedayo Ayodele",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.17.1",
     "express": "^4.15.2",
+    "pg": "6.1.4",
     "request": "^2.80.0"
   }
 }
