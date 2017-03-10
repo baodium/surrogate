@@ -49,6 +49,9 @@ app.get('/', function (req, res) {
 		const query = client.query('CREATE TABLE IF NOT EXISTS users(id SERIAL PRIMARY KEY, name VARCHAR(256) not null, sex VARCHAR(256) null,age VARCHAR(256) null,email VARCHAR(256) null,date_added VARCHAR(256) null )');
 		query.on('end', () => { client.end(); });
 		
+		const query = client.query('CREATE TABLE IF NOT EXISTS courses(cid SERIAL PRIMARY KEY, uid VARCHAR (256) not null, title VARCHAR(256) not null, description VARCHAR(512) null, level VARCHAR(256) null,status VARCHAR(32) null,date_added VARCHAR(256) null )');
+		query.on('end', () => { client.end(); });
+		
 		/*
 		const query = client.query('CREATE TABLE IF NOT EXISTS courses (cid int(20) NOT NULL AUTO_INCREMENT, uid varchar(200) NOT NULL,name varchar(1024) NOT NULL,sex varchar(512) DEFAULT NULL,age varchar(512) DEFAULT NULL,email varchar(512) DEFAULT NULL,date_added datetime DEFAULT NULL,updated_at datetime NOT NULL, PRIMARY KEY (id))');
 		query.on('end', () => { client.end(); });
