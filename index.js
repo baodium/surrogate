@@ -161,14 +161,14 @@ function welcomeMessage(recipientId, text) {
 			var response =JSON.stringify(body);
 			//console.log(response);
 				//var surname = response.first_name; 
-				sendMessage(recipientId, response+"");
+				//sendMessage(recipientId, response+"");
 			     message = {
                 "attachment": {
                     "type": "template",
                     "payload": {
                         "template_type": "generic",
                         "elements": [{
-                            "title": "",
+                            "title": response,
                             "buttons": [{
 								"type": "postback",
                                 "title": "Let's Go",
