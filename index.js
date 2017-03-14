@@ -40,7 +40,7 @@ app.get('/', function (req, res) {
 	
 	//var formData = querystring.stringify(form);
 	//var contentLength = formData.length;
-
+	/*
 	   	request({
 			url: 'http://surrogation.com.ng/surrogateapp/users/add',
 			method: 'POST',
@@ -60,7 +60,7 @@ app.get('/', function (req, res) {
 			console.log(body);//res.send(body);
 		}
 		});
-
+	*/
 	
 		res.send('Test Bot');
 });
@@ -77,14 +77,14 @@ app.get('/webhook', function (req, res) {
 
 app.post('/webhook', function (req, res) { 
 	showMenu();
-	if(!started){
+	//if(!started){
 		/*
 		var events = req.body.entry[0].messaging;
 		var event = events[0];
 		displayWelcomeMessage(event.sender.id);
 		started=true;
 		*/
-	}
+	//}
 	
     var events = req.body.entry[0].messaging;
     for (i = 0; i < events.length; i++) {
