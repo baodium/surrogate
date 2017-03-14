@@ -77,24 +77,17 @@ app.get('/webhook', function (req, res) {
 
 app.post('/webhook', function (req, res) { 
 	showMenu();
-	//if(!started){
-		/*
-		var events = req.body.entry[0].messaging;
-		var event = events[0];
-		displayWelcomeMessage(event.sender.id);
-		started=true;
-		*/
-	//}
 	
     var events = req.body.entry[0].messaging;
     for (i = 0; i < events.length; i++) {
         var event = events[i];
 						
-		if (event.message && event.message.text) {			
-			if (!displayWelcomeMessage(event.sender.id, event.message.text)) {
-				if (!kittenMessage(event.sender.id, event.message.text)) {
-					sendMessage(event.sender.id, {text: "" + event.message.text});
-				}
+		if (event.message && event.message.text) {
+			if(!started){
+				displayWelcomeMessage(event.sender.id, event.message.text);
+				started =true;
+			}else{
+				 sendMessage(event.sender.id, {text: "" + event.message.text});
 			}
 			
 		} else if (event.postback) {
