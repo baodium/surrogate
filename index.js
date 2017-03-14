@@ -92,7 +92,7 @@ app.post('/webhook', function (req, res) {
 			
 		} else if (event.postback) {
 			let reply = JSON.stringify(event.postback);
-			if(reply=="help_me"){
+			if(reply.payload=="help_me"){
 				help();
 			}else{
 				sendMessage(event.sender.id, {text: "" + reply});
@@ -348,7 +348,6 @@ function showMenu(){
 	
 	request({
         url: 'https://graph.facebook.com/v2.6/me/thread_settings?access_token='+process.env.PAGE_ACCESS_TOKEN,
-        qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
         method: 'POST',
         json: menu
     }, function(error, response, body) {
