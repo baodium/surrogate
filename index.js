@@ -89,11 +89,9 @@ app.post('/webhook', function (req, res) {
     var events = req.body.entry[0].messaging;
     for (i = 0; i < events.length; i++) {
         var event = events[i];
-		
-				
-		if (event.message && event.message.text) {
-			
-			if (!welcomeMessage(event.sender.id, event.message.text)) {
+						
+		if (event.message && event.message.text) {			
+			if (!displayWelcomeMessage(event.sender.id, event.message.text)) {
 				if (!kittenMessage(event.sender.id, event.message.text)) {
 					sendMessage(event.sender.id, {text: "" + event.message.text});
 				}
