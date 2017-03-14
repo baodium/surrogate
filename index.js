@@ -91,7 +91,12 @@ app.post('/webhook', function (req, res) {
 			}
 			
 		} else if (event.postback) {
-			console.log("Postback received: " + JSON.stringify(event.postback));
+			if(event.postback=="help_me"){
+				help();
+			}else{
+				sendMessage(event.sender.id, {text: "" + event.postback});
+			}
+			//console.log("Postback received: " + JSON.stringify(event.postback));
 		}
 				
     }
@@ -225,7 +230,7 @@ function welcomeUser(recipientId, text) {
                     "payload": {
                         "template_type": "generic",
                         "elements": [{
-                            "title": "surrogate app lets you helps on subjects you have issues with",
+                            "title": "surrogate app lets you get helps on subjects you have issues with",
                             "buttons": [{
 								"type": "postback",
                                 "title": "Get Started",
@@ -288,26 +293,18 @@ function about(recipientId) {
 
 
 function help(recipientId) {
-			     message = {
+			    message = {
                 "attachment": {
                     "type": "template",
                     "payload": {
                         "template_type": "generic",
                         "elements": [{
-                            "title": "surrogate app lets you helps on subjects you have issues with",
+                            "title": "You can get help here",
                             "buttons": [{
 								"type": "postback",
-                                "title": "Get Started",
-                                "payload": "start_me",
-                                }, {
-                                "type": "postback",
-                                "title": "About",
-                                "payload": "about_me",
-                                }, {
-								"title": "Help",
-                                "type": "postback",
-                                "payload": "help_me",
-                            }]
+                                "title": "I got it!",
+                                "payload": "quit_help",
+                                }]
                         }]
                     }
                 }
