@@ -92,10 +92,10 @@ app.post('/webhook', function (req, res) {
 			
 		} else if (event.postback) {
 			let reply = JSON.stringify(event.postback);
-			if(reply.payload=="help_me"){
+			if((event.postback.payload=="help_me"){
 				help();
 			}else{
-				sendMessage(event.sender.id, {text: "" + reply});
+				sendMessage(event.sender.id, {text: "" + event.postback.payload});
 			}
 			 continue;
 			//console.log("Postback received: " + JSON.stringify(event.postback));
