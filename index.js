@@ -94,8 +94,8 @@ app.post('/webhook', function (req, res) {
 			let reply = JSON.stringify(event.postback);
 			reply = JSON.parse(reply);
 			if(reply.payload=="help_me"){
-				//help();
-				sendMessage(event.sender.id, {text: "help recieved"});
+				help();
+				//sendMessage(event.sender.id, {text: "help recieved"});
 			}else{
 				sendMessage(event.sender.id, {text: "" + reply});
 			}
@@ -315,7 +315,8 @@ function help(recipientId) {
             };
 			
 			sendMessage(recipientId, message);
-            return true;		
+			
+            return false;		
 };
 
 function showMenu(){
