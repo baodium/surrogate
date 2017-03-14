@@ -91,11 +91,13 @@ app.post('/webhook', function (req, res) {
 			}
 			
 		} else if (event.postback) {
-			if(event.postback=="help_me"){
+			let reply = JSON.stringify(event.postback);
+			if(reply=="help_me"){
 				help();
 			}else{
-				sendMessage(event.sender.id, {text: "" + event.postback});
+				sendMessage(event.sender.id, {text: "" + reply});
 			}
+			 continue;
 			//console.log("Postback received: " + JSON.stringify(event.postback));
 		}
 				
