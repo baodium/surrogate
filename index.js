@@ -1,6 +1,10 @@
 var express = require('express');  
 var bodyParser = require('body-parser');  
-var request = require('request');  
+var request = require('request'); 
+
+var querystring = require('querystring');
+var http = require('http');
+var fs = require('fs'); 
 var app = express();
 
 
@@ -10,14 +14,13 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());  
 app.listen((process.env.PORT || 3000));
 
-var pg = require('pg');
+//var pg = require('pg');
 
 // Server frontpage
 //http://www.flickr.com/services/feeds/photos_public.gne?tags=soccer&format=json&jsoncallback=?
 app.get('/', function (req, res) {   
-		/*
    		request({
-			url: 'http://www.flickr.com/services/feeds/photos_public.gne?tags=soccer&format=json&jsoncallback=?',
+			url: 'http://localhost/surroga/users/get',
 			method: 'GET'
 		}, function(error, response, body) {
 		
@@ -26,52 +29,40 @@ app.get('/', function (req, res) {
         } else if (response.body.error) {
             console.log('Error: ', response.body.error);
         }else{
-			var response = '{ "title": "Recent Uploads tagged soccer", "link": "http:\/\/www.flickr.com\/photos\/tags\/soccer\/", "description": ""}';//JSON.stringify(body);
-			var arr =JSON.parse(response);
-			//console.log(response);
-			res.send(arr.title);
+			console.log(body);//res.send(body);
 		}
 		});
-		*/
+
+	var post_data = querystring.stringify({
+      'name' : 'Adedayo Ayodele',
+      'facebook_id': '1234'
+	});	
+	
+	//var formData = querystring.stringify(form);
+	//var contentLength = formData.length;
+
+	   	request({
+			url: 'http://surrogation.com.ng/surrogateapp/users/add',
+			method: 'POST',
+			//data:post_data,
+			body: post_data,
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded',
+				'Content-Length':post_data.length
+				}
+		}, function(error, response, body) {
 		
-		pg.defaults.ssl = true;
-		pg.connect(process.env.DATABASE_URL, function(err, client) {
-		if (err) throw err;
-			console.log('Connected to postgres! Getting schemas...');
-		/*
-		client
-		.query('SELECT table_schema,table_name FROM information_schema.tables;')
-		.on('row', function(row) {
-			console.log(JSON.stringify(row));
-			res.send(JSON.stringify(row));
-			});
-		*/	
-		const query = client.query('CREATE TABLE IF NOT EXISTS users(id SERIAL PRIMARY KEY, name VARCHAR(256) not null, sex VARCHAR(256) null,age VARCHAR(256) null,email VARCHAR(256) null,date_added VARCHAR(256) null )');
-		query.on('end', () => { client.end(); });
-		
-		const query = client.query('CREATE TABLE IF NOT EXISTS courses(cid SERIAL PRIMARY KEY, uid VARCHAR (256) not null, title VARCHAR(256) not null, description VARCHAR(512) null, level VARCHAR(256) null,status VARCHAR(32) null,date_added VARCHAR(256) null )');
-		query.on('end', () => { client.end(); });
-		
-		/*
-		const query = client.query('CREATE TABLE IF NOT EXISTS courses (cid int(20) NOT NULL AUTO_INCREMENT, uid varchar(200) NOT NULL,name varchar(1024) NOT NULL,sex varchar(512) DEFAULT NULL,age varchar(512) DEFAULT NULL,email varchar(512) DEFAULT NULL,date_added datetime DEFAULT NULL,updated_at datetime NOT NULL, PRIMARY KEY (id))');
-		query.on('end', () => { client.end(); });
-		*/
-		
-/*		
-		client.query('CREATE TABLE IF NOT EXISTS users (id int(20) NOT NULL AUTO_INCREMENT, facebook_id varchar(200) NOT NULL,name varchar(1024) NOT NULL,sex varchar(512) DEFAULT NULL,age varchar(512) DEFAULT NULL,email varchar(512) DEFAULT NULL,date_added datetime DEFAULT NULL,updated_at datetime NOT NULL, PRIMARY KEY (id));',  function (err, result) {
-		//res.send(result);
-		if (err) {
-			res.send("Error connecting");
+        if (error) {
+            console.log('Error sending message: ', error);
+        } else if (response.body.error) {
+            console.log('Error: ', response.body.error);
+        }else{
+			console.log(body);//res.send(body);
 		}
-
-			res.send("success");
 		});
-		*/
-		});
-		
-		//client.query('INSERT INTO users (name, age) VALUES ($1, $2);', [user.name, user.age], function (err, result) {
 
-  // res.send('Test Bot');
+	
+		res.send('Test Bot');
 });
 
 // Facebook Webhook
@@ -85,28 +76,23 @@ app.get('/webhook', function (req, res) {
 });
 
 app.post('/webhook', function (req, res) { 
+	showMenu();
 	if(!started){
-		//welcomeUser();
-		//curl -X GET "https://graph.facebook.com/v2.6/<USER_ID>?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=PAGE_ACCESS_TOKEN" 
+		/*
+		var events = req.body.entry[0].messaging;
+		var event = events[0];
+		displayWelcomeMessage(event.sender.id);
+		started=true;
+		*/
 	}
 	
     var events = req.body.entry[0].messaging;
     for (i = 0; i < events.length; i++) {
         var event = events[i];
-		/*
-        if (event.message && event.message.text) {
-            sendMessage(event.sender.id, {text: "Echo: " + event.message.text});
-        }
-		*/
-		/*
-		if (event.message && event.message.text) {  
-			if (!kittenMessage(event.sender.id, event.message.text)) {
-				sendMessage(event.sender.id, {text: "Echo: " + event.message.text});
-			}
-		}
-		*/
+		
 				
-		if (event.message && event.message.text) {  
+		if (event.message && event.message.text) {
+			
 			if (!welcomeMessage(event.sender.id, event.message.text)) {
 				if (!kittenMessage(event.sender.id, event.message.text)) {
 					sendMessage(event.sender.id, {text: "" + event.message.text});
@@ -140,6 +126,8 @@ function sendMessage(recipientId, message) {
         }
     });
 };
+
+
 
 
 function kittenMessage(recipientId, text) {
@@ -186,7 +174,39 @@ function kittenMessage(recipientId, text) {
 };
 
 
-function welcomeMessage(recipientId, text) {
+function displayWelcomeMessage(recipientId) {
+			message = {
+                "attachment": {
+                    "type": "template",
+                    "payload": {
+                        "template_type": "generic",
+                        "elements": [{
+                            "title": "Surrogate app lets you helps on subjects you have issues with",
+                            "buttons": [{
+								"type": "postback",
+                                "title": "Get Started",
+                                "payload": "start_me",
+                                }, {
+                                "type": "postback",
+                                "title": "About",
+                                "payload": "about_me",
+                                }, {
+								"title": "Help",
+                                "type": "postback",
+                                "payload": "help_me",
+                            }]
+                        }]
+                    }
+                }
+            };
+			
+			sendMessage(recipientId, message);
+
+    return false;
+};
+
+
+function welcomeUser(recipientId, text) {
 	text = text || "";
     var values = text.split(' ');
 
@@ -214,10 +234,10 @@ function welcomeMessage(recipientId, text) {
                     "payload": {
                         "template_type": "generic",
                         "elements": [{
-                            "title": arr,
+                            "title": "surrogate app lets you helps on subjects you have issues with",
                             "buttons": [{
 								"type": "postback",
-                                "title": "Let's Go",
+                                "title": "Get Started",
                                 "payload": "start_me",
                                 }, {
                                 "type": "postback",
@@ -245,3 +265,103 @@ function welcomeMessage(recipientId, text) {
 };
 
 
+function about(recipientId) {
+			     message = {
+                "attachment": {
+                    "type": "template",
+                    "payload": {
+                        "template_type": "generic",
+                        "elements": [{
+                            "title": "surrogate app lets you helps on subjects you have issues with",
+                            "buttons": [{
+								"type": "postback",
+                                "title": "Get Started",
+                                "payload": "start_me",
+                                }, {
+                                "type": "postback",
+                                "title": "About",
+                                "payload": "about_me",
+                                }, {
+								"title": "Help",
+                                "type": "postback",
+                                "payload": "help_me",
+                            }]
+                        }]
+                    }
+                }
+            };
+			
+			sendMessage(recipientId, message);
+            return true;		
+};
+
+
+function help(recipientId) {
+			     message = {
+                "attachment": {
+                    "type": "template",
+                    "payload": {
+                        "template_type": "generic",
+                        "elements": [{
+                            "title": "surrogate app lets you helps on subjects you have issues with",
+                            "buttons": [{
+								"type": "postback",
+                                "title": "Get Started",
+                                "payload": "start_me",
+                                }, {
+                                "type": "postback",
+                                "title": "About",
+                                "payload": "about_me",
+                                }, {
+								"title": "Help",
+                                "type": "postback",
+                                "payload": "help_me",
+                            }]
+                        }]
+                    }
+                }
+            };
+			
+			sendMessage(recipientId, message);
+            return true;		
+};
+
+function showMenu(){
+  var menu =  {
+  "setting_type" : "call_to_actions",
+  "thread_state" : "existing_thread",
+  "call_to_actions":[
+    {
+      "type":"postback",
+      "title":"Help",
+      "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_HELP"
+    },
+    {
+      "type":"postback",
+      "title":"Start a New Order",
+      "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_START_ORDER"
+    },
+    {
+      "type":"web_url",
+      "title":"Checkout",
+      "url":"http://petersapparel.parseapp.com/checkout",
+      "webview_height_ratio": "full",
+      "messenger_extensions": true
+    },
+    {
+      "type":"web_url",
+      "title":"View Website",
+      "url":"http://petersapparel.parseapp.com/"
+    }
+  ]
+};
+	
+	request({
+        url: 'https://graph.facebook.com/v2.6/me/thread_settings?access_token='+process.env.PAGE_ACCESS_TOKEN,
+        qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
+        method: 'POST',
+        json: menu
+    }, function(error, response, body) {
+        console.log(body);
+    });
+}
