@@ -173,13 +173,14 @@ function welcomeUser(recipientId) {
         }else{
 			var response =JSON.stringify(body);
 			var reply = JSON.parse(response);
-			
+			/*
 			var post_data = querystring.stringify({
 				'facebook_id' : recipientId,
 				'name':reply.first_name
-			});	
+			});
+			*/			
 			
-			submitForm(post_data,backurl+"users/add");
+			//submitForm(post_data,backurl+"users/add");
 			
 			     message = {
                 "attachment": {
