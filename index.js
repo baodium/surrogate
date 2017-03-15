@@ -313,7 +313,7 @@ function help(recipientId) {
 function addPersistentMenu(){
  request({
     url: 'https://graph.facebook.com/v2.6/me/thread_settings',
-    qs: { access_token: PAGE_ACCESS_TOKEN },
+    qs: { access_token: process.env.PAGE_ACCESS_TOKEN },
     method: 'POST',
     json:{
         setting_type : "call_to_actions",
