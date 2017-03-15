@@ -94,9 +94,8 @@ app.post('/webhook', function (req, res) {
 			reply = JSON.parse(reply);
 			if(reply.payload=="help_me"){
 				help(event.sender.id);
-				//sendMessage(event.sender.id, {text: "help recieved"});
-			}else{
-				sendMessage(event.sender.id, {text: "" + reply});
+			}else if(reply.payload=="about_me"){
+				about(event.sender.id);
 			}
 			 continue;
 			//console.log("Postback received: " + JSON.stringify(event.postback));
@@ -271,20 +270,12 @@ function about(recipientId) {
                     "payload": {
                         "template_type": "generic",
                         "elements": [{
-                            "title": "surrogate app lets you helps on subjects you have issues with",
+                            "title": "About message",
                             "buttons": [{
 								"type": "postback",
-                                "title": "Get Started",
-                                "payload": "start_me",
-                                }, {
-                                "type": "postback",
                                 "title": "About",
-                                "payload": "about_me",
-                                }, {
-								"title": "Help",
-                                "type": "postback",
-                                "payload": "help_me",
-                            }]
+                                "payload": "quit_help_about",
+                                }]
                         }]
                     }
                 }
@@ -306,7 +297,7 @@ function help(recipientId) {
                             "buttons": [{
 								"type": "postback",
                                 "title": "I got it!",
-                                "payload": "quit_help",
+                                "payload": "quit_help_about",
                                 }]
                         }]
                     }
