@@ -77,9 +77,10 @@ app.get('/webhook', function (req, res) {
 
 app.post('/webhook', function (req, res) { 
 	//showMenu();
-	addPersistentMenu();
+	//addPersistentMenu();
     var events = req.body.entry[0].messaging;
     for (i = 0; i < events.length; i++) {
+		addPersistentMenu();
         var event = events[i];
 						
 		if (event.message && event.message.text) {
