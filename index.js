@@ -327,13 +327,18 @@ function addPersistentMenu(){
             },
             {
               type:"postback",
-              title:"Joke",
-              payload:"joke"
+              title:"Assignment Solutions",
+              payload:"assignment_solutions"
             },
             {
-              type:"web_url",
-              title:"DMS Software Website",
-              url:"http://www.dynamic-memory.com/"
+              type:"postback",
+              title:"Set Class reminder",
+              payload:"set_class_reminder"
+            },
+			{
+              type:"postback",
+              title:"My expertise",
+              payload:"my_expsertise"
             }
           ]
     }
