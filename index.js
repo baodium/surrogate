@@ -77,7 +77,6 @@ app.get('/webhook', function (req, res) {
 
 app.post('/webhook', function (req, res) { 
 	showMenu();
-	
     var events = req.body.entry[0].messaging;
     for (i = 0; i < events.length; i++) {
         var event = events[i];
@@ -350,8 +349,9 @@ function showMenu(){
 };
 	
 	request({
-        url: 'https://graph.facebook.com/v2.6/me/thread_settings?access_token='+process.env.PAGE_ACCESS_TOKEN,
-        method: 'POST',
+        url: 'https://graph.facebook.com/v2.6/me/thread_settings',
+        method: 'POST',		
+        qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
         json: menu
     }, function(error, response, body) {
         console.log(body);
