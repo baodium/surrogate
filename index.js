@@ -39,7 +39,7 @@ app.post('/webhook', function (req, res) {
 				text = text || "";
 				var values = text.split(' ');
 				if (values.length === 2 && values[0] === 'get' && values[1] === 'started') {
-					welcomeUser(recipientId);
+					welcomeUser(event.sender.id);
 				}else{
 					sendMessage(event.sender.id, {text: "" + event.message.text});
 				}
