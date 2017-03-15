@@ -188,7 +188,7 @@ function welcomeUser(recipientId) {
                     "payload": {
                         "template_type": "generic",
                         "elements": [{
-                            "title": reply.first_name,
+                            "title": "started",
                             "buttons": [{
 								"type": "postback",
                                 "title": "Get Started",
