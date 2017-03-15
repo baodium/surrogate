@@ -322,22 +322,22 @@ function addPersistentMenu(){
         call_to_actions:[
             {
               type:"postback",
-              title:"Home",
+              title:"HOME",
               payload:"home"
             },
             {
               type:"postback",
-              title:"Assignment Solutions",
+              title:"ASSINMENT SOLUTION",
               payload:"assignment_solutions"
             },
             {
               type:"postback",
-              title:"Set Class reminder",
+              title:"CLASS REMINDER",
               payload:"set_class_reminder"
             },
 			{
               type:"postback",
-              title:"My expertise",
+              title:"MY EXPERTISE",
               payload:"my_expsertise"
             }
           ]
