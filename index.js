@@ -15,56 +15,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());  
 app.listen((process.env.PORT || 3000));
 
-//var pg = require('pg');
-
-// Server frontpage
-//http://www.flickr.com/services/feeds/photos_public.gne?tags=soccer&format=json&jsoncallback=?
-app.get('/', function (req, res) {   
-   		/*
-		request({
-			url: 'http://localhost/surroga/users/get',
-			method: 'GET'
-		}, function(error, response, body) {
-		
-        if (error) {
-            console.log('Error sending message: ', error);
-        } else if (response.body.error) {
-            console.log('Error: ', response.body.error);
-        }else{
-			console.log(body);//res.send(body);
-		}
-		});
-	*/
-	var post_data = querystring.stringify({
-      'name' : 'Adedayo Ayodele',
-      'facebook_id': '1234'
-	});	
-	
-	submitForm(post_data,"http://localhost/surroga/users/add");
-	//var formData = querystring.stringify(form);
-	//var contentLength = formData.length;
-	/*
-	   	request({
-			url: 'http://surrogation.com.ng/surrogateapp/users/add',
-			method: 'POST',
-			//data:post_data,
-			body: post_data,
-			headers: {
-				'Content-Type': 'application/x-www-form-urlencoded',
-				'Content-Length':post_data.length
-				}
-		}, function(error, response, body) {
-		
-        if (error) {
-            console.log('Error sending message: ', error);
-        } else if (response.body.error) {
-            console.log('Error: ', response.body.error);
-        }else{
-			console.log(body);//res.send(body);
-		}
-		});
-	*/
-	
+app.get('/', function (req, res) {   	
 		res.send('Test Bot');
 });
 
@@ -88,9 +39,9 @@ app.post('/webhook', function (req, res) {
 				text = text || "";
 				var values = text.split(' ');
 				if (values.length === 2 && values[0] === 'get' && values[1] === 'started') {
-					
+					welcomeUser(recipientId);
 				}else{
-				  sendMessage(event.sender.id, {text: "" + event.message.text});
+					sendMessage(event.sender.id, {text: "" + event.message.text});
 				}
 			
 		} else if (event.postback) {
@@ -208,7 +159,7 @@ function displayWelcomeMessage(recipientId) {
 };
 
 
-function welcomeUser(recipientId, text) {
+function welcomeUser(recipientId) {
 
 		request({
 			url: 'https://graph.facebook.com/v2.6/'+recipientId+'?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token='+process.env.PAGE_ACCESS_TOKEN,
