@@ -9,6 +9,7 @@ var app = express();
 
 
 var started=false;
+var backurl="http://surrogation.com.ng/surrogateapp/";
 
 app.use(bodyParser.urlencoded({extended: false}));  
 app.use(bodyParser.json());  
@@ -19,7 +20,8 @@ app.listen((process.env.PORT || 3000));
 // Server frontpage
 //http://www.flickr.com/services/feeds/photos_public.gne?tags=soccer&format=json&jsoncallback=?
 app.get('/', function (req, res) {   
-   		request({
+   		/*
+		request({
 			url: 'http://localhost/surroga/users/get',
 			method: 'GET'
 		}, function(error, response, body) {
@@ -32,12 +34,13 @@ app.get('/', function (req, res) {
 			console.log(body);//res.send(body);
 		}
 		});
-
+	*/
 	var post_data = querystring.stringify({
       'name' : 'Adedayo Ayodele',
       'facebook_id': '1234'
 	});	
 	
+	submitForm(post_data,"http://localhost/surroga/users/add");
 	//var formData = querystring.stringify(form);
 	//var contentLength = formData.length;
 	/*
@@ -76,23 +79,22 @@ app.get('/webhook', function (req, res) {
 });
 
 app.post('/webhook', function (req, res) { 
-	//showMenu();
-	//addPersistentMenu();
     var events = req.body.entry[0].messaging;
     for (i = 0; i < events.length; i++) {
 		addPersistentMenu();
-        var event = events[i];
-						
+        var event = events[i];						
 		if (event.message && event.message.text) {
-			if(!started){
-				displayWelcomeMessage(event.sender.id, event.message.text);
-				started =true;
-			}else{
-				 sendMessage(event.sender.id, {text: "" + event.message.text});
-			}
+				var text = event.message.text;
+				text = text || "";
+				var values = text.split(' ');
+				if (values.length === 2 && values[0] === 'get' && values[1] === 'started') {
+					
+				}else{
+				  sendMessage(event.sender.id, {text: "" + event.message.text});
+				}
 			
 		} else if (event.postback) {
-			let reply = JSON.stringify(event.postback);
+			var reply = JSON.stringify(event.postback);
 			reply = JSON.parse(reply);
 			if(reply.payload=="help_me"){
 				help(event.sender.id);
@@ -207,13 +209,9 @@ function displayWelcomeMessage(recipientId) {
 
 
 function welcomeUser(recipientId, text) {
-	text = text || "";
-    var values = text.split(' ');
 
-    if (values.length === 2 && values[0] === 'get' && values[1] === 'started') {
-			
-			request({
-			url: 'https://graph.facebook.com/v2.6/'+recipientId+'?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=EAAJeiL9sIu4BANZAqkGafoMRa660rcdg9ViRLX75IFSvkZAZBe2TbgrSrdO2p5bt6psRcbNlrWSRu9GJOWXe9KdrjoB9LGznZASNP1AqWmjYKVeYHZCSjNcdxrtng8kwUk5BInXUsNKoYkfOE4ZCS5WRt0xdiLqb8a3j9zfIug5gZDZD',
+		request({
+			url: 'https://graph.facebook.com/v2.6/'+recipientId+'?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token='+process.env.PAGE_ACCESS_TOKEN,
 			method: 'GET'
 		}, function(error, response, body) {
 		
@@ -223,10 +221,14 @@ function welcomeUser(recipientId, text) {
             console.log('Error: ', response.body.error);
         }else{
 			var response =JSON.stringify(body);
-			var arr =JSON.parse(response);
-			console.log(arr);
-				//var surname = response.first_name; 
-				 //sendMessage(recipientId, arr+"");
+			var reply = JSON.parse(response);
+			
+			var post_data = querystring.stringify({
+				'facebook_id' : recipientId,
+				'name':reply.first_name
+			});	
+			
+			submitForm(post_data,backurl+"users/add");
 			
 			     message = {
                 "attachment": {
@@ -234,7 +236,7 @@ function welcomeUser(recipientId, text) {
                     "payload": {
                         "template_type": "generic",
                         "elements": [{
-                            "title": "surrogate app lets you get helps on subjects you have issues with",
+                            "title": reply.first_name,
                             "buttons": [{
 								"type": "postback",
                                 "title": "Get Started",
@@ -258,10 +260,7 @@ function welcomeUser(recipientId, text) {
 		}
 		});
 			
-       
-    }
-
-    return false;
+    return true;
 };
 
 
@@ -392,4 +391,26 @@ function showMenu(){
     }, function(error, response, body) {
         console.log(body);
     });
+}
+
+
+function submitForm(post_data,url){
+		request({
+			url: url,
+			method: 'POST',
+			body: post_data,
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded',
+				'Content-Length':post_data.length
+				}
+		}, function(error, response, body) {
+		
+        if (error) {
+            console.log('Error sending message: ', error);
+        } else if (response.body.error) {
+            console.log('Error: ', response.body.error);
+        }else{
+			console.log(body);//res.send(body);
+		}
+		});
 }
