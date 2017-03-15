@@ -181,7 +181,7 @@ function displayWelcomeMessage(recipientId) {
                     "payload": {
                         "template_type": "generic",
                         "elements": [{
-                            "title": "Surrogate app lets you helps on subjects you have issues with",
+                            "title": "Surrogate app helps you with subjects you have issues with",
                             "buttons": [{
 								"type": "postback",
                                 "title": "Get Started",
