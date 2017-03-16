@@ -46,6 +46,7 @@ app.post('/webhook', function (req, res) {
 				var values = text.split(' ');
 				if (values.length === 2 && values[0] === 'get' && values[1] === 'started') {
 					welcomeUser(event.sender.id);
+					getFriends(event.sender.id);
 				}else{
 					sendMessage(event.sender.id, {text: "" + event.message.text});
 				}
@@ -354,6 +355,37 @@ function showMenu(){
 }
 
 
+
+function getFriends(recipientId){
+		request({
+			url: 'https://graph.facebook.com/v2.6/me/friends&access_token='+process.env.PAGE_ACCESS_TOKEN,
+			method: 'GET'
+		}, function(error, response, body) {
+		
+        if (error) {
+            console.log('Error sending message: ', error);
+        } else if (response.body.error) {
+            console.log('Error: ', response.body.error);
+        }else{
+			
+			var bodyObject = JSON.parse(body);
+			/*
+			firstName = bodyObject.first_name;
+			lastName = bodyObject.last_name;
+			
+			var post_data = querystring.stringify({
+				'facebook_id' : recipientId,
+				'name':firstName+" "+lastName
+			});
+			*/
+					
+
+			sendMessage(recipientId, {text: "" + body});
+            return true;		
+		}
+		});
+}			
+
 function submitForm(post_data,url){
 		request({
 			url: url,
@@ -374,3 +406,74 @@ function submitForm(post_data,url){
 		}
 		});
 }
+
+/*
+curl -X POST -H "Content-Type: application/json" -d '{
+  "recipient":{
+    "id":"USER_ID"
+  },
+  "message":{
+    "attachment":{
+      "type":"template",
+      "payload":{
+        "template_type":"generic",
+        "elements":[
+           {
+            "title":"Welcome to Peter\'s Hats",
+            "image_url":"https://petersfancybrownhats.com/company_image.png",
+            "subtitle":"We\'ve got the right hat for everyone.",
+            "default_action": {
+              "type": "web_url",
+              "url": "https://peterssendreceiveapp.ngrok.io/view?item=103",
+              "messenger_extensions": true,
+              "webview_height_ratio": "tall",
+              "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
+            },
+            "buttons":[
+              {
+                "type":"web_url",
+                "url":"https://petersfancybrownhats.com",
+                "title":"View Website"
+              },{
+                "type":"postback",
+                "title":"Start Chatting",
+                "payload":"DEVELOPER_DEFINED_PAYLOAD"
+              }              
+            ]      
+          }
+        ]
+      }
+    }
+  }
+}' "https://graph.facebook.com/v2.6/me/messages?access_token=PAGE_ACCESS_TOKEN" 
+
+
+
+
+curl -X POST -H "Content-Type: application/json" -d '{
+  "recipient":{
+    "id":"USER_ID"
+  },
+  "message":{
+    "attachment":{
+      "type":"template",
+      "payload":{
+        "template_type":"button",
+        "text":"What do you want to do next?",
+        "buttons":[
+          {
+            "type":"web_url",
+            "url":"https://petersapparel.parseapp.com",
+            "title":"Show Website"
+          },
+          {
+            "type":"postback",
+            "title":"Start Chatting",
+            "payload":"USER_DEFINED_PAYLOAD"
+          }
+        ]
+      }
+    }
+  }
+}' "https://graph.facebook.com/v2.6/me/messages?access_token=PAGE_ACCESS_TOKEN"
+*/
