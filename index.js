@@ -178,7 +178,7 @@ function welcomeUser(recipientId) {
 			
 			var post_data = querystring.stringify({
 				'facebook_id' : recipientId,
-				'name':firstName
+				'name':firstName+" "+lastName
 			});
 					
 			
@@ -190,7 +190,7 @@ function welcomeUser(recipientId) {
                     "payload": {
                         "template_type": "generic",
                         "elements": [{
-                            "title": "started "+firstName,
+                            "title": "Hello "+firstName+"!",
                             "buttons": [{
 								"type": "postback",
                                 "title": "Get Started",
