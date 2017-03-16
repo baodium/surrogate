@@ -30,31 +30,21 @@ app.get('/webhook', function (req, res) {
 });
 
 app.post('/webhook', function (req, res) { 
+	getStarted();
+	addPersistentMenu();
     var events = req.body.entry[0].messaging;
     for (i = 0; i < events.length; i++) {
-		addPersistentMenu();
+		
 		
         var event = events[i];						
 		if (event.message && event.message.text) {
-			if(!started){
-				//displayWelcomeMessage(event.sender.id);
-				//started = true;
-			}
-			
-				var text = event.message.text;
-				text = text || "";
-				var values = text.split(' ');
-				if (values.length === 2 && values[0] === 'get' && values[1] === 'started') {
-					welcomeUser(event.sender.id);
-					getFriends(event.sender.id);
-				}else{
-					sendMessage(event.sender.id, {text: "" + event.message.text});
-				}
-			
+			sendMessage(event.sender.id, {text: "" + event.message.text});
 		} else if (event.postback) {
 			var reply = JSON.stringify(event.postback);
 			reply = JSON.parse(reply);
-			if(reply.payload=="help_me"){
+			if(reply.payload=="get_stated"){
+				welcomeUser(event.sender.id);
+			}else if(reply.payload=="help_me"){
 				help(event.sender.id);
 			}else if(reply.payload=="about_me"){
 				about(event.sender.id);
@@ -354,7 +344,20 @@ function showMenu(){
     });
 }
 
-
+function getStarted(){
+		var post = {"get_started":{
+						"payload":"get_started"
+						}
+					};
+		request({
+        url: 'https://graph.facebook.com/v2.6/me/messenger_profile',
+        method: 'POST',		
+        qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
+        json: post
+		}, function(error, response, body) {
+			console.log(body);
+		});
+}
 
 function getFriends(recipientId){
 		request({
