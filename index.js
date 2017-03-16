@@ -171,12 +171,14 @@ function welcomeUser(recipientId) {
         } else if (response.body.error) {
             console.log('Error: ', response.body.error);
         }else{
-			var response =JSON.stringify(body);
-			var reply = JSON.parse(response);
+			
+			var bodyObject = JSON.parse(body);
+			firstName = bodyObject.first_name;
+			lastName = bodyObject.last_name;
 			
 			var post_data = querystring.stringify({
 				'facebook_id' : recipientId,
-				'name':reply.first_name
+				'name':reply.firstName
 			});
 					
 			
@@ -188,7 +190,7 @@ function welcomeUser(recipientId) {
                     "payload": {
                         "template_type": "generic",
                         "elements": [{
-                            "title": "started",
+                            "title": "started "+firstName,
                             "buttons": [{
 								"type": "postback",
                                 "title": "Get Started",
