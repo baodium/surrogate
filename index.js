@@ -42,7 +42,7 @@ app.post('/webhook', function (req, res) {
 		} else if (event.postback) {
 			var reply = JSON.stringify(event.postback);
 			reply = JSON.parse(reply);
-			if(reply.payload=="get_stated"){
+			if(reply.payload=="get_started_button"){
 				welcomeUser(event.sender.id);
 			}else if(reply.payload=="help_me"){
 				help(event.sender.id);
@@ -347,7 +347,7 @@ function showMenu(){
 
 function getStarted(){
 		var post = {"get_started":{
-						"payload":"get_started"
+						"payload":"get_started_button"
 						}
 					};
 		request({
@@ -356,7 +356,14 @@ function getStarted(){
         qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
         json: post
 		}, function(error, response, body) {
+			
+			request({
+			url: 'https://graph.facebook.com/v2.6/me/messenger_profile?fields=get_started&access_token='+process.env.PAGE_ACCESS_TOKEN,
+			method: 'GET'	
+			}, function(error, response, body) {
 			console.log(body);
+			});
+			
 		});
 }
 
