@@ -180,26 +180,27 @@ function welcomeUser(recipientId) {
 					
 			
 			submitForm(post_data,backurl+"users/add");
-			
+			var msg = "Hi "+firstName+"! Surrogate app helps lets you get help or render help on various subjects"
+			sendMessage(recipientId, {text: "" + msg});
 			     message = {
                 "attachment": {
                     "type": "template",
                     "payload": {
                         "template_type": "generic",
                         "elements": [{
-                            "title": "Hello "+firstName+"!",
+                            "title": "Would you like?",
                             "buttons": [{
 								"type": "postback",
-                                "title": "Get Started",
-                                "payload": "start_me",
+                                "title": "Get help on assignment",
+                                "payload": "get_assignment_help",
                                 }, {
                                 "type": "postback",
-                                "title": "About",
-                                "payload": "about_me",
+                                "title": "Set class reminder",
+                                "payload": "set_class_reminder",
                                 }, {
-								"title": "Help",
+								"title": "Set expertise",
                                 "type": "postback",
-                                "payload": "help_me",
+                                "payload": "set_expertise",
                             }]
                         }]
                     }
