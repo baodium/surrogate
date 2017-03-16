@@ -180,7 +180,7 @@ function welcomeUser(recipientId) {
 					
 			
 			submitForm(post_data,backurl+"users/add");
-			var msg = "Hi "+firstName+"! Surrogate app lets you get help or render help on various subjects"
+			var msg = "Hi "+firstName+"! Surrogate app lets you get help or render help on various subjects";
 			sendMessage(recipientId, {text: "" + msg});
 			     message = {
                 "attachment": {
