@@ -37,8 +37,8 @@ app.post('/webhook', function (req, res) {
         var event = events[i];						
 		if (event.message && event.message.text) {
 			if(!started){
-				displayWelcomeMessage(event.sender.id);
-				started = true;
+				//displayWelcomeMessage(event.sender.id);
+				//started = true;
 			}
 			
 				var text = event.message.text;
