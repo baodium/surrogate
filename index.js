@@ -178,7 +178,7 @@ function welcomeUser(recipientId) {
 			
 			var post_data = querystring.stringify({
 				'facebook_id' : recipientId,
-				'name':reply.firstName
+				'name':firstName
 			});
 					
 			
