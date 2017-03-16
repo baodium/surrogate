@@ -358,7 +358,7 @@ function showMenu(){
 
 function getFriends(recipientId){
 		request({
-			url: 'https://graph.facebook.com/v2.6/me/friends&access_token='+process.env.PAGE_ACCESS_TOKEN,
+			url: 'https://graph.facebook.com/v2.6/me/friends?access_token='+process.env.PAGE_ACCESS_TOKEN,
 			method: 'GET'
 		}, function(error, response, body) {
 		
