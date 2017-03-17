@@ -54,7 +54,7 @@ app.post('/webhook', function (req, res) {
 					var subject = event.message.text;
 					senderContext[event.sender.id].subject = subject;
 					var post_data = querystring.stringify({
-						'facebook_id' : recipientId,
+						'facebook_id' : event.sender.id,
 						'subject':subject,
 						'status':'pending'
 					});
@@ -100,7 +100,7 @@ app.post('/webhook', function (req, res) {
 					var post_data = querystring.stringify({
 						'status':'completed',
 						'level':reply.payload,
-						'facebook_id' : recipientId,
+						'facebook_id' : event.sender.id,
 						'subject':subject
 					});
 								
