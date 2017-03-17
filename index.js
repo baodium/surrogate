@@ -40,9 +40,11 @@ app.post('/webhook', function (req, res) {
 		
         var event = events[i];						
 		if (event.message && event.message.text) {
-			if(senderContext[event.sender.id].state === "provide_subject"){
-				sendMessage(event.sender.id, {text: "Oh! that is nice we have people that can help you with "+event.message.text});
-			}else{
+			 if(senderContext[event.sender.id]){
+				if(senderContext[event.sender.id].state === "provide_subject"){
+					sendMessage(event.sender.id, {text: "Oh! that is nice we have people that can help you with "+event.message.text});
+				}
+			 }else{
 				sendMessage(event.sender.id, {text: "" + event.message.text});
 			}
 		} else if (event.postback) {
@@ -185,7 +187,7 @@ function welcomeUser(recipientId) {
 			senderContext[recipientId] = {};
 			senderContext[recipientId].firstName = firstName;
 			senderContext[recipientId].lastName = lastName;
-			
+			senderContext[recipientId].state = "newly_welcomed";
 			var post_data = querystring.stringify({
 				'facebook_id' : recipientId,
 				'name':firstName+" "+lastName
