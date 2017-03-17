@@ -56,7 +56,7 @@ app.post('/webhook', function (req, res) {
 				about(event.sender.id);
 			}else if(reply.payload=="get_assignment_help"){
 				sendMessage(event.sender.id, {text: "which subject do you need help on?"});
-				senderContext[recipientId].state = "provide_subject";
+				senderContext[event.sender.id].state = "provide_subject";
 			}
 			 continue;
 			//console.log("Postback received: " + JSON.stringify(event.postback));
