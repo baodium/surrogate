@@ -612,5 +612,5 @@ function getExpertiseList(subject,recipienId){
     
 };
 
-return message;
+return list;
 }
