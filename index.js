@@ -9,6 +9,7 @@ var app = express();
 
 
 var started=false;
+var helprequest = false;
 var backurl="http://surrogation.com.ng/surrogateapp/";
 
 app.use(bodyParser.urlencoded({extended: false}));  
@@ -38,7 +39,12 @@ app.post('/webhook', function (req, res) {
 		
         var event = events[i];						
 		if (event.message && event.message.text) {
-			sendMessage(event.sender.id, {text: "" + event.message.text});
+			if(helprequest){
+				sendMessage(event.sender.id, {text: "Oh! that is nice we have people that can help you with "+event.message.text});
+				helprequest=false;
+			}else{
+				sendMessage(event.sender.id, {text: "" + event.message.text});
+			}
 		} else if (event.postback) {
 			var reply = JSON.stringify(event.postback);
 			reply = JSON.parse(reply);
@@ -48,6 +54,9 @@ app.post('/webhook', function (req, res) {
 				help(event.sender.id);
 			}else if(reply.payload=="about_me"){
 				about(event.sender.id);
+			}else if(reply.payload=="get_assignment_help"){
+				sendMessage(event.sender.id, {text: "which subject do you need help on?"});
+				helprequest=true;
 			}
 			 continue;
 			//console.log("Postback received: " + JSON.stringify(event.postback));
@@ -180,7 +189,7 @@ function welcomeUser(recipientId) {
 					
 			
 			submitForm(post_data,backurl+"users/add");
-			var msg = "Hi "+firstName+"! Surrogate app lets you get help or render help on various subjects";			
+			var msg = "Hi "+firstName+"! Surrogate bot lets you get help or render help on various subjects";			
 			sendMessage(recipientId, {text: "" + msg});
 			
 			     message = {
@@ -192,7 +201,7 @@ function welcomeUser(recipientId) {
                             "title": "Would you like?",
                             "buttons": [{
 								"type": "postback",
-                                "title": "Get help on assignment",
+                                "title": "Get subject help",
                                 "payload": "get_assignment_help",
                                 }, {
                                 "type": "postback",
