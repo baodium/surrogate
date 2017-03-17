@@ -45,7 +45,7 @@ app.post('/webhook', function (req, res) {
 		if (event.message && event.message.text) {
 			 if(senderContext[event.sender.id]!=null){
 				if(senderContext[event.sender.id].state === "provide_subject"){
-					//sendMessage(event.sender.id, {text: "Oh! that is nice we have people that can help you with "+event.message.text});
+					sendMessage(event.sender.id, {text: "Oh! that is nice we have people that can help you with "+event.message.text});
 					getExpertiseList(event.message.text,event.sender.id);
 					senderContext[event.sender.id].state = "provide_subject_done";
 					
@@ -632,98 +632,99 @@ function getExpertiseList(subject,recipientId){
         }
     }   
 	};*/
+
+	
 	message = {
     "attachment": {
         "type": "template",
         "payload": {
             "template_type": "list",
-            "top_element_style": "compact",
             "elements": [
                 {
-                    "title": "Classic White T-Shirt",
-                    "image_url": "https://peterssendreceiveapp.ngrok.io/img/white-t-shirt.png",
-                    "subtitle": "100% Cotton, 200% Comfortable",
+                    "title": "Classic T-Shirt Collection",
+                    "image_url": "https://pbs.twimg.com/profile_images/2629833004/1f07dda7e7dcf011e96807a0f10239f9_400x400.jpeg",
+                    "subtitle": "See all our colors",
                     "default_action": {
                         "type": "web_url",
-                        "url": "https://peterssendreceiveapp.ngrok.io/view?item=100",
+                        "url": "http://surrogation.com.ng/",
                         "messenger_extensions": true,
                         "webview_height_ratio": "tall",
-                        "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
+                        "fallback_url": "http://surrogation.com.ng/"
                     },
                     "buttons": [
                         {
-                            "title": "Buy",
+                            "title": "View",
                             "type": "web_url",
-                            "url": "https://peterssendreceiveapp.ngrok.io/shop?item=100",
+                            "url": "http://surrogation.com.ng/collection",
                             "messenger_extensions": true,
                             "webview_height_ratio": "tall",
-                            "fallback_url": "https://peterssendreceiveapp.ngrok.io/"                        
+                            "fallback_url": "http://surrogation.com.ng/"                        
+                        }
+                    ]
+                },
+                {
+                    "title": "Classic White T-Shirt",
+                    "image_url": "https://pbs.twimg.com/profile_images/2629833004/1f07dda7e7dcf011e96807a0f10239f9_400x400.jpeg",
+                    "subtitle": "100% Cotton, 200% Comfortable",
+                    "default_action": {
+                        "type": "web_url",
+                        "url": "http://surrogation.com.ng/",
+                        "messenger_extensions": true,
+                        "webview_height_ratio": "tall",
+                        "fallback_url": "http://surrogation.com.ng/"
+                    },
+                    "buttons": [
+                        {
+                            "title": "Shop Now",
+                            "type": "web_url",
+                            "url": "http://surrogation.com.ng/",
+                            "messenger_extensions": true,
+                            "webview_height_ratio": "tall",
+                            "fallback_url": "http://surrogation.com.ng/"                        
                         }
                     ]                
                 },
                 {
                     "title": "Classic Blue T-Shirt",
-                    "image_url": "https://peterssendreceiveapp.ngrok.io/img/blue-t-shirt.png",
+                    "image_url": "https://pbs.twimg.com/profile_images/2629833004/1f07dda7e7dcf011e96807a0f10239f9_400x400.jpeg",
                     "subtitle": "100% Cotton, 200% Comfortable",
                     "default_action": {
                         "type": "web_url",
-                        "url": "https://peterssendreceiveapp.ngrok.io/view?item=101",
+                        "url": "http://surrogation.com.ng/",
                         "messenger_extensions": true,
                         "webview_height_ratio": "tall",
-                        "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
+                        "fallback_url": "http://surrogation.com.ng/"
                     },
                     "buttons": [
                         {
-                            "title": "Buy",
+                            "title": "Shop Now",
                             "type": "web_url",
-                            "url": "https://peterssendreceiveapp.ngrok.io/shop?item=101",
+                            "url": "http://surrogation.com.ng/",
                             "messenger_extensions": true,
                             "webview_height_ratio": "tall",
-                            "fallback_url": "https://peterssendreceiveapp.ngrok.io/"                        
+                            "fallback_url": "http://surrogation.com.ng/"                        
                         }
                     ]                
                 },
                 {
                     "title": "Classic Black T-Shirt",
-                    "image_url": "https://peterssendreceiveapp.ngrok.io/img/black-t-shirt.png",
+                    "image_url": "https://pbs.twimg.com/profile_images/2629833004/1f07dda7e7dcf011e96807a0f10239f9_400x400.jpeg",
                     "subtitle": "100% Cotton, 200% Comfortable",
                     "default_action": {
                         "type": "web_url",
-                        "url": "https://peterssendreceiveapp.ngrok.io/view?item=102",
+                        "url": "http://surrogation.com.ng/",
                         "messenger_extensions": true,
                         "webview_height_ratio": "tall",
-                        "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
+                        "fallback_url": "http://surrogation.com.ng/"
                     },
                     "buttons": [
                         {
-                            "title": "Buy",
+                            "title": "Shop Now",
                             "type": "web_url",
-                            "url": "https://peterssendreceiveapp.ngrok.io/shop?item=102",
+                            "url": "http://surrogation.com.ng/",
                             "messenger_extensions": true,
                             "webview_height_ratio": "tall",
-                            "fallback_url": "https://peterssendreceiveapp.ngrok.io/"                        
-                        }
-                    ]                
-                },
-                {
-                    "title": "Classic Gray T-Shirt",
-                    "image_url": "https://peterssendreceiveapp.ngrok.io/img/gray-t-shirt.png",
-                    "subtitle": "100% Cotton, 200% Comfortable",
-                    "default_action": {
-                        "type": "web_url",
-                        "url": "https://peterssendreceiveapp.ngrok.io/view?item=103",
-                        "messenger_extensions": true,
-                        "webview_height_ratio": "tall",
-                        "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
-                    },
-                    "buttons": [
-                        {
-                            "title": "Buy",
-                            "type": "web_url",
-                            "url": "https://peterssendreceiveapp.ngrok.io/shop?item=103",
-                            "messenger_extensions": true,
-                            "webview_height_ratio": "tall",
-                            "fallback_url": "https://peterssendreceiveapp.ngrok.io/"                        
+                            "fallback_url": "http://surrogation.com.ng/"                        
                         }
                     ]                
                 }
