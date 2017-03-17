@@ -46,6 +46,7 @@ app.post('/webhook', function (req, res) {
 			 if(senderContext[event.sender.id]!=null){
 				if(senderContext[event.sender.id].state === "provide_subject"){
 					sendMessage(event.sender.id, {text: "Oh! that is nice we have people that can help you with "+event.message.text});
+					senderContext[event.sender.id].state = "provide_subject_done";
 				}
 			 }else{
 				sendMessage(event.sender.id, {text: "" + event.message.text});
@@ -209,7 +210,7 @@ function welcomeUser(recipientId) {
                     "payload": {
                         "template_type": "generic",
                         "elements": [{
-                            "title": "Would you like?",
+                            "title": "What would you like?",
                             "buttons": [{
 								"type": "postback",
                                 "title": "Get subject help",
