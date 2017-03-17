@@ -16,7 +16,10 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());  
 app.listen((process.env.PORT || 3000));
 
-app.get('/', function (req, res) {   	
+app.get('/', function (req, res) {   
+if(senderContext["wao"]!=null){
+		res.send('Tester Bot');		
+}	
 		res.send('Test Bot');
 });
 
@@ -40,7 +43,7 @@ app.post('/webhook', function (req, res) {
 		
         var event = events[i];						
 		if (event.message && event.message.text) {
-			 if(senderContext[event.sender.id]){
+			 if(senderContext[event.sender.id]!=null){
 				if(senderContext[event.sender.id].state === "provide_subject"){
 					sendMessage(event.sender.id, {text: "Oh! that is nice we have people that can help you with "+event.message.text});
 				}
@@ -58,7 +61,9 @@ app.post('/webhook', function (req, res) {
 				about(event.sender.id);
 			}else if(reply.payload=="get_assignment_help"){
 				sendMessage(event.sender.id, {text: "which subject do you need help on?"});
-				senderContext[event.sender.id].state = "provide_subject";
+				if(senderContext[event.sender.id]!=null){
+					senderContext[event.sender.id].state = "provide_subject";
+				}
 			}
 			 continue;
 			//console.log("Postback received: " + JSON.stringify(event.postback));
