@@ -50,6 +50,12 @@ app.post('/webhook', function (req, res) {
 					senderContext[event.sender.id].state = "provide_subject_done";
 					
 				}
+				if(senderContext[event.sender.id].state === "type_expertise"){
+					var subject = event.message.text;
+					sendMessage(event.sender.id, {text: "Please select your expertise level in "+event.message.text});				
+					getExpertiseLevel(event.sender.id);
+					senderContext[event.sender.id].state = "type_expertise_done";
+				}
 			 }else{
 				sendMessage(event.sender.id, {text: "" + event.message.text});
 			}
@@ -66,6 +72,17 @@ app.post('/webhook', function (req, res) {
 				sendMessage(event.sender.id, {text: "which subject do you need help on?"});
 				if(senderContext[event.sender.id]!=null){
 					senderContext[event.sender.id].state = "provide_subject";
+				}
+			}else if(reply.payload=="set_expertise" || (reply.payload=="postback_yes" && senderContext[event.sender.id]!=null && senderContext[event.sender.id]=="type_expertise_done")){
+				sendMessage(event.sender.id, {text: "Please type the subject you are expert in"});
+				if(senderContext[event.sender.id]!=null){
+					senderContext[event.sender.id].state = "type_expertise";
+				}
+			}else if(reply.payload=="professional_expertise_level" || reply.payload=="intermediate_expertise_level" || reply.payload=="amateur_expertise_level"){
+				sendMessage(event.sender.id, {text: "Your expertise has been successfully saved"});
+				if(senderContext[event.sender.id]!=null){
+					displayOption(event.sender.id,"Do you want to add another expertise?","yes_no");
+					senderContext[event.sender.id].state = "expertise_saved"; 
 				}
 			}
 			 continue;
@@ -204,7 +221,7 @@ function welcomeUser(recipientId) {
 			
 			submitForm(post_data,backurl+"users/add");
 			var msg = "Hi "+firstName+"! Surrogate bot lets you get help or render help on various subjects";			
-			sendMessage(recipientId, {text: "" + msg});
+			sendMessage(recipientId, {text: "" + msg+"-"+bodyObject});
 			
 			     message = {
                 "attachment": {
@@ -285,6 +302,67 @@ function help(recipientId) {
 			
             return false;		
 };
+
+function getExpertiseLevel(recipientId){
+	message = {
+                "attachment": {
+                    "type": "template",
+                    "payload": {
+                        "template_type": "generic",
+                        "elements": [{
+                            "title": "Expertise level",
+                            "buttons": [{
+								"type": "postback",
+                                "title": "Professional",
+                                "payload": "professional_expertise_level",
+                                },
+								{
+								"type": "postback",
+                                "title": "Intermediate",
+                                "payload": "intermediate_expertise_level",
+                                },
+								{
+								"type": "postback",
+                                "title": "Amateur",
+                                "payload": "amateur_expertise_level",
+                                }
+								]
+                        }]
+                    }
+                }
+            };
+			
+			sendMessage(recipientId, message);			
+            return false;		
+}
+
+function displayOption(recipientId,msg,option_type){
+	message = {
+                "attachment": {
+                    "type": "template",
+                    "payload": {
+                        "template_type": "generic",
+                        "elements": [{
+                            "title": msg,
+                            "buttons": [{
+								"type": "postback",
+                                "title": "Yes",
+                                "payload": "postback_yes",
+                                },
+								{
+								"type": "postback",
+                                "title": "No",
+                                "payload": "postback_no",
+                                }
+								]
+                        }]
+                    }
+                }
+            };
+			
+			sendMessage(recipientId, message);			
+            return false;
+}
 
 function addPersistentMenu(){
  request({
