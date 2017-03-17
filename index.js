@@ -52,9 +52,25 @@ app.post('/webhook', function (req, res) {
 				}
 				if(senderContext[event.sender.id].state === "type_expertise"){
 					var subject = event.message.text;
-					sendMessage(event.sender.id, {text: "Please select your expertise level in "+event.message.text});				
-					getExpertiseLevel(event.sender.id);
-					senderContext[event.sender.id].state = "type_expertise_done";
+					senderContext[event.sender.id].subject = subject;
+					var post_data = querystring.stringify({
+						'facebook_id' : recipientId,
+						'subject':subject,
+						'status':'pending'
+					});
+								
+					var notexist = submitForm(post_data,backurl+"expertise/add");
+					
+					if(notexist){
+						sendMessage(event.sender.id, {text: "Please select your expertise level in "+event.message.text});				
+						getExpertiseLevel(event.sender.id);
+						senderContext[event.sender.id].state = "type_expertise_done";
+					}else{
+						sendMessage(event.sender.id, {text: "You have saved this expertise before. Please try another "});
+						if(senderContext[event.sender.id]!=null){
+							senderContext[event.sender.id].state = "type_expertise";
+						}
+					}
 				}
 			 }else{
 				sendMessage(event.sender.id, {text: "" + event.message.text});
@@ -79,6 +95,17 @@ app.post('/webhook', function (req, res) {
 					senderContext[event.sender.id].state = "type_expertise";
 				}
 			}else if(reply.payload=="professional_expertise_level" || reply.payload=="intermediate_expertise_level" || reply.payload=="amateur_expertise_level"){
+					
+					subject = senderContext[event.sender.id].subject;
+					var post_data = querystring.stringify({
+						'status':'completed',
+						'level':reply.payload,
+						'facebook_id' : recipientId,
+						'subject':subject
+					});
+								
+				var notexist = submitForm(post_data,backurl+"expertise/update");
+				
 				sendMessage(event.sender.id, {text: "Your expertise has been successfully saved"});
 				if(senderContext[event.sender.id]!=null){
 					displayOption(event.sender.id,"Do you want to add another expertise?","yes_no");
@@ -208,20 +235,25 @@ function welcomeUser(recipientId) {
 			var bodyObject = JSON.parse(body);
 			firstName = bodyObject.first_name;
 			lastName = bodyObject.last_name;
+			profilePic=bodyObject.profile_pic;
+			locale = bodyObject.locale;
 			
 			senderContext[recipientId] = {};
 			senderContext[recipientId].firstName = firstName;
 			senderContext[recipientId].lastName = lastName;
 			senderContext[recipientId].state = "newly_welcomed";
+			
+			//{"first_name":"Adedayo","last_name":"Olubunmi","profile_pic":"https:\/\/scontent.xx.fbcdn.net\/v\/t1.0-1\/180239_1589652066179_7006637_n.jpg?oh=7ca52055172d91e1c914fcd1110d17a6&oe=596F62FA","locale":"en_US","timezone":1,"gender":"male"}
 			var post_data = querystring.stringify({
 				'facebook_id' : recipientId,
-				'name':firstName+" "+lastName
+				'name':firstName+" "+lastName,
+				'profile_pic':profilePic
 			});
 					
 			
 			submitForm(post_data,backurl+"users/add");
 			var msg = "Hi "+firstName+"! Surrogate bot lets you get help or render help on various subjects";			
-			sendMessage(recipientId, {text: "" + msg+"-"+body});
+			sendMessage(recipientId, {text: "" + msg});
 			
 			     message = {
                 "attachment": {
@@ -509,6 +541,7 @@ function getFriends(recipientId){
 }			
 
 function submitForm(post_data,url){
+	var done =false;
 		request({
 			url: url,
 			method: 'POST',
@@ -524,9 +557,16 @@ function submitForm(post_data,url){
         } else if (response.body.error) {
             console.log('Error: ', response.body.error);
         }else{
-			console.log(body);//res.send(body);
+			var output = JSON.parse(body);
+			if(output.status=="ok"){
+				done = true;
+				return true;
+			}else{
+				return false;
+			}
 		}
 		});
+		return done;
 }
 
 /*
