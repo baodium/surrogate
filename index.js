@@ -45,7 +45,7 @@ app.post('/webhook', function (req, res) {
 		if (event.message && event.message.text) {
 			 if(senderContext[event.sender.id]!=null){
 				if(senderContext[event.sender.id].state === "provide_subject"){
-					sendMessage(event.sender.id, {text: "Oh! that is nice we have people that can help you with "+event.message.text});
+					//sendMessage(event.sender.id, {text: "Oh! that is nice we have people that can help you with "+event.message.text});
 					getExpertiseList(event.message.text,event.sender.id);
 					senderContext[event.sender.id].state = "provide_subject_done";
 					
