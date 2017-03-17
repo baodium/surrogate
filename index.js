@@ -372,6 +372,20 @@ function getStarted(){
 						"payload":"get_started_button"
 						}
 					};
+		var welcome = {"greeting":[{
+						"locale":"default",
+						"text":"Good to have you {{user_first_name}}!"
+						}] 
+					}
+		request({
+        url: 'https://graph.facebook.com/v2.6/me/messenger_profile',
+        method: 'POST',		
+        qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
+        json: welcome
+		}, function(error, response, body) {
+			
+		});
+		
 		request({
         url: 'https://graph.facebook.com/v2.6/me/messenger_profile',
         method: 'POST',		
