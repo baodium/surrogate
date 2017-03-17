@@ -9,7 +9,6 @@ var app = express();
 
 
 var started=false;
-var helprequest = false;
 var backurl="http://surrogation.com.ng/surrogateapp/";
 
 app.use(bodyParser.urlencoded({extended: false}));  
@@ -33,6 +32,7 @@ app.get('/webhook', function (req, res) {
 app.post('/webhook', function (req, res) { 
 	getStarted();
 	addPersistentMenu();
+	var helprequest = false;
     var events = req.body.entry[0].messaging;
     for (i = 0; i < events.length; i++) {
 		
@@ -366,14 +366,14 @@ function getStarted(){
         qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
         json: post
 		}, function(error, response, body) {
-			
+			/*
 			request({
 			url: 'https://graph.facebook.com/v2.6/me/messenger_profile?fields=get_started&access_token='+process.env.PAGE_ACCESS_TOKEN,
 			method: 'GET'	
 			}, function(error, response, body) {
 			console.log(body);
 			});
-			
+			*/
 		});
 }
 
