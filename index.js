@@ -40,7 +40,7 @@ app.post('/webhook', function (req, res) {
 		
         var event = events[i];						
 		if (event.message && event.message.text) {
-			if(senderContext[recipientId].state === "provide_subject"){
+			if(senderContext[event.sender.id].state === "provide_subject"){
 				sendMessage(event.sender.id, {text: "Oh! that is nice we have people that can help you with "+event.message.text});
 			}else{
 				sendMessage(event.sender.id, {text: "" + event.message.text});
