@@ -376,7 +376,7 @@ function getStarted(){
 						"locale":"default",
 						"text":"Good to have you {{user_first_name}}!"
 						}] 
-					}
+					};
 		request({
         url: 'https://graph.facebook.com/v2.6/me/messenger_profile',
         method: 'POST',		
