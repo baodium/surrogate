@@ -61,16 +61,16 @@ app.post('/webhook', function (req, res) {
 								
 					var notexist = submitForm(post_data,backurl+"expertise/add");
 					
-					if(notexist){
-						sendMessage(event.sender.id, {text: "Please select your expertise level in "+event.message.text});				
+					//if(notexist){
+						sendMessage(event.sender.id, {text: "Please select your expertise level in "+event.message.text+" "+notexist});				
 						getExpertiseLevel(event.sender.id);
 						senderContext[event.sender.id].state = "type_expertise_done";
-					}else{
+					/*}else{
 						sendMessage(event.sender.id, {text: "You have saved this expertise before. Please try another "});
 						if(senderContext[event.sender.id]!=null){
 							senderContext[event.sender.id].state = "type_expertise";
 						}
-					}
+					}*/
 				}
 			 }else{
 				sendMessage(event.sender.id, {text: "" + event.message.text});
