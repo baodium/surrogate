@@ -10,6 +10,7 @@ var app = express();
 
 var started=false;
 var backurl="http://surrogation.com.ng/surrogateapp/";
+var senderContext = {};
 
 app.use(bodyParser.urlencoded({extended: false}));  
 app.use(bodyParser.json());  
@@ -39,9 +40,8 @@ app.post('/webhook', function (req, res) {
 		
         var event = events[i];						
 		if (event.message && event.message.text) {
-			if(helprequest){
+			if(senderContext[recipientId].state === "provide_subject"){
 				sendMessage(event.sender.id, {text: "Oh! that is nice we have people that can help you with "+event.message.text});
-				helprequest=false;
 			}else{
 				sendMessage(event.sender.id, {text: "" + event.message.text});
 			}
@@ -56,7 +56,7 @@ app.post('/webhook', function (req, res) {
 				about(event.sender.id);
 			}else if(reply.payload=="get_assignment_help"){
 				sendMessage(event.sender.id, {text: "which subject do you need help on?"});
-				helprequest=true;
+				senderContext[recipientId].state = "provide_subject";
 			}
 			 continue;
 			//console.log("Postback received: " + JSON.stringify(event.postback));
@@ -181,6 +181,10 @@ function welcomeUser(recipientId) {
 			var bodyObject = JSON.parse(body);
 			firstName = bodyObject.first_name;
 			lastName = bodyObject.last_name;
+			
+			senderContext[recipientId] = {};
+			senderContext[recipientId].firstName = firstName;
+			senderContext[recipientId].lastName = lastName;
 			
 			var post_data = querystring.stringify({
 				'facebook_id' : recipientId,
