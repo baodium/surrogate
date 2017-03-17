@@ -633,110 +633,21 @@ function getExpertiseList(subject,recipientId){
     }   
 	};*/
 	message = {
-    "attachment": {
-        "type": "template",
-        "payload": {
-            "template_type": "list",
-            "elements": [
-                {
-                    "title": "Classic T-Shirt Collection",
-                    "image_url": "https://pbs.twimg.com/profile_images/2629833004/1f07dda7e7dcf011e96807a0f10239f9_400x400.jpeg",
-                    "subtitle": "See all our colors",
-                    "default_action": {
-                        "type": "web_url",
-                        "url": "http://surrogation.com.ng/shop_collection",
-                        "messenger_extensions": true,
-                        "webview_height_ratio": "tall",
-                        "fallback_url": "http://surrogation.com.ng/"
-                    },
-                    "buttons": [
-                        {
-                            "title": "View",
-                            "type": "web_url",
-                            "url": "http://surrogation.com.ng/collection",
-                            "messenger_extensions": true,
-                            "webview_height_ratio": "tall",
-                            "fallback_url": "http://surrogation.com.ng/"                        
-                        }
-                    ]
-                },
-                {
-                    "title": "Classic White T-Shirt",
-                    "image_url": "https://pbs.twimg.com/profile_images/2629833004/1f07dda7e7dcf011e96807a0f10239f9_400x400.jpeg",
-                    "subtitle": "100% Cotton, 200% Comfortable",
-                    "default_action": {
-                        "type": "web_url",
-                        "url": "http://surrogation.com.ng/",
-                        "messenger_extensions": true,
-                        "webview_height_ratio": "tall",
-                        "fallback_url": "http://surrogation.com.ng/"
-                    },
-                    "buttons": [
-                        {
-                            "title": "Shop Now",
-                            "type": "web_url",
-                            "url": "http://surrogation.com.ng/",
-                            "messenger_extensions": true,
-                            "webview_height_ratio": "tall",
-                            "fallback_url": "http://surrogation.com.ng/"                        
-                        }
-                    ]                
-                },
-                {
-                    "title": "Classic Blue T-Shirt",
-                    "image_url": "https://pbs.twimg.com/profile_images/2629833004/1f07dda7e7dcf011e96807a0f10239f9_400x400.jpeg",
-                    "subtitle": "100% Cotton, 200% Comfortable",
-                    "default_action": {
-                        "type": "web_url",
-                        "url": "http://surrogation.com.ng/",
-                        "messenger_extensions": true,
-                        "webview_height_ratio": "tall",
-                        "fallback_url": "http://surrogation.com.ng/"
-                    },
-                    "buttons": [
-                        {
-                            "title": "Shop Now",
-                            "type": "web_url",
-                            "url": "http://surrogation.com.ng/",
-                            "messenger_extensions": true,
-                            "webview_height_ratio": "tall",
-                            "fallback_url": "http://surrogation.com.ng/"                        
-                        }
-                    ]                
-                },
-                {
-                    "title": "Classic Black T-Shirt",
-                    "image_url": "https://pbs.twimg.com/profile_images/2629833004/1f07dda7e7dcf011e96807a0f10239f9_400x400.jpeg",
-                    "subtitle": "100% Cotton, 200% Comfortable",
-                    "default_action": {
-                        "type": "web_url",
-                        "url": "http://surrogation.com.ng/",
-                        "messenger_extensions": true,
-                        "webview_height_ratio": "tall",
-                        "fallback_url": "http://surrogation.com.ng/"
-                    },
-                    "buttons": [
-                        {
-                            "title": "Shop Now",
-                            "type": "web_url",
-                            "url": "http://surrogation.com.ng/",
-                            "messenger_extensions": true,
-                            "webview_height_ratio": "tall",
-                            "fallback_url": "http://surrogation.com.ng/"                        
-                        }
-                    ]                
+                "attachment": {
+                    "type": "template",
+                    "payload": {
+                        "template_type": "generic",
+                        "elements": [{
+                            "title": "About message",
+                            "buttons": [{
+								"type": "postback",
+                                "title": "I got it!",
+                                "payload": "quit_help_about",
+                                }]
+                        }]
+                    }
                 }
-            ],
-             "buttons": [
-                {
-                    "title": "View More",
-                    "type": "postback",
-                    "payload": "payload"                        
-                }
-            ]  
-        }
-    }
-};
+            };
 sendMessage(recipientId, message);
 return true;
 }
