@@ -468,10 +468,10 @@ curl -X POST -H "Content-Type: application/json" -d '{
             "subtitle":"We\'ve got the right hat for everyone.",
             "default_action": {
               "type": "web_url",
-              "url": "https://peterssendreceiveapp.ngrok.io/view?item=103",
+              "url": "http://surrogation.com.ng/view?item=103",
               "messenger_extensions": true,
               "webview_height_ratio": "tall",
-              "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
+              "fallback_url": "http://surrogation.com.ng/"
             },
             "buttons":[
               {
@@ -535,26 +535,26 @@ function getExpertiseList(subject,recipientId){
             "elements": [
                 {
                     "title": "List of "+subject+" expert",
-                    "image_url": "https://peterssendreceiveapp.ngrok.io/img/collection.png",
+                    "image_url": "http://surrogation.com.ng/img/collection.png",
                     "subtitle": "Here are who we think may be helpful",
                     "default_action": {
                         "type": "web_url",
-                        "url": "https://peterssendreceiveapp.ngrok.io/shop_collection",
+                        "url": "http://surrogation.com.ng/shop_collection",
                         "messenger_extensions": true,
                         "webview_height_ratio": "tall",
-                        "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
+                        "fallback_url": "http://surrogation.com.ng/"
                     }
                 },
                 {
                     "title": "Adedayo Ayodele",
-                    "image_url": "https://peterssendreceiveapp.ngrok.io/img/white-t-shirt.png",
+                    "image_url": "http://surrogation.com.ng/img/white-t-shirt.png",
                     "subtitle": "Expert in "+subject+", Level:intermediate",
                     "default_action": {
                         "type": "web_url",
-                        "url": "https://peterssendreceiveapp.ngrok.io/view?item=100",
+                        "url": "http://surrogation.com.ng/view?item=100",
                         "messenger_extensions": true,
                         "webview_height_ratio": "tall",
-                        "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
+                        "fallback_url": "http://surrogation.com.ng/"
                     },
                     "buttons": [
                         {
@@ -566,14 +566,14 @@ function getExpertiseList(subject,recipientId){
                 },
                 {
                     "title": "Obadimu Adewale",
-                    "image_url": "https://peterssendreceiveapp.ngrok.io/img/blue-t-shirt.png",
+                    "image_url": "http://surrogation.com.ng/img/blue-t-shirt.png",
                     "subtitle": "Expert in "+subject+", Level:advanced",
                     "default_action": {
                         "type": "web_url",
-                        "url": "https://peterssendreceiveapp.ngrok.io/view?item=101",
+                        "url": "http://surrogation.com.ng/view?item=101",
                         "messenger_extensions": true,
                         "webview_height_ratio": "tall",
-                        "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
+                        "fallback_url": "http://surrogation.com.ng/"
                     },
                     "buttons": [
                         {
@@ -585,14 +585,14 @@ function getExpertiseList(subject,recipientId){
                 },
                 {
                     "title": "Ajayi crowder",
-                    "image_url": "https://peterssendreceiveapp.ngrok.io/img/black-t-shirt.png",
+                    "image_url": "http://surrogation.com.ng/img/black-t-shirt.png",
                     "subtitle": "Expert in "+subject+" and stats, Level:beginner",
                     "default_action": {
                         "type": "web_url",
-                        "url": "https://peterssendreceiveapp.ngrok.io/view?item=102",
+                        "url": "http://surrogation.com.ng/view?item=102",
                         "messenger_extensions": true,
                         "webview_height_ratio": "tall",
-                        "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
+                        "fallback_url": "http://surrogation.com.ng/"
                     },
                     "buttons": [
                         {
@@ -604,14 +604,14 @@ function getExpertiseList(subject,recipientId){
                 },
 				 {
                     "title": "Alani crowder",
-                    "image_url": "https://peterssendreceiveapp.ngrok.io/img/black-t-shirt.png",
+                    "image_url": "http://surrogation.com.ng/img/black-t-shirt.png",
                     "subtitle": "Expert in "+subject+" and stats, Level:beginner",
                     "default_action": {
                         "type": "web_url",
-                        "url": "https://peterssendreceiveapp.ngrok.io/view?item=102",
+                        "url": "http://surrogation.com.ng/view?item=102",
                         "messenger_extensions": true,
                         "webview_height_ratio": "tall",
-                        "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
+                        "fallback_url": "http://surrogation.com.ng/"
                     },
                     "buttons": [
                         {
@@ -640,89 +640,89 @@ function getExpertiseList(subject,recipientId){
             "elements": [
                 {
                     "title": "Classic T-Shirt Collection",
-                    "image_url": "https://peterssendreceiveapp.ngrok.io/img/collection.png",
+                    "image_url": "https://pbs.twimg.com/profile_images/2629833004/1f07dda7e7dcf011e96807a0f10239f9_400x400.jpeg",
                     "subtitle": "See all our colors",
                     "default_action": {
                         "type": "web_url",
-                        "url": "https://peterssendreceiveapp.ngrok.io/shop_collection",
+                        "url": "http://surrogation.com.ng/shop_collection",
                         "messenger_extensions": true,
                         "webview_height_ratio": "tall",
-                        "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
+                        "fallback_url": "http://surrogation.com.ng/"
                     },
                     "buttons": [
                         {
                             "title": "View",
                             "type": "web_url",
-                            "url": "https://peterssendreceiveapp.ngrok.io/collection",
+                            "url": "http://surrogation.com.ng/collection",
                             "messenger_extensions": true,
                             "webview_height_ratio": "tall",
-                            "fallback_url": "https://peterssendreceiveapp.ngrok.io/"                        
+                            "fallback_url": "http://surrogation.com.ng/"                        
                         }
                     ]
                 },
                 {
                     "title": "Classic White T-Shirt",
-                    "image_url": "https://peterssendreceiveapp.ngrok.io/img/white-t-shirt.png",
+                    "image_url": "https://pbs.twimg.com/profile_images/2629833004/1f07dda7e7dcf011e96807a0f10239f9_400x400.jpeg",
                     "subtitle": "100% Cotton, 200% Comfortable",
                     "default_action": {
                         "type": "web_url",
-                        "url": "https://peterssendreceiveapp.ngrok.io/view?item=100",
+                        "url": "http://surrogation.com.ng/",
                         "messenger_extensions": true,
                         "webview_height_ratio": "tall",
-                        "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
+                        "fallback_url": "http://surrogation.com.ng/"
                     },
                     "buttons": [
                         {
                             "title": "Shop Now",
                             "type": "web_url",
-                            "url": "https://peterssendreceiveapp.ngrok.io/shop?item=100",
+                            "url": "http://surrogation.com.ng/",
                             "messenger_extensions": true,
                             "webview_height_ratio": "tall",
-                            "fallback_url": "https://peterssendreceiveapp.ngrok.io/"                        
+                            "fallback_url": "http://surrogation.com.ng/"                        
                         }
                     ]                
                 },
                 {
                     "title": "Classic Blue T-Shirt",
-                    "image_url": "https://peterssendreceiveapp.ngrok.io/img/blue-t-shirt.png",
+                    "image_url": "https://pbs.twimg.com/profile_images/2629833004/1f07dda7e7dcf011e96807a0f10239f9_400x400.jpeg",
                     "subtitle": "100% Cotton, 200% Comfortable",
                     "default_action": {
                         "type": "web_url",
-                        "url": "https://peterssendreceiveapp.ngrok.io/view?item=101",
+                        "url": "http://surrogation.com.ng/",
                         "messenger_extensions": true,
                         "webview_height_ratio": "tall",
-                        "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
+                        "fallback_url": "http://surrogation.com.ng/"
                     },
                     "buttons": [
                         {
                             "title": "Shop Now",
                             "type": "web_url",
-                            "url": "https://peterssendreceiveapp.ngrok.io/shop?item=101",
+                            "url": "http://surrogation.com.ng/",
                             "messenger_extensions": true,
                             "webview_height_ratio": "tall",
-                            "fallback_url": "https://peterssendreceiveapp.ngrok.io/"                        
+                            "fallback_url": "http://surrogation.com.ng/"                        
                         }
                     ]                
                 },
                 {
                     "title": "Classic Black T-Shirt",
-                    "image_url": "https://peterssendreceiveapp.ngrok.io/img/black-t-shirt.png",
+                    "image_url": "https://pbs.twimg.com/profile_images/2629833004/1f07dda7e7dcf011e96807a0f10239f9_400x400.jpeg",
                     "subtitle": "100% Cotton, 200% Comfortable",
                     "default_action": {
                         "type": "web_url",
-                        "url": "https://peterssendreceiveapp.ngrok.io/view?item=102",
+                        "url": "http://surrogation.com.ng/",
                         "messenger_extensions": true,
                         "webview_height_ratio": "tall",
-                        "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
+                        "fallback_url": "http://surrogation.com.ng/"
                     },
                     "buttons": [
                         {
                             "title": "Shop Now",
                             "type": "web_url",
-                            "url": "https://peterssendreceiveapp.ngrok.io/shop?item=102",
+                            "url": "http://surrogation.com.ng/",
                             "messenger_extensions": true,
                             "webview_height_ratio": "tall",
-                            "fallback_url": "https://peterssendreceiveapp.ngrok.io/"                        
+                            "fallback_url": "http://surrogation.com.ng/"                        
                         }
                     ]                
                 }
