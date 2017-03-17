@@ -47,6 +47,8 @@ app.post('/webhook', function (req, res) {
 				if(senderContext[event.sender.id].state === "provide_subject"){
 					sendMessage(event.sender.id, {text: "Oh! that is nice we have people that can help you with "+event.message.text});
 					senderContext[event.sender.id].state = "provide_subject_done";
+					var msg = getExpertiseList(event.message.text,event.sender.id);
+					sendMessage(event.sender.id,msg);
 				}
 			 }else{
 				sendMessage(event.sender.id, {text: "" + event.message.text});
@@ -377,6 +379,7 @@ function getStarted(){
 						"text":"Good to have you {{user_first_name}}!"
 						}] 
 					};
+		/*
 		request({
         url: 'https://graph.facebook.com/v2.6/me/messenger_profile',
         method: 'POST',		
@@ -385,6 +388,7 @@ function getStarted(){
 		}, function(error, response, body) {
 			
 		});
+		*/
 		
 		request({
         url: 'https://graph.facebook.com/v2.6/me/messenger_profile',
@@ -392,14 +396,7 @@ function getStarted(){
         qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
         json: post
 		}, function(error, response, body) {
-			/*
-			request({
-			url: 'https://graph.facebook.com/v2.6/me/messenger_profile?fields=get_started&access_token='+process.env.PAGE_ACCESS_TOKEN,
-			method: 'GET'	
-			}, function(error, response, body) {
-			console.log(body);
-			});
-			*/
+
 		});
 }
 
@@ -524,3 +521,96 @@ curl -X POST -H "Content-Type: application/json" -d '{
   }
 }' "https://graph.facebook.com/v2.6/me/messages?access_token=PAGE_ACCESS_TOKEN"
 */
+
+function getExpertiseList(subject,recipienId){
+	var list = {"message": {
+    "attachment": {
+        "type": "template",
+        "payload": {
+            "template_type": "list",
+            "elements": [
+                {
+                    "title": "List of mathematics expert",
+                    "image_url": "https://peterssendreceiveapp.ngrok.io/img/collection.png",
+                    "subtitle": "Here are who we think may be helpful",
+                    "default_action": {
+                        "type": "web_url",
+                        "url": "https://peterssendreceiveapp.ngrok.io/shop_collection",
+                        "messenger_extensions": true,
+                        "webview_height_ratio": "tall",
+                        "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
+                    }
+                },
+                {
+                    "title": "Adedayo Ayodele",
+                    "image_url": "https://peterssendreceiveapp.ngrok.io/img/white-t-shirt.png",
+                    "subtitle": "Expert in mathermatics, Level:intermediate",
+                    "default_action": {
+                        "type": "web_url",
+                        "url": "https://peterssendreceiveapp.ngrok.io/view?item=100",
+                        "messenger_extensions": true,
+                        "webview_height_ratio": "tall",
+                        "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
+                    },
+                    "buttons": [
+                        {
+                            "title": "Contact Now",
+                            "type": "postback",
+                            "payload": "contact_expert"                    
+                        }
+                    ]                
+                },
+                {
+                    "title": "Obadimu Adewale",
+                    "image_url": "https://peterssendreceiveapp.ngrok.io/img/blue-t-shirt.png",
+                    "subtitle": "Expert in mathematics, Level:advanced",
+                    "default_action": {
+                        "type": "web_url",
+                        "url": "https://peterssendreceiveapp.ngrok.io/view?item=101",
+                        "messenger_extensions": true,
+                        "webview_height_ratio": "tall",
+                        "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
+                    },
+                    "buttons": [
+                        {
+                            "title": "Contact Now",
+                            "type": "postback",
+                            "payload": "contact_expert"                       
+                        }
+                    ]                
+                },
+                {
+                    "title": "Ajayi crowder",
+                    "image_url": "https://peterssendreceiveapp.ngrok.io/img/black-t-shirt.png",
+                    "subtitle": "Expert in maths and stats, Level:beginner",
+                    "default_action": {
+                        "type": "web_url",
+                        "url": "https://peterssendreceiveapp.ngrok.io/view?item=102",
+                        "messenger_extensions": true,
+                        "webview_height_ratio": "tall",
+                        "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
+                    },
+                    "buttons": [
+                        {
+                            "title": "Contact Now",
+                            "type": "postback",
+                            "payload": "contact_expert"                      
+                        }
+                    ]                
+                }
+            ],
+             "buttons": [
+                {
+                    "title": "View More",
+                    "type": "postback",
+                    "payload": "payload"                        
+                }
+            ]  
+        }
+    }
+}
+    
+};
+
+return message;
+}
