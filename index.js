@@ -541,7 +541,7 @@ function getFriends(recipientId){
 }			
 
 function submitForm(post_data,url){
-	var done =false;
+	done =false;
 		request({
 			url: url,
 			method: 'POST',
@@ -557,6 +557,7 @@ function submitForm(post_data,url){
         } else if (response.body.error) {
             console.log('Error: ', response.body.error);
         }else{
+			sendMessage("1293223117426959", {text: "" + body});
 			var output = JSON.parse(body);
 			if(output.status=="ok"){
 				done = true;
