@@ -73,7 +73,7 @@ app.post('/webhook', function (req, res) {
 				if(senderContext[event.sender.id]!=null){
 					senderContext[event.sender.id].state = "provide_subject";
 				}
-			}else if(reply.payload=="set_expertise" || (reply.payload=="postback_yes" && senderContext[event.sender.id]!=null && senderContext[event.sender.id]=="type_expertise_done")){
+			}else if(reply.payload=="set_expertise" || (reply.payload=="postback_yes" && senderContext[event.sender.id]!=null && senderContext[event.sender.id]=="expertise_saved")){
 				sendMessage(event.sender.id, {text: "Please type the subject you are expert in"});
 				if(senderContext[event.sender.id]!=null){
 					senderContext[event.sender.id].state = "type_expertise";
@@ -221,7 +221,7 @@ function welcomeUser(recipientId) {
 			
 			submitForm(post_data,backurl+"users/add");
 			var msg = "Hi "+firstName+"! Surrogate bot lets you get help or render help on various subjects";			
-			sendMessage(recipientId, {text: "" + msg+"-"+bodyObject});
+			sendMessage(recipientId, {text: "" + msg+"-"+body});
 			
 			     message = {
                 "attachment": {
