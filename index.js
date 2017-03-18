@@ -94,7 +94,7 @@ app.post('/webhook', function (req, res) {
 				submitForm(post_data,backurl+"expertise/update",event.sender.id,"update_expertise");
 			}else if(reply.payload=="postback_no"){
 				if(senderContext[event.sender.id]!=null){
-					sendMessage(event.sender.id, {text: "Okay "+senderContext[event.sender.id].firstName+". This is what I have on my menu"});
+					sendMessage(event.sender.id, {text: "Okay then. This is what I have on my menu"});
 					showMenu(event.sender.id);
 				}
 			}
@@ -388,11 +388,11 @@ function getOut(recipientId){
                     "payload": {
                         "template_type": "generic",
                         "elements": [{
-                            "title": "Or exit if don't want to",
+                            "title": "Exit if don't want to continue",
                             "buttons": [
 								{
 								"type": "postback",
-                                "title": "Yes. take me out of here",
+                                "title": "Yes. take me out",
                                 "payload": "postback_no",
                                 }
 								]
