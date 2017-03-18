@@ -613,11 +613,7 @@ function showExpertise(recipientId){
 				output = JSON.parse(body);
 				elementss = new Array();
 				if(output.length<1){
-					elementss[0] = {
-                    "title": "Expertise list",
-                    "image_url": "http://graph.facebook.com/"+recipientId+"/picture?width=100&height=100",
-                    "subtitle": "You do not have any expertise specified"
-					};
+					sendMessage(recipientId, {text: "You do not have any specialization yet"});
 				}else{
 					elementss[0] = {
                     "title": "Expertise list",
@@ -644,12 +640,8 @@ function showExpertise(recipientId){
 										};
 				
 					}
-				}
-				
-				jsonn = 	{
-  "recipient":{
-    "id":recipientId
-  }, "message": {
+					
+					 message = {
     "attachment": {
         "type": "template",
         "payload": {
@@ -665,25 +657,11 @@ function showExpertise(recipientId){
             ]  
         }
     }
-}
-    
 };
 
-request({
-        url: 'https://graph.facebook.com/v2.8/me/messages',
-        qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
-        method: 'POST',
-        json: jsonn
-    }, function(error, response, body) {
-        if (error) {
-            console.log('Error sending message: ', error);
-        } else if (response.body.error) {
-            console.log('Error: ', response.body.error);
-        }
-		sendMessage(recipientId, {text: "" + JSON.stringify(body)});
-    });
-			
-				
+sendMessage(recipientId,message);
+				}
+					
 			}			
 		});
 	
