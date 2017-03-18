@@ -565,7 +565,7 @@ function showExpertise(recipientId){
 				var total = output.length;
 				var start =(senderContext[recipientId].next!=null)?senderContext[recipientId].next:0;
 				if(total>3){
-					output = output.slice((start*2), (start*2) + 2));
+					output = output.slice((start*2), ((start*2) + 2));
 				}
 				elementss = new Array();
 				if(total<1){
