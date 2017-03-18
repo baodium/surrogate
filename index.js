@@ -59,18 +59,21 @@ app.post('/webhook', function (req, res) {
 						'status':'pending'
 					});
 								
-					var notexist = submitForm(post_data,backurl+"expertise/add");
+					var notexist = false;
+					if(senderContext[event.sender.id]!=null){
+						notexist = senderContext[event.sender.id].error;
+					}
 					
-					//if(notexist){
-						sendMessage(event.sender.id, {text: "Please select your expertise level in "+event.message.text+" "+notexist});				
+					if(notexist){
+						sendMessage(event.sender.id, {text: "Please select your expertise level in "+event.message.text});				
 						getExpertiseLevel(event.sender.id);
 						senderContext[event.sender.id].state = "type_expertise_done";
-					/*}else{
+					}else{
 						sendMessage(event.sender.id, {text: "You have saved this expertise before. Please try another "});
 						if(senderContext[event.sender.id]!=null){
 							senderContext[event.sender.id].state = "type_expertise";
 						}
-					}*/
+					}
 				}
 			 }else{
 				sendMessage(event.sender.id, {text: "" + event.message.text});
@@ -559,15 +562,16 @@ function submitForm(post_data,url){
         }else{
 			sendMessage("1293223117426959", {text: "" + body});
 			var output = JSON.parse(body);
-			if(output.status=="ok"){
-				done = true;
-				return true;
+			if(senderContext[event.sender.id]!=null){
+			if(output.status=="ok"){				
+					senderContext[event.sender.id].error = false;
 			}else{
-				return false;
+				senderContext[event.sender.id].error=true;
+				senderContext[event.sender.id].errorMsg = output.message;
 			}
 		}
 		});
-		return done;
+		return true;
 }
 
 /*
