@@ -382,19 +382,24 @@ function displayOption(recipientId,msg,option_type){
 }
 
 function getOut(recipientId){
-	message = {
+		message = {
                 "attachment": {
                     "type": "template",
                     "payload": {
                         "template_type": "generic",
                         "elements": [{
+                            "title": "",
+                            "buttons": [
+								{
 								"type": "postback",
                                 "title": "No. take me out of here",
                                 "payload": "postback_no",
-                                }]
+                                }
+								]
+                        }]
                     }
                 }
-            };			
+            };		
 			sendMessage(recipientId, message);			
             return true;
 }
