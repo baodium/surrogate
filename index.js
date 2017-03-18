@@ -57,24 +57,8 @@ app.post('/webhook', function (req, res) {
 						'facebook_id' : event.sender.id,
 						'subject':subject,
 						'status':'pending'
-					});
-					if(submitForm(post_data,backurl+"expertise/add",event.sender.id)){					
-						var notexist = false;
-						if(senderContext[event.sender.id]!=null){
-							notexist = senderContext[event.sender.id].error;
-						}
-					
-						if(!notexist){
-							sendMessage(event.sender.id, {text: "Please select your expertise level in "+event.message.text});				
-							getExpertiseLevel(event.sender.id);
-							senderContext[event.sender.id].state = "type_expertise_done";
-						}else{
-							sendMessage(event.sender.id, {text: "You have saved this expertise before. Please specify another expertise or type exit to quit "});
-							if(senderContext[event.sender.id]!=null){
-								senderContext[event.sender.id].state = "type_expertise";
-							}
-						}
-					}
+					});					
+					submitForm(post_data,backurl+"expertise/add",event.sender.id,"type_expertise");															
 				}
 			 }else{
 				sendMessage(event.sender.id, {text: "" + event.message.text});
@@ -108,13 +92,7 @@ app.post('/webhook', function (req, res) {
 						'subject':subject
 					});
 								
-				if(submitForm(post_data,backurl+"expertise/update",event.sender.id)){				
-					sendMessage(event.sender.id, {text: "Your expertise has been successfully saved"});
-					if(senderContext[event.sender.id]!=null){
-						displayOption(event.sender.id,"Do you want to add another expertise?","yes_no");
-						senderContext[event.sender.id].state = "expertise_saved"; 
-					}
-				}
+				submitForm(post_data,backurl+"expertise/update",event.sender.id,"update_expertise");
 			}
 			 continue;
 			//console.log("Postback received: " + JSON.stringify(event.postback));
@@ -254,7 +232,7 @@ function welcomeUser(recipientId) {
 				'profile_pic':profilePic
 			});
 								
-			submitForm(post_data,backurl+"users/add",recipientId);
+			submitForm(post_data,backurl+"users/add",recipientId,"add_user");
 			var msg = "Hi "+firstName+"! Surrogate bot lets you get help or render help on various subjects";			
 			sendMessage(recipientId, {text: "" + msg});
 			
@@ -521,7 +499,7 @@ function getFriends(recipientId){
 		});
 }			
 
-function submitForm(post_data,url,userId){
+function submitForm(post_data,url,userId,action){
 		request({
 			url: url,
 			method: 'POST',
@@ -538,14 +516,28 @@ function submitForm(post_data,url,userId){
 				console.log('Error: ', response.body.error);
 			}else{
 				var output = JSON.parse(body);
-				sendMessage(userId, {text: "" + body+"-"+output.status});				
+				sendMessage(userId, {text: "" + body+"-"+output.status});
+				var exists = (output.status=="ok")?false:true;
 				if(senderContext[userId]!=null){
-					if(output.status=="error"){				
-						senderContext[userId].error = true;						
-						senderContext[userId].errorMsg = output.message;
-					}else{
-						senderContext[userId].error= false;
-					}
+
+						if(action=="update_expertise" && !exists){
+							senderContext[userId].error = false;
+							sendMessage(userId, {text: "Your expertise has been successfully saved"});
+							displayOption(userId,"Do you want to add another expertise?","yes_no");
+							senderContext[userId].state = "expertise_saved"; 
+						}
+						
+						if(action == "type_expertise"){
+							if(!exists){
+								sendMessage(userId, {text: "Please select your expertise level in "+post_data.subject});				
+								getExpertiseLevel(userId);
+								senderContext[userId].state = "type_expertise_done";
+							}else{
+								sendMessage(userId, {text: "You have saved this expertise before. Please specify another expertise or type exit to quit "});
+								senderContext[userId].state = "type_expertise";
+							}
+						}
+							
 				} 
 			}
 		});
