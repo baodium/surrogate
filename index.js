@@ -69,7 +69,7 @@ app.post('/webhook', function (req, res) {
 						getExpertiseLevel(event.sender.id);
 						senderContext[event.sender.id].state = "type_expertise_done";
 					}else{
-						sendMessage(event.sender.id, {text: "You have saved this expertise before. Please specify another expertise or type exit quit "});
+						sendMessage(event.sender.id, {text: "You have saved this expertise before. Please specify another expertise or type exit to quit "});
 						if(senderContext[event.sender.id]!=null){
 							senderContext[event.sender.id].state = "type_expertise";
 						}
@@ -252,8 +252,7 @@ function welcomeUser(recipientId) {
 				'name':firstName+" "+lastName,
 				'profile_pic':profilePic
 			});
-					
-			
+								
 			submitForm(post_data,backurl+"users/add",recipientId);
 			var msg = "Hi "+firstName+"! Surrogate bot lets you get help or render help on various subjects";			
 			sendMessage(recipientId, {text: "" + msg});
@@ -538,7 +537,7 @@ function submitForm(post_data,url,userId){
 				console.log('Error: ', response.body.error);
 			}else{
 				var output = JSON.parse(body);
-				//sendMessage(userId, {text: "" + body+"-"+output.status});				
+				sendMessage(userId, {text: "" + body+"-"+output.status});				
 				if(senderContext[userId]!=null){
 					if(output.status=="error"){				
 						senderContext[userId].error = true;						
