@@ -609,9 +609,9 @@ function showExpertise(recipientId){
             "elements": elementss,
              "buttons": [
 				{
-                    "title": ((start+3)<total)?"More":"Previous",
+                    "title": ((start+3)<total)?"More":(((start+3)==total)?"Close":"Previous"),
                     "type": "postback",
-                    "payload":((start+3)<total)?"next_expertise":"previous_expertise"                        
+                    "payload":((start+3)<total)?"next_expertise":(((start+3)==total)?"postback_no":"previous_expertise")                        
                 }
             ]  
         }
