@@ -388,11 +388,11 @@ function getOut(recipientId){
                     "payload": {
                         "template_type": "generic",
                         "elements": [{
-                            "title": "Or you dont want to?",
+                            "title": "Or exit if don't want to",
                             "buttons": [
 								{
 								"type": "postback",
-                                "title": "No. take me out of here",
+                                "title": "Yes. take me out of here",
                                 "payload": "postback_no",
                                 }
 								]
@@ -505,7 +505,7 @@ function submitForm(post_data,url,userId,action){
 				console.log('Error: ', response.body.error);
 			}else{
 				var output = JSON.parse(body);
-				sendMessage(userId, {text: "" + body+"-"+output.status});
+				//sendMessage(userId, {text: "" + body+"-"+output.status});
 				var exists = (output.status=="ok")?false:true;
 				if(senderContext[userId]!=null){
 
