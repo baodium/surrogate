@@ -624,7 +624,7 @@ function showExpertise(recipientId){
                     "image_url": "http://graph.facebook.com/"+recipientId+"/picture?width=100&height=100",
                     "subtitle": "Here's the list of your expertise"
 					};
-					for(i = 0; i<output.length; i++){
+					for(i = 0; i<(output.length); i++){
 						console.log(output[i].subject);
 						level = output[i].level;//.split("_");
 						if(level!=null){
@@ -657,11 +657,6 @@ function showExpertise(recipientId){
 			"top_element_style": "large",
             "elements": elementss,
              "buttons": [
-                {
-                    "title": "View More",
-                    "type": "postback",
-                    "payload": "more_expertise"                        
-                },
 				{
                     "title": "Close",
                     "type": "postback",
