@@ -648,7 +648,7 @@ jsonn = 	{
 };
 
     request({
-        url: 'https://graph.facebook.com/me/messages',
+        url: 'https://graph.facebook.com/v2.8/me/messages',
         qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
         method: 'POST',
         json: jsonn
