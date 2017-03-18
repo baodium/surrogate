@@ -609,15 +609,13 @@ function showExpertise(recipientId){
 			} else if (response.body.error) {
 				console.log('Error: ', response.body.error);
 			}else{
-				output = JSON.parse(body);
-				elementss = new Array();
+				
 				if(output.length<1){
-					elementss[0] = {
-                    "title": "Expertise list",
-                    "image_url": "http://graph.facebook.com/"+recipientId+"/picture?width=100&height=100",
-                    "subtitle": "You do not have any expertise specified"
-					};
+					sendMessage(recipientId, {text: "" + "You do not have any expertise sepcified yet"});
 				}else{
+					output = JSON.parse(body);
+					elementss = new Array();
+					
 					elementss[0] = {
                     "title": "Expertise list",
                     "image_url": "http://graph.facebook.com/"+recipientId+"/picture?width=100&height=100",
@@ -643,9 +641,28 @@ function showExpertise(recipientId){
 										};
 				
 					}
+					
+					message = {
+								"attachment": {
+								"type": "template",
+								"payload": {
+										"template_type": "list",
+										"top_element_style": "large",
+										"elements": elementss,
+										"buttons": [{
+													"title": "View More",
+													"type": "postback",
+													"payload": "more_expertise"                        
+												}]  
+										}
+								}
+							};
+					
+					sendMessage(recipientId, message);
+					
 				}
-				
-				jsonn = 	{
+	/*			
+jsonn = 	{
   "recipient":{
     "id":recipientId
   }, "message": {
@@ -681,86 +698,11 @@ request({
         }
 		sendMessage(recipientId, {text: "" + JSON.stringify(body)});
     });
-	
+	*/
 				
 			}			
 		});
 	
-	
-/*	
-jsonn = 	{
-  "recipient":{
-    "id":recipientId
-  }, "message": {
-    "attachment": {
-        "type": "template",
-        "payload": {
-            "template_type": "list",
-			"top_element_style": "large",
-            "elements": [
-                {
-                    "title": "Expertise list",
-                    "image_url": "https://scontent.xx.fbcdn.net/v/t1.0-1/180239_1589652066179_7006637_n.jpg?oh=7ca52055172d91e1c914fcd1110d17a6&oe=596F62FA",
-                    "subtitle": "Here is the list of your expertise"
-                },
-				{
-                    "title": "English",                   
-                    "subtitle": "Expertise Level: Amateur",
-                    "buttons": [
-                        {
-                            "title": "Delete",
-                            "type": "postback",
-                            "payload": "postback_no"                     
-                        }
-                    ]
-                },
-				{
-                    "title": "Maths",                   
-                    "subtitle": "Expertise Level: Professional",
-                    "buttons": [
-                        {
-                            "title": "Delete",
-                            "type": "postback",
-                            "payload": "postback_no"                     
-                        }
-                    ]
-                }
-				
-            ],
-             "buttons": [
-                {
-                    "title": "View More",
-                    "type": "postback",
-                    "payload": "more_expertise"                        
-                },
-				{
-                    "title": "Close",
-                    "type": "postback",
-                    "payload": "close_expertise"                        
-                }
-            ]  
-        }
-    }
-}
-    
-};
-
-//http://graph.facebook.com/10207444197928094/picture?width=200&height=200
-
-    request({
-        url: 'https://graph.facebook.com/v2.8/me/messages',
-        qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
-        method: 'POST',
-        json: jsonn
-    }, function(error, response, body) {
-        if (error) {
-            console.log('Error sending message: ', error);
-        } else if (response.body.error) {
-            console.log('Error: ', response.body.error);
-        }
-		sendMessage(recipientId, {text: "" + JSON.stringify(body)});
-    });
-*/
 }
 
 /*
