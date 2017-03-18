@@ -58,20 +58,21 @@ app.post('/webhook', function (req, res) {
 						'subject':subject,
 						'status':'pending'
 					});
-					submitForm(post_data,backurl+"expertise/add",event.sender.id);
-					var notexist = false;
-					if(senderContext[event.sender.id]!=null){
-						notexist = senderContext[event.sender.id].error;
-					}
-					
-					if(!notexist){
-						sendMessage(event.sender.id, {text: "Please select your expertise level in "+event.message.text});				
-						getExpertiseLevel(event.sender.id);
-						senderContext[event.sender.id].state = "type_expertise_done";
-					}else{
-						sendMessage(event.sender.id, {text: "You have saved this expertise before. Please specify another expertise or type exit to quit "});
+					if(submitForm(post_data,backurl+"expertise/add",event.sender.id)){					
+						var notexist = false;
 						if(senderContext[event.sender.id]!=null){
-							senderContext[event.sender.id].state = "type_expertise";
+							notexist = senderContext[event.sender.id].error;
+						}
+					
+						if(!notexist){
+							sendMessage(event.sender.id, {text: "Please select your expertise level in "+event.message.text});				
+							getExpertiseLevel(event.sender.id);
+							senderContext[event.sender.id].state = "type_expertise_done";
+						}else{
+							sendMessage(event.sender.id, {text: "You have saved this expertise before. Please specify another expertise or type exit to quit "});
+							if(senderContext[event.sender.id]!=null){
+								senderContext[event.sender.id].state = "type_expertise";
+							}
 						}
 					}
 				}
@@ -107,12 +108,12 @@ app.post('/webhook', function (req, res) {
 						'subject':subject
 					});
 								
-				 submitForm(post_data,backurl+"expertise/update",event.sender.id);
-				
-				sendMessage(event.sender.id, {text: "Your expertise has been successfully saved"});
-				if(senderContext[event.sender.id]!=null){
-					displayOption(event.sender.id,"Do you want to add another expertise?","yes_no");
-					senderContext[event.sender.id].state = "expertise_saved"; 
+				if(submitForm(post_data,backurl+"expertise/update",event.sender.id)){				
+					sendMessage(event.sender.id, {text: "Your expertise has been successfully saved"});
+					if(senderContext[event.sender.id]!=null){
+						displayOption(event.sender.id,"Do you want to add another expertise?","yes_no");
+						senderContext[event.sender.id].state = "expertise_saved"; 
+					}
 				}
 			}
 			 continue;
