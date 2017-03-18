@@ -17,66 +17,6 @@ app.use(bodyParser.json());
 app.listen((process.env.PORT || 3000));
 
 app.get('/', function (req, res) {   
-var post_data = querystring.stringify({
-						'facebook_id' : '1293223117426959'
-				});	
-	request({
-			url: backurl+"expertise/get",
-			method: 'POST',
-			body: post_data,
-			headers: {
-				'Content-Type': 'application/x-www-form-urlencoded',
-				'Content-Length':post_data.length
-				}
-		}, function(error, response, body) {
-		
-			if (error) {
-				console.log('Error sending message: ', error);
-			} else if (response.body.error) {
-				console.log('Error: ', response.body.error);
-			}else{
-				
-				
-				output = JSON.parse(body);
-				elementss = new Array();
-				if(output.length<1){
-					elementss[0] = {
-                    "title": "Expertise list",
-                    "image_url": "http://graph.facebook.com/1293223117426959/picture?width=100&height=100",
-                    "subtitle": "You do not have any expertise specified"
-					};
-				}else{
-					elementss[0] = {
-                    "title": "Expertise list",
-                    "image_url": "http://graph.facebook.com/1293223117426959/picture?width=100&height=100",
-                    "subtitle": "Here's the list of your expertise"
-					};
-					for(i = 0; i<output.length; i++){
-						console.log(output[i].subject);
-						level = output[i].level;//.split("_");
-						if(level!=null){
-							level = output[i].level.split("_");
-							level=level[0];
-						}else{
-							level="";
-						}
-						elementss[i+1]={
-									"title": output[i].subject,                   
-									"subtitle": "Expertise Level:"+level,
-									"buttons": [{
-												"title": "Delete",
-												"type": "postback",
-												"payload": "delete_expertise_"+output[i].expertise_id                     
-												}]
-										};
-				
-					}
-				}
-				console.log(elementss);
-			}
-			
-			});
-
 		res.send('Test Bot');
 });
 
@@ -153,7 +93,16 @@ app.post('/webhook', function (req, res) {
 				}
 			}else if(reply.payload=="my_expertise"){
 				showExpertise(event.sender.id);
+			}else if(reply.payload=="next_expertise"){
+				if(senderContext[event.sender.id]!=null){
+					senderContext[event.sender.id].next++;
+				}
+			}else if(reply.payload=="previous_expertise"){
+				if(senderContext[event.sender.id]!=null){
+					senderContext[event.sender.id].next--;
+				}
 			}
+			
 			 continue;
 		}
 				
@@ -280,7 +229,9 @@ function welcomeUser(recipientId) {
 			senderContext[recipientId] = {};
 			senderContext[recipientId].firstName = firstName;
 			senderContext[recipientId].lastName = lastName;
+			senderContext[recipientId].profilePic = profilePic;
 			senderContext[recipientId].state = "newly_welcomed";
+			senderContext[recipientId].next=0;
 			
 			//{"first_name":"Adedayo","last_name":"Olubunmi","profile_pic":"https:\/\/scontent.xx.fbcdn.net\/v\/t1.0-1\/180239_1589652066179_7006637_n.jpg?oh=7ca52055172d91e1c914fcd1110d17a6&oe=596F62FA","locale":"en_US","timezone":1,"gender":"male"}
 			var post_data = querystring.stringify({
@@ -611,16 +562,24 @@ function showExpertise(recipientId){
 				console.log('Error: ', response.body.error);
 			}else{
 				output = JSON.parse(body);
+				var total = output.length;
+				var start =(senderContext[recipientId].next!=null)?senderContext[recipientId].next:0;
+				if(total>3){
+					output = output.slice((start*2), (start*2) + 2));
+				}
 				elementss = new Array();
-				if(output.length<1){
+				if(total<1){
 					sendMessage(recipientId, {text: "You do not have any specialization yet"});
 				}else{
 					elementss[0] = {
                     "title": "Expertise list",
-                    "image_url": "http://graph.facebook.com/"+recipientId+"/picture?width=100&height=100",
+                    "image_url": (senderContext[recipientId]!=null)?senderContext[recipientId].profilePic:"http://graph.facebook.com/"+recipientId+"/picture?width=100&height=100",
                     "subtitle": "Here's the list of your expertise"
 					};
-					for(i = 0; i<(output.length); i++){
+					
+				
+					
+					for(i = 0; i<output.length; i++){
 						console.log(output[i].subject);
 						level = output[i].level;//.split("_");
 						if(level!=null){
@@ -650,9 +609,9 @@ function showExpertise(recipientId){
             "elements": elementss,
              "buttons": [
 				{
-                    "title": "Close",
+                    "title": ((start+3)<total)?"More":"Previous",
                     "type": "postback",
-                    "payload": "close_expertise"                        
+                    "payload":((start+3)<total)?"next_expertise":"previous_expertise"                        
                 }
             ]  
         }
