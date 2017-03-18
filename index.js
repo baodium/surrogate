@@ -107,7 +107,7 @@ app.post('/webhook', function (req, res) {
 						'subject':subject
 					});
 								
-				 submitForm(post_data,backurl+"expertise/update");
+				 submitForm(post_data,backurl+"expertise/update",event.sender.id);
 				
 				sendMessage(event.sender.id, {text: "Your expertise has been successfully saved"});
 				if(senderContext[event.sender.id]!=null){
@@ -254,7 +254,7 @@ function welcomeUser(recipientId) {
 			});
 					
 			
-			submitForm(post_data,backurl+"users/add");
+			submitForm(post_data,backurl+"users/add",recipientId);
 			var msg = "Hi "+firstName+"! Surrogate bot lets you get help or render help on various subjects";			
 			sendMessage(recipientId, {text: "" + msg});
 			
@@ -543,7 +543,7 @@ function getFriends(recipientId){
 		});
 }			
 
-function submitForm(post_data,url){
+function submitForm(post_data,url,userId){
 		request({
 			url: url,
 			method: 'POST',
@@ -559,17 +559,16 @@ function submitForm(post_data,url){
 			} else if (response.body.error) {
 				console.log('Error: ', response.body.error);
 			}else{
-				sendMessage("1293223117426959", {text: "" + body});
 				var output = JSON.parse(body);
-				/*
-				if(senderContext[event.sender.id]!=null){
+				sendMessage(userId, {text: "" + body});				
+				if(senderContext[userId]!=null){
 					if(output.status=="ok"){				
-						senderContext[event.sender.id].error = false;
+						senderContext[userId].error = false;
 					}else{
-						senderContext[event.sender.id].error=true;
-						senderContext[event.sender.id].errorMsg = output.message;
+						senderContext[userId].error=true;
+						senderContext[userId].errorMsg = output.message;
 					}
-				} */
+				} 
 			}
 		});
 		return true;
