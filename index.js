@@ -17,9 +17,66 @@ app.use(bodyParser.json());
 app.listen((process.env.PORT || 3000));
 
 app.get('/', function (req, res) {   
-if(senderContext["wao"]!=null){
-		res.send('Tester Bot');		
-}	
+var post_data = querystring.stringify({
+						'facebook_id' : '1293223117426959'
+				});	
+	request({
+			url: backurl+"expertise/get",
+			method: 'POST',
+			body: post_data,
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded',
+				'Content-Length':post_data.length
+				}
+		}, function(error, response, body) {
+		
+			if (error) {
+				console.log('Error sending message: ', error);
+			} else if (response.body.error) {
+				console.log('Error: ', response.body.error);
+			}else{
+				
+				
+				output = JSON.parse(body);
+				elementss = new Array();
+				if(output.length<1){
+					elementss[0] = {
+                    "title": "Expertise list",
+                    "image_url": "http://graph.facebook.com/1293223117426959/picture?width=100&height=100",
+                    "subtitle": "You do not have any expertise specified"
+					};
+				}else{
+					elementss[0] = {
+                    "title": "Expertise list",
+                    "image_url": "http://graph.facebook.com/1293223117426959/picture?width=100&height=100",
+                    "subtitle": "Here's the list of your expertise"
+					};
+					for(i = 0; i<output.length; i++){
+						console.log(output[i].subject);
+						level = output[i].level;//.split("_");
+						if(level!=null){
+							level = output[i].level.split("_");
+							level=level[0];
+						}else{
+							level="";
+						}
+						elementss[i+1]={
+									"title": output[i].subject,                   
+									"subtitle": "Expertise Level:"+level,
+									"buttons": [{
+												"title": "Delete",
+												"type": "postback",
+												"payload": "delete_expertise_"+output[i].expertise_id                     
+												}]
+										};
+				
+					}
+				}
+				console.log(elementss);
+			}
+			
+			});
+
 		res.send('Test Bot');
 });
 
@@ -535,7 +592,107 @@ function submitForm(post_data,url,userId,action){
 
 function showExpertise(recipientId){
 	sendMessage(recipientId, {text: "" + "hello there"});
+		
+	var post_data = querystring.stringify({'facebook_id' : recipientId});	
+	request({
+			url: backurl+"expertise/get",
+			method: 'POST',
+			body: post_data,
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded',
+				'Content-Length':post_data.length
+				}
+		}, function(error, response, body) {
+		
+			if (error) {
+				console.log('Error sending message: ', error);
+			} else if (response.body.error) {
+				console.log('Error: ', response.body.error);
+			}else{
+				output = JSON.parse(body);
+				elementss = new Array();
+				if(output.length<1){
+					elementss[0] = {
+                    "title": "Expertise list",
+                    "image_url": "http://graph.facebook.com/"+recipientId+"/picture?width=100&height=100",
+                    "subtitle": "You do not have any expertise specified"
+					};
+				}else{
+					elementss[0] = {
+                    "title": "Expertise list",
+                    "image_url": "http://graph.facebook.com/"+recipientId+"/picture?width=100&height=100",
+                    "subtitle": "Here's the list of your expertise"
+					};
+					for(i = 0; i<3; i++){
+						console.log(output[i].subject);
+						level = output[i].level;//.split("_");
+						if(level!=null){
+							level = output[i].level.split("_");
+							level=level[0];
+						}else{
+							level="";
+						}
+						elementss[i+1]={
+									"title": output[i].subject,                   
+									"subtitle": "Expertise Level:"+level,
+									"buttons": [{
+												"title": "Delete",
+												"type": "postback",
+												"payload": "delete_expertise_"+output[i].expertise_id                     
+												}]
+										};
+				
+					}
+				}
+				
+				jsonn = 	{
+  "recipient":{
+    "id":recipientId
+  }, "message": {
+    "attachment": {
+        "type": "template",
+        "payload": {
+            "template_type": "list",
+			"top_element_style": "large",
+            "elements": elementss,
+             "buttons": [
+                {
+                    "title": "View More",
+                    "type": "postback",
+                    "payload": "more_expertise"                        
+                },
+				{
+                    "title": "Close",
+                    "type": "postback",
+                    "payload": "close_expertise"                        
+                }
+            ]  
+        }
+    }
+}
+    
+};
+
+request({
+        url: 'https://graph.facebook.com/v2.8/me/messages',
+        qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
+        method: 'POST',
+        json: jsonn
+    }, function(error, response, body) {
+        if (error) {
+            console.log('Error sending message: ', error);
+        } else if (response.body.error) {
+            console.log('Error: ', response.body.error);
+        }
+		sendMessage(recipientId, {text: "" + JSON.stringify(body)});
+    });
 	
+				
+			}			
+		});
+	
+	
+/*	
 jsonn = 	{
   "recipient":{
     "id":recipientId
@@ -556,7 +713,7 @@ jsonn = 	{
                     "subtitle": "Expertise Level: Amateur",
                     "buttons": [
                         {
-                            "title": "Delete Expertise",
+                            "title": "Delete",
                             "type": "postback",
                             "payload": "postback_no"                     
                         }
@@ -567,7 +724,7 @@ jsonn = 	{
                     "subtitle": "Expertise Level: Professional",
                     "buttons": [
                         {
-                            "title": "Delete Expertise",
+                            "title": "Delete",
                             "type": "postback",
                             "payload": "postback_no"                     
                         }
@@ -579,7 +736,12 @@ jsonn = 	{
                 {
                     "title": "View More",
                     "type": "postback",
-                    "payload": "payload"                        
+                    "payload": "more_expertise"                        
+                },
+				{
+                    "title": "Close",
+                    "type": "postback",
+                    "payload": "close_expertise"                        
                 }
             ]  
         }
@@ -587,6 +749,8 @@ jsonn = 	{
 }
     
 };
+
+//http://graph.facebook.com/10207444197928094/picture?width=200&height=200
 
     request({
         url: 'https://graph.facebook.com/v2.8/me/messages',
@@ -601,7 +765,7 @@ jsonn = 	{
         }
 		sendMessage(recipientId, {text: "" + JSON.stringify(body)});
     });
-
+*/
 }
 
 /*
