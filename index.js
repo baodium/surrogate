@@ -544,89 +544,89 @@ message = {
             "elements": [
                 {
                     "title": "Classic White T-Shirt",
-                    "image_url": "https://peterssendreceiveapp.ngrok.io/img/white-t-shirt.png",
+                    "image_url": "http://blogeeria.com/images/logo.png",
                     "subtitle": "100% Cotton, 200% Comfortable",
                     "default_action": {
                         "type": "web_url",
-                        "url": "https://peterssendreceiveapp.ngrok.io/view?item=100",
+                        "url": "http://blogeeria.com/images/logo.png",
                         "messenger_extensions": true,
                         "webview_height_ratio": "tall",
-                        "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
+                        "fallback_url": "http://blogeeria.com"
                     },
                     "buttons": [
                         {
                             "title": "Buy",
                             "type": "web_url",
-                            "url": "https://peterssendreceiveapp.ngrok.io/shop?item=100",
+                            "url": "http://blogeeria.com",
                             "messenger_extensions": true,
                             "webview_height_ratio": "tall",
-                            "fallback_url": "https://peterssendreceiveapp.ngrok.io/"                        
+                            "fallback_url": "http://blogeeria.com"                        
                         }
                     ]                
                 },
                 {
                     "title": "Classic Blue T-Shirt",
-                    "image_url": "https://peterssendreceiveapp.ngrok.io/img/blue-t-shirt.png",
+                    "image_url": "http://blogeeria.com/images/logo.png",
                     "subtitle": "100% Cotton, 200% Comfortable",
                     "default_action": {
                         "type": "web_url",
-                        "url": "https://peterssendreceiveapp.ngrok.io/view?item=101",
+                        "url": "http://blogeeria.com",
                         "messenger_extensions": true,
                         "webview_height_ratio": "tall",
-                        "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
+                        "fallback_url": "http://blogeeria.com"
                     },
                     "buttons": [
                         {
                             "title": "Buy",
                             "type": "web_url",
-                            "url": "https://peterssendreceiveapp.ngrok.io/shop?item=101",
+                            "url": "http://blogeeria.com",
                             "messenger_extensions": true,
                             "webview_height_ratio": "tall",
-                            "fallback_url": "https://peterssendreceiveapp.ngrok.io/"                        
+                            "fallback_url": "http://blogeeria.com"                        
                         }
                     ]                
                 },
                 {
                     "title": "Classic Black T-Shirt",
-                    "image_url": "https://peterssendreceiveapp.ngrok.io/img/black-t-shirt.png",
+                    "image_url": "http://blogeeria.com/images/logo.png",
                     "subtitle": "100% Cotton, 200% Comfortable",
                     "default_action": {
                         "type": "web_url",
-                        "url": "https://peterssendreceiveapp.ngrok.io/view?item=102",
+                        "url": "http://blogeeria.com",
                         "messenger_extensions": true,
                         "webview_height_ratio": "tall",
-                        "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
+                        "fallback_url": "http://blogeeria.com"
                     },
                     "buttons": [
                         {
                             "title": "Buy",
                             "type": "web_url",
-                            "url": "https://peterssendreceiveapp.ngrok.io/shop?item=102",
+                            "url": "http://blogeeria.com",
                             "messenger_extensions": true,
                             "webview_height_ratio": "tall",
-                            "fallback_url": "https://peterssendreceiveapp.ngrok.io/"                        
+                            "fallback_url": "http://blogeeria.com"                        
                         }
                     ]                
                 },
                 {
                     "title": "Classic Gray T-Shirt",
-                    "image_url": "https://peterssendreceiveapp.ngrok.io/img/gray-t-shirt.png",
+                    "image_url": "http://blogeeria.com/images/logo.png",
                     "subtitle": "100% Cotton, 200% Comfortable",
                     "default_action": {
                         "type": "web_url",
-                        "url": "https://peterssendreceiveapp.ngrok.io/view?item=103",
+                        "url": "http://blogeeria.com/images/logo.png",
                         "messenger_extensions": true,
                         "webview_height_ratio": "tall",
-                        "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
+                        "fallback_url": "http://blogeeria.com"
                     },
                     "buttons": [
                         {
                             "title": "Buy",
                             "type": "web_url",
-                            "url": "https://peterssendreceiveapp.ngrok.io/shop?item=103",
+                            "url": "http://blogeeria.com/images/logo.png",
                             "messenger_extensions": true,
                             "webview_height_ratio": "tall",
-                            "fallback_url": "https://peterssendreceiveapp.ngrok.io/"                        
+                            "fallback_url": "http://blogeeria.com"                        
                         }
                     ]                
                 }
