@@ -107,7 +107,7 @@ app.post('/webhook', function (req, res) {
 						'subject':subject
 					});
 								
-				var updated = submitForm(post_data,backurl+"expertise/update");
+				 submitForm(post_data,backurl+"expertise/update");
 				
 				sendMessage(event.sender.id, {text: "Your expertise has been successfully saved"});
 				if(senderContext[event.sender.id]!=null){
@@ -544,7 +544,6 @@ function getFriends(recipientId){
 }			
 
 function submitForm(post_data,url){
-	done =false;
 		request({
 			url: url,
 			method: 'POST',
@@ -555,22 +554,22 @@ function submitForm(post_data,url){
 				}
 		}, function(error, response, body) {
 		
-        if (error) {
-            console.log('Error sending message: ', error);
-        } else if (response.body.error) {
-            console.log('Error: ', response.body.error);
-        }else{
-			sendMessage("1293223117426959", {text: "" + body});
-			var output = JSON.parse(body);
-			if(senderContext[event.sender.id]!=null){
-				if(output.status=="ok"){				
-					senderContext[event.sender.id].error = false;
-				}else{
-				senderContext[event.sender.id].error=true;
-				senderContext[event.sender.id].errorMsg = output.message;
+			if (error) {
+				console.log('Error sending message: ', error);
+			} else if (response.body.error) {
+				console.log('Error: ', response.body.error);
+			}else{
+				sendMessage("1293223117426959", {text: "" + body});
+				var output = JSON.parse(body);
+				if(senderContext[event.sender.id]!=null){
+					if(output.status=="ok"){				
+						senderContext[event.sender.id].error = false;
+					}else{
+						senderContext[event.sender.id].error=true;
+						senderContext[event.sender.id].errorMsg = output.message;
+					}
 				}
 			}
-		}
 		});
 		return true;
 }
