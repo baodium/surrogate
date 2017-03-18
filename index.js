@@ -609,11 +609,10 @@ function showExpertise(recipientId){
 			} else if (response.body.error) {
 				console.log('Error: ', response.body.error);
 			}else{
-				
+				output = JSON.parse(body);
 				if(output.length<1){
 					sendMessage(recipientId, {text: "" + "You do not have any expertise sepcified yet"});
 				}else{
-					output = JSON.parse(body);
 					elementss = new Array();
 					
 					elementss[0] = {
