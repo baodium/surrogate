@@ -561,6 +561,7 @@ function submitForm(post_data,url){
 			}else{
 				sendMessage("1293223117426959", {text: "" + body});
 				var output = JSON.parse(body);
+				/*
 				if(senderContext[event.sender.id]!=null){
 					if(output.status=="ok"){				
 						senderContext[event.sender.id].error = false;
@@ -568,7 +569,7 @@ function submitForm(post_data,url){
 						senderContext[event.sender.id].error=true;
 						senderContext[event.sender.id].errorMsg = output.message;
 					}
-				}
+				} */
 			}
 		});
 		return true;
