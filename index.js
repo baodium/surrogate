@@ -96,10 +96,12 @@ app.post('/webhook', function (req, res) {
 			}else if(reply.payload=="next_expertise"){
 				if(senderContext[event.sender.id]!=null){
 					senderContext[event.sender.id].next++;
+					showExpertise(event.sender.id);
 				}
 			}else if(reply.payload=="previous_expertise"){
 				if(senderContext[event.sender.id]!=null){
 					senderContext[event.sender.id].next--;
+					showExpertise(event.sender.id);
 				}
 			}
 			
