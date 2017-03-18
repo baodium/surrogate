@@ -387,16 +387,16 @@ function getOut(recipientId){
                     "type": "template",
                     "payload": {
                         "template_type": "generic",
-                        "elements": {
+                        "elements": [{
 								"type": "postback",
                                 "title": "No. take me out of here",
                                 "payload": "postback_no",
-                                }
+                                }]
                     }
                 }
             };			
 			sendMessage(recipientId, message);			
-            return false;
+            return true;
 }
 
 function addPersistentMenu(){
@@ -426,7 +426,7 @@ function addPersistentMenu(){
 			{
               type:"postback",
               title:"My expertise",
-              payload:"my_expsertise"
+              payload:"my_expertise"
             }
           ]
     }
@@ -517,7 +517,7 @@ function submitForm(post_data,url,userId,action){
 								getExpertiseLevel(userId);
 								senderContext[userId].state = "type_expertise_done";
 							}else{
-								sendMessage(userId, {text: "You have saved this expertise before. Please specify another expertise"})
+								sendMessage(userId, {text: "You have saved this expertise before. Please specify another expertise"});
 								getOut(userId);								
 								senderContext[userId].state = "type_expertise";
 							}
