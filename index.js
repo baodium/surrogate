@@ -387,14 +387,11 @@ function getOut(recipientId){
                     "type": "template",
                     "payload": {
                         "template_type": "generic",
-                        "elements": [
-								{
+                        "elements": {
 								"type": "postback",
                                 "title": "No. take me out of here",
                                 "payload": "postback_no",
                                 }
-								]
-                        }]
                     }
                 }
             };			
