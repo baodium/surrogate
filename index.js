@@ -660,11 +660,6 @@ function showExpertise(recipientId){
                     "title": "View More",
                     "type": "postback",
                     "payload": "more_expertise"                        
-                },
-				{
-                    "title": "Close",
-                    "type": "postback",
-                    "payload": "close_expertise"                        
                 }
             ]  
         }
