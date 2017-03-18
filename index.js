@@ -549,21 +549,14 @@ jsonn = 	{
                 {
                     "title": "Expertise list",
                     "image_url": "https://scontent.xx.fbcdn.net/v/t1.0-1/180239_1589652066179_7006637_n.jpg?oh=7ca52055172d91e1c914fcd1110d17a6&oe=596F62FA",
-                    "subtitle": "Here is the list of your expertise",
-                    "buttons": [
-                        {
-                            "title": "Delete",
-                            "type": "postback",
-                            "payload": "postback_no"                    
-                        }
-                    ]
+                    "subtitle": "Here is the list of your expertise"
                 },
 				{
                     "title": "English",                   
-                    "subtitle": "Level: Amateur",
+                    "subtitle": "Expertise Level: Amateur",
                     "buttons": [
                         {
-                            "title": "Edit",
+                            "title": "Delete Expertise",
                             "type": "postback",
                             "payload": "postback_no"                     
                         }
@@ -571,10 +564,10 @@ jsonn = 	{
                 },
 				{
                     "title": "Maths",                   
-                    "subtitle": "Level: Professional",
+                    "subtitle": "Expertise Level: Professional",
                     "buttons": [
                         {
-                            "title": "Edit",
+                            "title": "Delete Expertise",
                             "type": "postback",
                             "payload": "postback_no"                     
                         }
