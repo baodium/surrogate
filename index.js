@@ -534,7 +534,7 @@ function submitForm(post_data,url,userId,action){
 }
 
 function showExpertise(recipientId){
-	
+	sendMessage(recipientId, {text: "" + "hello there"});
 message = {
     "attachment": {
         "type": "template",
