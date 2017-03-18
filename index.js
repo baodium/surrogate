@@ -592,7 +592,8 @@ function submitForm(post_data,url,userId,action){
 
 function showExpertise(recipientId){
 	sendMessage(recipientId, {text: "" + "hello there"});
-		
+	
+	
 	var post_data = querystring.stringify({'facebook_id' : recipientId});	
 	request({
 			url: backurl+"expertise/get",
@@ -645,7 +646,7 @@ function showExpertise(recipientId){
 					}
 				}
 				
-jsonn = 	{
+				jsonn = 	{
   "recipient":{
     "id":recipientId
   }, "message": {
@@ -660,6 +661,11 @@ jsonn = 	{
                     "title": "View More",
                     "type": "postback",
                     "payload": "more_expertise"                        
+                },
+				{
+                    "title": "Close",
+                    "type": "postback",
+                    "payload": "close_expertise"                        
                 }
             ]  
         }
@@ -668,9 +674,6 @@ jsonn = 	{
     
 };
 
-if(output.length<1){
-	sendMessage(recipientId, {text: "You have do not have any expertise specified yet"});
-}else{
 request({
         url: 'https://graph.facebook.com/v2.8/me/messages',
         qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
@@ -684,12 +687,86 @@ request({
         }
 		sendMessage(recipientId, {text: "" + JSON.stringify(body)});
     });
-}
-	
+			
 				
 			}			
 		});
 	
+	
+/*	
+jsonn = 	{
+  "recipient":{
+    "id":recipientId
+  }, "message": {
+    "attachment": {
+        "type": "template",
+        "payload": {
+            "template_type": "list",
+			"top_element_style": "large",
+            "elements": [
+                {
+                    "title": "Expertise list",
+                    "image_url": "https://scontent.xx.fbcdn.net/v/t1.0-1/180239_1589652066179_7006637_n.jpg?oh=7ca52055172d91e1c914fcd1110d17a6&oe=596F62FA",
+                    "subtitle": "Here is the list of your expertise"
+                },
+				{
+                    "title": "English",                   
+                    "subtitle": "Expertise Level: Amateur",
+                    "buttons": [
+                        {
+                            "title": "Delete",
+                            "type": "postback",
+                            "payload": "postback_no"                     
+                        }
+                    ]
+                },
+				{
+                    "title": "Maths",                   
+                    "subtitle": "Expertise Level: Professional",
+                    "buttons": [
+                        {
+                            "title": "Delete",
+                            "type": "postback",
+                            "payload": "postback_no"                     
+                        }
+                    ]
+                }
+				
+            ],
+             "buttons": [
+                {
+                    "title": "View More",
+                    "type": "postback",
+                    "payload": "more_expertise"                        
+                },
+				{
+                    "title": "Close",
+                    "type": "postback",
+                    "payload": "close_expertise"                        
+                }
+            ]  
+        }
+    }
+}
+    
+};
+
+//http://graph.facebook.com/10207444197928094/picture?width=200&height=200
+
+    request({
+        url: 'https://graph.facebook.com/v2.8/me/messages',
+        qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
+        method: 'POST',
+        json: jsonn
+    }, function(error, response, body) {
+        if (error) {
+            console.log('Error sending message: ', error);
+        } else if (response.body.error) {
+            console.log('Error: ', response.body.error);
+        }
+		sendMessage(recipientId, {text: "" + JSON.stringify(body)});
+    });
+*/
 }
 
 /*
