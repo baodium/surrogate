@@ -107,7 +107,7 @@ app.post('/webhook', function (req, res) {
 						'subject':subject
 					});
 								
-				var notexist = submitForm(post_data,backurl+"expertise/update");
+				var updated = submitForm(post_data,backurl+"expertise/update");
 				
 				sendMessage(event.sender.id, {text: "Your expertise has been successfully saved"});
 				if(senderContext[event.sender.id]!=null){
@@ -563,11 +563,12 @@ function submitForm(post_data,url){
 			sendMessage("1293223117426959", {text: "" + body});
 			var output = JSON.parse(body);
 			if(senderContext[event.sender.id]!=null){
-			if(output.status=="ok"){				
+				if(output.status=="ok"){				
 					senderContext[event.sender.id].error = false;
-			}else{
+				}else{
 				senderContext[event.sender.id].error=true;
 				senderContext[event.sender.id].errorMsg = output.message;
+				}
 			}
 		}
 		});
