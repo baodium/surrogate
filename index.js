@@ -388,7 +388,7 @@ function getOut(recipientId){
                     "payload": {
                         "template_type": "generic",
                         "elements": [{
-                            "title": "",
+                            "title": "Or you dont want to?",
                             "buttons": [
 								{
 								"type": "postback",
