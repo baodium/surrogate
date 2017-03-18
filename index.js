@@ -610,11 +610,14 @@ function showExpertise(recipientId){
 				console.log('Error: ', response.body.error);
 			}else{
 				output = JSON.parse(body);
+				elementss = new Array();
 				if(output.length<1){
-					sendMessage(recipientId, {text: "" + "You do not have any expertise sepcified yet"});
+					elementss[0] = {
+                    "title": "Expertise list",
+                    "image_url": "http://graph.facebook.com/"+recipientId+"/picture?width=100&height=100",
+                    "subtitle": "You do not have any expertise specified"
+					};
 				}else{
-					elementss = new Array();
-					
 					elementss[0] = {
                     "title": "Expertise list",
                     "image_url": "http://graph.facebook.com/"+recipientId+"/picture?width=100&height=100",
@@ -640,27 +643,8 @@ function showExpertise(recipientId){
 										};
 				
 					}
-					
-					message = {
-								"attachment": {
-								"type": "template",
-								"payload": {
-										"template_type": "list",
-										"top_element_style": "large",
-										"elements": elementss,
-										"buttons": [{
-													"title": "View More",
-													"type": "postback",
-													"payload": "more_expertise"                        
-												}]  
-										}
-								}
-							};
-					
-					sendMessage(recipientId, message);
-					
 				}
-	/*			
+				
 jsonn = 	{
   "recipient":{
     "id":recipientId
@@ -684,6 +668,9 @@ jsonn = 	{
     
 };
 
+if(output.length<1){
+	sendMessage(recipientId, {text: "You have do not have any expertise specified yet"});
+}else{
 request({
         url: 'https://graph.facebook.com/v2.8/me/messages',
         qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
@@ -697,7 +684,8 @@ request({
         }
 		sendMessage(recipientId, {text: "" + JSON.stringify(body)});
     });
-	*/
+}
+	
 				
 			}			
 		});
