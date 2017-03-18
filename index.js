@@ -204,7 +204,7 @@ function displayWelcomeMessage(recipientId) {
 function welcomeUser(recipientId) {
 
 		request({
-			url: 'https://graph.facebook.com/v2.6/'+recipientId+'?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token='+process.env.PAGE_ACCESS_TOKEN,
+			url: 'https://graph.facebook.com/v2.8/'+recipientId+'?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token='+process.env.PAGE_ACCESS_TOKEN,
 			method: 'GET'
 		}, function(error, response, body) {
 		
@@ -405,7 +405,7 @@ function getOut(recipientId){
 
 function addPersistentMenu(){
  request({
-    url: 'https://graph.facebook.com/v2.6/me/thread_settings',
+    url: 'https://graph.facebook.com/v2.8/me/thread_settings',
     qs: { access_token: process.env.PAGE_ACCESS_TOKEN },
     method: 'POST',
     json:{
@@ -459,7 +459,7 @@ function getStarted(){
 						}] 
 					};		
 		request({
-        url: 'https://graph.facebook.com/v2.6/me/messenger_profile',
+        url: 'https://graph.facebook.com/v2.8/me/messenger_profile',
         method: 'POST',		
         qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
         json: post
@@ -470,7 +470,7 @@ function getStarted(){
 
 function getFriends(recipientId){
 		request({
-			url: 'https://graph.facebook.com/v2.6/'+recipientId+'/friends?access_token='+process.env.PAGE_ACCESS_TOKEN,
+			url: 'https://graph.facebook.com/v2.8/'+recipientId+'/friends?access_token='+process.env.PAGE_ACCESS_TOKEN,
 			method: 'GET'
 		}, function(error, response, body) {
 		
@@ -544,7 +544,6 @@ message = {
             "elements": [
                 {
                     "title": "Classic White T-Shirt",
-                    "image_url": "http://blogeeria.com/images/logo.png",
                     "subtitle": "100% Cotton, 200% Comfortable",
                     "default_action": {
                         "type": "web_url",
@@ -566,7 +565,6 @@ message = {
                 },
                 {
                     "title": "Classic Blue T-Shirt",
-                    "image_url": "http://blogeeria.com/images/logo.png",
                     "subtitle": "100% Cotton, 200% Comfortable",
                     "default_action": {
                         "type": "web_url",
@@ -588,7 +586,6 @@ message = {
                 },
                 {
                     "title": "Classic Black T-Shirt",
-                    "image_url": "http://blogeeria.com/images/logo.png",
                     "subtitle": "100% Cotton, 200% Comfortable",
                     "default_action": {
                         "type": "web_url",
@@ -610,11 +607,10 @@ message = {
                 },
                 {
                     "title": "Classic Gray T-Shirt",
-                    "image_url": "http://blogeeria.com/images/logo.png",
                     "subtitle": "100% Cotton, 200% Comfortable",
                     "default_action": {
                         "type": "web_url",
-                        "url": "http://blogeeria.com/images/logo.png",
+                        "url": "http://blogeeria.com",
                         "messenger_extensions": true,
                         "webview_height_ratio": "tall",
                         "fallback_url": "http://blogeeria.com"
@@ -623,7 +619,7 @@ message = {
                         {
                             "title": "Buy",
                             "type": "web_url",
-                            "url": "http://blogeeria.com/images/logo.png",
+                            "url": "http://blogeeria.com",
                             "messenger_extensions": true,
                             "webview_height_ratio": "tall",
                             "fallback_url": "http://blogeeria.com"                        
@@ -683,7 +679,7 @@ curl -X POST -H "Content-Type: application/json" -d '{
       }
     }
   }
-}' "https://graph.facebook.com/v2.6/me/messages?access_token=PAGE_ACCESS_TOKEN" 
+}' "https://graph.facebook.com/v2.8/me/messages?access_token=PAGE_ACCESS_TOKEN" 
 
 
 
@@ -713,7 +709,7 @@ curl -X POST -H "Content-Type: application/json" -d '{
       }
     }
   }
-}' "https://graph.facebook.com/v2.6/me/messages?access_token=PAGE_ACCESS_TOKEN"
+}' "https://graph.facebook.com/v2.8/me/messages?access_token=PAGE_ACCESS_TOKEN"
 */
 
 
