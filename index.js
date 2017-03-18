@@ -544,7 +544,7 @@ function submitForm(post_data,url,userId,action){
 }
 
 function showExpertise(recipientId){
-	sendMessage(recipientId, {text: "" + "hello there"});
+	//sendMessage(recipientId, {text: "" + "hello there"});
 	
 	
 	var post_data = querystring.stringify({'facebook_id' : recipientId});	
