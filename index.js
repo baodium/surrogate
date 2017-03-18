@@ -69,7 +69,7 @@ app.post('/webhook', function (req, res) {
 						getExpertiseLevel(event.sender.id);
 						senderContext[event.sender.id].state = "type_expertise_done";
 					}else{
-						sendMessage(event.sender.id, {text: "You have saved this expertise before. Please try another "});
+						sendMessage(event.sender.id, {text: "You have saved this expertise before. Please specify another expertise or type exit quit "});
 						if(senderContext[event.sender.id]!=null){
 							senderContext[event.sender.id].state = "type_expertise";
 						}
@@ -92,7 +92,7 @@ app.post('/webhook', function (req, res) {
 				if(senderContext[event.sender.id]!=null){
 					senderContext[event.sender.id].state = "provide_subject";
 				}
-			}else if(reply.payload=="set_expertise"){
+			}else if(reply.payload=="set_expertise" || (reply.payload=="postback_yes" && senderContext[event.sender.id]!=null && senderContext[event.sender.id].state = "expertise_saved" )){
 				sendMessage(event.sender.id, {text: "Please type the subject you are expert in"});
 				if(senderContext[event.sender.id]!=null){
 					senderContext[event.sender.id].state = "type_expertise";
@@ -491,18 +491,7 @@ function getStarted(){
 						"locale":"default",
 						"text":"Good to have you {{user_first_name}}!"
 						}] 
-					};
-		/*
-		request({
-        url: 'https://graph.facebook.com/v2.6/me/messenger_profile',
-        method: 'POST',		
-        qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
-        json: welcome
-		}, function(error, response, body) {
-			
-		});
-		*/
-		
+					};		
 		request({
         url: 'https://graph.facebook.com/v2.6/me/messenger_profile',
         method: 'POST',		
@@ -526,17 +515,6 @@ function getFriends(recipientId){
         }else{
 			
 			var bodyObject = JSON.parse(body);
-			/*
-			firstName = bodyObject.first_name;
-			lastName = bodyObject.last_name;
-			
-			var post_data = querystring.stringify({
-				'facebook_id' : recipientId,
-				'name':firstName+" "+lastName
-			});
-			*/
-					
-
 			sendMessage(recipientId, {text: "" + body});
             return true;		
 		}
@@ -560,7 +538,7 @@ function submitForm(post_data,url,userId){
 				console.log('Error: ', response.body.error);
 			}else{
 				var output = JSON.parse(body);
-				sendMessage(userId, {text: "" + body+"-"+output.status});				
+				//sendMessage(userId, {text: "" + body+"-"+output.status});				
 				if(senderContext[userId]!=null){
 					if(output.status=="error"){				
 						senderContext[userId].error = true;						
