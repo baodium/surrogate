@@ -58,13 +58,13 @@ app.post('/webhook', function (req, res) {
 						'subject':subject,
 						'status':'pending'
 					});
-								
+					submitForm(post_data,backurl+"expertise/add",event.sender.id);
 					var notexist = false;
 					if(senderContext[event.sender.id]!=null){
 						notexist = senderContext[event.sender.id].error;
 					}
 					
-					if(notexist){
+					if(!notexist){
 						sendMessage(event.sender.id, {text: "Please select your expertise level in "+event.message.text});				
 						getExpertiseLevel(event.sender.id);
 						senderContext[event.sender.id].state = "type_expertise_done";
@@ -560,13 +560,13 @@ function submitForm(post_data,url,userId){
 				console.log('Error: ', response.body.error);
 			}else{
 				var output = JSON.parse(body);
-				sendMessage(userId, {text: "" + body});				
+				sendMessage(userId, {text: "" + body+"-"+output.status});				
 				if(senderContext[userId]!=null){
-					if(output.status=="ok"){				
-						senderContext[userId].error = false;
-					}else{
-						senderContext[userId].error=true;
+					if(output.status=="error"){				
+						senderContext[userId].error = true;						
 						senderContext[userId].errorMsg = output.message;
+					}else{
+						senderContext[userId].error= false;
 					}
 				} 
 			}
