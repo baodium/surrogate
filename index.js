@@ -82,8 +82,7 @@ app.post('/webhook', function (req, res) {
 				if(senderContext[event.sender.id]!=null){
 					senderContext[event.sender.id].state = "type_expertise";
 				}
-			}else if(reply.payload=="professional_expertise_level" || reply.payload=="intermediate_expertise_level" || reply.payload=="amateur_expertise_level"){
-					
+			}else if(reply.payload=="professional_expertise_level" || reply.payload=="intermediate_expertise_level" || reply.payload=="amateur_expertise_level"){					
 					subject = senderContext[event.sender.id].subject;
 					var post_data = querystring.stringify({
 						'status':'completed',
@@ -93,9 +92,13 @@ app.post('/webhook', function (req, res) {
 					});
 								
 				submitForm(post_data,backurl+"expertise/update",event.sender.id,"update_expertise");
+			}else if(reply.payload=="postback_no"){
+				if(senderContext[event.sender.id]!=null){
+					sendMessage(event.sender.id, {text: "Okay "+senderContext[event.sender.id].firstName+". This is what I have on my menu"});
+					showMenu(event.sender.id);
+				}
 			}
 			 continue;
-			//console.log("Postback received: " + JSON.stringify(event.postback));
 		}
 				
     }
@@ -132,9 +135,7 @@ function kittenMessage(recipientId, text) {
 
     if (values.length === 3 && values[0] === 'kitten') {
         if (Number(values[1]) > 0 && Number(values[2]) > 0) {
-            var imageUrl = "https://placekitten.com/" + Number(values[1]) + "/" + Number(values[2]);
-			
-			
+            var imageUrl = "https://placekitten.com/" + Number(values[1]) + "/" + Number(values[2]);			
             message = {
                 "attachment": {
                     "type": "template",
@@ -235,8 +236,17 @@ function welcomeUser(recipientId) {
 			submitForm(post_data,backurl+"users/add",recipientId,"add_user");
 			var msg = "Hi "+firstName+"! Surrogate bot lets you get help or render help on various subjects";			
 			sendMessage(recipientId, {text: "" + msg});
+			showMenu(recipientId);
+            return true;		
+		}
+		});
 			
-			     message = {
+    return true;
+};
+
+
+function showMenu(recipientId){
+			message = {
                 "attachment": {
                     "type": "template",
                     "payload": {
@@ -262,13 +272,8 @@ function welcomeUser(recipientId) {
             };
 			
 			sendMessage(recipientId, message);
-            return true;		
-		}
-		});
-			
-    return true;
-};
-
+			return true;
+}
 
 function about(recipientId) {
 			     message = {
@@ -371,8 +376,28 @@ function displayOption(recipientId,msg,option_type){
                         }]
                     }
                 }
-            };
-			
+            };			
+			sendMessage(recipientId, message);			
+            return false;
+}
+
+function getOut(recipientId){
+	message = {
+                "attachment": {
+                    "type": "template",
+                    "payload": {
+                        "template_type": "generic",
+                        "elements": [
+								{
+								"type": "postback",
+                                "title": "No. take me out of here",
+                                "payload": "postback_no",
+                                }
+								]
+                        }]
+                    }
+                }
+            };			
 			sendMessage(recipientId, message);			
             return false;
 }
@@ -420,45 +445,7 @@ function addPersistentMenu(){
 
 }
 
-function showMenu(){
-  var menu =  {
-  "setting_type" : "call_to_actions",
-  "thread_state" : "existing_thread",
-  "call_to_actions":[
-    {
-      "type":"postback",
-      "title":"Help",
-      "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_HELP"
-    },
-    {
-      "type":"postback",
-      "title":"Start a New Order",
-      "payload":"DEVELOPER_DEFINED_PAYLOAD_FOR_START_ORDER"
-    },
-    {
-      "type":"web_url",
-      "title":"Checkout",
-      "url":"http://petersapparel.parseapp.com/checkout",
-      "webview_height_ratio": "full",
-      "messenger_extensions": true
-    },
-    {
-      "type":"web_url",
-      "title":"View Website",
-      "url":"http://petersapparel.parseapp.com/"
-    }
-  ]
-};
-	
-	request({
-        url: 'https://graph.facebook.com/v2.6/me/thread_settings',
-        method: 'POST',		
-        qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
-        json: menu
-    }, function(error, response, body) {
-        console.log(body);
-    });
-}
+
 
 function getStarted(){
 		var post = {"get_started":{
@@ -533,7 +520,8 @@ function submitForm(post_data,url,userId,action){
 								getExpertiseLevel(userId);
 								senderContext[userId].state = "type_expertise_done";
 							}else{
-								sendMessage(userId, {text: "You have saved this expertise before. Please specify another expertise or type exit to quit "});
+								sendMessage(userId, {text: "You have saved this expertise before. Please specify another expertise"})
+								getOut(userId);								
 								senderContext[userId].state = "type_expertise";
 							}
 						}
