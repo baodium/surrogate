@@ -518,7 +518,7 @@ function submitForm(post_data,url,userId,action){
 						
 						if(action == "type_expertise"){
 							if(!exists){
-								sendMessage(userId, {text: "Please select your expertise level in "+post_data.subject});				
+								sendMessage(userId, {text: "Please select your expertise level in "+senderContext[userId].subject});				
 								getExpertiseLevel(userId);
 								senderContext[userId].state = "type_expertise_done";
 							}else{
