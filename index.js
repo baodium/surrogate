@@ -544,11 +544,12 @@ jsonn = 	{
         "type": "template",
         "payload": {
             "template_type": "list",
+			"top_element_style": "large",
             "elements": [
                 {
-                    "title": "Maths",
+                    "title": "Expertise list",
                     "image_url": "https://scontent.xx.fbcdn.net/v/t1.0-1/180239_1589652066179_7006637_n.jpg?oh=7ca52055172d91e1c914fcd1110d17a6&oe=596F62FA",
-                    "subtitle": "Expertise Level:Professional",
+                    "subtitle": "Here is the list of your expertise",
                     "buttons": [
                         {
                             "title": "Delete",
@@ -558,9 +559,8 @@ jsonn = 	{
                     ]
                 },
 				{
-                    "title": "English",
-                    "image_url": "https://scontent.xx.fbcdn.net/v/t1.0-1/180239_1589652066179_7006637_n.jpg?oh=7ca52055172d91e1c914fcd1110d17a6&oe=596F62FA",
-                    "subtitle": "Expertise Level: Amateur",
+                    "title": "English",                   
+                    "subtitle": "Level: Amateur",
                     "buttons": [
                         {
                             "title": "Edit",
@@ -568,7 +568,19 @@ jsonn = 	{
                             "payload": "postback_no"                     
                         }
                     ]
-                }    
+                },
+				{
+                    "title": "Maths",                   
+                    "subtitle": "Level: Professional",
+                    "buttons": [
+                        {
+                            "title": "Edit",
+                            "type": "postback",
+                            "payload": "postback_no"                     
+                        }
+                    ]
+                }
+				
             ],
              "buttons": [
                 {
