@@ -139,11 +139,9 @@ function sendMessage(recipientId, message) {
 
 function checkHelper(subject,senderId){
 	
-		
-	
-	var post_data = querystring.stringify({'facebook_id' : senderId,'subject':subject});	
+	var post_data = querystring.stringify({'facebook_id_not' : senderId,'subject':subject});	
 	request({
-			url: backurl+"expertise/get",
+			url: backurl+"expertise/getwherenot",
 			method: 'POST',
 			body: post_data,
 			headers: {
@@ -558,24 +556,6 @@ function getStarted(){
 		});
 }
 
-function getFriends(recipientId){
-		request({
-			url: 'https://graph.facebook.com/v2.8/'+recipientId+'/friends?access_token='+process.env.PAGE_ACCESS_TOKEN,
-			method: 'GET'
-		}, function(error, response, body) {
-		
-        if (error) {
-            console.log('Error sending message: ', error);
-        } else if (response.body.error) {
-            console.log('Error: ', response.body.error);
-        }else{
-			
-			var bodyObject = JSON.parse(body);
-			sendMessage(recipientId, {text: "" + body});
-            return true;		
-		}
-		});
-}			
 
 function submitForm(post_data,url,userId,action){
 		request({
@@ -615,6 +595,8 @@ function submitForm(post_data,url,userId,action){
 								getOut(userId);								
 								senderContext[userId].state = "type_expertise";
 							}
+						}else if(action=="show_expertise"){
+								showExpertise(userId);	
 						}
 							
 				} 
@@ -707,25 +689,8 @@ sendMessage(recipientId,message);
 
 
 function removeExpertise(recipient_id,expertise_id){
-		var post_data = querystring.stringify({'facebook_id' : recipientId,'expertise_id':expertise_id});	
-	request({
-			url: backurl+"expertise/delete",
-			method: 'POST',
-			body: post_data,
-			headers: {
-				'Content-Type': 'application/x-www-form-urlencoded',
-				'Content-Length':post_data.length
-				}
-		}, function(error, response, body) {
-			//sendMessage(recipientId, {text: "" + JSON.stringify(body)});
-			if (error) {
-				console.log('Error sending message: ', error);
-			} else if (response.body.error) {
-				console.log('Error: ', response.body.error);
-			}else{
-				showExpertise(recipientId);	
-			}			
-		});
+		var post_data = querystring.stringify({'facebook_id' : recipientId,'expertise_id':expertise_id});
+		submitForm(post_data,backurl+"expertise/delete",recipient_id,"show_expertise");
 }
 /*
 curl -X POST -H "Content-Type: application/json" -d '{
