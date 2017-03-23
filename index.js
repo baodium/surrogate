@@ -104,9 +104,12 @@ app.post('/webhook', function (req, res) {
 					showExpertise(event.sender.id);
 				}
 			}else if(reply.payload.indexOf("delete_expertise")>-1){
+				sendMessage(event.sender.id, {text: reply.payload});
+				/*
 				var expertise_id = reply.payload.split("-");
 				 expertise_id = expertise_id[1];
 				 removeExpertise(event.sender.id,expertise_id);
+				 */
 			}else{
 				sendMessage(event.sender.id, {text: reply.payload});
 			}
