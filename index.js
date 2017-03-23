@@ -54,9 +54,9 @@ app.post('/webhook', function (req, res) {
 					sendMessage(event.sender.id, {text: "" + "Sorry, I don't understand that. Anyway, this is what I have on my menu"});
 					showMenu(event.sender.id);
 				}
-			 }else{
+			 }/*else{
 				welcomeUser(event.sender.id);
-			 }
+			 }*/
 		} else if (event.postback) {
 			var reply = JSON.stringify(event.postback);
 			reply = JSON.parse(reply);
@@ -107,6 +107,8 @@ app.post('/webhook', function (req, res) {
 				var expertise_id = reply.payload.split("-");
 				 expertise_id = expertise_id[1];
 				 removeExpertise(event.sender.id,expertise_id);
+			}else{
+				sendMessage(event.sender.id, {text: reply.payload});
 			}
 			
 			 continue;
@@ -574,7 +576,7 @@ function submitForm(post_data,url,userId,action){
 				console.log('Error: ', response.body.error);
 			}else{
 				var output = JSON.parse(body);
-				//sendMessage(userId, {text: "" + body+"-"+output.status});
+				sendMessage(userId, {text: "" + body+"-"+output.status});
 				var exists = (output.status=="ok")?false:true;
 				if(senderContext[userId]!=null){
 
