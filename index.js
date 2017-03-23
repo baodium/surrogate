@@ -156,7 +156,7 @@ function checkHelper(subject,senderId){
 				output = JSON.parse(body);	
 
 					if(output.length>0){
-							sendMessage(senderId {text: "Oh! that is nice we have people that can help you with "+subject});
+							sendMessage(senderId, {text: "Oh! that is nice we have people that can help you with "+subject});
 							//getExpertiseList(output,event.sender.id);
 							senderContext[senderId].state = "provide_subject_done";	
 						/*
@@ -203,7 +203,7 @@ function checkHelper(subject,senderId){
 sendMessage(recipientId,message);
 						*/
 					}else{
-						sendMessage(senderId {text: "Sorry, it doesn't seem I perosnally know people with "+subject+" expertise"});
+						sendMessage(senderId, {text: "Sorry, it doesn't seem I perosnally know people with "+subject+" expertise"});
 					}
 
 			}			
