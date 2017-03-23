@@ -103,6 +103,10 @@ app.post('/webhook', function (req, res) {
 					senderContext[event.sender.id].next--;
 					showExpertise(event.sender.id);
 				}
+			}else if(reply.payload.indexOf("delete_expertise")>-1){
+				var expertise_id = reply.payload.split("-");
+				 expertise_id = expertise_id[1];
+				 removeExpertise(event.sender.id,expertise_id);
 			}
 			
 			 continue;
@@ -203,7 +207,7 @@ function checkHelper(subject,senderId){
 sendMessage(recipientId,message);
 						*/
 					}else{
-						sendMessage(senderId, {text: "Sorry, it doesn't seem I perosnally know people with "+subject+" expertise"});
+						sendMessage(senderId, {text: "Sorry, I dont perosnally know people with "+subject+" expertise"});
 					}
 
 			}			
@@ -644,7 +648,7 @@ function showExpertise(recipientId){
 				}
 				elementss = new Array();
 				if(total<1){
-					sendMessage(recipientId, {text: "You do not have any specialization yet"});
+					sendMessage(recipientId, {text: "You have not added any expertise yet"});
 				}else{
 					elementss[0] = {
                     "title": "Expertise list",
@@ -669,7 +673,7 @@ function showExpertise(recipientId){
 									"buttons": [{
 												"title": "Delete",
 												"type": "postback",
-												"payload": "delete_expertise_"+output[i].expertise_id                     
+												"payload": "delete_expertise-"+output[i].expertise_id                     
 												}]
 										};
 				
@@ -684,9 +688,9 @@ function showExpertise(recipientId){
             "elements": elementss,
              "buttons": [
 				{
-                    "title": ((start+3)<total)?"More":(((start+3)==total)?"Close":"Previous"),
+                    "title": ((total<3)?"Close":(((start+3)<total)?"More":"previous")),//((start+3)<total)?"More":(((start+3)==total)?"Close":"Previous"),
                     "type": "postback",
-                    "payload":((start+3)<total)?"next_expertise":(((start+3)==total)?"postback_no":"previous_expertise")                        
+                    "payload":((total<3)?"postback_no":(((start+3)<total)?"next_expertise":"previous_expertise"))//((start+3)<total)?"next_expertise":(((start+3)==total)?"postback_no":"previous_expertise")                        
                 }
             ]  
         }
@@ -701,6 +705,28 @@ sendMessage(recipientId,message);
 	
 }
 
+
+function removeExpertise(recipient_id,expertise_id){
+		var post_data = querystring.stringify({'facebook_id' : recipientId,'expertise_id':expertise_id});	
+	request({
+			url: backurl+"expertise/delete",
+			method: 'POST',
+			body: post_data,
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded',
+				'Content-Length':post_data.length
+				}
+		}, function(error, response, body) {
+			//sendMessage(recipientId, {text: "" + JSON.stringify(body)});
+			if (error) {
+				console.log('Error sending message: ', error);
+			} else if (response.body.error) {
+				console.log('Error: ', response.body.error);
+			}else{
+				showExpertise(recipientId);	
+			}			
+		});
+}
 /*
 curl -X POST -H "Content-Type: application/json" -d '{
   "recipient":{
