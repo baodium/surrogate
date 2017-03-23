@@ -39,10 +39,8 @@ app.post('/webhook', function (req, res) {
         var event = events[i];						
 		if (event.message && event.message.text) {
 			 if(senderContext[event.sender.id]!=null){
-				if(senderContext[event.sender.id].state === "provide_subject"){
-					sendMessage(event.sender.id, {text: "Oh! that is nice we have people that can help you with "+event.message.text});
-					getExpertiseList(event.message.text,event.sender.id);
-					senderContext[event.sender.id].state = "provide_subject_done";					
+				if(senderContext[event.sender.id].state === "provide_subject"){					
+					checkHelper(event.message.text,event.sender.id);									
 				}
 				if(senderContext[event.sender.id].state === "type_expertise"){
 					var subject = event.message.text;
@@ -55,7 +53,8 @@ app.post('/webhook', function (req, res) {
 					submitForm(post_data,backurl+"expertise/add",event.sender.id,"type_expertise");															
 				}
 			 }else{
-				sendMessage(event.sender.id, {text: "" + event.message.text});
+				sendMessage(event.sender.id, {text: "" + "Sorry, I don't understand that. Anyway, this is what I have on my menu"});
+				showMenu(event.sender.id);
 			}
 		} else if (event.postback) {
 			var reply = JSON.stringify(event.postback);
@@ -133,7 +132,83 @@ function sendMessage(recipientId, message) {
 };
 
 
+function checkHelper(subject,senderId){
+	
+		
+	
+	var post_data = querystring.stringify({'facebook_id' : recipientId,'subject':subject});	
+	request({
+			url: backurl+"expertise/get",
+			method: 'POST',
+			body: post_data,
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded',
+				'Content-Length':post_data.length
+				}
+		}, function(error, response, body) {
+			//sendMessage(recipientId, {text: "" + JSON.stringify(body)});
+			if (error) {
+				console.log('Error sending message: ', error);
+			} else if (response.body.error) {
+				console.log('Error: ', response.body.error);
+			}else{
+				output = JSON.parse(body);	
 
+					if(output.length>0){
+							sendMessage(senderId {text: "Oh! that is nice we have people that can help you with "+subject});
+							//getExpertiseList(output,event.sender.id);
+							senderContext[senderId].state = "provide_subject_done";	
+						/*
+						
+					for(i = 0; i<output.length; i++){
+						console.log(output[i].subject);
+						level = output[i].level;//.split("_");
+						if(level!=null){
+							level = output[i].level.split("_");
+							level=level[0];
+						}else{
+							level="";
+						}
+						elementss[i+1]={
+									"title": output[i].subject,                   
+									"subtitle": "Expertise Level:"+level,
+									"buttons": [{
+												"title": "Delete",
+												"type": "postback",
+												"payload": "delete_expertise_"+output[i].expertise_id                     
+												}]
+										};
+				
+					}
+					
+					 message = {
+    "attachment": {
+        "type": "template",
+        "payload": {
+            "template_type": "list",
+			"top_element_style": "large",
+            "elements": elementss,
+             "buttons": [
+				{
+                    "title": ((start+3)<total)?"More":(((start+3)==total)?"Close":"Previous"),
+                    "type": "postback",
+                    "payload":((start+3)<total)?"next_expertise":(((start+3)==total)?"postback_no":"previous_expertise")                        
+                }
+            ]  
+        }
+    }
+};
+
+sendMessage(recipientId,message);
+						*/
+					}else{
+						sendMessage(senderId {text: "Sorry, it doesn't seem I perosnally know people with "+subject+" expertise"});
+					}
+
+			}			
+		});
+	
+}
 
 function kittenMessage(recipientId, text) {
 
@@ -544,9 +619,6 @@ function submitForm(post_data,url,userId,action){
 }
 
 function showExpertise(recipientId){
-	//sendMessage(recipientId, {text: "" + "hello there"});
-	
-	
 	var post_data = querystring.stringify({'facebook_id' : recipientId});	
 	request({
 			url: backurl+"expertise/get",
