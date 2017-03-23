@@ -41,8 +41,7 @@ app.post('/webhook', function (req, res) {
 			 if(senderContext[event.sender.id]!=null){
 				if(senderContext[event.sender.id].state === "provide_subject"){					
 					checkHelper(event.message.text,event.sender.id);									
-				}
-				if(senderContext[event.sender.id].state === "type_expertise"){
+				}else if(senderContext[event.sender.id].state === "type_expertise"){
 					var subject = event.message.text;
 					senderContext[event.sender.id].subject = subject;
 					var post_data = querystring.stringify({
@@ -51,11 +50,13 @@ app.post('/webhook', function (req, res) {
 						'status':'pending'
 					});					
 					submitForm(post_data,backurl+"expertise/add",event.sender.id,"type_expertise");															
+				}else{
+					sendMessage(event.sender.id, {text: "" + "Sorry, I don't understand that. Anyway, this is what I have on my menu"});
+					showMenu(event.sender.id);
 				}
 			 }else{
-				sendMessage(event.sender.id, {text: "" + "Sorry, I don't understand that. Anyway, this is what I have on my menu"});
-				showMenu(event.sender.id);
-			}
+				welcomeUser(event.sender.id);
+			 }
 		} else if (event.postback) {
 			var reply = JSON.stringify(event.postback);
 			reply = JSON.parse(reply);
