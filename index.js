@@ -137,7 +137,7 @@ function checkHelper(subject,senderId){
 	
 		
 	
-	var post_data = querystring.stringify({'facebook_id' : recipientId,'subject':subject});	
+	var post_data = querystring.stringify({'facebook_id' : senderId,'subject':subject});	
 	request({
 			url: backurl+"expertise/get",
 			method: 'POST',
@@ -147,7 +147,7 @@ function checkHelper(subject,senderId){
 				'Content-Length':post_data.length
 				}
 		}, function(error, response, body) {
-			//sendMessage(recipientId, {text: "" + JSON.stringify(body)});
+			sendMessage(senderId, {text: "" + JSON.stringify(body)});
 			if (error) {
 				console.log('Error sending message: ', error);
 			} else if (response.body.error) {
