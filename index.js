@@ -142,7 +142,7 @@ function sendMessage(recipientId, message) {
 
 function checkHelper(subject,senderId){
 	
-	var post_data = querystring.stringify({'facebook_id' : senderId,'subject':subject});	
+	var post_data = querystring.stringify({'facebook_id_not' : senderId,'subject':subject});	
 	request({
 			url: backurl+"expertise/getwherenot",
 			method: 'POST',
