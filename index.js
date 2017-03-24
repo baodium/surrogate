@@ -103,15 +103,10 @@ app.post('/webhook', function (req, res) {
 					senderContext[event.sender.id].next--;
 					showExpertise(event.sender.id);
 				}
-			/*}else if(reply.payload.indexOf("delete_expertise")>-1){
-				sendMessage(event.sender.id, {text: reply.payload});
-				/*
+			}else if(reply.payload.indexOf("delete_expertise")>-1){
 				var expertise_id = reply.payload.split("-");
 				 expertise_id = expertise_id[1];
 				 removeExpertise(event.sender.id,expertise_id);
-				 
-			}*/else{
-				sendMessage(event.sender.id, {text: reply.payload});
 			}
 			
 			 continue;
@@ -144,9 +139,11 @@ function sendMessage(recipientId, message) {
 
 function checkHelper(subject,senderId){
 	
-	var post_data = querystring.stringify({'facebook_id_not' : senderId,'subject':subject});	
+		
+	
+	var post_data = querystring.stringify({'facebook_id' : senderId,'subject':subject});	
 	request({
-			url: backurl+"expertise/getwherenot",
+			url: backurl+"expertise/get",
 			method: 'POST',
 			body: post_data,
 			headers: {
@@ -579,7 +576,7 @@ function submitForm(post_data,url,userId,action){
 				console.log('Error: ', response.body.error);
 			}else{
 				var output = JSON.parse(body);
-				sendMessage(userId, {text: "" + body});
+				//sendMessage(userId, {text: "" + body+"-"+output.status});
 				var exists = (output.status=="ok")?false:true;
 				if(senderContext[userId]!=null){
 
@@ -600,8 +597,6 @@ function submitForm(post_data,url,userId,action){
 								getOut(userId);								
 								senderContext[userId].state = "type_expertise";
 							}
-						}else if(action=="show_expertise"){
-								showExpertise(userId);	
 						}
 							
 				} 
@@ -695,7 +690,25 @@ sendMessage(recipientId,message);
 
 function removeExpertise(recipient_id,expertise_id){
 		var post_data = querystring.stringify({'facebook_id' : recipientId,'expertise_id':expertise_id});
-		submitForm(post_data,backurl+"expertise/delete",recipient_id,"show_expertise");
+		//submitForm(post_data,backurl+"expertise/delete");
+	request({
+			url: backurl+"expertise/remove",
+			method: 'POST',
+			body: post_data,
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded',
+				'Content-Length':post_data.length
+				}
+		}, function(error, response, body) {
+			//sendMessage(recipientId, {text: "" + JSON.stringify(body)});
+			if (error) {
+				console.log('Error sending message: ', error);
+			} else if (response.body.error) {
+				console.log('Error: ', response.body.error);
+			}else{
+				showExpertise(recipientId);	
+			}			
+		});
 }
 /*
 curl -X POST -H "Content-Type: application/json" -d '{
