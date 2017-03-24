@@ -107,6 +107,8 @@ app.post('/webhook', function (req, res) {
 				var expertise_id = reply.payload.split("-");
 				 expertise_id = expertise_id[1];
 				 removeExpertise(event.sender.id,expertise_id);
+			}else{
+				sendMessage(event.sender.id, {text: reply.payload});
 			}
 			
 			 continue;
@@ -688,7 +690,7 @@ sendMessage(recipientId,message);
 }
 
 
-function removeExpertise(recipient_id,expertise_id){
+function removeExpertise(recipientId,expertise_id){
 		var post_data = querystring.stringify({'facebook_id' : recipientId,'expertise_id':expertise_id});
 		//submitForm(post_data,backurl+"expertise/delete");
 	request({
