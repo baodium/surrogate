@@ -579,7 +579,7 @@ function submitForm(post_data,url,userId,action){
 				console.log('Error: ', response.body.error);
 			}else{
 				var output = JSON.parse(body);
-				sendMessage(userId, {text: "" + body+"-"+output.status});
+				sendMessage(userId, {text: "" + body});
 				var exists = (output.status=="ok")?false:true;
 				if(senderContext[userId]!=null){
 
