@@ -142,11 +142,9 @@ function sendMessage(recipientId, message) {
 
 function checkHelper(subject,senderId){
 	
-		
-	
 	var post_data = querystring.stringify({'facebook_id' : senderId,'subject':subject});	
 	request({
-			url: backurl+"expertise/get",
+			url: backurl+"expertise/getwherenot",
 			method: 'POST',
 			body: post_data,
 			headers: {
@@ -709,6 +707,7 @@ function removeExpertise(recipientId,expertise_id){
 			} else if (response.body.error) {
 				console.log('Error: ', response.body.error);
 			}else{
+				sendMessage(recipientId, {text: "" + JSON.stringify(body)});
 				showExpertise(recipientId);	
 			}			
 		});
