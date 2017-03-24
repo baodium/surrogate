@@ -18,6 +18,29 @@ app.listen((process.env.PORT || 3000));
 
 app.get('/', function (req, res) {   
 		res.send('Test Bot');
+		
+		var post_data = querystring.stringify({'facebook_id' : '1293223117426959','expertise_id':'10'});
+		//submitForm(post_data,backurl+"expertise/delete");
+	request({
+			url: "http://localhost/surroga/expertise/remove",
+			method: 'POST',
+			body: post_data,
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded',
+				'Content-Length':post_data.length
+				}
+		}, function(error, response, body) {
+			//sendMessage(recipientId, {text: "" + JSON.stringify(body)});
+			if (error) {
+				console.log('Error sending message: ', error);
+			} else if (response.body.error) {
+				console.log('Error: ', response.body.error);
+			}else{
+				console.log(body);
+			}			
+		});
+		
+		
 });
 
 // Facebook Webhook
@@ -109,7 +132,7 @@ app.post('/webhook', function (req, res) {
 				 expertise_id = expertise_id[1];
 				 removeExpertise(event.sender.id,expertise_id);
 			}else{
-				sendMessage(event.sender.id, {text: reply.payload+" "});
+				//sendMessage(event.sender.id, {text: reply.payload+" "});
 			}
 			
 			 continue;
