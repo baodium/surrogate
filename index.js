@@ -108,7 +108,7 @@ app.post('/webhook', function (req, res) {
 				 expertise_id = expertise_id[1];
 				 removeExpertise(event.sender.id,expertise_id);
 			}else{
-				sendMessage(event.sender.id, {text: reply.payload});
+				sendMessage(event.sender.id, {text: reply.payload+" "});
 			}
 			
 			 continue;
