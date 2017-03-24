@@ -703,7 +703,7 @@ function removeExpertise(recipientId,expertise_id){
 				'Content-Length':post_data.length
 				}
 		}, function(error, response, body) {
-			sendMessage(recipientId, {text: "" + JSON.stringify(body)});
+			//sendMessage(recipientId, {text: "" + JSON.stringify(body)});
 			if (error) {
 				console.log('Error sending message: ', error);
 			} else if (response.body.error) {
