@@ -220,7 +220,7 @@ function checkHelper(subject,senderId){
 						"type": "template",
 						"payload": {
 									"template_type": "list",
-									"top_element_style": "small",
+									"top_element_style": "large",
 									"elements": elementss,
 									"buttons": [{
 												"title": ((total<=3)?"Close":(((start+3)<total)?"More":"previous")),//((start+3)<total)?"More":(((start+3)==total)?"Close":"Previous"),
