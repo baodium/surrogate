@@ -265,8 +265,8 @@ function sendHelpRequest(senderId,requestId){
         } else if (response.body.error) {
            sendMessage(senderId, {text: "hey "+error});
         }else{
-			sendMessage(senderId, {text: "hey "+body});
-			/*
+			//sendMessage(senderId, {text: "hey "+body});
+			
 			var bodyObject = JSON.parse(body);
 			bodyObject = bodyObject[0];
 			subject = bodyObject.subject;
@@ -281,13 +281,13 @@ function sendHelpRequest(senderId,requestId){
 				'status':'pending'
 			});
 			
-			sendMessage(senderId, {text: "hey "+post_data});
+			//sendMessage(senderId, {text: "hey "+post_data});
 			if(senderContext[senderId]!=null){	
 				senderContext[senderId].requestSubject = subject;
 				senderContext[senderId].requestTo = ownerId;
 				submitForm(post_data,backurl+"requests/add",senderId,"save_request");
 			}
-          	*/	
+          		
 		}
 		});
 			
