@@ -189,7 +189,6 @@ function checkHelper(subject,senderId){
 					elementss = new Array();
 					elementss[0] = {
                     "title": "Expertise Help List",
-					"image_url": "http://graph.facebook.com/"+senderId+"/picture?width=50&height=50",
 					"subtitle": "Here's the list of "+subject+" expert"
 					};
 								
@@ -220,7 +219,7 @@ function checkHelper(subject,senderId){
 						"type": "template",
 						"payload": {
 									"template_type": "list",
-									"top_element_style": "large",
+									"top_element_style": "compact",
 									"elements": elementss,
 									"buttons": [{
 												"title": ((total<=3)?"Close":(((start+3)<total)?"More":"previous")),//((start+3)<total)?"More":(((start+3)==total)?"Close":"Previous"),
