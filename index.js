@@ -187,8 +187,9 @@ function checkHelper(subject,senderId){
 							level="";
 						}
 						elementss[i+1]={
-									"title": output[i].name,   
-									"subtitle": "Expertise Level:"+level,
+									"title": output[i].name,  
+									"image_url": output[i].profile_pic,									
+									"subtitle": "Level:"+level,
 									"buttons": [{
 												"title": "Request Expertise",
 												"type": "postback",
