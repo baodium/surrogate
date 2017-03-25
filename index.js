@@ -176,6 +176,7 @@ function checkHelper(subject,senderId){
 					"subtitle": "Here's the list of "+subject+" expert"
 					};
 				
+				
 /*				
 					for(i = 0; i<output.length; i++){
 						console.log(output[i].subject);
@@ -223,7 +224,7 @@ function checkHelper(subject,senderId){
 					}
 					
 					}catch(err){
-						sendMessage(senderId, {text: "Error fetching expert "+body});
+						sendMessage(senderId, {text: "Error fetching expert "});
 					}	
 
 			}
