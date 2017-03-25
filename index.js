@@ -118,10 +118,10 @@ app.post('/webhook', function (req, res) {
 				var expertise_id = reply.payload.split("-");
 				 expertise_id = expertise_id[1];
 				 removeExpertise(event.sender.id,expertise_id);
-			}else if(reply.payload.indexOf("request_expertise")>-1){
-				
+			}else if(reply.payload.indexOf("request_expertise")>-1){				
 				var expertise_id = reply.payload.split("-");
 				 expertise_id = expertise_id[1];
+				 sendMessage(event.sender.id, {text: reply.payload+" "+expertise_id});
 				 sendHelpRequest(event.sender.id,expertise_id);
 			}else{
 				sendMessage(event.sender.id, {text: reply.payload+" "});
@@ -272,6 +272,7 @@ function sendHelpRequest(senderId,requestId){
 				'status':'pending'
 			});
 			
+			sendMessage(senderId, {text: "hey "+post_data});
 			if(senderContext[senderId]!=null){	
 				senderContext[senderId].requestSubject = subject;
 				senderContext[senderId].requestTo = ownerId;
@@ -645,7 +646,7 @@ function submitForm(post_data,url,userId,action){
 				console.log('Error: ', response.body.error);
 			}else{
 				var output = JSON.parse(body);
-				//sendMessage(userId, {text: "" + body+"-"+output.status});
+				sendMessage(userId, {text: "" + body+"-"+output.status});
 				var exists = (output.status=="ok")?false:true;
 				if(senderContext[userId]!=null){
 
