@@ -103,13 +103,15 @@ app.post('/webhook', function (req, res) {
 					senderContext[event.sender.id].next--;
 					showExpertise(event.sender.id);
 				}
-			}else if(reply.payload.indexOf("delete_expertise")>-1){
-				sendMessage(event.sender.id, {text: reply.payload+" "});
+			/*}else if(reply.payload.indexOf("delete_expertise")>-1){
+				sendMessage(event.sender.id, {text: reply.payload});
+				/*
 				var expertise_id = reply.payload.split("-");
 				 expertise_id = expertise_id[1];
 				 removeExpertise(event.sender.id,expertise_id);
-			}else{
-				sendMessage(event.sender.id, {text: reply.payload+" "});
+				 
+			}*/else{
+				sendMessage(event.sender.id, {text: reply.payload});
 			}
 			
 			 continue;
@@ -152,7 +154,7 @@ function checkHelper(subject,senderId){
 				'Content-Length':post_data.length
 				}
 		}, function(error, response, body) {
-			//sendMessage(senderId, {text: "" + JSON.stringify(body)});
+			sendMessage(senderId, {text: "" + JSON.stringify(body)});
 			if (error) {
 				console.log('Error sending message: ', error);
 			} else if (response.body.error) {
@@ -162,25 +164,10 @@ function checkHelper(subject,senderId){
 
 					if(output.length>0){
 							sendMessage(senderId, {text: "Oh! that is nice we have people that can help you with "+subject});
+							//getExpertiseList(output,event.sender.id);
 							senderContext[senderId].state = "provide_subject_done";	
-
-							output = JSON.parse(body);
-							var total = output.length;
-							var start =(senderContext[recipientId].nextexp!=null)?senderContext[recipientId].nextexp:0;
-							if(total>3){
-								output = output.slice((start*2), ((start*2) + 2));
-							}
-							elementss = new Array();
-							if(total<1){
-								sendMessage(recipientId, {text: "You have not added any expertise yet"});
-							}else{
-					elementss[0] = {
-                    "title": "Expertise Help List",
-					"subtitle": "Here's the list of "+subject+" expert";
-					};
-					
-				
-					
+						/*
+						
 					for(i = 0; i<output.length; i++){
 						console.log(output[i].subject);
 						level = output[i].level;//.split("_");
@@ -191,37 +178,39 @@ function checkHelper(subject,senderId){
 							level="";
 						}
 						elementss[i+1]={
-									"title": output[i].name,   
-									"image_url": "http://graph.facebook.com/"+output[i].facebook_id+"/picture?width=100&height=100",
+									"title": output[i].subject,                   
 									"subtitle": "Expertise Level:"+level,
 									"buttons": [{
-												"title": "Request",
+												"title": "Delete",
 												"type": "postback",
-												"payload": "request_expertise-"+output[i].expertise_id                     
+												"payload": "delete_expertise_"+output[i].expertise_id                     
 												}]
 										};
 				
 					}
 					
 					 message = {
-						"attachment": {
-						"type": "template",
-						"payload": {
-									"template_type": "list",
-									"top_element_style": "large",
-									"elements": elementss,
-									"buttons": [{
-												"title": ((total<3)?"Close":(((start+3)<total)?"More":"previous")),//((start+3)<total)?"More":(((start+3)==total)?"Close":"Previous"),
-												"type": "postback",
-												"payload":((total<3)?"postback_no":(((start+3)<total)?"next_expert_list":"previous_expert_list"))//((start+3)<total)?"next_expertise":(((start+3)==total)?"postback_no":"previous_expertise")                        
-												}]  
-									}
-						}
-					};
-					sendMessage(recipientId,message);
-				
+    "attachment": {
+        "type": "template",
+        "payload": {
+            "template_type": "list",
+			"top_element_style": "large",
+            "elements": elementss,
+             "buttons": [
+				{
+                    "title": ((start+3)<total)?"More":(((start+3)==total)?"Close":"Previous"),
+                    "type": "postback",
+                    "payload":((start+3)<total)?"next_expertise":(((start+3)==total)?"postback_no":"previous_expertise")                        
+                }
+            ]  
+        }
+    }
+};
+
+sendMessage(recipientId,message);
+						*/
 					}else{
-						sendMessage(senderId, {text: "Sorry, I dont personally know people with "+subject+" expertise"});
+						sendMessage(senderId, {text: "Sorry, I dont perosnally know people with "+subject+" expertise"});
 					}
 
 			}			
@@ -590,7 +579,7 @@ function submitForm(post_data,url,userId,action){
 				console.log('Error: ', response.body.error);
 			}else{
 				var output = JSON.parse(body);
-				//sendMessage(userId, {text: "" + body+"-"+output.status});
+				sendMessage(userId, {text: "" + body});
 				var exists = (output.status=="ok")?false:true;
 				if(senderContext[userId]!=null){
 
@@ -611,6 +600,8 @@ function submitForm(post_data,url,userId,action){
 								getOut(userId);								
 								senderContext[userId].state = "type_expertise";
 							}
+						}else if(action=="show_expertise"){
+								showExpertise(userId);	
 						}
 							
 				} 
@@ -702,28 +693,9 @@ sendMessage(recipientId,message);
 }
 
 
-function removeExpertise(recipientId,expertise_id){
+function removeExpertise(recipient_id,expertise_id){
 		var post_data = querystring.stringify({'facebook_id' : recipientId,'expertise_id':expertise_id});
-		//submitForm(post_data,backurl+"expertise/delete");
-	request({
-			url: backurl+"expertise/remove",
-			method: 'POST',
-			body: post_data,
-			headers: {
-				'Content-Type': 'application/x-www-form-urlencoded',
-				'Content-Length':post_data.length
-				}
-		}, function(error, response, body) {
-			//sendMessage(recipientId, {text: "" + JSON.stringify(body)});
-			if (error) {
-				console.log('Error sending message: ', error);
-			} else if (response.body.error) {
-				console.log('Error: ', response.body.error);
-			}else{
-				sendMessage(recipientId, {text: "" + JSON.stringify(body)});
-				showExpertise(recipientId);	
-			}			
-		});
+		submitForm(post_data,backurl+"expertise/delete",recipient_id,"show_expertise");
 }
 /*
 curl -X POST -H "Content-Type: application/json" -d '{
