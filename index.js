@@ -328,7 +328,7 @@ function sendRejection(toId,requestId){
 			subject = bodyObject.subject;
 			to = bodyObject.to_id;
 			name = bodyObject.name;						
-			sendMessage(toId, {text: senderContext[to].firstName." has rejected your "+subject+" expertise request"});         		
+			sendMessage(toId, {text: senderContext[to].firstName+" has rejected your "+subject+" expertise request"});         		
 		}
 		});
 			
