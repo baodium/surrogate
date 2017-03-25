@@ -103,11 +103,27 @@ app.post('/webhook', function (req, res) {
 					senderContext[event.sender.id].next--;
 					showExpertise(event.sender.id);
 				}
+			}else if(reply.payload=="next_expert_list"){
+				if(senderContext[event.sender.id]!=null){
+					senderContext[event.sender.id].nextexp++;
+					showExpertise(event.sender.id);
+				}
+			}else if(reply.payload=="previous_expert_list"){
+				if(senderContext[event.sender.id]!=null){
+					senderContext[event.sender.id].nextexp--;
+					showExpertise(event.sender.id);
+				}
 			}else if(reply.payload.indexOf("delete_expertise")>-1){
-				sendMessage(event.sender.id, {text: reply.payload+" "});
+				//sendMessage(event.sender.id, {text: reply.payload+" "});
 				var expertise_id = reply.payload.split("-");
 				 expertise_id = expertise_id[1];
 				 removeExpertise(event.sender.id,expertise_id);
+			}else if(reply.payload.indexOf("request_expertise")>-1){
+				
+				var expertise_id = reply.payload.split("-");
+				 expertise_id = expertise_id[1];
+				 sendMessage(event.sender.id, {text: "Your request has been sent. He's gonna contact you soon, hopefully. "});
+				// removeExpertise(event.sender.id,expertise_id);
 			}else{
 				sendMessage(event.sender.id, {text: reply.payload+" "});
 			}
@@ -204,12 +220,12 @@ function checkHelper(subject,senderId){
 						"type": "template",
 						"payload": {
 									"template_type": "list",
-									"top_element_style": "large",
+									"top_element_style": "small",
 									"elements": elementss,
 									"buttons": [{
-												"title": ((total<3)?"Close":(((start+3)<total)?"More":"previous")),//((start+3)<total)?"More":(((start+3)==total)?"Close":"Previous"),
+												"title": ((total<=3)?"Close":(((start+3)<total)?"More":"previous")),//((start+3)<total)?"More":(((start+3)==total)?"Close":"Previous"),
 												"type": "postback",
-												"payload":((total<3)?"postback_no":(((start+3)<total)?"next_expert_list":"previous_expert_list"))//((start+3)<total)?"next_expertise":(((start+3)==total)?"postback_no":"previous_expertise")                        
+												"payload":((total<=3)?"postback_no":(((start+3)<total)?"next_expert_list":"previous_expert_list"))//((start+3)<total)?"next_expertise":(((start+3)==total)?"postback_no":"previous_expertise")                        
 												}]  
 									}
 						}
