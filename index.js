@@ -171,60 +171,12 @@ function checkHelper(subject,senderId){
 							}
 					
 					elementss = new Array();
-				/*	elementss[0] = {
+					elementss[0] = {
                     "title": "Expertise Help List",
 					"subtitle": "Here's the list of "+subject+" expert"
 					};
-					*/
-					
-					
-					elementss[0] = {
-                    "title": "Expertise list",
-                    "image_url": (senderContext[recipientId]!=null)?senderContext[recipientId].profilePic:"http://graph.facebook.com/"+recipientId+"/picture?width=100&height=100",
-                    "subtitle": "Here's the list of your expertise"
-					};
-					
 				
-					
-					for(i = 0; i<output.length; i++){
-						console.log(output[i].subject);
-						level = output[i].level;//.split("_");
-						if(level!=null){
-							level = output[i].level.split("_");
-							level=level[0];
-						}else{
-							level="";
-						}
-						elementss[i+1]={
-									"title": output[i].subject,                   
-									"subtitle": "Expertise Level:"+level,
-									"buttons": [{
-												"title": "Delete",
-												"type": "postback",
-												"payload": "delete_expertise-"+output[i].expertise_id                     
-												}]
-										};
-				
-					}
-					
-					 message = {
-								"attachment": {
-								"type": "template",
-								"payload": {
-								"template_type": "list",
-								"top_element_style": "large",
-								"elements": elementss,
-											"buttons": [{
-														"title": ((total<3)?"Close":(((start+3)<total)?"More":"previous")),//((start+3)<total)?"More":(((start+3)==total)?"Close":"Previous"),
-														"type": "postback",
-														"payload":((total<3)?"postback_no":(((start+3)<total)?"next_expertise":"previous_expertise"))//((start+3)<total)?"next_expertise":(((start+3)==total)?"postback_no":"previous_expertise")                        
-														}]  
-										}
-								}
-						};
-
-					sendMessage(recipientId,message);
-					/*					
+/*				
 					for(i = 0; i<output.length; i++){
 						console.log(output[i].subject);
 						level = output[i].level;//.split("_");
@@ -246,8 +198,8 @@ function checkHelper(subject,senderId){
 										};
 				
 					}
-					
-					 message = {
+					*/
+					message = {
 						"attachment": {
 						"type": "template",
 						"payload": {
@@ -263,8 +215,8 @@ function checkHelper(subject,senderId){
 						}
 					};
 					
-					sendMessage(recipientId,message);
-				*/
+					sendMessage(recipientId,{text: ""+message});
+			
 					}else{
 						sendMessage(senderId, {text: "Sorry, I dont personally know people with "+subject+" expertise"});
 					}
@@ -738,7 +690,7 @@ function showExpertise(recipientId){
 														}]  
 										}
 								}
-						};
+					};
 
 sendMessage(recipientId,message);
 				}
