@@ -199,6 +199,7 @@ function checkHelper(subject,senderId){
 				
 					}
 					*/
+					/*
 					message = {
 						"attachment": {
 						"type": "template",
@@ -214,8 +215,8 @@ function checkHelper(subject,senderId){
 									}
 						}
 					};
-					
-					sendMessage(recipientId,{text: ""+message});
+					*/
+					sendMessage(recipientId,{text: ""+elementss});
 			
 					}else{
 						sendMessage(senderId, {text: "Sorry, I dont personally know people with "+subject+" expertise"});
