@@ -173,8 +173,7 @@ function checkHelper(subject,senderId){
 					elementss = new Array();
 					elementss[0] = {
                     "title": "Expertise Help List",
-					"image_url": "http://graph.facebook.com/"+senderId+"/picture?width=50&height=50",
-					"subtitle": "Here's the list of "+subject+" expert"
+					"subtitle": "Here's the list of "+subject+" expert I know"
 					};
 								
 					for(i = 0; i<output.length; i++){
@@ -190,7 +189,7 @@ function checkHelper(subject,senderId){
 									"title": output[i].name,   
 									"subtitle": "Expertise Level:"+level,
 									"buttons": [{
-												"title": "Request",
+												"title": "Request Expertise",
 												"type": "postback",
 												"payload": "request_expertise-"+output[i].expertise_id                     
 												}]
