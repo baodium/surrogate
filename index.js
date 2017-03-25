@@ -122,8 +122,7 @@ app.post('/webhook', function (req, res) {
 				
 				var expertise_id = reply.payload.split("-");
 				 expertise_id = expertise_id[1];
-				 sendMessage(event.sender.id, {text: "Your request has been sent. He's gonna contact you soon, hopefully. "});
-				// removeExpertise(event.sender.id,expertise_id);
+				 sendHelpRequest(event.sender.id,expertise_id);
 			}else{
 				sendMessage(event.sender.id, {text: reply.payload+" "});
 			}
@@ -189,7 +188,7 @@ function checkHelper(subject,senderId){
 					elementss = new Array();
 					elementss[0] = {
                     "title": "Expertise Help List",
-					"subtitle": "Here's the list of "+subject+" expert"
+					"subtitle": "For "+subject+" "
 					};
 								
 					for(i = 0; i<output.length; i++){
@@ -244,6 +243,45 @@ function checkHelper(subject,senderId){
 					
 		});
 	
+}
+
+function sendHelpRequest(senderId,requestId){
+	var post_data = querystring.stringify({'expertise_id' : requestId});
+			request({
+			url: backurl+'expertise/get',
+			method: 'POST',
+			body: post_data,
+		}, function(error, response, body) {
+		
+        if (error) {
+            console.log('Error sending message: ', error);
+        } else if (response.body.error) {
+            console.log('Error: ', response.body.error);
+        }else{
+			
+			var bodyObject = JSON.parse(body);
+			subject = bodyObject.subject;
+			level = bodyObject.level;
+			ownerId=bodyObject.facebook_id;
+			
+			var post_data = querystring.stringify({
+				'from_id' : senderId,
+				'to_id':ownerId,
+				'subject':subject,
+				'expertise_id':requestId,
+				'status':'pending'
+			});
+			
+			if(senderContext[recipientId]!=null){	
+				senderContext[recipientId].requestSubject = subject;
+				senderContext[recipientId].requestTo = ownerId;
+				submitForm(post_data,backurl+"requests/add",senderId,"save_request");
+			}
+            return true;		
+		}
+		});
+			
+    return true;
 }
 
 function kittenMessage(recipientId, text) {
@@ -627,6 +665,38 @@ function submitForm(post_data,url,userId,action){
 								sendMessage(userId, {text: "You have saved this expertise before. Please specify another expertise"});
 								getOut(userId);								
 								senderContext[userId].state = "type_expertise";
+							}
+						}
+						
+						if(action == "save_request"){
+							if(!exists){		
+								name = senderContext[userId].firstName + " "+senderContext[userId].lastName;
+								subject = senderContext[userId].requestSubject;
+								ownerId = senderContext[userId].requestTo;
+								sendMessage(userId, {text: "Your request has been sent. Hopefully, you will get a reply very soon."});				
+								sendMessage(userId, {text: "You have a new request from"+name+". He wants you to teach him "+subject});									
+								message = {"attachment": {
+											"type": "template",
+											"payload": {
+											"template_type": "generic",
+											"elements": [{
+														"title": "Would you teach "+name+" "+subject+"?",
+														"buttons": [{
+															"type": "postback",
+															"title": "I will",
+															"payload": "accept_request",
+														}, {
+															"type": "postback",
+															"title": "No",
+															"payload": "reject_request",
+															}]
+														}]
+													}
+												}
+											};
+								sendMessage(userId, message);									
+							}else{
+								sendMessage(userId, {text: "Oh! did you forget? You have already sent a request"});																
 							}
 						}
 							
