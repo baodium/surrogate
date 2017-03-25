@@ -175,7 +175,7 @@ function checkHelper(subject,senderId){
                     "title": "Expertise Help List",
 					"subtitle": "Here's the list of "+subject+" expert"
 					};
-										
+					/*					
 					for(i = 0; i<output.length; i++){
 						console.log(output[i].subject);
 						level = output[i].level;//.split("_");
@@ -215,7 +215,7 @@ function checkHelper(subject,senderId){
 					};
 					
 					sendMessage(recipientId,message);
-				
+				*/
 					}else{
 						sendMessage(senderId, {text: "Sorry, I dont personally know people with "+subject+" expertise"});
 					}
