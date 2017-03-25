@@ -655,7 +655,7 @@ function submitForm(post_data,url,userId,action){
 				console.log('Error: ', response.body.error);
 			}else{
 				var output = JSON.parse(body);
-				sendMessage(userId, {text: "" + body+"-"+output.status});
+				//sendMessage(userId, {text: "" + body+"-"+output.status});
 				var exists = (output.status=="ok")?false:true;
 				if(senderContext[userId]!=null){
 
@@ -684,7 +684,7 @@ function submitForm(post_data,url,userId,action){
 								subject = senderContext[userId].requestSubject;
 								ownerId = senderContext[userId].requestTo;
 								sendMessage(userId, {text: "Your request has been sent. Hopefully, you will get a reply very soon."});				
-								sendMessage(userId, {text: "You have a new request from"+name+". He wants you to teach him "+subject});									
+								sendMessage(ownerId, {text: "You have a new request from"+name+". He wants you to teach him "+subject});									
 								message = {"attachment": {
 											"type": "template",
 											"payload": {
@@ -704,7 +704,7 @@ function submitForm(post_data,url,userId,action){
 													}
 												}
 											};
-								sendMessage(userId, message);									
+								sendMessage(ownerId, message);									
 							}else{
 								sendMessage(userId, {text: "Oh! did you forget? You have already sent a request"});																
 							}
