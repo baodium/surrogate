@@ -159,7 +159,6 @@ function checkHelper(subject,senderId){
 				console.log('Error: ', response.body.error);
 			}else{
 				output = JSON.parse(body);	
-
 					if(output.length>0){
 							sendMessage(senderId, {text: "Oh! that is nice we have people that can help you with "+subject});
 							senderContext[senderId].state = "provide_subject_done";	
@@ -170,7 +169,8 @@ function checkHelper(subject,senderId){
 							if(total>3){
 								output = output.slice((start*2), ((start*2) + 2));
 							}
-
+					
+					elementss = new Array();
 					elementss[0] = {
                     "title": "Expertise Help List",
 					"subtitle": "Here's the list of "+subject+" expert"
