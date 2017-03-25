@@ -251,9 +251,13 @@ function checkHelper(subject,senderId){
 function sendHelpRequest(senderId,requestId){
 	var post_data = querystring.stringify({'expertise_id' : requestId});
 			request({
-			url: backurl+'expertise/get',
+			url: backurl+"expertise/get",
 			method: 'POST',
-			body: post_data
+			body: post_data,
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded',
+				'Content-Length':post_data.length
+				}
 		}, function(error, response, body) {
 		
         if (error) {
