@@ -163,13 +163,13 @@ function checkHelper(subject,senderId){
 					if(output.length>0){
 							sendMessage(senderId, {text: "Oh! that is nice we have people that can help you with "+subject});
 							senderContext[senderId].state = "provide_subject_done";	
-								
+					/*			
 					var total = output.length;
 							var start =0;//(senderContext[recipientId].nextexp!=null)?senderContext[recipientId].nextexp:0;
 							if(total>3){
 								output = output.slice((start*2), ((start*2) + 2));
 							}
-					
+					*/
 					elementss = new Array();
 					elementss[0] = {
                     "title": "Expertise Help List",
