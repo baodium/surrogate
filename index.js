@@ -117,15 +117,23 @@ app.post('/webhook', function (req, res) {
 					showExpertise(event.sender.id);
 				}
 			}else if(reply.payload.indexOf("delete_expertise")>-1){
-				//sendMessage(event.sender.id, {text: reply.payload+" "});
 				var expertise_id = reply.payload.split("-");
 				 expertise_id = expertise_id[1];
 				 removeExpertise(event.sender.id,expertise_id);
 			}else if(reply.payload.indexOf("request_expertise")>-1){				
 				var expertise_id = reply.payload.split("-");
 				 expertise_id = expertise_id[1];
-				 sendMessage(event.sender.id, {text: reply.payload+" "+expertise_id});
 				 sendHelpRequest(event.sender.id,expertise_id);
+			}else if(reply.payload.indexOf("reject_expertise")>-1){				
+				var expertise_id = reply.payload.split("-");
+				 expertiseId = expertise_id[1];
+				 fromId = expertise_id[2];
+				 if(senderContext[event.sender.id]!=null){
+					 sendRejection(fromId,expertise_id);
+				}
+				
+			}else if(reply.payload=="home"){
+				welcomeUser(event.sender.id);
 			}else{
 				sendMessage(event.sender.id, {text: reply.payload+" "});
 			}
@@ -285,9 +293,42 @@ function sendHelpRequest(senderId,requestId){
 			if(senderContext[senderId]!=null){	
 				senderContext[senderId].requestSubject = subject;
 				senderContext[senderId].requestTo = ownerId;
+				senderContext[senderId].expertiseId = requestId;
 				submitForm(post_data,backurl+"requests/add",senderId,"save_request");
 			}
           		
+		}
+		});
+			
+    return true;
+}
+
+
+function sendRejection(toId,requestId){
+	var post_data = querystring.stringify({'expertise_id' : requestId,'from_id':toId,'special_field':'from_id'});
+			request({
+			url: backurl+"requests/get",
+			method: 'POST',
+			body: post_data,
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded',
+				'Content-Length':post_data.length
+				}
+		}, function(error, response, body) {
+		
+        if (error) {
+			//
+        } else if (response.body.error) {
+           //
+        }else{
+			//sendMessage(senderId, {text: "hey "+body});
+			
+			var bodyObject = JSON.parse(body);
+			bodyObject = bodyObject[0];
+			subject = bodyObject.subject;
+			to = bodyObject.to_id;
+			name = bodyObject.name;						
+			sendMessage(toId, {text: senderContext[to].firstName." has rejected your "+subject+" expertise request"});         		
 		}
 		});
 			
@@ -683,8 +724,9 @@ function submitForm(post_data,url,userId,action){
 								name = senderContext[userId].firstName + " "+senderContext[userId].lastName;
 								subject = senderContext[userId].requestSubject;
 								ownerId = senderContext[userId].requestTo;
+								requestId = senderContext[userId].expertiseId;
 								sendMessage(userId, {text: "Your request has been sent. Hopefully, you will get a reply very soon."});				
-								sendMessage(ownerId, {text: "You have a new request from"+name+". He wants you to teach him "+subject});									
+								sendMessage(ownerId, {text: "You have a request from "+name+". He wants you to teach him "+subject});									
 								message = {"attachment": {
 											"type": "template",
 											"payload": {
@@ -694,11 +736,11 @@ function submitForm(post_data,url,userId,action){
 														"buttons": [{
 															"type": "postback",
 															"title": "I will",
-															"payload": "accept_request",
+															"payload": "accept_request-"+requestId+"-"+userId,
 														}, {
 															"type": "postback",
 															"title": "No",
-															"payload": "reject_request",
+															"payload": "reject_request-"+requestId+"-"+userId,
 															}]
 														}]
 													}
