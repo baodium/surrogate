@@ -173,7 +173,8 @@ function checkHelper(subject,senderId){
 					elementss = new Array();
 					elementss[0] = {
                     "title": "Expertise Help List",
-					"subtitle": "Here's the list of "+subject+" expert I know"
+					"image_url": "http://graph.facebook.com/"+senderId+"/picture?width=50&height=50",
+					"subtitle": "Here's the list of "+subject+" expert"
 					};
 								
 					for(i = 0; i<output.length; i++){
