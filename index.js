@@ -272,9 +272,9 @@ function sendHelpRequest(senderId,requestId){
 				'status':'pending'
 			});
 			
-			if(senderContext[recipientId]!=null){	
-				senderContext[recipientId].requestSubject = subject;
-				senderContext[recipientId].requestTo = ownerId;
+			if(senderContext[senderId]!=null){	
+				senderContext[senderId].requestSubject = subject;
+				senderContext[senderId].requestTo = ownerId;
 				submitForm(post_data,backurl+"requests/add",senderId,"save_request");
 			}
             return true;		
