@@ -163,8 +163,9 @@ function checkHelper(subject,senderId){
 					if(output.length>0){
 							sendMessage(senderId, {text: "Oh! that is nice we have people that can help you with "+subject});
 							senderContext[senderId].state = "provide_subject_done";	
-							var total = output.length;
-							var start =(senderContext[recipientId].nextexp!=null)?senderContext[recipientId].nextexp:0;
+								
+					var total = output.length;
+							var start =0;//(senderContext[recipientId].nextexp!=null)?senderContext[recipientId].nextexp:0;
 							if(total>3){
 								output = output.slice((start*2), ((start*2) + 2));
 							}
@@ -174,9 +175,7 @@ function checkHelper(subject,senderId){
                     "title": "Expertise Help List",
 					"subtitle": "Here's the list of "+subject+" expert"
 					};
-					
-				
-					
+										
 					for(i = 0; i<output.length; i++){
 						console.log(output[i].subject);
 						level = output[i].level;//.split("_");
@@ -214,14 +213,16 @@ function checkHelper(subject,senderId){
 									}
 						}
 					};
+					
 					sendMessage(recipientId,message);
 				
 					}else{
 						sendMessage(senderId, {text: "Sorry, I dont personally know people with "+subject+" expertise"});
 					}
+					
 					}catch(err){
-				sendMessage(senderId, {text: "Error fetching expert "});
-				}	
+						sendMessage(senderId, {text: "Error fetching expert "+body});
+					}	
 
 			}
 					
@@ -630,7 +631,6 @@ function showExpertise(recipientId){
 				'Content-Length':post_data.length
 				}
 		}, function(error, response, body) {
-			//sendMessage(recipientId, {text: "" + JSON.stringify(body)});
 			if (error) {
 				console.log('Error sending message: ', error);
 			} else if (response.body.error) {
