@@ -219,11 +219,12 @@ function checkHelper(subject,senderId){
 					}else{
 						sendMessage(senderId, {text: "Sorry, I dont personally know people with "+subject+" expertise"});
 					}
+					}catch(err){
+				sendMessage(senderId, {text: "Error fetching expert "});
+				}	
 
 			}
-			}catch(err){
-				sendMessage(senderId, {text: "Error fetching expert "});
-			}			
+					
 		});
 	
 }
