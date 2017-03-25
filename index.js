@@ -16,7 +16,10 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());  
 app.listen((process.env.PORT || 3000));
 
-app.get('/', function (req, res) {   
+app.get('/', function (req, res) {  
+var body ='[{"expertise_id":"2","facebook_id":"1441254119239126","subject":"English","level":"amateur_expertise_level","date_added":"2017-03-18","status":"completed"}]';
+var js  = JSON.parse(body);
+console.log(js[0].facebook_id); 
 		res.send('Test Bot');
 });
 
@@ -250,16 +253,17 @@ function sendHelpRequest(senderId,requestId){
 			request({
 			url: backurl+'expertise/get',
 			method: 'POST',
-			body: post_data,
+			body: post_data
 		}, function(error, response, body) {
 		
         if (error) {
-            console.log('Error sending message: ', error);
+			sendMessage(senderId, {text: "hey "+error});
         } else if (response.body.error) {
-            console.log('Error: ', response.body.error);
+           sendMessage(senderId, {text: "hey "+error});
         }else{
 			
 			var bodyObject = JSON.parse(body);
+			bodyObject = bodyObject[0];
 			subject = bodyObject.subject;
 			level = bodyObject.level;
 			ownerId=bodyObject.facebook_id;
