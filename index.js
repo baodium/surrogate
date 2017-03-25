@@ -158,12 +158,11 @@ function checkHelper(subject,senderId){
 			} else if (response.body.error) {
 				console.log('Error: ', response.body.error);
 			}else{
-				output = JSON.parse(body);	
+				try{
+					output = JSON.parse(body);	
 					if(output.length>0){
 							sendMessage(senderId, {text: "Oh! that is nice we have people that can help you with "+subject});
 							senderContext[senderId].state = "provide_subject_done";	
-
-							output = JSON.parse(body);
 							var total = output.length;
 							var start =(senderContext[recipientId].nextexp!=null)?senderContext[recipientId].nextexp:0;
 							if(total>3){
@@ -221,6 +220,9 @@ function checkHelper(subject,senderId){
 						sendMessage(senderId, {text: "Sorry, I dont personally know people with "+subject+" expertise"});
 					}
 
+			}
+			}catch(err){
+				sendMessage(senderId, {text: "Error fetching expert "});
 			}			
 		});
 	
