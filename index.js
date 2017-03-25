@@ -170,13 +170,10 @@ function checkHelper(subject,senderId){
 							if(total>3){
 								output = output.slice((start*2), ((start*2) + 2));
 							}
-							elementss = new Array();
-							if(total<1){
-								sendMessage(recipientId, {text: "You have not added any expertise yet"});
-							}else{
+
 					elementss[0] = {
                     "title": "Expertise Help List",
-					"subtitle": "Here's the list of "+subject+" expert";
+					"subtitle": "Here's the list of "+subject+" expert"
 					};
 					
 				
