@@ -165,7 +165,7 @@ function checkHelper(subject,senderId){
 							senderContext[senderId].state = "provide_subject_done";	
 						
 					var total = output.length;
-							var start =0;//(senderContext[recipientId].nextexp!=null)?senderContext[recipientId].nextexp:0;
+							var start = (senderContext[senderId].nextexp!=null)?senderContext[senderId].nextexp:0;
 							if(total>3){
 								output = output.slice((start*2), ((start*2) + 2));
 							}
@@ -173,6 +173,7 @@ function checkHelper(subject,senderId){
 					elementss = new Array();
 					elementss[0] = {
                     "title": "Expertise Help List",
+					"image_url": "http://graph.facebook.com/"+senderId+"/picture?width=50&height=50",
 					"subtitle": "Here's the list of "+subject+" expert"
 					};
 								
@@ -187,7 +188,6 @@ function checkHelper(subject,senderId){
 						}
 						elementss[i+1]={
 									"title": output[i].name,   
-									"image_url": "http://graph.facebook.com/"+output[i].facebook_id+"/picture?width=100&height=100",
 									"subtitle": "Expertise Level:"+level,
 									"buttons": [{
 												"title": "Request",
