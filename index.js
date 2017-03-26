@@ -371,12 +371,14 @@ function checkExpertise(senderId,payload,subject){
 		try{		
 			var bodyObject = JSON.parse(body);
 			if(bodyObject.length>0){
-				sendMessage(senderId, {text: "Oh! did you forget? you have already added this expertise"}); 
+				sendMessage(senderId, {text: "Oh! did you forget? you have already added this expertise. Please specify anoother expertise"}); 
 				var p_data = querystring.stringify({
 						'status':'pending',
 						'facebook_id' : senderId,
 						'subject':subject
 				});	
+				getOut(senderId);								
+				senderContext[senderId].state = "type_expertise";
 				submitForm(p_data,backurl+"expertise/remove",senderId,"remove_expertise");				
 			}else{
 				submitForm(post_data,backurl+"expertise/update",senderId,"update_expertise");
