@@ -330,8 +330,8 @@ function sendRejection(fromId,requestId,senderId){
 			name = bodyObject.name;	
 			reqId = bodyObject.request_id;
 			sendMessage(fromId, {text: senderContext[senderId].firstName+" "+senderContext[senderId].lastName+" has rejected your "+subject+" expertise request"});
-			var p_data = querystring.stringify({'request_id' : reqId,'status':'completed'});
-			submitForm(p_data,backurl+"requests/update",senderId,"update_request");
+			var p_data = querystring.stringify({'request_id' : reqId});
+			submitForm(p_data,backurl+"requests/remove",senderId,"update_request");
 		}catch(err){
 			sendMessage(fromId, {text: body+""});  
 		}       		
@@ -732,7 +732,7 @@ function submitForm(post_data,url,userId,action){
 								ownerId = senderContext[userId].requestTo;
 								requestId = senderContext[userId].expertiseId;
 								sendMessage(userId, {text: "Your request has been sent. Hopefully, you will get a reply very soon."});				
-								sendMessage(ownerId, {text: "You have a new request. "+name+" wants to learn "+subject+" from you"});									
+								sendMessage(userId, {text: "You have a new request. "+name+" wants to learn "+subject+" from you"});									
 								message = {"attachment": {
 											"type": "template",
 											"payload": {
@@ -752,7 +752,7 @@ function submitForm(post_data,url,userId,action){
 													}
 												}
 											};
-								sendMessage(ownerId, message);									
+								sendMessage(userId, message);									
 							}else{
 								sendMessage(userId, {text: "Oh! did you forget? You have already sent a request"});																
 							}
