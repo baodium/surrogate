@@ -371,7 +371,7 @@ function checkExpertise(senderId,payload,subject){
 		try{		
 			var bodyObject = JSON.parse(body);
 			if(bodyObject.length>0){
-				sendMessage(senderId, {text: "Oh! did you forget? you have already added this expertise. Please specify anoother expertise"}); 
+				sendMessage(senderId, {text: "Oh! did you forget? you have already added this subject. Please specify another subject"}); 
 				var p_data = querystring.stringify({
 						'status':'pending',
 						'facebook_id' : senderId,
@@ -657,7 +657,7 @@ function getOut(recipientId){
                             "buttons": [
 								{
 								"type": "postback",
-                                "title": "Yes. take me out",
+                                "title": "Yes take me out!",
                                 "payload": "postback_no",
                                 }
 								]
