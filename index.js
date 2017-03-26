@@ -351,8 +351,7 @@ function checkExpertise(senderId,payload,subject){
 						'facebook_id' : senderId,
 						'subject':subject
 				});					
-								
-	
+				
 			request({
 			url: backurl+"expertise/get",
 			method: 'POST',
@@ -374,12 +373,6 @@ function checkExpertise(senderId,payload,subject){
 			if(bodyObject.length>0){
 				sendMessage(senderId, {text: "Oh! did you forget? you have already added this expertise"});  
 			}else{
-				var post_data = querystring.stringify({
-						'status':'pending',
-						'level':payload,
-						'facebook_id' : senderId,
-						'subject':subject
-				});		
 				submitForm(post_data,backurl+"expertise/update",senderId,"update_expertise");
 			}
 		}catch(err){
