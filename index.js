@@ -129,6 +129,7 @@ app.post('/webhook', function (req, res) {
 				 expertiseId = expertise_id[1];
 				 fromId = expertise_id[2];
 				 if(senderContext[event.sender.id]!=null){
+					 sendMessage(fromId, {text: "hello"});   
 					 sendRejection(fromId,expertise_id,event.sender.id);
 				}
 				
@@ -320,9 +321,7 @@ function sendRejection(fromId,requestId,senderId){
 			//
         } else if (response.body.error) {
            //
-        }else{
-			//sendMessage(senderId, {text: "hey "+body});
-			
+        }else{			
 			var bodyObject = JSON.parse(body);
 			bodyObject = bodyObject[0];
 			subject = bodyObject.subject;
