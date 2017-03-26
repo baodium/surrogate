@@ -327,8 +327,11 @@ function sendRejection(fromId,requestId,senderId){
 			bodyObject = bodyObject[0];
 			subject = bodyObject.subject;
 			to = bodyObject.to_id;
-			name = bodyObject.name;					
-			sendMessage(fromId, {text: senderContext[senderId].firstName+" "+senderContext[senderId].lastName+" has rejected your "+subject+" expertise request"});  
+			name = bodyObject.name;	
+			reqId = bodyObject.request_id;
+			sendMessage(fromId, {text: senderContext[senderId].firstName+" "+senderContext[senderId].lastName+" has rejected your "+subject+" expertise request"});
+			var p_data = querystring.stringify({'request_id' : reqId,'status':'completed'});
+			submitForm(p_data,backurl+"requests/update",senderId,"update_request");
 		}catch(err){
 			sendMessage(fromId, {text: body+""});  
 		}       		
