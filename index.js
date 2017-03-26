@@ -81,14 +81,16 @@ app.post('/webhook', function (req, res) {
 				}
 			}else if(reply.payload=="professional_expertise_level" || reply.payload=="intermediate_expertise_level" || reply.payload=="amateur_expertise_level"){					
 					subject = senderContext[event.sender.id].subject;
-					var post_data = querystring.stringify({
+				/*	var post_data = querystring.stringify({
 						'status':'completed',
 						'level':reply.payload,
 						'facebook_id' : event.sender.id,
 						'subject':subject
-					});
+					});					
 								
 				submitForm(post_data,backurl+"expertise/update",event.sender.id,"update_expertise");
+				*/
+				checkExpertise(event.sender.id,reply.payload,subject);
 			}else if(reply.payload=="postback_no"){
 				if(senderContext[event.sender.id]!=null){
 					sendMessage(event.sender.id, {text: "Okay then. This is what I have on my menu"});
@@ -338,6 +340,53 @@ function sendRejection(fromId,requestId,senderId){
 		}
 		});
 			
+    return true;
+}
+
+
+function checkExpertise(senderId,payload,subject){
+				var post_data = querystring.stringify({
+						'status':'pending',
+						'level':payload,
+						'facebook_id' : senderId,
+						'subject':subject
+				});					
+								
+	
+			request({
+			url: backurl+"expertise/get",
+			method: 'POST',
+			body: post_data,
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded',
+				'Content-Length':post_data.length
+				}
+		}, function(error, response, body) {
+		
+        if (error) {
+			//
+        } else if (response.body.error) {
+           //
+        }else{
+      		
+		try{		
+			var bodyObject = JSON.parse(body);
+			if(bodyObject.length>0){
+				var p_data = querystring.stringify({
+						'status':'completed',
+						'level':payload,
+						'facebook_id' : senderId,
+						'subject':subject
+				});	
+				submitForm(p_data,backurl+"expertise/update",senderId,"update_expertise");
+			}else{
+				sendMessage(senderId, {text: "Oh! did you forget? you have already added this expertise"});  
+			}
+		}catch(err){
+			sendMessage(fromId, {text: body+""});  
+		}       				
+		}
+		});			
     return true;
 }
 
@@ -732,7 +781,7 @@ function submitForm(post_data,url,userId,action){
 								ownerId = senderContext[userId].requestTo;
 								requestId = senderContext[userId].expertiseId;
 								sendMessage(userId, {text: "Your request has been sent. Hopefully, you will get a reply very soon."});				
-								sendMessage(userId, {text: "You have a new request. "+name+" wants to learn "+subject+" from you"});									
+								sendMessage(ownerId, {text: "You have a new request. "+name+" wants to learn "+subject+" from you"});									
 								message = {"attachment": {
 											"type": "template",
 											"payload": {
@@ -752,7 +801,7 @@ function submitForm(post_data,url,userId,action){
 													}
 												}
 											};
-								sendMessage(userId, message);									
+								sendMessage(ownerId, message);									
 							}else{
 								sendMessage(userId, {text: "Oh! did you forget? You have already sent a request"});																
 							}
