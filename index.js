@@ -732,7 +732,7 @@ function submitForm(post_data,url,userId,action){
 								ownerId = senderContext[userId].requestTo;
 								requestId = senderContext[userId].expertiseId;
 								sendMessage(userId, {text: "Your request has been sent. Hopefully, you will get a reply very soon."});				
-								sendMessage(userId, {text: "You have a new request. "+name+" wants to learn "+subject+" from you"});									
+								sendMessage(ownerId, {text: "You have a new request. "+name+" wants to learn "+subject+" from you"});									
 								message = {"attachment": {
 											"type": "template",
 											"payload": {
@@ -752,7 +752,7 @@ function submitForm(post_data,url,userId,action){
 													}
 												}
 											};
-								sendMessage(userId, message);									
+								sendMessage(ownerId, message);									
 							}else{
 								sendMessage(userId, {text: "Oh! did you forget? You have already sent a request"});																
 							}
