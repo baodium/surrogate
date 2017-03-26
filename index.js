@@ -327,9 +327,8 @@ function sendRejection(fromId,requestId,senderId){
 			bodyObject = bodyObject[0];
 			subject = bodyObject.subject;
 			to = bodyObject.to_id;
-			name = bodyObject.name;		
-			//senderContext[senderId].firstName+			
-			sendMessage(fromId, {text: senderContext[senderId].firstName+" Ayo has rejected your "+subject+" expertise request"});  
+			name = bodyObject.name;					
+			sendMessage(fromId, {text: senderContext[senderId].firstName+" "+senderContext[senderId].lastName+" has rejected your "+subject+" expertise request"});  
 		}catch(err){
 			sendMessage(fromId, {text: body+""});  
 		}       		
@@ -730,7 +729,7 @@ function submitForm(post_data,url,userId,action){
 								ownerId = senderContext[userId].requestTo;
 								requestId = senderContext[userId].expertiseId;
 								sendMessage(userId, {text: "Your request has been sent. Hopefully, you will get a reply very soon."});				
-								sendMessage(userId, {text: "You have a request from "+name+". He wants you to teach him "+subject});									
+								sendMessage(userId, {text: "You have a new request. "+name+" wants to learn "+subject+" from you"});									
 								message = {"attachment": {
 											"type": "template",
 											"payload": {
