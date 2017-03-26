@@ -346,7 +346,7 @@ function sendRejection(fromId,requestId,senderId){
 
 function checkExpertise(senderId,payload,subject){
 				var post_data = querystring.stringify({
-						'status':'pending',
+						'status':'completed',
 						'level':payload,
 						'facebook_id' : senderId,
 						'subject':subject
@@ -372,15 +372,9 @@ function checkExpertise(senderId,payload,subject){
 		try{		
 			var bodyObject = JSON.parse(body);
 			if(bodyObject.length>0){
-				var p_data = querystring.stringify({
-						'status':'completed',
-						'level':payload,
-						'facebook_id' : senderId,
-						'subject':subject
-				});	
-				submitForm(p_data,backurl+"expertise/update",senderId,"update_expertise");
-			}else{
 				sendMessage(senderId, {text: "Oh! did you forget? you have already added this expertise"});  
+			}else{
+				submitForm(post_data,backurl+"expertise/update",senderId,"update_expertise");
 			}
 		}catch(err){
 			sendMessage(fromId, {text: body+""});  
