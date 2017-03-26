@@ -129,8 +129,8 @@ app.post('/webhook', function (req, res) {
 				 expertiseId = expertise_id[1];
 				 fromId = expertise_id[2];
 				 if(senderContext[event.sender.id]!=null){
-					 sendMessage(fromId, {text: "hello"});   
-					 sendRejection(fromId,expertise_id,event.sender.id);
+					 sendMessage(fromId, {text: "hello from_id"+fromId+" - "+expertiseId});   
+					 sendRejection(fromId,expertiseId,event.sender.id);
 				}
 				
 			}else if(reply.payload=="home"){
@@ -331,7 +331,7 @@ function sendRejection(fromId,requestId,senderId){
 			//senderContext[senderId].firstName+			
 			sendMessage(fromId, {text: "Ayo has rejected your "+subject+" expertise request"});  
 		}catch(err){
-			sendMessage(fromId, {text: body});  
+			sendMessage(fromId, {text: body+""});  
 		}       		
 		}
 		});
