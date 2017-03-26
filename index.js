@@ -129,7 +129,7 @@ app.post('/webhook', function (req, res) {
 				 expertiseId = expertise_id[1];
 				 fromId = expertise_id[2];
 				 if(senderContext[event.sender.id]!=null){
-					 sendRejection(fromId,expertise_id);
+					 sendRejection(fromId,expertise_id,event.sender.id);
 				}
 				
 			}else if(reply.payload=="home"){
@@ -304,8 +304,8 @@ function sendHelpRequest(senderId,requestId){
 }
 
 
-function sendRejection(toId,requestId){
-	var post_data = querystring.stringify({'expertise_id' : requestId,'from_id':toId,'special_field':'from_id'});
+function sendRejection(fromId,requestId,senderId){
+	var post_data = querystring.stringify({'expertise_id' : requestId,'from_id':fromId,'special_field':'from_id'});
 			request({
 			url: backurl+"requests/get",
 			method: 'POST',
@@ -328,7 +328,7 @@ function sendRejection(toId,requestId){
 			subject = bodyObject.subject;
 			to = bodyObject.to_id;
 			name = bodyObject.name;						
-			sendMessage(toId, {text: senderContext[to].firstName+" has rejected your "+subject+" expertise request"});         		
+			sendMessage(fromId, {text: senderContext[senderId].firstName+" has rejected your "+subject+" expertise request"});         		
 		}
 		});
 			
@@ -726,7 +726,7 @@ function submitForm(post_data,url,userId,action){
 								ownerId = senderContext[userId].requestTo;
 								requestId = senderContext[userId].expertiseId;
 								sendMessage(userId, {text: "Your request has been sent. Hopefully, you will get a reply very soon."});				
-								sendMessage(ownerId, {text: "You have a request from "+name+". He wants you to teach him "+subject});									
+								sendMessage(userId, {text: "You have a request from "+name+". He wants you to teach him "+subject});									
 								message = {"attachment": {
 											"type": "template",
 											"payload": {
@@ -746,7 +746,7 @@ function submitForm(post_data,url,userId,action){
 													}
 												}
 											};
-								sendMessage(ownerId, message);									
+								sendMessage(userId, message);									
 							}else{
 								sendMessage(userId, {text: "Oh! did you forget? You have already sent a request"});																
 							}
