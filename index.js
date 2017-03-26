@@ -377,7 +377,7 @@ function checkExpertise(senderId,payload,subject){
 						'facebook_id' : senderId,
 						'subject':subject
 				});	
-				submitForm(p_data,backurl+"expertise/remove",senderId,"update_expertise");				
+				submitForm(p_data,backurl+"expertise/remove",senderId,"remove_expertise");				
 			}else{
 				submitForm(post_data,backurl+"expertise/update",senderId,"update_expertise");
 			}
