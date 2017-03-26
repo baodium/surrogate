@@ -124,7 +124,7 @@ app.post('/webhook', function (req, res) {
 				var expertise_id = reply.payload.split("-");
 				 expertise_id = expertise_id[1];
 				 sendHelpRequest(event.sender.id,expertise_id);
-			}else if(reply.payload.indexOf("reject_expertise")>-1){				
+			}else if(reply.payload.indexOf("reject_request")>-1){				
 				var expertise_id = reply.payload.split("-");
 				 expertiseId = expertise_id[1];
 				 fromId = expertise_id[2];
