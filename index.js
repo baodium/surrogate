@@ -321,13 +321,18 @@ function sendRejection(fromId,requestId,senderId){
 			//
         } else if (response.body.error) {
            //
-        }else{			
+        }else{
+		try{		
 			var bodyObject = JSON.parse(body);
 			bodyObject = bodyObject[0];
 			subject = bodyObject.subject;
 			to = bodyObject.to_id;
-			name = bodyObject.name;						
-			sendMessage(fromId, {text: senderContext[senderId].firstName+" has rejected your "+subject+" expertise request"});         		
+			name = bodyObject.name;		
+			//senderContext[senderId].firstName+			
+			sendMessage(fromId, {text: "Ayo has rejected your "+subject+" expertise request"});  
+		}catch(err){
+			sendMessage(fromId, {text: body});  
+		}       		
 		}
 		});
 			
