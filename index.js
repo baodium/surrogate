@@ -57,6 +57,15 @@ app.post('/webhook', function (req, res) {
 					sendMessage(event.sender.id, {text: "" + "Sorry, I don't understand that. Anyway, this is what I have on my menu"});
 					showMenu(event.sender.id);
 				}
+			 }else if(senderContext[event.sender.id].message==true){
+				  var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+" says :"+event.message.text;				  
+				  var fromm =  event.sender.id;
+				  var to  = senderContext[event.sender.id].message_to;
+				  var subject = senderContext[event.sender.id].message_subject;
+				  sendMessage(to, {text: "" + msg});
+				  messageOption(event.sender.id,"Do you want to send another message?",fromm,to,subject);
+				  messageOption(to,"Do you want to reply him?",to,fromm,subject);
+				  senderContext[event.sender.id].message==false;				
 			 }else{
 				welcomeUser(event.sender.id);
 			 }
@@ -135,8 +144,28 @@ app.post('/webhook', function (req, res) {
 					 sendRejection(fromId,expertiseId,event.sender.id);
 				}
 				
+			}else if(reply.payload.indexOf("accept_request")>-1){				
+				var expertise_id = reply.payload.split("-");
+				 expertiseId = expertise_id[1];
+				 fromId = expertise_id[2];
+				 if(senderContext[event.sender.id]!=null){  
+					 sendAcceptance(fromId,expertiseId,event.sender.id);
+				}
+				
 			}else if(reply.payload=="home"){
-				welcomeUser(event.sender.id);
+				welcomeUser(event.sender.id);				
+			}else if(reply.payload.indexOf("postback_message_yes")>-1){				
+				var members_id = reply.payload.split("-");
+				 fromId = members_id[1];
+				 toId = members_id[2];
+				 sub= members_id[3];
+				 if(senderContext[event.sender.id]!=null){  
+					 sendMessage(event.sender.id, {text: "Okay then! please type your messege "});
+					 senderContext[event.sender.id].message=true;
+					 senderContext[event.sender.id].message_from=event.sender.id;
+					 senderContext[event.sender.id].message_to=toId;
+					 senderContext[event.sender.id].message_subject=sub;
+				}				
 			}else{
 				sendMessage(event.sender.id, {text: reply.payload+" "});
 			}
@@ -334,6 +363,46 @@ function sendRejection(fromId,requestId,senderId){
 			sendMessage(fromId, {text: senderContext[senderId].firstName+" "+senderContext[senderId].lastName+" has rejected your "+subject+" expertise request"});
 			var p_data = querystring.stringify({'request_id' : reqId});
 			submitForm(p_data,backurl+"requests/remove",senderId,"update_request");
+		}catch(err){
+			sendMessage(fromId, {text: body+""});  
+		}       		
+		}
+		});
+			
+    return true;
+}
+
+function sendAcceptance(fromId,requestId,senderId){
+	var post_data = querystring.stringify({'expertise_id' : requestId,'from_id':fromId,'special_field':'from_id'});
+			request({
+			url: backurl+"requests/get",
+			method: 'POST',
+			body: post_data,
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded',
+				'Content-Length':post_data.length
+				}
+		}, function(error, response, body) {
+		
+        if (error) {
+			//
+        } else if (response.body.error) {
+           //
+        }else{
+		try{		
+			var bodyObject = JSON.parse(body);
+			bodyObject = bodyObject[0];
+			subject = bodyObject.subject;
+			to = bodyObject.to_id;
+			name = bodyObject.name;	
+			reqId = bodyObject.request_id;
+			
+			sendMessage(senderId, {text: name+" is now your "+subject+" student."});
+			messageOption(senderId,"Do you want to message him?",senderId,fromId,subject);
+			
+			sendMessage(fromId, {text: senderContext[senderId].firstName+" "+senderContext[senderId].lastName+" has accepted your "+subject+" expertise request. He's now in your expert list."});
+			messageOption(fromId,"Do you want to message him?",fromId,senderId,subject);
+						
 		}catch(err){
 			sendMessage(fromId, {text: body+""});  
 		}       		
@@ -646,6 +715,33 @@ function displayOption(recipientId,msg,option_type){
             return false;
 }
 
+function messageOption(recipientId,msg,fromm,to,subject){
+	message = {
+                "attachment": {
+                    "type": "template",
+                    "payload": {
+                        "template_type": "generic",
+                        "elements": [{
+                            "title": msg,
+                            "buttons": [{
+								"type": "postback",
+                                "title": "Yes",
+                                "payload": "postback_message_yes-"+fromm+"-"+to+"-"+subject,
+                                },
+								{
+								"type": "postback",
+                                "title": "No",
+                                "payload": "postback_no",
+                                }
+								]
+                        }]
+                    }
+                }
+            };			
+		sendMessage(recipientId, message);			
+        return false;
+}
+
 function getOut(recipientId){
 		message = {
                 "attachment": {
@@ -683,20 +779,25 @@ function addPersistentMenu(){
               title:"Home",
               payload:"home"
             },
-            {
-              type:"postback",
-              title:"Assignments",
-              payload:"assignment_solutions"
-            },
-            {
-              type:"postback",
-              title:"Class reminder",
-              payload:"set_class_reminder"
-            },
 			{
               type:"postback",
               title:"My expertise",
               payload:"my_expertise"
+            },
+			{
+              type:"postback",
+              title:"My Experts",
+              payload:"my_experts"
+            },
+			{
+              type:"postback",
+              title:"My Students",
+              payload:"my_students"
+            },
+			{
+              type:"postback",
+              title:"About",
+              payload:"about_me"
             }
           ]
     }
