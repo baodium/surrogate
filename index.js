@@ -1022,7 +1022,7 @@ function showExperts(fromId){
 				var total = output.length;
 				elementss = new Array();
 				if(total<1){
-					sendMessage(recipientId, {text: "Your expert list is empty"});
+					sendMessage(fromId, {text: "Your expert list is empty"});
 				}else{										
 					for(i = 0; i<output.length; i++){
 						level = output[i].level;//.split("_");
@@ -1087,7 +1087,7 @@ function showStudents(toId){
 				var total = output.length;
 				elementss = new Array();
 				if(total<1){
-					sendMessage(recipientId, {text: "Your student list is empty"});
+					sendMessage(toId, {text: "Your student list is empty"});
 				}else{										
 					for(i = 0; i<output.length; i++){
 						level = output[i].level;//.split("_");
@@ -1125,7 +1125,7 @@ function showStudents(toId){
                     }
 					}
 				};							
-				sendMessage(fromId,message);
+				sendMessage(toId,message);
 				}					
 			}			
 		});	
