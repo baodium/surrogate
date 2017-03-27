@@ -44,7 +44,7 @@ app.post('/webhook', function (req, res) {
 			 if(senderContext[event.sender.id]!=null){
 				if(senderContext[event.sender.id].state === "provide_subject"){	
 					sendMessage(event.sender.id, {text: "" + "Message provided"});				
-					checkHelper(event.message.text,event.sender.id);									
+					//checkHelper(event.message.text,event.sender.id);									
 				}else if(senderContext[event.sender.id].state === "type_expertise"){
 					var subject = event.message.text;
 					senderContext[event.sender.id].subject = subject;
@@ -108,6 +108,10 @@ app.post('/webhook', function (req, res) {
 				}
 			}else if(reply.payload=="my_expertise"){
 				showExpertise(event.sender.id);
+			}else if(reply.payload=="my_experts"){
+				showExperts(event.sender.id);
+			}else if(reply.payload=="my_students"){
+				showStudents(event.sender.id);
 			}else if(reply.payload=="next_expertise"){
 				if(senderContext[event.sender.id]!=null){
 					senderContext[event.sender.id].next++;
