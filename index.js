@@ -44,7 +44,7 @@ app.post('/webhook', function (req, res) {
 			 if(senderContext[event.sender.id]!=null){
 				if(senderContext[event.sender.id].state === "provide_subject"){	
 					sendMessage(event.sender.id, {text: "" + "Message provided"});				
-					//checkHelper(event.message.text,event.sender.id);									
+					checkHelper(event.message.text,event.sender.id);									
 				}else if(senderContext[event.sender.id].state === "type_expertise"){
 					var subject = event.message.text;
 					senderContext[event.sender.id].subject = subject;
@@ -54,11 +54,7 @@ app.post('/webhook', function (req, res) {
 						'status':'pending'
 					});					
 					submitForm(post_data,backurl+"expertise/add",event.sender.id,"type_expertise");															
-				}else{
-					sendMessage(event.sender.id, {text: "" + "Sorry, I don't understand that. Anyway, this is what I have on my menu"});
-					showMenu(event.sender.id);
-				}
-			 }else if(senderContext[event.sender.id].message==="true"){
+				}else if(senderContext[event.sender.id].message==="true"){
 				  var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+" says :"+event.message.text;				  
 				  var fromm =  event.sender.id;
 				  var to  = senderContext[event.sender.id].message_to;
@@ -67,6 +63,10 @@ app.post('/webhook', function (req, res) {
 				  messageOption(event.sender.id,"Do you want to send another message?",fromm,to,subject);
 				  messageOption(to,"Do you want to reply this message?",to,fromm,subject);
 				  senderContext[event.sender.id].message="false";				
+				}else{
+					sendMessage(event.sender.id, {text: "" + "Sorry, I don't understand that. Anyway, this is what I have on my menu"});
+					showMenu(event.sender.id);
+				}
 			 }else{
 				welcomeUser(event.sender.id);
 			 }
