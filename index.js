@@ -42,7 +42,8 @@ app.post('/webhook', function (req, res) {
         var event = events[i];						
 		if (event.message && event.message.text) {
 			 if(senderContext[event.sender.id]!=null){
-				if(senderContext[event.sender.id].state === "provide_subject"){					
+				if(senderContext[event.sender.id].state === "provide_subject"){	
+					sendMessage(event.sender.id, {text: "" + "Message provided"});				
 					checkHelper(event.message.text,event.sender.id);									
 				}else if(senderContext[event.sender.id].state === "type_expertise"){
 					var subject = event.message.text;
@@ -64,7 +65,7 @@ app.post('/webhook', function (req, res) {
 				  var subject = senderContext[event.sender.id].message_subject;
 				  sendMessage(to, {text: "" + msg});
 				  messageOption(event.sender.id,"Do you want to send another message?",fromm,to,subject);
-				  messageOption(to,"Do you want to reply him?",to,fromm,subject);
+				  messageOption(to,"Do you want to reply this message?",to,fromm,subject);
 				  senderContext[event.sender.id].message==false;				
 			 }else{
 				welcomeUser(event.sender.id);
@@ -610,17 +611,19 @@ function showMenu(recipientId){
 }
 
 function about(recipientId) {
+		msg="Since college is a lot of work on its own, Surrogate bot takes off of the stress of its human counterpart and does the less desirable job of having to find a suitable tutor.";
+			sendMessage(recipientId,{text: "" + msg});
 			     message = {
                 "attachment": {
                     "type": "template",
                     "payload": {
                         "template_type": "generic",
                         "elements": [{
-                            "title": "About message",
+                            "title": "About Surrogate",
                             "buttons": [{
 								"type": "postback",
                                 "title": "I got it!",
-                                "payload": "quit_help_about",
+                                "payload": "postback_no",
                                 }]
                         }]
                     }
@@ -994,6 +997,135 @@ sendMessage(recipientId,message);
 	
 }
 
+
+function showExperts(fromId){
+	var post_data = querystring.stringify({'from_id':fromId});	
+	request({
+			url: backurl+"requests/get",
+			method: 'POST',
+			body: post_data,
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded',
+				'Content-Length':post_data.length
+				}
+		}, function(error, response, body) {
+			if (error) {
+				console.log('Error sending message: ', error);
+			} else if (response.body.error) {
+				console.log('Error: ', response.body.error);
+			}else{
+				output = JSON.parse(body);
+				var total = output.length;
+				elementss = new Array();
+				if(total<1){
+					sendMessage(recipientId, {text: "Your expert list is empty"});
+				}else{										
+					for(i = 0; i<output.length; i++){
+						level = output[i].level;//.split("_");
+						if(level!=null){
+							level = output[i].level.split("_");
+							level=level[0];
+						}else{
+							level="";
+						}
+
+						elementss[i]={                           
+							"title": output[i].name, 
+							"image_url": output[i].profile_pic,                  
+							"subtitle": output[i].subject+" expert, Level:"+level,   
+                            "buttons": [{
+								"type": "postback",
+                                "title": "Remove",
+                                "payload": "remove_expert-"+output[i].from_id+"-"+"-"+output[i].request_id,
+                                },
+								{
+								"type": "postback",
+                                "title": "Send Message",
+                                "payload": "postback_message_yes-"+output[i].from_id+"-"+output[i].to_id+"-"+output[i].subject,
+                                }]
+                        };
+				
+					}
+										
+				message = {
+					"attachment": {
+                    "type": "template",
+                    "payload": {
+                        "template_type": "generic",
+                        "elements": elementss
+                    }
+					}
+				};							
+				sendMessage(fromId,message);
+				}					
+			}			
+		});	
+}
+
+
+function showStudents(toId){
+	var post_data = querystring.stringify({'to_id':toId});	
+	request({
+			url: backurl+"requests/get",
+			method: 'POST',
+			body: post_data,
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded',
+				'Content-Length':post_data.length
+				}
+		}, function(error, response, body) {
+			if (error) {
+				console.log('Error sending message: ', error);
+			} else if (response.body.error) {
+				console.log('Error: ', response.body.error);
+			}else{
+				output = JSON.parse(body);
+				var total = output.length;
+				elementss = new Array();
+				if(total<1){
+					sendMessage(recipientId, {text: "Your student list is empty"});
+				}else{										
+					for(i = 0; i<output.length; i++){
+						level = output[i].level;//.split("_");
+						if(level!=null){
+							level = output[i].level.split("_");
+							level=level[0];
+						}else{
+							level="";
+						}
+
+						elementss[i]={                           
+							"title": output[i].name, 
+							"image_url": output[i].profile_pic,                  
+							"subtitle": output[i].subject+", Level:"+level+" student",   
+                            "buttons": [{
+								"type": "postback",
+                                "title": "Remove",
+                                "payload": "remove_expert-"+output[i].from_id+"-"+"-"+output[i].request_id,
+                                },
+								{
+								"type": "postback",
+                                "title": "Send Message",
+                                "payload": "postback_message_yes-"+output[i].from_id+"-"+output[i].to_id+"-"+output[i].subject,
+                                }]
+                        };
+				
+					}
+										
+				message = {
+					"attachment": {
+                    "type": "template",
+                    "payload": {
+                        "template_type": "generic",
+                        "elements": elementss
+                    }
+					}
+				};							
+				sendMessage(fromId,message);
+				}					
+			}			
+		});	
+}
 
 function removeExpertise(recipientId,expertise_id){
 		var post_data = querystring.stringify({'facebook_id' : recipientId,'expertise_id':expertise_id});
