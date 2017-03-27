@@ -58,7 +58,7 @@ app.post('/webhook', function (req, res) {
 					sendMessage(event.sender.id, {text: "" + "Sorry, I don't understand that. Anyway, this is what I have on my menu"});
 					showMenu(event.sender.id);
 				}
-			 }else if(senderContext[event.sender.id].message==true){
+			 }else if(senderContext[event.sender.id].message==="true"){
 				  var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+" says :"+event.message.text;				  
 				  var fromm =  event.sender.id;
 				  var to  = senderContext[event.sender.id].message_to;
@@ -66,7 +66,7 @@ app.post('/webhook', function (req, res) {
 				  sendMessage(to, {text: "" + msg});
 				  messageOption(event.sender.id,"Do you want to send another message?",fromm,to,subject);
 				  messageOption(to,"Do you want to reply this message?",to,fromm,subject);
-				  senderContext[event.sender.id].message==false;				
+				  senderContext[event.sender.id].message="false";				
 			 }else{
 				welcomeUser(event.sender.id);
 			 }
@@ -80,8 +80,8 @@ app.post('/webhook', function (req, res) {
 			}else if(reply.payload=="about_me"){
 				about(event.sender.id);
 			}else if(reply.payload=="get_assignment_help"){
-				sendMessage(event.sender.id, {text: "which subject do you need help on?"});
 				if(senderContext[event.sender.id]!=null){
+					sendMessage(event.sender.id, {text: "which subject do you need help on?"});
 					senderContext[event.sender.id].state = "provide_subject";
 				}
 			}else if(reply.payload=="set_expertise" || (reply.payload=="postback_yes" && senderContext[event.sender.id]!=null && senderContext[event.sender.id].state == "expertise_saved" )){
@@ -166,7 +166,7 @@ app.post('/webhook', function (req, res) {
 				 sub= members_id[3];
 				 if(senderContext[event.sender.id]!=null){  
 					 sendMessage(event.sender.id, {text: "Okay then! please type your messege "});
-					 senderContext[event.sender.id].message=true;
+					 senderContext[event.sender.id].message="true";
 					 senderContext[event.sender.id].message_from=event.sender.id;
 					 senderContext[event.sender.id].message_to=toId;
 					 senderContext[event.sender.id].message_subject=sub;
