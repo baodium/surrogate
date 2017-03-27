@@ -59,6 +59,7 @@ app.post('/webhook', function (req, res) {
 				  var to  = senderContext[event.sender.id].message_to;
 				  var subject = senderContext[event.sender.id].message_subject;
 				  sendMessage(to, {text: "" + msg});
+				  sendMessage(event.sender.id, {text: "" + "message sent"});
 				  messageOption(event.sender.id,"Do you want to send another message?",fromm,to,subject);
 				  messageOption(to,"Do you want to reply this message?",to,fromm,subject);
 				  senderContext[event.sender.id].message="false";				
@@ -406,7 +407,8 @@ function sendAcceptance(fromId,requestId,senderId){
 			
 			sendMessage(fromId, {text: senderContext[senderId].firstName+" "+senderContext[senderId].lastName+" has accepted your "+subject+" expertise request. He's now in your expert list."});
 			messageOption(fromId,"Do you want to message him?",fromId,senderId,subject);
-						
+			var p_data = querystring.stringify({'request_id' : reqId,'status':'completed'});
+			submitForm(p_data,backurl+"requests/update",senderId,"update_request2");		
 		}catch(err){
 			sendMessage(fromId, {text: body+""});  
 		}       		
@@ -743,7 +745,8 @@ function messageOption(recipientId,msg,fromm,to,subject){
                         }]
                     }
                 }
-            };			
+            };	
+		senderContext[recipientId].state = "send message";
 		sendMessage(recipientId, message);			
         return false;
 }
@@ -1002,7 +1005,7 @@ sendMessage(recipientId,message);
 
 
 function showExperts(fromId){
-	var post_data = querystring.stringify({'from_id':fromId});	
+	var post_data = querystring.stringify({'from_id':fromId,'status':'completed'});	
 	request({
 			url: backurl+"requests/get",
 			method: 'POST',
@@ -1058,7 +1061,8 @@ function showExperts(fromId){
                         "elements": elementss
                     }
 					}
-				};							
+				};
+				senderContext[fromId].state="send message";
 				sendMessage(fromId,message);
 				}					
 			}			
