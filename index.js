@@ -42,8 +42,7 @@ app.post('/webhook', function (req, res) {
         var event = events[i];						
 		if (event.message && event.message.text) {
 			 if(senderContext[event.sender.id]!=null){
-				if(senderContext[event.sender.id].state === "provide_subject"){	
-					sendMessage(event.sender.id, {text: "" + "Message provided"});				
+				if(senderContext[event.sender.id].state === "provide_subject"){									
 					checkHelper(event.message.text,event.sender.id);									
 				}else if(senderContext[event.sender.id].state === "type_expertise"){
 					var subject = event.message.text;
