@@ -421,7 +421,7 @@ function sendAcceptance(fromId,requestId,senderId){
 			//submitForm(p_data,backurl+"requests/update",senderId,"update_request2");
 						
 		}catch(err){
-			sendMessage(senderId, {text: " exception "});  
+			sendMessage(senderId, {text: " exception "+err});  
 		}       		
 		}
 		});
@@ -756,10 +756,12 @@ function messageOption(recipientId,msg,fromm,to,subject){
                         }]
                     }
                 }
-            };	
+            };
+	if( senderContext[recipientId]!=null){
 		senderContext[recipientId].state = "send message";
+	}
 		sendMessage(recipientId, message);			
-        return false;
+        return true;
 }
 
 function getOut(recipientId){
