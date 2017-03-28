@@ -151,15 +151,15 @@ app.post('/webhook', function (req, res) {
 				
 			}else if(reply.payload.indexOf("accept_request")>-1){
 				sendMessage(event.sender.id, {text: "I will selected now"});				
-				/*
+			
 				var expertise_id = reply.payload.split("-");
 				 expertiseId = expertise_id[1];
 				 fromId = expertise_id[2];
 				 sendMessage(event.sender.id, {text: "I will selected now"});
 				 if(senderContext[event.sender.id]!=null){  
-					// sendAcceptance(fromId,expertiseId,event.sender.id);
+					sendAcceptance(fromId,expertiseId,event.sender.id);
 				}
-				*/
+				
 				
 			}else if(reply.payload=="home"){
 				welcomeUser(event.sender.id);				
@@ -382,6 +382,7 @@ function sendRejection(fromId,requestId,senderId){
 }
 
 function sendAcceptance(fromId,requestId,senderId){
+	//fromId,expertiseId,event.sender.id
 	var post_data = querystring.stringify({'expertise_id' : requestId,'from_id':fromId,'special_field':'from_id'});
 			request({
 			url: backurl+"requests/get",
@@ -401,6 +402,8 @@ function sendAcceptance(fromId,requestId,senderId){
 		try{		
 			var bodyObject = JSON.parse(body);
 			bodyObject = bodyObject[0];
+			sendMessage(senderId, {text: body+""});  
+			/*
 			subject = bodyObject.subject;
 			to = bodyObject.to_id;
 			name = bodyObject.name;	
@@ -413,9 +416,10 @@ function sendAcceptance(fromId,requestId,senderId){
 			messageOption(fromId,"Do you want to message him?",fromId,senderId,subject);
 						
 			var p_data = querystring.stringify({'request_id' : reqId,'status':'completed'});
-			submitForm(p_data,backurl+"requests/update",senderId,"update_request2");		
+			submitForm(p_data,backurl+"requests/update",senderId,"update_request2");
+			*/			
 		}catch(err){
-			sendMessage(fromId, {text: body+""});  
+			sendMessage(senderId, {text: body+""});  
 		}       		
 		}
 		});
