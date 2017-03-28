@@ -154,7 +154,6 @@ app.post('/webhook', function (req, res) {
 				var expertise_id = reply.payload.split("-");
 				 expertiseId = expertise_id[1];
 				 fromId = expertise_id[2];
-				 sendMessage(event.sender.id, {text: "I will "+reply.payload});
 				 //if(senderContext[event.sender.id]!=null){  
 				 //sendMessage(event.sender.id, {text: "user online "});
 				 sendAcceptance(fromId,expertiseId,event.sender.id);
