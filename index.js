@@ -41,6 +41,9 @@ app.post('/webhook', function (req, res) {
     for (i = 0; i < events.length; i++) {		
         var event = events[i];						
 		if (event.message && event.message.text) {
+			if(senderContext[event.sender.id]==null){
+				setContext(event.sender.id);
+			}
 			 if(senderContext[event.sender.id]!=null){
 				if(senderContext[event.sender.id].state === "provide_subject"){									
 					checkHelper(event.message.text,event.sender.id);									
@@ -71,6 +74,9 @@ app.post('/webhook', function (req, res) {
 				welcomeUser(event.sender.id);
 			 }
 		} else if (event.postback) {
+			if(senderContext[event.sender.id]==null){
+				setContext(event.sender.id);
+			}
 			var reply = JSON.stringify(event.postback);
 			reply = JSON.parse(reply);
 			if(reply.payload=="get_started_button"){
@@ -154,10 +160,10 @@ app.post('/webhook', function (req, res) {
 				var expertise_id = reply.payload.split("-");
 				 expertiseId = expertise_id[1];
 				 fromId = expertise_id[2];
-				 //if(senderContext[event.sender.id]!=null){  
+				if(senderContext[event.sender.id]!=null){  
 				 //sendMessage(event.sender.id, {text: "user online "});
-				 sendAcceptance(fromId,expertiseId,event.sender.id);
-				//}
+					sendAcceptance(fromId,expertiseId,event.sender.id);
+				}
 				
 				
 			}else if(reply.payload=="home"){
@@ -417,7 +423,7 @@ function sendAcceptance(fromId,requestId,senderId){
 			messageOption(fromId,"Do you want to message him?",fromId,senderId,subject);
 						
 			var p_data = querystring.stringify({'request_id' : reqId,'status':'completed'});
-			//submitForm(p_data,backurl+"requests/update",senderId,"update_request2");
+			submitForm(p_data,backurl+"requests/update",senderId,"update_request2");
 						
 		}catch(err){
 			sendMessage(senderId, {text: " exception "+err});  
@@ -549,6 +555,38 @@ function displayWelcomeMessage(recipientId) {
     return false;
 };
 
+
+function setContext(recipientId) {
+
+		request({
+			url: 'https://graph.facebook.com/v2.8/'+recipientId+'?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token='+process.env.PAGE_ACCESS_TOKEN,
+			method: 'GET'
+		}, function(error, response, body) {
+		
+        if (error) {
+            console.log('Error sending message: ', error);
+        } else if (response.body.error) {
+            console.log('Error: ', response.body.error);
+        }else{
+			
+			var bodyObject = JSON.parse(body);
+			firstName = bodyObject.first_name;
+			lastName = bodyObject.last_name;
+			profilePic=bodyObject.profile_pic;
+			locale = bodyObject.locale;
+			
+			senderContext[recipientId] = {};
+			senderContext[recipientId].firstName = firstName;
+			senderContext[recipientId].lastName = lastName;
+			senderContext[recipientId].profilePic = profilePic;
+			senderContext[recipientId].state = "just_welcomed";
+			senderContext[recipientId].next=0;
+            return true;		
+		}
+		});
+			
+    return true;
+};
 
 function welcomeUser(recipientId) {
 
