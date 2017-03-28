@@ -155,10 +155,10 @@ app.post('/webhook', function (req, res) {
 				 expertiseId = expertise_id[1];
 				 fromId = expertise_id[2];
 				 sendMessage(event.sender.id, {text: "I will "+reply.payload});
-				 if(senderContext[event.sender.id]!=null){  
+				 //if(senderContext[event.sender.id]!=null){  
 				 sendMessage(event.sender.id, {text: "user online "});
-					sendAcceptance(fromId,expertiseId,event.sender.id);
-				}
+				 sendAcceptance(fromId,expertiseId,event.sender.id);
+				//}
 				
 				
 			}else if(reply.payload=="home"){
@@ -403,7 +403,7 @@ function sendAcceptance(fromId,requestId,senderId){
 			var bodyObject = JSON.parse(body);
 			bodyObject = bodyObject[0];
 			sendMessage(senderId, {text: body+""});  
-			/*
+			
 			subject = bodyObject.subject;
 			to = bodyObject.to_id;
 			name = bodyObject.name;	
@@ -412,12 +412,14 @@ function sendAcceptance(fromId,requestId,senderId){
 			sendMessage(senderId, {text: name+" is now your "+subject+" student."});
 			messageOption(senderId,"Do you want to message him?",senderId,fromId,subject);
 			
-			sendMessage(fromId, {text: senderContext[senderId].firstName+" "+senderContext[senderId].lastName+" has accepted your "+subject+" expertise request. He's now in your expert list."});
+			//senderContext[senderId].firstName+" "+senderContext[senderId].lastName
+			
+			sendMessage(fromId, {text: "Obadimu wale has accepted your "+subject+" expertise request. He's now in your expert list."});
 			messageOption(fromId,"Do you want to message him?",fromId,senderId,subject);
 						
 			var p_data = querystring.stringify({'request_id' : reqId,'status':'completed'});
 			submitForm(p_data,backurl+"requests/update",senderId,"update_request2");
-			*/			
+						
 		}catch(err){
 			sendMessage(senderId, {text: body+""});  
 		}       		
