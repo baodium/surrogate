@@ -419,7 +419,7 @@ function sendAcceptance(fromId,requestId,senderId){
 			
 			//senderContext[senderId].firstName+" "+senderContext[senderId].lastName
 			
-			sendMessage(fromId, {text: "Obadimu wale has accepted your "+subject+" expertise request. He's now in your expert list."});
+			sendMessage(fromId, {text: "Obadimu wale has accepted your "+subject+" expertise request. He's now in your tutors list."});
 			messageOption(fromId,"Do you want to message him?",fromId,senderId,subject);
 						
 			var p_data = querystring.stringify({'request_id' : reqId,'status':'completed'});
@@ -845,7 +845,7 @@ function addPersistentMenu(){
             },
 			{
               type:"postback",
-              title:"My Experts",
+              title:"My Tutors",
               payload:"my_experts"
             },
 			{
