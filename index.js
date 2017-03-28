@@ -156,7 +156,7 @@ app.post('/webhook', function (req, res) {
 				 fromId = expertise_id[2];
 				 sendMessage(event.sender.id, {text: "I will "+reply.payload});
 				 //if(senderContext[event.sender.id]!=null){  
-				 sendMessage(event.sender.id, {text: "user online "});
+				 //sendMessage(event.sender.id, {text: "user online "});
 				 sendAcceptance(fromId,expertiseId,event.sender.id);
 				//}
 				
@@ -402,8 +402,7 @@ function sendAcceptance(fromId,requestId,senderId){
 		try{		
 			var bodyObject = JSON.parse(body);
 			bodyObject = bodyObject[0];
-			sendMessage(senderId, {text: body+""});  
-			
+			//sendMessage(senderId, {text: body+""});  		
 			subject = bodyObject.subject;
 			to = bodyObject.to_id;
 			name = bodyObject.name;	
