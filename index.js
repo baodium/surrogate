@@ -153,6 +153,7 @@ app.post('/webhook', function (req, res) {
 				var expertise_id = reply.payload.split("-");
 				 expertiseId = expertise_id[1];
 				 fromId = expertise_id[2];
+				 sendMessage(event.sender.id, {text: "I will selected"});
 				 if(senderContext[event.sender.id]!=null){  
 					 sendAcceptance(fromId,expertiseId,event.sender.id);
 				}
@@ -403,10 +404,14 @@ function sendAcceptance(fromId,requestId,senderId){
 			reqId = bodyObject.request_id;
 			
 			sendMessage(senderId, {text: name+" is now your "+subject+" student."});
-			messageOption(senderId,"Do you want to message him?",senderId,fromId,subject);
+			//messageOption(senderId,"Do you want to message him?",senderId,fromId,subject);
 			
+			/*sendMessage(fromId, {text: senderContext[senderId].firstName+" "+senderContext[senderId].lastName+" has accepted your "+subject+" expertise request. He's now in your expert list."});
+			messageOption(fromId,"Do you want to message him?",fromId,senderId,subject);
+			*/
 			sendMessage(senderId, {text: senderContext[senderId].firstName+" "+senderContext[senderId].lastName+" has accepted your "+subject+" expertise request. He's now in your expert list."});
-			messageOption(senderId,"Do you want to message him?",fromId,senderId,subject);
+			//messageOption(senderId,"Do you want to message him?",fromId,senderId,subject);
+			
 			
 			var p_data = querystring.stringify({'request_id' : reqId,'status':'completed'});
 			submitForm(p_data,backurl+"requests/update",senderId,"update_request2");		
@@ -893,7 +898,9 @@ function submitForm(post_data,url,userId,action){
 								ownerId = senderContext[userId].requestTo;
 								requestId = senderContext[userId].expertiseId;
 								sendMessage(userId, {text: "Your request has been sent. Hopefully, you will get a reply very soon."});				
+								sendMessage(userId, {text: "You have a new request. "+name+" wants to learn "+subject+" from you"});	
 								sendMessage(ownerId, {text: "You have a new request. "+name+" wants to learn "+subject+" from you"});									
+								
 								message = {"attachment": {
 											"type": "template",
 											"payload": {
