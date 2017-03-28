@@ -34,7 +34,7 @@ app.get('/webhook', function (req, res) {
 });
 
 app.post('/webhook', function (req, res) { 
-	getStarted();
+	//getStarted();
 	addPersistentMenu();
 	var helprequest = false;
     var events = req.body.entry[0].messaging;
@@ -531,7 +531,7 @@ function displayWelcomeMessage(recipientId) {
                     "payload": {
                         "template_type": "generic",
                         "elements": [{
-                            "title": "Surrogate app helps lets you get help or render help on various subject matters",
+                            "title": "Surrogate app helps you get help or render help on various subject matters",
                             "buttons": [{
 								"type": "postback",
                                 "title": "Get Started",
@@ -882,7 +882,7 @@ function getStarted(){
 					};
 		var welcome = {"greeting":[{
 						"locale":"default",
-						"text":"Good to have you {{user_first_name}}!"
+						"text":"Good to have you {{user_first_name}}!. Surrogate bot would help you get help or render help on various subjects"
 						}] 
 					};		
 		request({
