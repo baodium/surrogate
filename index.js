@@ -409,6 +409,7 @@ function sendAcceptance(fromId,requestId,senderId){
 			/*sendMessage(fromId, {text: senderContext[senderId].firstName+" "+senderContext[senderId].lastName+" has accepted your "+subject+" expertise request. He's now in your expert list."});
 			messageOption(fromId,"Do you want to message him?",fromId,senderId,subject);
 			*/
+			sendMessage(fromId, {text: senderContext[senderId].firstName+" "+senderContext[senderId].lastName+" has accepted your "+subject+" expertise request. He's now in your expert list."});
 			sendMessage(senderId, {text: senderContext[senderId].firstName+" "+senderContext[senderId].lastName+" has accepted your "+subject+" expertise request. He's now in your expert list."});
 			//messageOption(senderId,"Do you want to message him?",fromId,senderId,subject);
 			
