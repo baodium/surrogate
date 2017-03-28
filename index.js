@@ -410,6 +410,7 @@ function sendAcceptance(fromId,requestId,senderId){
 			
 			sendMessage(senderId, {text: name+" is now your "+subject+" student."});
 			messageOption(senderId,"Do you want to message him?",senderId,fromId,subject);
+			//recipientId,msg,fromm,to,subject
 			
 			//senderContext[senderId].firstName+" "+senderContext[senderId].lastName
 			
@@ -417,10 +418,10 @@ function sendAcceptance(fromId,requestId,senderId){
 			messageOption(fromId,"Do you want to message him?",fromId,senderId,subject);
 						
 			var p_data = querystring.stringify({'request_id' : reqId,'status':'completed'});
-			submitForm(p_data,backurl+"requests/update",senderId,"update_request2");
+			//submitForm(p_data,backurl+"requests/update",senderId,"update_request2");
 						
 		}catch(err){
-			sendMessage(senderId, {text: body+""});  
+			sendMessage(senderId, {text: " exception "});  
 		}       		
 		}
 		});
