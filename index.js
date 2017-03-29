@@ -436,6 +436,15 @@ function sendAcceptance(fromId,requestId,senderId){
 
 
 function checkExpertise(senderId,payload,subject){
+	/*
+	var post_data = querystring.stringify({
+						'status':'completed',
+						'level':reply.payload,
+						'facebook_id' : event.sender.id,
+						'subject':subject
+					});		
+	*/
+	
 				var post_data = querystring.stringify({
 						'status':'completed',
 						'level':payload,
@@ -466,13 +475,20 @@ function checkExpertise(senderId,payload,subject){
 				var p_data = querystring.stringify({
 						'status':'pending',
 						'facebook_id' : senderId,
-						'subject':subject
+						'subject':subject,
+						'level':payload
 				});	
 				getOut(senderId);								
 				senderContext[senderId].state = "type_expertise";
 				submitForm(p_data,backurl+"expertise/remove",senderId,"remove_expertise");				
 			}else{
-				submitForm(post_data,backurl+"expertise/update",senderId,"update_expertise");
+				var post_data = querystring.stringify({
+						'status':'completed',
+						'level':payload,
+						'facebook_id' : senderId,
+						'subject':subject
+				});		
+				submitForm(post_data,backurl+"expertise/updateall",senderId,"update_expertise");
 			}
 		}catch(err){
 			sendMessage(senderId, {text: body+""});  
@@ -995,14 +1011,17 @@ function showExpertise(recipientId){
 			}else{
 				output = JSON.parse(body);
 				var total = output.length;
+				/*
 				var start =(senderContext[recipientId].next!=null)?senderContext[recipientId].next:0;
 				if(total>3){
 					output = output.slice((start*2), ((start*2) + 2));
-				}
+				}*/
 				elementss = new Array();
 				if(total<1){
 					sendMessage(recipientId, {text: "You have not added any expertise yet"});
 				}else{
+					
+					/*
 					elementss[0] = {
                     "title": "Expertise list",
                     "image_url": (senderContext[recipientId]!=null)?senderContext[recipientId].profilePic:"http://graph.facebook.com/"+recipientId+"/picture?width=100&height=100",
@@ -1047,8 +1066,43 @@ function showExpertise(recipientId){
 										}
 								}
 					};
+					
+					*/
+					
 
-sendMessage(recipientId,message);
+					for(i = 0; i<output.length; i++){
+						level = output[i].level;//.split("_");
+						if(level!=null){
+							level = output[i].level.split("_");
+							level=level[0];
+						}else{
+							level="";
+						}
+
+						elementss[i]={                           
+							"title": output[i].name, 
+							"image_url": senderContext[recipientId].profilePic,                  
+							"subtitle": output[i].subject+", Level:"+level,   
+                            "buttons": [{
+								"type": "postback",
+                                "title": "Delete",
+                                "payload": "delete_expertise-"+output[i].expertise_id ,
+                                }]
+                        };
+				
+					}
+										
+				message = {
+					"attachment": {
+                    "type": "template",
+                    "payload": {
+                        "template_type": "generic",
+                        "elements": elementss
+                    }
+					}
+				};
+				
+				sendMessage(recipientId,message);
 				}
 					
 			}			
