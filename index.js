@@ -140,7 +140,7 @@ app.post('/webhook', function (req, res) {
 				}
 			}else if(reply.payload.indexOf("delete_expertise")>-1){
 				var id = reply.payload.split("-");
-				 expertiseId = d[1];
+				 expertiseId = id[1];
 				 subject = id[2];
 				 removeExpertise(event.sender.id,expertiseId,subject);
 			}else if(reply.payload.indexOf("request_expertise")>-1){				
