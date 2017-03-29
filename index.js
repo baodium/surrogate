@@ -1300,9 +1300,10 @@ function showExperts(fromId){
                     }
 					}
 				};
-				senderContext[fromId].state="send message";
-				sendMessage(fromId, {text: "Here is your expert list"});
-				sendMessage(fromId,message);
+					senderContext[fromId].state="send message";
+					if(sendMessage(fromId, {text: "Here is your expert list"})){
+						sendMessage(fromId,message);
+					}			
 				}					
 			}			
 		});	
@@ -1370,8 +1371,11 @@ function showStudents(toId){
                     }
 					}
 				};	
-				sendMessage(toId, {text: "Here is your student list"});
-				sendMessage(toId,message);
+				//sendMessage(toId, {text: "Here is your student list"});
+				//sendMessage(toId,message);
+				if(sendMessage(toId, {text: "Here is your student list"})){
+						sendMessage(toId,message);
+					}	
 				}					
 			}			
 		});	
