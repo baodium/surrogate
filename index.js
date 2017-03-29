@@ -392,8 +392,7 @@ function sendHelpRequest(senderId,requestId){
 				'from_id' : senderId,
 				'to_id':ownerId,
 				'subject':subject,
-				'expertise_id':requestId,
-				'status':'pending'
+				'expertise_id':requestId
 			});
 			
 			//sendMessage(senderId, {text: "hey "+post_data});
@@ -497,14 +496,6 @@ function sendAcceptance(fromId,requestId,senderId){
 
 
 function checkExpertise(senderId,payload,subject){
-	/*
-	var post_data = querystring.stringify({
-						'status':'completed',
-						'level':reply.payload,
-						'facebook_id' : event.sender.id,
-						'subject':subject
-					});		
-	*/
 	
 				var post_data = querystring.stringify({
 						'status':'completed',
