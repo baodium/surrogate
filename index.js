@@ -827,10 +827,8 @@ function reminderOption(recipientId){
                     "type": "template",
                     "payload": {
 						"template_type":"button",
-						"text":"Which type of reminder do you want to setup?",
-                        "elements": [{
-							"title": "Select",
-                            "buttons": [{
+						"text":"Which type of reminder do you want to setup?",,
+                        "buttons": [{
 								"type": "postback",
                                 "title": "Meeting with expert",
                                 "payload": "postback_tutor_meeting",
@@ -839,9 +837,7 @@ function reminderOption(recipientId){
 								"type": "postback",
                                 "title": "Meeting with student",
                                 "payload": "postback_student_meeting",
-                                }
-								]
-                        }]
+                                }]
                     }
                 }
             };			
