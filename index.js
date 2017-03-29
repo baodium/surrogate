@@ -93,6 +93,7 @@ app.post('/webhook', function (req, res) {
 											'request_id':reqId,
 											'time':reply });					
 											submitForm(post_data,backurl+"reminder/updateall",event.sender.id,"update_reminder");
+											sendMessage(event.sender.id, {text: "" + post_data});
 						}else{
 							var post_data = querystring.stringify({
 											'facebook_id' : event.sender.id,
