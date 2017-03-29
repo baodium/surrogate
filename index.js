@@ -903,7 +903,7 @@ function getStarted(){
 					};
 		var welcome = {"greeting":[{
 						"locale":"default",
-						"text":"Good to have you {{user_first_name}}!."
+						"text":"Hello there {{user_first_name}}!."
 						}] 
 					};		
 		request({
