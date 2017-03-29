@@ -36,7 +36,7 @@ app.get('/webhook', function (req, res) {
 });
 
 app.post('/webhook', function (req, res) { 
-	//removeStarted();
+	removeStarted();
 	getStarted();
 	addPersistentMenu();
 	var helprequest = false;
@@ -643,7 +643,7 @@ function welcomeUser(recipientId) {
 			});
 								
 			submitForm(post_data,backurl+"users/add",recipientId,"add_user");
-			var msg = "Hello "+firstName+"! Surrogate bot lets you get help or render help on various subjects";			
+			var msg = "Hi "+firstName+"! Surrogate bot lets you get help or render help on various subjects";			
 			sendMessage(recipientId, {text: "" + msg});
 			showMenu(recipientId);
             return true;		
@@ -919,12 +919,12 @@ function getStarted(){
 
 
 function removeStarted(){
-		var json = {"setting_type":"greeting"}	;
+		var json = {"setting_type":"greeting"};
 		request({
         url: 'https://graph.facebook.com/v2.8/me/thread_settings',
         method: 'DELETE',		
         qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
-        json: post
+        json: json
 		}, function(error, response, body) {
 
 		});
