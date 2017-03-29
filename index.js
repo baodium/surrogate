@@ -1080,7 +1080,7 @@ function showExpertise(recipientId){
 						}
 
 						elementss[i]={                           
-							"title": output[i].name, 
+							"title": output[i].subject, 
 							"image_url": senderContext[recipientId].profilePic,                  
 							"subtitle": output[i].subject+", Level:"+level,   
                             "buttons": [{
