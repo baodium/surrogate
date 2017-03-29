@@ -1021,7 +1021,7 @@ function showExpertise(recipientId){
 				}*/
 				elementss = new Array();
 				if(total<1){
-					sendMessage(recipientId, {text: "You do not have any expertise"});
+					sendMessage(recipientId, {text: "Your expertise list is empty"});
 					
 				message = {
                 "attachment": {
@@ -1044,7 +1044,7 @@ function showExpertise(recipientId){
                         }]
                     }
                 }
-            };			
+				};			
 			sendMessage(recipientId, message);	
 					
 					
