@@ -17,9 +17,11 @@ app.use(bodyParser.json());
 app.listen((process.env.PORT || 3000));
 
 app.get('/', function (req, res) {  
+/*
 var body ='[{"expertise_id":"2","facebook_id":"1441254119239126","subject":"English","level":"amateur_expertise_level","date_added":"2017-03-18","status":"completed"}]';
 var js  = JSON.parse(body);
 console.log(js[0].facebook_id); 
+*/
 		res.send('Test Bot');
 });
 
@@ -1029,7 +1031,7 @@ function showExpertise(recipientId){
                     "payload": {
                         "template_type": "generic",
                         "elements": [{
-                            "title":"Would you lik to add expertise?",
+                            "title":"Would you like to an add expertise?",
                             "buttons": [{
 								"type": "postback",
                                 "title": "Yes",
