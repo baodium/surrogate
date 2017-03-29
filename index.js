@@ -1080,7 +1080,7 @@ function showExpertise(recipientId){
 						}
 
 						elementss[i]={                           
-							"title": subject.toUpperCase(),                  
+							"title": output[i].subject.toUpperCase(),                  
 							"subtitle": level+" level",   
                             "buttons": [{
 								"type": "postback",
