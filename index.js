@@ -209,7 +209,7 @@ app.post('/webhook', function (req, res) {
 				 toId = members_id[2];
 				 sub= members_id[3];
 				 if(senderContext[event.sender.id]!=null){  
-					 sendMessage(event.sender.id, {text: "Okay then! please pick a reminder time"});
+					 //sendMessage(event.sender.id, {text: "Okay then! please pick a reminder time"});
 					 senderContext[event.sender.id].status="type_remind_expert_time";
 					 pickTime(event.sender.id);
 				}				
@@ -219,7 +219,7 @@ app.post('/webhook', function (req, res) {
 				 toId = members_id[2];
 				 sub= members_id[3];
 				 if(senderContext[event.sender.id]!=null){  
-					 sendMessage(event.sender.id, {text: "Okay then! please pick a reminder time"});
+					// sendMessage(event.sender.id, {text: "Okay then! please pick a reminder time"});
 					 senderContext[event.sender.id].status="type_remind_student_time";
 					 pickTime(event.sender.id);
 				}				
@@ -266,7 +266,7 @@ return true;
 
 function pickTime(senderId){
 	message = {
-			"text":"Pick a color:",
+			"text":"Pick a reminder period:",
 			"quick_replies":[{
 							"content_type":"text",
 							"title":"Monday",
