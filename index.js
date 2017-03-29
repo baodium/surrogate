@@ -34,7 +34,7 @@ app.get('/webhook', function (req, res) {
 });
 
 app.post('/webhook', function (req, res) { 
-	//getStarted();
+	getStarted();
 	addPersistentMenu();
 	var helprequest = false;
     var events = req.body.entry[0].messaging;
@@ -789,6 +789,8 @@ function displayOption(recipientId,msg,option_type){
             return false;
 }
 
+
+
 function messageOption(recipientId,msg,fromm,to,subject){
 	message = {
                 "attachment": {
@@ -1019,9 +1021,35 @@ function showExpertise(recipientId){
 				}*/
 				elementss = new Array();
 				if(total<1){
-					sendMessage(recipientId, {text: "You have not added any expertise yet"});
-				}else{
+					sendMessage(recipientId, {text: "You do not have any expertise"});
 					
+				message = {
+                "attachment": {
+                    "type": "template",
+                    "payload": {
+                        "template_type": "generic",
+                        "elements": [{
+                            "title":"Would you lik to add expertise?",
+                            "buttons": [{
+								"type": "postback",
+                                "title": "Yes",
+                                "payload": "set_expertise",
+                                },
+								{
+								"type": "postback",
+                                "title": "No",
+                                "payload": "postback_no",
+                                }
+								]
+                        }]
+                    }
+                }
+            };			
+			sendMessage(recipientId, message);	
+					
+					
+				}else{
+					sendMessage(recipientId, {text: "Here is your expertise list"});
 					/*
 					elementss[0] = {
                     "title": "Expertise list",
