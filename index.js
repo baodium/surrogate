@@ -59,6 +59,19 @@ app.post('/webhook', function (req, res) {
 						'status':'pending'
 					});					
 					submitForm(post_data,backurl+"expertise/add",event.sender.id,"type_expertise");															
+				}else if(senderContext[event.sender.id].state === "type_reminder"){
+					 sendMessage(event.sender.id, {text: "" + "reminder typed"});
+					/*
+					var reminder_title = event.message.text;
+					senderContext[event.sender.id].reminder_title = reminder_title;
+					
+					var post_data = querystring.stringify({
+						'facebook_id' : event.sender.id,
+						'title':reminder_title,
+						'status':'pending'
+					});					
+					submitForm(post_data,backurl+"reminder/add",event.sender.id,"type_reminder");	
+					*/
 				}else if(senderContext[event.sender.id].message==="true"){
 				  var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+" says :"+event.message.text;				  
 				  var fromm =  event.sender.id;
@@ -184,6 +197,21 @@ app.post('/webhook', function (req, res) {
 					 senderContext[event.sender.id].message_to=toId;
 					 senderContext[event.sender.id].message_subject=sub;
 				}				
+			}else if(reply.payload=="set_class_reminder"){
+				if(senderContext[event.sender.id]!=null){
+					sendMessage(event.sender.id, {text: "Cool, you can now setup a class reminder for meetings with your tutor(s) or student(s) \n\n\n"});
+					sendMessage(event.sender.id, {text: "Which type of reminder do you want to setup?"});
+					reminderOption(event.sender.id);
+					//senderContext[event.sender.id].status = "type_reminder";
+				}
+			}else if(reply.payload=="postback_student_meeting"){
+				if(senderContext[event.sender.id]!=null){
+					showStudents(event.sender.id);
+				}
+			}else if(reply.payload=="postback_tutor_meeting"){
+				if(senderContext[event.sender.id]!=null){
+					showExperts(event.sender.id);
+				}
 			}else{
 				sendMessage(event.sender.id, {text: reply.payload+" "});
 			}
@@ -793,6 +821,32 @@ function displayOption(recipientId,msg,option_type){
 }
 
 
+function reminderOption(recipientId){
+	message = {
+                "attachment": {
+                    "type": "template",
+                    "payload": {
+                        "template_type": "generic",
+                        "elements": [{
+                            "buttons": [{
+								"type": "postback",
+                                "title": "Meeting with tutor",
+                                "payload": "postback_tutor_meeting",
+                                },
+								{
+								"type": "postback",
+                                "title": "Meeting with student",
+                                "payload": "postback_student_meeting",
+                                }
+								]
+                        }]
+                    }
+                }
+            };			
+			sendMessage(recipientId, message);			
+            return false;
+}
+
 
 function messageOption(recipientId,msg,fromm,to,subject){
 	message = {
@@ -1204,13 +1258,16 @@ function showExperts(fromId){
 							"subtitle": output[i].subject+" expert, Level:"+level,   
                             "buttons": [{
 								"type": "postback",
-                                "title": "Remove",
-                                "payload": "remove_expert-"+output[i].from_id+"-"+"-"+output[i].request_id,
-                                },
-								{
+                                "title": "Add class reminder",
+                                "payload": "remind_expert-"+output[i].from_id+"-"+output[i].to_id+"-"+output[i].subject,
+                                },{
 								"type": "postback",
                                 "title": "Send Message",
                                 "payload": "postback_message_yes-"+output[i].from_id+"-"+output[i].to_id+"-"+output[i].subject,
+                                },{
+								"type": "postback",
+                                "title": "Remove",
+                                "payload": "remove_expert-"+output[i].from_id+"-"+"-"+output[i].request_id,
                                 }]
                         };
 				
@@ -1270,13 +1327,16 @@ function showStudents(toId){
 							"subtitle": output[i].subject+", Level:"+level+" student",   
                             "buttons": [{
 								"type": "postback",
-                                "title": "Remove",
-                                "payload": "remove_expert-"+output[i].from_id+"-"+"-"+output[i].request_id,
-                                },
-								{
+                                "title": "Set class reminder",
+                                "payload": "remind_student-"+output[i].from_id+"-"+output[i].to_id+"-"+output[i].subject,
+                                },{
 								"type": "postback",
                                 "title": "Send Message",
                                 "payload": "postback_message_yes-"+output[i].from_id+"-"+output[i].to_id+"-"+output[i].subject,
+                                },{
+								"type": "postback",
+                                "title": "Remove",
+                                "payload": "remove_expert-"+output[i].from_id+"-"+"-"+output[i].request_id,
                                 }]
                         };
 				
@@ -1319,295 +1379,4 @@ function removeExpertise(recipientId,expertise_id,subject){
 				showExpertise(recipientId);	
 			}			
 		});
-}
-/*
-curl -X POST -H "Content-Type: application/json" -d '{
-  "recipient":{
-    "id":"USER_ID"
-  },
-  "message":{
-    "attachment":{
-      "type":"template",
-      "payload":{
-        "template_type":"generic",
-        "elements":[
-           {
-            "title":"Welcome to Peter\'s Hats",
-            "image_url":"https://petersfancybrownhats.com/company_image.png",
-            "subtitle":"We\'ve got the right hat for everyone.",
-            "default_action": {
-              "type": "web_url",
-              "url": "http://surrogation.com.ng/view?item=103",
-              "messenger_extensions": true,
-              "webview_height_ratio": "tall",
-              "fallback_url": "http://surrogation.com.ng/"
-            },
-            "buttons":[
-              {
-                "type":"web_url",
-                "url":"https://petersfancybrownhats.com",
-                "title":"View Website"
-              },{
-                "type":"postback",
-                "title":"Start Chatting",
-                "payload":"DEVELOPER_DEFINED_PAYLOAD"
-              }              
-            ]      
-          }
-        ]
-      }
-    }
-  }
-}' "https://graph.facebook.com/v2.8/me/messages?access_token=PAGE_ACCESS_TOKEN" 
-
-
-
-
-curl -X POST -H "Content-Type: application/json" -d '{
-  "recipient":{
-    "id":"USER_ID"
-  },
-  "message":{
-    "attachment":{
-      "type":"template",
-      "payload":{
-        "template_type":"button",
-        "text":"What do you want to do next?",
-        "buttons":[
-          {
-            "type":"web_url",
-            "url":"https://petersapparel.parseapp.com",
-            "title":"Show Website"
-          },
-          {
-            "type":"postback",
-            "title":"Start Chatting",
-            "payload":"USER_DEFINED_PAYLOAD"
-          }
-        ]
-      }
-    }
-  }
-}' "https://graph.facebook.com/v2.8/me/messages?access_token=PAGE_ACCESS_TOKEN"
-*/
-
-
-
-
-function getExpertiseList(subject,recipientId){
-	/*
-	message = {
-    "attachment": {
-        "type": "template",
-        "payload": {
-            "template_type": "list",
-            "elements": [
-                {
-                    "title": "List of "+subject+" expert",
-                    "image_url": "http://surrogation.com.ng/img/collection.png",
-                    "subtitle": "Here are who we think may be helpful",
-                    "default_action": {
-                        "type": "web_url",
-                        "url": "http://surrogation.com.ng/shop_collection",
-                        "messenger_extensions": true,
-                        "webview_height_ratio": "tall",
-                        "fallback_url": "http://surrogation.com.ng/"
-                    }
-                },
-                {
-                    "title": "Adedayo Ayodele",
-                    "image_url": "http://surrogation.com.ng/img/white-t-shirt.png",
-                    "subtitle": "Expert in "+subject+", Level:intermediate",
-                    "default_action": {
-                        "type": "web_url",
-                        "url": "http://surrogation.com.ng/view?item=100",
-                        "messenger_extensions": true,
-                        "webview_height_ratio": "tall",
-                        "fallback_url": "http://surrogation.com.ng/"
-                    },
-                    "buttons": [
-                        {
-                            "title": "Contact Now",
-                            "type": "postback",
-                            "payload": "contact_expert"                    
-                        }
-                    ]                
-                },
-                {
-                    "title": "Obadimu Adewale",
-                    "image_url": "http://surrogation.com.ng/img/blue-t-shirt.png",
-                    "subtitle": "Expert in "+subject+", Level:advanced",
-                    "default_action": {
-                        "type": "web_url",
-                        "url": "http://surrogation.com.ng/view?item=101",
-                        "messenger_extensions": true,
-                        "webview_height_ratio": "tall",
-                        "fallback_url": "http://surrogation.com.ng/"
-                    },
-                    "buttons": [
-                        {
-                            "title": "Contact Now",
-                            "type": "postback",
-                            "payload": "contact_expert"                       
-                        }
-                    ]                
-                },
-                {
-                    "title": "Ajayi crowder",
-                    "image_url": "http://surrogation.com.ng/img/black-t-shirt.png",
-                    "subtitle": "Expert in "+subject+" and stats, Level:beginner",
-                    "default_action": {
-                        "type": "web_url",
-                        "url": "http://surrogation.com.ng/view?item=102",
-                        "messenger_extensions": true,
-                        "webview_height_ratio": "tall",
-                        "fallback_url": "http://surrogation.com.ng/"
-                    },
-                    "buttons": [
-                        {
-                            "title": "Contact Now",
-                            "type": "postback",
-                            "payload": "contact_expert"                      
-                        }
-                    ]                
-                },
-				 {
-                    "title": "Alani crowder",
-                    "image_url": "http://surrogation.com.ng/img/black-t-shirt.png",
-                    "subtitle": "Expert in "+subject+" and stats, Level:beginner",
-                    "default_action": {
-                        "type": "web_url",
-                        "url": "http://surrogation.com.ng/view?item=102",
-                        "messenger_extensions": true,
-                        "webview_height_ratio": "tall",
-                        "fallback_url": "http://surrogation.com.ng/"
-                    },
-                    "buttons": [
-                        {
-                            "title": "Contact Now",
-                            "type": "postback",
-                            "payload": "contact_expert"                      
-                        }
-                    ]                
-                }
-            ],
-             "buttons": [
-                {
-                    "title": "View More",
-                    "type": "postback",
-                    "payload": "payload"                        
-                }
-            ]  
-        }
-    }   
-	};*/
-
-	
-	message = {
-    "attachment": {
-        "type": "template",
-        "payload": {
-            "template_type": "list",
-            "elements": [
-                {
-                    "title": "Classic T-Shirt Collection",
-                    "image_url": "https://pbs.twimg.com/profile_images/2629833004/1f07dda7e7dcf011e96807a0f10239f9_400x400.jpeg",
-                    "subtitle": "See all our colors",
-                    "default_action": {
-                        "type": "web_url",
-                        "url": "http://surrogation.com.ng/",
-                        "messenger_extensions": true,
-                        "webview_height_ratio": "tall",
-                        "fallback_url": "http://surrogation.com.ng/"
-                    },
-                    "buttons": [
-                        {
-                            "title": "View",
-                            "type": "web_url",
-                            "url": "http://surrogation.com.ng/collection",
-                            "messenger_extensions": true,
-                            "webview_height_ratio": "tall",
-                            "fallback_url": "http://surrogation.com.ng/"                        
-                        }
-                    ]
-                },
-                {
-                    "title": "Classic White T-Shirt",
-                    "image_url": "https://pbs.twimg.com/profile_images/2629833004/1f07dda7e7dcf011e96807a0f10239f9_400x400.jpeg",
-                    "subtitle": "100% Cotton, 200% Comfortable",
-                    "default_action": {
-                        "type": "web_url",
-                        "url": "http://surrogation.com.ng/",
-                        "messenger_extensions": true,
-                        "webview_height_ratio": "tall",
-                        "fallback_url": "http://surrogation.com.ng/"
-                    },
-                    "buttons": [
-                        {
-                            "title": "Shop Now",
-                            "type": "web_url",
-                            "url": "http://surrogation.com.ng/",
-                            "messenger_extensions": true,
-                            "webview_height_ratio": "tall",
-                            "fallback_url": "http://surrogation.com.ng/"                        
-                        }
-                    ]                
-                },
-                {
-                    "title": "Classic Blue T-Shirt",
-                    "image_url": "https://pbs.twimg.com/profile_images/2629833004/1f07dda7e7dcf011e96807a0f10239f9_400x400.jpeg",
-                    "subtitle": "100% Cotton, 200% Comfortable",
-                    "default_action": {
-                        "type": "web_url",
-                        "url": "http://surrogation.com.ng/",
-                        "messenger_extensions": true,
-                        "webview_height_ratio": "tall",
-                        "fallback_url": "http://surrogation.com.ng/"
-                    },
-                    "buttons": [
-                        {
-                            "title": "Shop Now",
-                            "type": "web_url",
-                            "url": "http://surrogation.com.ng/",
-                            "messenger_extensions": true,
-                            "webview_height_ratio": "tall",
-                            "fallback_url": "http://surrogation.com.ng/"                        
-                        }
-                    ]                
-                },
-                {
-                    "title": "Classic Black T-Shirt",
-                    "image_url": "https://pbs.twimg.com/profile_images/2629833004/1f07dda7e7dcf011e96807a0f10239f9_400x400.jpeg",
-                    "subtitle": "100% Cotton, 200% Comfortable",
-                    "default_action": {
-                        "type": "web_url",
-                        "url": "http://surrogation.com.ng/",
-                        "messenger_extensions": true,
-                        "webview_height_ratio": "tall",
-                        "fallback_url": "http://surrogation.com.ng/"
-                    },
-                    "buttons": [
-                        {
-                            "title": "Shop Now",
-                            "type": "web_url",
-                            "url": "http://surrogation.com.ng/",
-                            "messenger_extensions": true,
-                            "webview_height_ratio": "tall",
-                            "fallback_url": "http://surrogation.com.ng/"                        
-                        }
-                    ]                
-                }
-            ],
-             "buttons": [
-                {
-                    "title": "View More",
-                    "type": "postback",
-                    "payload": "payload"                        
-                }
-            ]  
-        }
-    }
-};
-sendMessage(recipientId, message);
-return true;
 }
