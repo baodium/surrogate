@@ -265,10 +265,11 @@ function checkHelper(subject,senderId){
 				try{
 					output = JSON.parse(body);	
 					if(output.length>0){
-							sendMessage(senderId, {text: "Oh! that is nice we have people that can help you with "+subject});
+							sendMessage(senderId, {text: "Oh! that is nice we have people that can help you with "+subject+". Here is their list"});
 							senderContext[senderId].state = "provide_subject_done";	
 						
 					var total = output.length;
+					/*
 							var start = (senderContext[senderId].nextexp!=null)?senderContext[senderId].nextexp:0;
 							if(total>3){
 								output = output.slice((start*2), ((start*2) + 2));
@@ -279,7 +280,7 @@ function checkHelper(subject,senderId){
                     "title": "Expertise Help List",
 					"subtitle": "For "+subject+" "
 					};
-								
+					*/		
 					for(i = 0; i<output.length; i++){
 						console.log(output[i].subject);
 						level = output[i].level;//.split("_");
@@ -289,6 +290,9 @@ function checkHelper(subject,senderId){
 						}else{
 							level="";
 						}
+						
+						
+						/*
 						elementss[i+1]={
 									"title": output[i].name,  
 									"image_url": output[i].profile_pic,									
@@ -299,9 +303,22 @@ function checkHelper(subject,senderId){
 												"payload": "request_expertise-"+output[i].expertise_id                     
 												}]
 										};
+										*/
+					elementss[i]={                           
+							"title": output[i].name, 
+							"image_url": output[i].profile_pic,                  
+							"subtitle": output[i].subject+", Level:"+level+" student",   
+                            "buttons": [{
+											"title": "Request Expertise",
+											"type": "postback",
+											"payload": "request_expertise-"+output[i].expertise_id                     
+										}]
+                        };
 				
 					}
 					
+					
+					/*
 					message = {
 						"attachment": {
 						"type": "template",
@@ -318,14 +335,26 @@ function checkHelper(subject,senderId){
 						}
 					};
 					
-					sendMessage(senderId,message);
-			
+					*/
+					
+				message = {
+					"attachment": {
+                    "type": "template",
+                    "payload": {
+                        "template_type": "generic",
+                        "elements": elementss
+                    }
+					}
+				};
+					
+					sendMessage(senderId,message);	
+							
 					}else{
 						sendMessage(senderId, {text: "Sorry, I dont personally know people with "+subject+" expertise"});
 					}
 					
 					}catch(err){
-						sendMessage(senderId, {text: "Error fetching expert "});
+						//sendMessage(senderId, {text: "Error fetching expert "});
 					}	
 
 			}
@@ -1256,7 +1285,7 @@ function showExperts(fromId){
 							"subtitle": output[i].subject+" expert, Level:"+level,   
                             "buttons": [{
 								"type": "postback",
-                                "title": "Add class reminder",
+                                "title": "Set class reminder",
                                 "payload": "remind_expert-"+output[i].from_id+"-"+output[i].to_id+"-"+output[i].subject,
                                 },{
 								"type": "postback",
