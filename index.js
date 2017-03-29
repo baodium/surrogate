@@ -241,7 +241,8 @@ function sendMessage(recipientId, message) {
             console.log('Error: ', response.body.error);
         }
     });
-};
+return true;
+}
 
 
 function checkHelper(subject,senderId){
