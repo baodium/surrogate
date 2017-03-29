@@ -41,8 +41,7 @@ app.post('/webhook', function (req, res) {
 	addPersistentMenu();
 	var helprequest = false;
     var events = req.body.entry[0].messaging;
-    for (i = 0; i < events.length; i++) {
-	addPersistentMenu();		
+    for (i = 0; i < events.length; i++) {		
         var event = events[i];						
 		if (event.message && event.message.text) {
 			if(senderContext[event.sender.id]==null){
@@ -644,7 +643,7 @@ function welcomeUser(recipientId) {
 			});
 								
 			submitForm(post_data,backurl+"users/add",recipientId,"add_user");
-			var msg = "Hi "+firstName+"! Surrogate bot lets you get help or render help on various subjects";			
+			var msg = "Hello "+firstName+"! Surrogate bot lets you get help or render help on various subjects";			
 			sendMessage(recipientId, {text: "" + msg});
 			showMenu(recipientId);
             return true;		
