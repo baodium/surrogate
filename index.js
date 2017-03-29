@@ -1194,9 +1194,9 @@ function submitForm(post_data,url,userId,action){
 								pickTime(userId);
 								senderContext[userId].status="pick_reminder_time";
 							}else{
-								var period = post_data.day;
-								period  = period.split("-");
-								sendMessage(userId, {text: "You have already set up a reminder for "+period[1].toLowerCase()+" \n\n please select another day"});
+								//var period = post_data.day;
+								//period  = period.split("-");
+								sendMessage(userId, {text: "You have already set up a reminder for monday \n\n please select another day"});
 								pickPeriod(userId);
 							}
 						}
