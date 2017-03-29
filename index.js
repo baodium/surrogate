@@ -59,19 +59,6 @@ app.post('/webhook', function (req, res) {
 						'status':'pending'
 					});					
 					submitForm(post_data,backurl+"expertise/add",event.sender.id,"type_expertise");															
-				}else if(senderContext[event.sender.id].state === "type_reminder"){
-					 sendMessage(event.sender.id, {text: "" + "reminder typed"});
-					/*
-					var reminder_title = event.message.text;
-					senderContext[event.sender.id].reminder_title = reminder_title;
-					
-					var post_data = querystring.stringify({
-						'facebook_id' : event.sender.id,
-						'title':reminder_title,
-						'status':'pending'
-					});					
-					submitForm(post_data,backurl+"reminder/add",event.sender.id,"type_reminder");	
-					*/
 				}else if(senderContext[event.sender.id].message==="true"){
 				  var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+" says :"+event.message.text;				  
 				  var fromm =  event.sender.id;
@@ -95,7 +82,7 @@ app.post('/webhook', function (req, res) {
 											'request_id':reqId
 											});					
 											submitForm(post_data,backurl+"reminder/updateall",event.sender.id,"update_reminder");
-											sendMessage(event.sender.id, {text: "" + post_data});
+											
 						}else{
 							var post_data = querystring.stringify({
 											'facebook_id' : event.sender.id,
@@ -340,12 +327,42 @@ function pickTime(senderId){
 			"quick_replies":[{
 							"content_type":"text",
 							"title":"12 AM ",
-							"payload":"REMINDER_TIME_MORNING"
+							"payload":"REMINDER_TIME_TWELVE_AM"
 							},{
 							"content_type":"text",
-							"title":"12 PM",
-							"payload":"REMINDER_TIME_AFTERNOON"
-							}]
+							"title":"3 AM",
+							"payload":"REMINDER_TIME_THREE_AM"
+							},
+							{
+							"content_type":"text",
+							"title":"6 AM",
+							"payload":"REMINDER_TIME_SIX_AM"
+							},
+							{
+							"content_type":"text",
+							"title":"9 AM",
+							"payload":"REMINDER_TIME_NINE_AM"
+							},
+							{
+							"content_type":"text",
+							"title":"12 PM ",
+							"payload":"REMINDER_TIME_TWELVE_PM"
+							},{
+							"content_type":"text",
+							"title":"3 PM",
+							"payload":"REMINDER_TIME_THREE_PM"
+							},
+							{
+							"content_type":"text",
+							"title":"6 PM",
+							"payload":"REMINDER_TIME_SIX_PM"
+							},
+							{
+							"content_type":"text",
+							"title":"9 PM",
+							"payload":"REMINDER_TIME_NINE_PM"
+							}
+							]
 		};
 sendMessage(senderId,message);
 }
