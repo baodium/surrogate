@@ -141,7 +141,8 @@ app.post('/webhook', function (req, res) {
 			}else if(reply.payload.indexOf("delete_expertise")>-1){
 				var expertise_id = reply.payload.split("-");
 				 expertise_id = expertise_id[1];
-				 removeExpertise(event.sender.id,expertise_id);
+				 subject = expertise_id[2];
+				 removeExpertise(event.sender.id,expertise_id,subject);
 			}else if(reply.payload.indexOf("request_expertise")>-1){				
 				var expertise_id = reply.payload.split("-");
 				 expertise_id = expertise_id[1];
@@ -1085,7 +1086,7 @@ function showExpertise(recipientId){
                             "buttons": [{
 								"type": "postback",
                                 "title": "Delete",
-                                "payload": "delete_expertise-"+output[i].expertise_id ,
+                                "payload": "delete_expertise-"+output[i].expertise_id+"-"+output[i].subject,
                                 }]
                         };
 				
@@ -1240,7 +1241,7 @@ function showStudents(toId){
 		});	
 }
 
-function removeExpertise(recipientId,expertise_id){
+function removeExpertise(recipientId,expertise_id,subject){
 		var post_data = querystring.stringify({'facebook_id' : recipientId,'expertise_id':expertise_id});
 		//submitForm(post_data,backurl+"expertise/delete");
 	request({
@@ -1258,7 +1259,7 @@ function removeExpertise(recipientId,expertise_id){
 			} else if (response.body.error) {
 				console.log('Error: ', response.body.error);
 			}else{
-				sendMessage(recipientId, {text: "Expertise has been deleted "});
+				sendMessage(recipientId, {text: subject+ " expertise has been successfully deleted deleted \n\n "});
 				showExpertise(recipientId);	
 			}			
 		});
