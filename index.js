@@ -199,7 +199,7 @@ app.post('/webhook', function (req, res) {
 				}				
 			}else if(reply.payload=="set_class_reminder"){
 				if(senderContext[event.sender.id]!=null){
-					sendMessage(event.sender.id, {text: "Cool, you can now setup a class reminder for meetings with your tutor(s) or student(s) \n\n\n"});
+					sendMessage(event.sender.id, {text: "Cool! you can now setup a class reminder for meetings with your tutor(s) or student(s) \n\n\n"});
 					sendMessage(event.sender.id, {text: "Which type of reminder do you want to setup?"});
 					reminderOption(event.sender.id);
 					//senderContext[event.sender.id].status = "type_reminder";
@@ -831,7 +831,7 @@ function reminderOption(recipientId){
 							"title": "Select",
                             "buttons": [{
 								"type": "postback",
-                                "title": "Meeting with tutor",
+                                "title": "Meeting with expert",
                                 "payload": "postback_tutor_meeting",
                                 },
 								{
@@ -1104,7 +1104,7 @@ function showExpertise(recipientId){
 				}*/
 				elementss = new Array();
 				if(total<1){
-					sendMessage(recipientId, {text: "Your expertise list is empty"});
+					sendMessage(recipientId, {text: "Oh! your expertise list is empty"});
 					
 				message = {
                 "attachment": {
@@ -1242,7 +1242,7 @@ function showExperts(fromId){
 				var total = output.length;
 				elementss = new Array();
 				if(total<1){
-					sendMessage(fromId, {text: "Your expert list is empty"});
+					sendMessage(fromId, {text: "Oh! our expert list is empty"});
 				}else{										
 					for(i = 0; i<output.length; i++){
 						level = output[i].level;//.split("_");
@@ -1311,7 +1311,7 @@ function showStudents(toId){
 				var total = output.length;
 				elementss = new Array();
 				if(total<1){
-					sendMessage(toId, {text: "Your student list is empty"});
+					sendMessage(toId, {text: "Oh! your student list is empty"});
 				}else{										
 					for(i = 0; i<output.length; i++){
 						level = output[i].level;//.split("_");
