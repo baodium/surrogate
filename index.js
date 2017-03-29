@@ -1086,12 +1086,7 @@ function submitForm(post_data,url,userId,action){
 											};
 								sendMessage(ownerId, message);									
 							}else{
-								var requ = output[0].status;
-								if(requ=="pending"){
-									sendMessage(userId, {text: "Oh! did you forget? You have already sent a request"});	
-								}else{
-									sendMessage(userId, {text: "Oh! did you forget? this request has been granted already"});
-								}									
+								sendMessage(userId, {text: "Oh! did you forget? You have already requested this expertise!"});																
 							}
 						}
 							
