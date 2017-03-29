@@ -1080,7 +1080,7 @@ function showExpertise(recipientId){
 						}
 
 						elementss[i]={                           
-							"title": "SUBJECT:"output[i].subject,                  
+							"title": "SUBJECT:"+output[i].subject,                  
 							"subtitle": "EXPERTISE LEVEL:"+level,   
                             "buttons": [{
 								"type": "postback",
