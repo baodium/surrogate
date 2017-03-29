@@ -827,7 +827,7 @@ function reminderOption(recipientId){
                     "type": "template",
                     "payload": {
 						"template_type":"button",
-						"text":"Which type of reminder do you want to setup?",,
+						"text":"Which type of reminder do you want to setup?",
                         "buttons": [{
 								"type": "postback",
                                 "title": "Meeting with expert",
