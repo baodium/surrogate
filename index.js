@@ -87,7 +87,7 @@ app.post('/webhook', function (req, res) {
 					if(senderContext[event.sender.id].request_id!=null){
 						reqId =  senderContext[event.sender.id].request_id;
 						type =  senderContext[event.sender.id].reminder_type;						
-						if(senderContext[event.sender.id].status ==="pick_reminder_time"){
+						if(senderContext[event.sender.id].status =="pick_reminder_time"){
 							var post_data = querystring.stringify({
 											'facebook_id' : event.sender.id,
 											'request_id':reqId,
@@ -101,6 +101,7 @@ app.post('/webhook', function (req, res) {
 											'day':reply });					
 											submitForm(post_data,backurl+"reminder/add",event.sender.id,"add_reminder");
 						}
+						sendMessage(event.sender.id, {text: "" + reply});
 					}
 					
 				}else{
@@ -1198,6 +1199,10 @@ function submitForm(post_data,url,userId,action){
 								sendMessage(userId, {text: "You have already set up a reminder for "+period[1].toLowerCase()+" \n\n please select another day"});
 								pickPeriod(userId);
 							}
+						}
+						
+						if(action=="update_reminder"){
+							sendMessage(userId, {text: "Your reminder has been saved"});							
 						}
 							
 				} 
