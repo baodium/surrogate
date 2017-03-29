@@ -87,7 +87,7 @@ app.post('/webhook', function (req, res) {
 					if(senderContext[event.sender.id].request_id!=null){
 						reqId =  senderContext[event.sender.id].request_id;
 						type =  senderContext[event.sender.id].reminder_type;						
-						if(senderContext[event.sender.id].status =="pick_reminder_time"){
+						if(reply.indexOf("REMINDER_TIME")>-1){
 							var post_data = querystring.stringify({
 											'facebook_id' : event.sender.id,
 											'request_id':reqId,
