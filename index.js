@@ -84,8 +84,18 @@ app.post('/webhook', function (req, res) {
 				  senderContext[event.sender.id].message="false";				
 				}else if(event.message.quick_reply){
 					reply = event.message.quick_reply.payload;
-					sendMessage(event.sender.id, {text: "Reply:"+reply});
-					 pickTime(event.sender.id);
+					if(senderContext[event.sender.id].request_id!=null){
+						reqId =  senderContext[event.sender.id].request_id;
+						type =  senderContext[event.sender.id].reminder_type;
+						var post_data = querystring.stringify({
+						'facebook_id' : event.sender.id,
+						'request_id':reqId,
+						'type':type,
+						'day':reply
+						});					
+						submitForm(post_data,backurl+"reminder/add",event.sender.id,"add_reminder");
+					}
+					
 				}else{
 					sendMessage(event.sender.id, {text: "" + "Sorry, I don't understand that. Anyway, this is what I have on my menu"});
 					showMenu(event.sender.id);
@@ -182,13 +192,12 @@ app.post('/webhook', function (req, res) {
 				 expertiseId = expertise_id[1];
 				 fromId = expertise_id[2];
 				if(senderContext[event.sender.id]!=null){  
-				 //sendMessage(event.sender.id, {text: "user online "});
 					sendAcceptance(fromId,expertiseId,event.sender.id);
 				}
 				
 				
 			}else if(reply.payload=="home"){
-				welcomeUser(event.sender.id);				
+				 welcomeUser(event.sender.id);				
 			}else if(reply.payload.indexOf("postback_message_yes")>-1){				
 				var members_id = reply.payload.split("-");
 				 fromId = members_id[1];
@@ -205,26 +214,22 @@ app.post('/webhook', function (req, res) {
 				if(senderContext[event.sender.id]!=null){
 					sendMessage(event.sender.id, {text: "Cool! you can now setup a class reminder for meetings with your tutor(s) or student(s) \n\n\n"});
 					reminderOption(event.sender.id);
-					//senderContext[event.sender.id].status = "type_reminder";
+					senderContext[event.sender.id].status = "select_reminder";
 				}
 			}else if(reply.payload.indexOf("remind_expert")>-1){				
 				var members_id = reply.payload.split("-");
-				 fromId = members_id[1];
-				 toId = members_id[2];
-				 sub= members_id[3];
+				 request_id = members_id[1];				
 				 if(senderContext[event.sender.id]!=null){  
-					 //sendMessage(event.sender.id, {text: "Okay then! please pick a reminder time"});
-					 senderContext[event.sender.id].status="type_remind_expert_period";
+					 senderContext[event.sender.id].request_id=request_id;
+					 senderContext[event.sender.id].type="type_remind_expert";
 					 pickPeriod(event.sender.id);
 				}				
 			}else if(reply.payload.indexOf("remind_student")>-1){				
 				var members_id = reply.payload.split("-");
-				 fromId = members_id[1];
-				 toId = members_id[2];
-				 sub= members_id[3];
-				 if(senderContext[event.sender.id]!=null){  
-					// sendMessage(event.sender.id, {text: "Okay then! please pick a reminder time"});
-					 senderContext[event.sender.id].status="type_remind_student_period";
+				 request_id = members_id[1];
+				 if(senderContext[event.sender.id]!=null){
+					 senderContext[event.sender.id].request_id=request_id;				 
+					 senderContext[event.sender.id].type="type_remind_student";
 					 pickPeriod(event.sender.id);
 				}				
 			}else if(reply.payload=="postback_student_meeting"){
@@ -1175,6 +1180,17 @@ function submitForm(post_data,url,userId,action){
 								sendMessage(userId, {text: "Oh! did you forget? You have already requested this expertise!"});																
 							}
 						}
+						
+						if(action=="add_reminder"){
+							if(!exists){
+								pickTime(userId);
+							}else{
+								var period = post_data.day;
+								period  = period.split("-");
+								sendMessage(userId, {text: "You have already set up a reminder for "+period[1].toLowerCase()+" \n\n please select another day"});
+								pickPeriod(userId);
+							}
+						}
 							
 				} 
 			}
@@ -1363,7 +1379,7 @@ function showExperts(fromId){
                             "buttons": [{
 								"type": "postback",
                                 "title": "Set class reminder",
-                                "payload": "remind_expert-"+output[i].from_id+"-"+output[i].to_id+"-"+output[i].subject,
+                                "payload": "remind_expert-"+output[i].request_id,
                                 },{
 								"type": "postback",
                                 "title": "Send Message",
@@ -1434,7 +1450,7 @@ function showStudents(toId){
                             "buttons": [{
 								"type": "postback",
                                 "title": "Set class reminder",
-                                "payload": "remind_student-"+output[i].from_id+"-"+output[i].to_id+"-"+output[i].subject,
+                                "payload": "remind_student-"+output[i].request_id,
                                 },{
 								"type": "postback",
                                 "title": "Send Message",
