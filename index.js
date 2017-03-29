@@ -1239,7 +1239,7 @@ function showExperts(fromId){
 				var total = output.length;
 				elementss = new Array();
 				if(total<1){
-					sendMessage(fromId, {text: "Oh! our expert list is empty"});
+					sendMessage(fromId, {text: "Oh! your expert list is empty"});
 				}else{										
 					for(i = 0; i<output.length; i++){
 						level = output[i].level;//.split("_");
