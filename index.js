@@ -269,37 +269,41 @@ function pickTime(senderId){
 			"text":"Pick a reminder period:",
 			"quick_replies":[{
 							"content_type":"text",
-							"title":"Monday",
+							"title":"Every day",
+							"payload":"REMINDER_ALLDAY"
+							},{
+							"content_type":"text",
+							"title":"Every Monday",
 							"payload":"REMINDER_MONDAY"
 							},
 							{
 							"content_type":"text",
-							"title":"Tuesday",
+							"title":"Every Tuesday",
 							"payload":"REMINDER_TUESDAY"
 							},
 							{
 							"content_type":"text",
-							"title":"Wedsday",
+							"title":"Every Wedsday",
 							"payload":"REMINDER_WEDSDAY"
 							},
 							{
 							"content_type":"text",
-							"title":"Thursday",
+							"title":"Every Thursday",
 							"payload":"REMINDER_THURSDAY"
 							},
 							{
 							"content_type":"text",
-							"title":"Friday",
+							"title":"Every Friday",
 							"payload":"REMINDER_FRIDAY"
 							},
 							{
 							"content_type":"text",
-							"title":"Saturday",
+							"title":"Every Saturday",
 							"payload":"REMINDER_SATURDAY"
 							},
 							{
 							"content_type":"text",
-							"title":"Sunday",
+							"title":"Every Sunday",
 							"payload":"REMINDER_SUNDAY"
 							}]
 		};
