@@ -1258,7 +1258,7 @@ function removeExpertise(recipientId,expertise_id){
 			} else if (response.body.error) {
 				console.log('Error: ', response.body.error);
 			}else{
-				sendMessage(recipientId, {text: "" + JSON.stringify(body)});
+				sendMessage(recipientId, {text: "Expertise has been deleted "});
 				showExpertise(recipientId);	
 			}			
 		});
