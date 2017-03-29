@@ -319,12 +319,12 @@ function pickTime(senderId){
 			"text":"Pick a reminder time:",
 			"quick_replies":[{
 							"content_type":"text",
-							"title":"12 AM in the morning",
-							"payload":"REMINDER_TIME_12AM"
+							"title":"12 AM ",
+							"payload":"REMINDER_TIME_MORNING"
 							},{
 							"content_type":"text",
 							"title":"12 PM",
-							"payload":"REMINDER_TIME_12PM"
+							"payload":"REMINDER_TIME_AFTERNOON"
 							}]
 		};
 sendMessage(senderId,message);
