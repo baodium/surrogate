@@ -104,7 +104,7 @@ app.post('/webhook', function (req, res) {
 											'day':reply });					
 											submitForm(post_data,backurl+"reminder/add",event.sender.id,"add_reminder");
 						}
-						sendMessage(event.sender.id, {text: "" + reply});
+
 					}
 					
 				}else{
@@ -250,6 +250,10 @@ app.post('/webhook', function (req, res) {
 			}else if(reply.payload=="postback_tutor_meeting"){
 				if(senderContext[event.sender.id]!=null){
 					showExperts(event.sender.id);
+				}
+			}else if(reply.payload=="postback_yes_reminder"){
+				if(senderContext[event.sender.id]!=null){
+					reminderOption(event.sender.id);
 				}
 			}else{
 				sendMessage(event.sender.id, {text: reply.payload+" "});
@@ -968,6 +972,31 @@ function reminderOption(recipientId){
 }
 
 
+function reminderOptionYesNo(recipientId){
+	message = {
+                "attachment": {
+                    "type": "template",
+                    "payload": {
+						"template_type":"button",
+						"text":"Do you want to set up another reminder?",
+                        "buttons": [{
+								"type": "postback",
+                                "title": "Yes",
+                                "payload": "postback_yes_reminder",
+                                },
+								{
+								"type": "postback",
+                                "title": "No",
+                                "payload": "postback_no",
+                                }]
+                    }
+                }
+            };			
+			sendMessage(recipientId, message);			
+            return false;
+}
+
+
 function messageOption(recipientId,msg,fromm,to,subject){
 	message = {
                 "attachment": {
@@ -1205,7 +1234,8 @@ function submitForm(post_data,url,userId,action){
 						}
 						
 						if(action=="update_reminder"){
-							sendMessage(userId, {text: "Your reminder has been saved"});							
+							sendMessage(userId, {text: "Your reminder has been saved"});
+							reminderOptionYesNo(userId);						
 						}
 							
 				} 
