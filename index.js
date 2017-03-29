@@ -200,10 +200,29 @@ app.post('/webhook', function (req, res) {
 			}else if(reply.payload=="set_class_reminder"){
 				if(senderContext[event.sender.id]!=null){
 					sendMessage(event.sender.id, {text: "Cool! you can now setup a class reminder for meetings with your tutor(s) or student(s) \n\n\n"});
-					//sendMessage(event.sender.id, {text: "Which type of reminder do you want to setup?"});
 					reminderOption(event.sender.id);
 					//senderContext[event.sender.id].status = "type_reminder";
 				}
+			}else if(reply.payload.indexOf("remind_expert")>-1){				
+				var members_id = reply.payload.split("-");
+				 fromId = members_id[1];
+				 toId = members_id[2];
+				 sub= members_id[3];
+				 if(senderContext[event.sender.id]!=null){  
+					 sendMessage(event.sender.id, {text: "Okay then! please pick a reminder time"});
+					 senderContext[event.sender.id].status="type_remind_expert_time";
+					 pickTime(event.sender.id);
+				}				
+			}else if(reply.payload.indexOf("remind_student")>-1){				
+				var members_id = reply.payload.split("-");
+				 fromId = members_id[1];
+				 toId = members_id[2];
+				 sub= members_id[3];
+				 if(senderContext[event.sender.id]!=null){  
+					 sendMessage(event.sender.id, {text: "Okay then! please pick a reminder time"});
+					 senderContext[event.sender.id].status="type_remind_student_time";
+					 pickTime(event.sender.id);
+				}				
 			}else if(reply.payload=="postback_student_meeting"){
 				if(senderContext[event.sender.id]!=null){
 					showStudents(event.sender.id);
@@ -244,6 +263,48 @@ function sendMessage(recipientId, message) {
 return true;
 }
 
+
+function pickTime(senderId){
+	message = {
+			"text":"Pick a color:",
+			"quick_replies":[{
+							"content_type":"text",
+							"title":"Monday",
+							"payload":"REMINDER_MONDAY"
+							},
+							{
+							"content_type":"text",
+							"title":"Tuesday",
+							"payload":"REMINDER_TUESDAY"
+							},
+							{
+							"content_type":"text",
+							"title":"Wedsday",
+							"payload":"REMINDER_WEDSDAY"
+							},
+							{
+							"content_type":"text",
+							"title":"Thursday",
+							"payload":"REMINDER_THURSDAY"
+							},
+							{
+							"content_type":"text",
+							"title":"Friday",
+							"payload":"REMINDER_FRIDAY"
+							},
+							{
+							"content_type":"text",
+							"title":"Saturday",
+							"payload":"REMINDER_SATURDAY"
+							},
+							{
+							"content_type":"text",
+							"title":"Sunday",
+							"payload":"REMINDER_SUNDAY"
+							}]
+		};
+sendMessage(senderId,message);
+}
 
 function checkHelper(subject,senderId){
 	
