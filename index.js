@@ -139,10 +139,10 @@ app.post('/webhook', function (req, res) {
 					showExpertise(event.sender.id);
 				}
 			}else if(reply.payload.indexOf("delete_expertise")>-1){
-				var expertise_id = reply.payload.split("-");
-				 expertise_id = expertise_id[1];
-				 subject = expertise_id[2];
-				 removeExpertise(event.sender.id,expertise_id,subject);
+				var id = reply.payload.split("-");
+				 expertiseId = d[1];
+				 subject = id[2];
+				 removeExpertise(event.sender.id,expertiseId,subject);
 			}else if(reply.payload.indexOf("request_expertise")>-1){				
 				var expertise_id = reply.payload.split("-");
 				 expertise_id = expertise_id[1];
@@ -1259,7 +1259,7 @@ function removeExpertise(recipientId,expertise_id,subject){
 			} else if (response.body.error) {
 				console.log('Error: ', response.body.error);
 			}else{
-				sendMessage(recipientId, {text: subject+ " expertise has been successfully deleted deleted \n\n "});
+				sendMessage(recipientId, {text: subject+ " expertise has been successfully deleted \n\n "});
 				showExpertise(recipientId);	
 			}			
 		});
