@@ -89,9 +89,11 @@ app.post('/webhook', function (req, res) {
 						type =  senderContext[event.sender.id].reminder_type;						
 						if(reply.indexOf("REMINDER_TIME")>-1){
 							var post_data = querystring.stringify({
+											'status' : 'completed',
+											'time':reply,
 											'facebook_id' : event.sender.id,
-											'request_id':reqId,
-											'time':reply });					
+											'request_id':reqId
+											});					
 											submitForm(post_data,backurl+"reminder/updateall",event.sender.id,"update_reminder");
 											sendMessage(event.sender.id, {text: "" + post_data});
 						}else{
