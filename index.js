@@ -903,7 +903,7 @@ function getStarted(){
 					};
 		var welcome = {"greeting":[{
 						"locale":"default",
-						"text":"Good to have you {{user_first_name}}!. Surrogate bot would help you get help or render help on various subjects"
+						"text":"Good to have you {{user_first_name}}!."
 						}] 
 					};		
 		request({
