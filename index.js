@@ -86,14 +86,21 @@ app.post('/webhook', function (req, res) {
 					reply = event.message.quick_reply.payload;
 					if(senderContext[event.sender.id].request_id!=null){
 						reqId =  senderContext[event.sender.id].request_id;
-						type =  senderContext[event.sender.id].reminder_type;
-						var post_data = querystring.stringify({
-						'facebook_id' : event.sender.id,
-						'request_id':reqId,
-						'type':type,
-						'day':reply
-						});					
-						submitForm(post_data,backurl+"reminder/add",event.sender.id,"add_reminder");
+						type =  senderContext[event.sender.id].reminder_type;						
+						if(senderContext[event.sender.id].status ==="pick_reminder_time"){
+							var post_data = querystring.stringify({
+											'facebook_id' : event.sender.id,
+											'request_id':reqId,
+											'time':reply });					
+											submitForm(post_data,backurl+"reminder/updateall",event.sender.id,"update_reminder");
+						}else{
+							var post_data = querystring.stringify({
+											'facebook_id' : event.sender.id,
+											'request_id':reqId,
+											'type':type,
+											'day':reply });					
+											submitForm(post_data,backurl+"reminder/add",event.sender.id,"add_reminder");
+						}
 					}
 					
 				}else{
@@ -221,7 +228,7 @@ app.post('/webhook', function (req, res) {
 				 request_id = members_id[1];				
 				 if(senderContext[event.sender.id]!=null){  
 					 senderContext[event.sender.id].request_id=request_id;
-					 senderContext[event.sender.id].type="type_remind_expert";
+					 senderContext[event.sender.id].reminder_type="type_remind_expert";
 					 pickPeriod(event.sender.id);
 				}				
 			}else if(reply.payload.indexOf("remind_student")>-1){				
@@ -229,7 +236,7 @@ app.post('/webhook', function (req, res) {
 				 request_id = members_id[1];
 				 if(senderContext[event.sender.id]!=null){
 					 senderContext[event.sender.id].request_id=request_id;				 
-					 senderContext[event.sender.id].type="type_remind_student";
+					 senderContext[event.sender.id].reminder_type="type_remind_student";
 					 pickPeriod(event.sender.id);
 				}				
 			}else if(reply.payload=="postback_student_meeting"){
@@ -1184,6 +1191,7 @@ function submitForm(post_data,url,userId,action){
 						if(action=="add_reminder"){
 							if(!exists){
 								pickTime(userId);
+								senderContext[userId].status="pick_reminder_time";
 							}else{
 								var period = post_data.day;
 								period  = period.split("-");
