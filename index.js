@@ -265,10 +265,11 @@ function checkHelper(subject,senderId){
 				try{
 					output = JSON.parse(body);	
 					if(output.length>0){
-							sendMessage(senderId, {text: "Oh! that is nice we have people that can help you with "+subject+". Here is their list"});
+							sendMessage(senderId, {text: "Oh! that is nice we have people that can help you with "+subject+". Here is the list"});
 							senderContext[senderId].state = "provide_subject_done";	
 						
 					var total = output.length;
+					elementss = new Array();
 					/*
 							var start = (senderContext[senderId].nextexp!=null)?senderContext[senderId].nextexp:0;
 							if(total>3){
