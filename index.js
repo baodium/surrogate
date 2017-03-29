@@ -199,8 +199,8 @@ app.post('/webhook', function (req, res) {
 				}				
 			}else if(reply.payload=="set_class_reminder"){
 				if(senderContext[event.sender.id]!=null){
-					sendMessage(event.sender.id, {text: "Cool! you can now setup a class reminder for meetings with your tutor(s) or student(s) \n\n\n"});
-					sendMessage(event.sender.id, {text: "Which type of reminder do you want to setup?"});
+					sendMessage(event.sender.id, {text: "Cool! you can now setup a class reminder for meetings with your tutor(s) or student(s) \n\n\n Which type of reminder do you want to setup?"});
+					//sendMessage(event.sender.id, {text: "Which type of reminder do you want to setup?"});
 					reminderOption(event.sender.id);
 					//senderContext[event.sender.id].status = "type_reminder";
 				}
