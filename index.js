@@ -828,6 +828,7 @@ function reminderOption(recipientId){
                     "payload": {
                         "template_type": "generic",
                         "elements": [{
+							"title": "Select",
                             "buttons": [{
 								"type": "postback",
                                 "title": "Meeting with tutor",
