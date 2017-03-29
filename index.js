@@ -306,9 +306,9 @@ function checkHelper(subject,senderId){
 										};
 										*/
 					elementss[i]={                           
-							"title": output[i].name, 
+							"title": "Expert in: "+output[i].name, 
 							"image_url": output[i].profile_pic,                  
-							"subtitle": output[i].subject+", Level:"+level+" student",   
+							"subtitle":  "Level:"+level+"",   
                             "buttons": [{
 											"title": "Request Expertise",
 											"type": "postback",
