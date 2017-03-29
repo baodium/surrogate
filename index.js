@@ -903,7 +903,7 @@ function getStarted(){
 					};
 		var welcome = {"greeting":[{
 						"locale":"default",
-						"text":"Hello there {{user_first_name}}!."
+						"text":"You are welcome {{user_first_name}}!."
 						}] 
 					};		
 		request({
@@ -916,6 +916,18 @@ function getStarted(){
 		});
 }
 
+
+function removeStarted(){
+		var json = {"setting_type":"greeting"}	;
+		request({
+        url: 'https://graph.facebook.com/v2.8/me/thread_settings',
+        method: 'DELETE',		
+        qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
+        json: post
+		}, function(error, response, body) {
+
+		});
+}
 
 function submitForm(post_data,url,userId,action){
 		request({
