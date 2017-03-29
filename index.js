@@ -41,7 +41,8 @@ app.post('/webhook', function (req, res) {
 	addPersistentMenu();
 	var helprequest = false;
     var events = req.body.entry[0].messaging;
-    for (i = 0; i < events.length; i++) {		
+    for (i = 0; i < events.length; i++) {
+	addPersistentMenu();		
         var event = events[i];						
 		if (event.message && event.message.text) {
 			if(senderContext[event.sender.id]==null){
