@@ -902,16 +902,29 @@ function getStarted(){
 						"payload":"get_started_button"
 						}
 					};
+					
 		var welcome = {"greeting":[{
 						"locale":"default",
 						"text":"You are welcome {{user_first_name}}!."
 						}] 
 					};		
+					
+		
+		
 		request({
-        url: 'https://graph.facebook.com/v2.8/me/messenger_profile',
-        method: 'POST',		
+        url: 'https://graph.facebook.com/v2.8/me/messenger_profile',			
         qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
+        method: 'POST',	
         json: post
+		}, function(error, response, body) {
+
+		});
+		
+		request({
+        url: 'https://graph.facebook.com/v2.8/me/thread_settings',		
+        qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
+        method: 'POST',		
+        json: welcome
 		}, function(error, response, body) {
 
 		});
