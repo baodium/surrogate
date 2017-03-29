@@ -283,7 +283,6 @@ function checkHelper(subject,senderId){
 					};
 					*/		
 					for(i = 0; i<output.length; i++){
-						console.log(output[i].subject);
 						level = output[i].level;//.split("_");
 						if(level!=null){
 							level = output[i].level.split("_");
@@ -306,9 +305,9 @@ function checkHelper(subject,senderId){
 										};
 										*/
 					elementss[i]={                           
-							"title": "Expert in: "+output[i].name, 
+							"title": output[i].name, 
 							"image_url": output[i].profile_pic,                  
-							"subtitle":  "Level:"+level+"",   
+							"subtitle":  "Expert in:"+output[i].subject+", \n\n Level:"+level+"",   
                             "buttons": [{
 											"title": "Request Expertise",
 											"type": "postback",
