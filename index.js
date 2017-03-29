@@ -82,6 +82,10 @@ app.post('/webhook', function (req, res) {
 				  messageOption(event.sender.id,"Do you want to send another message?",fromm,to,subject);
 				  messageOption(to,"Do you want to reply this message?",to,fromm,subject);
 				  senderContext[event.sender.id].message="false";				
+				}else if(event.message.quick_reply){
+					reply = event.message.quick_reply.payload;
+					sendMessage(event.sender.id, {text: "Reply:"+reply});
+					 pickTime(event.sender.id);
 				}else{
 					sendMessage(event.sender.id, {text: "" + "Sorry, I don't understand that. Anyway, this is what I have on my menu"});
 					showMenu(event.sender.id);
@@ -210,8 +214,8 @@ app.post('/webhook', function (req, res) {
 				 sub= members_id[3];
 				 if(senderContext[event.sender.id]!=null){  
 					 //sendMessage(event.sender.id, {text: "Okay then! please pick a reminder time"});
-					 senderContext[event.sender.id].status="type_remind_expert_time";
-					 pickTime(event.sender.id);
+					 senderContext[event.sender.id].status="type_remind_expert_period";
+					 pickPeriod(event.sender.id);
 				}				
 			}else if(reply.payload.indexOf("remind_student")>-1){				
 				var members_id = reply.payload.split("-");
@@ -220,8 +224,8 @@ app.post('/webhook', function (req, res) {
 				 sub= members_id[3];
 				 if(senderContext[event.sender.id]!=null){  
 					// sendMessage(event.sender.id, {text: "Okay then! please pick a reminder time"});
-					 senderContext[event.sender.id].status="type_remind_student_time";
-					 pickTime(event.sender.id);
+					 senderContext[event.sender.id].status="type_remind_student_period";
+					 pickPeriod(event.sender.id);
 				}				
 			}else if(reply.payload=="postback_student_meeting"){
 				if(senderContext[event.sender.id]!=null){
@@ -264,7 +268,7 @@ return true;
 }
 
 
-function pickTime(senderId){
+function pickPeriod(senderId){
 	message = {
 			"text":"Pick a reminder period:",
 			"quick_replies":[{
@@ -305,6 +309,22 @@ function pickTime(senderId){
 							"content_type":"text",
 							"title":"Every Sunday",
 							"payload":"REMINDER_SUNDAY"
+							}]
+		};
+sendMessage(senderId,message);
+}
+
+function pickTime(senderId){
+	message = {
+			"text":"Pick a reminder time:",
+			"quick_replies":[{
+							"content_type":"text",
+							"title":"12 AM in the morning",
+							"payload":"REMINDER_TIME_12AM"
+							},{
+							"content_type":"text",
+							"title":"12 PM",
+							"payload":"REMINDER_TIME_12PM"
 							}]
 		};
 sendMessage(senderId,message);
