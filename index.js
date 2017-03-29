@@ -1080,9 +1080,8 @@ function showExpertise(recipientId){
 						}
 
 						elementss[i]={                           
-							"title": output[i].subject, 
-							"image_url": senderContext[recipientId].profilePic,                  
-							"subtitle": output[i].subject+", Level:"+level,   
+							"title": "SUBJECT:"output[i].subject,                  
+							"subtitle": "EXPERTISE LEVEL:"+level,   
                             "buttons": [{
 								"type": "postback",
                                 "title": "Delete",
