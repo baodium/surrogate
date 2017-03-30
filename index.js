@@ -1449,13 +1449,11 @@ function showReminders(recipientId){
 			} else if (response.body.error) {
 				console.log('Error: ', response.body.error);
 			}else{
-				output = JSON.parse(body);
-				try{
+				output = JSON.parse(body);			
 				var total = output.length;
 				elementss = new Array();
 				if(total<1){
-					sendMessage(recipientId, {text: "Oh! your class reminder list is empty"});
-					
+					sendMessage(recipientId, {text: "Oh! your class reminder list is empty"});					
 				message = {
                 "attachment": {
                     "type": "template",
@@ -1478,10 +1476,10 @@ function showReminders(recipientId){
                     }
                 }
 				};			
-				sendMessage(recipientId, message);	
-										
+				sendMessage(recipientId, message);											
 				}else{
-					sendMessage(recipientId, {text: "Here is your class reminder list"});
+					sendMessage(recipientId, {text: "Here is your class reminder list"});					
+					try{
 					for(i = 0; i<output.length; i++){
 						day = output[i].day;//.split("_");
 						time = output[i].time;
@@ -1490,8 +1488,7 @@ function showReminders(recipientId){
 							day=day[1];
 						}else{
 							day="";
-						}
-						
+						}						
 						if(time!=null){
 							time = output[i].time.split("_");
 							time=time[2]+" "+time[3];
@@ -1523,11 +1520,10 @@ function showReminders(recipientId){
 				};
 				
 				sendMessage(recipientId,message);
-				}
-					
-			}catch(err){
+				}catch(err){
 				sendMessage(recipientId,{text: err+" "+body});
-			}
+				}
+			}	
 			}			
 		});
 	
