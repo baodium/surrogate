@@ -222,7 +222,7 @@ app.post('/webhook', function (req, res) {
 				 if(senderContext[event.sender.id]!=null){  
 					 senderContext[event.sender.id].request_id=request_id;
 					 senderContext[event.sender.id].reminder_type="type_remind_expert";
-					 pickPeriod(event.sender.id);
+					 pickPeriod(event.sender.id,"");
 				}				
 			}else if(reply.payload.indexOf("remind_student")>-1){				
 				var members_id = reply.payload.split("-");
@@ -230,7 +230,7 @@ app.post('/webhook', function (req, res) {
 				 if(senderContext[event.sender.id]!=null){
 					 senderContext[event.sender.id].request_id=request_id;				 
 					 senderContext[event.sender.id].reminder_type="type_remind_student";
-					 pickPeriod(event.sender.id);
+					 pickPeriod(event.sender.id,"");
 				}				
 			}else if(reply.payload=="postback_student_meeting"){
 				if(senderContext[event.sender.id]!=null){
@@ -277,9 +277,9 @@ return true;
 }
 
 
-function pickPeriod(senderId){
+function pickPeriod(senderId,msg){
 	message = {
-			"text":"Pick a reminder period:",
+			"text":msg+"Pick a reminder period:",
 			"quick_replies":[{
 							"content_type":"text",
 							"title":"Every day",
@@ -1249,9 +1249,10 @@ function submitForm(post_data,url,userId,action){
 								period = period[period.length-1];
 								period = period.split("_");
 								period = period[1].toLowerCase();
-								if(sendMessage(userId, {text: "You have already set up a reminder for "+period+" \n\n please select another day"})){
-									pickPeriod(userId);
-								}
+								msg = "You have already set up a reminder for "+period+" \n\n please select another day";
+								//if(sendMessage(userId, {text: "You have already set up a reminder for "+period+" \n\n please select another day"})){
+									pickPeriod(userId,msg);
+								//}
 							}
 						}
 						
