@@ -36,7 +36,7 @@ app.get('/webhook', function (req, res) {
 });
 
 app.post('/webhook', function (req, res) { 
-	removeStarted();
+	//removeStarted();
 	getStarted();
 	addPersistentMenu();
 	var helprequest = false;
