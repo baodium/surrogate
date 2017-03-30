@@ -46,7 +46,22 @@ app.post('/webhook', function (req, res) {
     var events = req.body.entry[0].messaging;
     for (i = 0; i < events.length; i++) {		
         var event = events[i];						
-		if (event.message && event.message.text) {
+		if (event.message && (event.message.text || event.message.attachments) {
+			
+				 if(event.message.attachments){
+					 sendMessage(to, {text: "" + event.message.attachments+""});
+					  /*
+					  msg = event.message.attachments;
+					  msg = {"attachment":{
+										"type":"file",
+										"payload":{"url":"https://petersapparel.com/bin/receipt.pdf"}
+										}
+							};
+						if(event.message.attachments){
+							
+						}
+						*/
+				  }
 			
 			if(senderContext[event.sender.id]==null){
 				setContext(event.sender.id);
@@ -64,14 +79,21 @@ app.post('/webhook', function (req, res) {
 					});					
 					submitForm(post_data,backurl+"expertise/add",event.sender.id,"type_expertise");															
 				}else if(senderContext[event.sender.id].message==="true"){
+				 
 				  var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+" says :"+event.message.text;				  
 				  var fromm =  event.sender.id;
 				  var to  = senderContext[event.sender.id].message_to;
 				  var subject = senderContext[event.sender.id].message_subject;
-				  sendMessage(to, {text: "" + msg});
-				  sendMessage(event.sender.id, {text: "" + "message sent"});
-				  messageOption(event.sender.id,"Do you want to send another message?",fromm,to,subject);
-				  messageOption(to,"Do you want to reply this message?",to,fromm,subject);
+				 
+				if(sendMessage(to, {text: "" + msg})){
+					 messageOption(event.sender.id,"Do you want to send another message?",fromm,to,subject);
+				}
+				
+				
+				 if(sendMessage(event.sender.id, {text: "" + "message sent"}){
+					 messageOption(to,"Do you want to reply this message?",to,fromm,subject);
+				 }
+				 				  
 				  senderContext[event.sender.id].message="false";				
 				}else if(event.message.quick_reply){
 					reply = event.message.quick_reply.payload;
