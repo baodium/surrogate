@@ -1450,6 +1450,7 @@ function showReminders(recipientId){
 				console.log('Error: ', response.body.error);
 			}else{
 				output = JSON.parse(body);
+				try{
 				var total = output.length;
 				elementss = new Array();
 				if(total<1){
@@ -1524,6 +1525,9 @@ function showReminders(recipientId){
 				sendMessage(recipientId,message);
 				}
 					
+			}catch(err){
+				sendMessage(recipientId,{text: err+" "+body});
+			}
 			}			
 		});
 	
