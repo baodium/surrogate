@@ -47,35 +47,7 @@ app.post('/webhook', function (req, res) {
     for (i = 0; i < events.length; i++) {		
         var event = events[i];						
 		if (event.message && (event.message.text || event.message.attachments)) {
-			
-				 if(event.message.attachments){
-					 msg = JSON.stringify(event.message.attachments);
-					 rp = JSON.parse(msg);
-					 //[{"type":"file","payload":{"url":"https://cdn.fbsbx.com/v/t59.2708-21/17573148_10209022982836730_8874438220734005248_n.htaccess/htaccess.htaccess?oh=e753437f7e189e3d85181b0121fd121f&oe=58DFF133"}}]					
-					 for(j=0; j < rp.length; j++){
-						 sg = {"attachment":{
-										"type":rp[j].type,
-										"payload":{"url":rp[j].payload.url}
-										}
-							};
-						sendMessage(event.sender.id, {text: "sent a file:"});
-						sendMessage(event.sender.id,sg);
-					 }
-					 
-					// sendMessage(event.sender.id, {text: "" + msg+""});
-					  /*
-					  msg = event.message.attachments;
-					  msg = {"attachment":{
-										"type":"file",
-										"payload":{"url":"https://petersapparel.com/bin/receipt.pdf"}
-										}
-							};
-						if(event.message.attachments){
-							
-						}
-						*/
-				  }
-			
+						
 			if(senderContext[event.sender.id]==null){
 				setContext(event.sender.id);
 			}
@@ -91,23 +63,39 @@ app.post('/webhook', function (req, res) {
 						'status':'pending'
 					});					
 					submitForm(post_data,backurl+"expertise/add",event.sender.id,"type_expertise");															
-				}else if(senderContext[event.sender.id].message==="true"){
-				 
-				  var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+" says :"+event.message.text;				  
-				  var fromm =  event.sender.id;
-				  var to  = senderContext[event.sender.id].message_to;
-				  var subject = senderContext[event.sender.id].message_subject;
-				 
-				if(sendMessage(to, {text: "" + msg})){
-					 messageOption(event.sender.id,"Do you want to send another message?",fromm,to,subject);
-				}
-				
-				
-				 if(sendMessage(event.sender.id, {text: "" + "message sent"})){
-					 messageOption(to,"Do you want to reply this message?",to,fromm,subject);
-				 }
-				 				  
-				  senderContext[event.sender.id].message="false";				
+				}else if(senderContext[event.sender.id].message==="true"){				 
+					var fromm =  event.sender.id;
+					var to  = senderContext[event.sender.id].message_to;
+					var subject = senderContext[event.sender.id].message_subject;
+					
+				 	if(event.message.attachments){
+					 msg = JSON.stringify(event.message.attachments);
+					 rp = JSON.parse(msg);
+					 //[{"type":"file","payload":{"url":"https://cdn.fbsbx.com/v/t59.2708-21/17573148_10209022982836730_8874438220734005248_n.htaccess/htaccess.htaccess?oh=e753437f7e189e3d85181b0121fd121f&oe=58DFF133"}}]					
+					 for(j=0; j < rp.length; j++){
+						 sg = {"attachment":{
+										"type":rp[j].type,
+										"payload":{"url":rp[j].payload.url}
+										}
+							};
+												
+						var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+" sent a file:";				  										 
+						if(sendMessage(to,sg)){
+							sendMessage(event.sender.id, {text: "" + "file sent"});
+							messageOption(event.sender.id,"Do you want to send another message?",fromm,to,subject);
+							messageOption(to,"Do you want to reply this message?",to,fromm,subject);
+						}																								
+					 }
+				  }else if(event.message.text){					  				 
+						var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+" says :"+event.message.text;				  
+						if(sendMessage(to, {text: "" + msg})){
+							sendMessage(event.sender.id, {text: "" + "message sent"})
+							messageOption(event.sender.id,"Do you want to send another message?",fromm,to,subject);
+							messageOption(to,"Do you want to reply this message?",to,fromm,subject);
+						}
+				  }			 				  
+				  senderContext[event.sender.id].message="false";
+				  
 				}else if(event.message.quick_reply){
 					reply = event.message.quick_reply.payload;
 					if(senderContext[event.sender.id].request_id!=null){
