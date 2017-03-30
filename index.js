@@ -79,7 +79,7 @@ app.post('/webhook', function (req, res) {
 										}
 							};
 												
-						var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+" sent this file:";				  										 
+						var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+" sent this file.";				  										 
 						if(sendMessage(to,sg)){
 							if(sendMessage(to, {text: "" + msg})){
 								messageOption(to,"Do you want to reply this message?",to,fromm,subject);
@@ -90,7 +90,7 @@ app.post('/webhook', function (req, res) {
 						}																								
 					 }
 				  }else if(event.message.text){					  				 
-						var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+" says :"+event.message.text;				  
+						var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+" says:"+event.message.text;				  
 						if(sendMessage(to, {text: "" + msg})){
 							sendMessage(event.sender.id, {text: "" + "message sent"});
 							messageOption(event.sender.id,"Do you want to send another message?",fromm,to,subject);
