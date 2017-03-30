@@ -38,18 +38,15 @@ app.get('/webhook', function (req, res) {
 app.post('/webhook', function (req, res) { 
 	//removeStarted();
 	
-	removeStarted();
-	removePersistentMenu();
-	//getStarted();
-	//addPersistentMenu();
+	//removeStarted();
+	//removePersistentMenu();
+	getStarted();
+	addPersistentMenu();
 	var helprequest = false;
     var events = req.body.entry[0].messaging;
     for (i = 0; i < events.length; i++) {		
         var event = events[i];						
 		if (event.message && event.message.text) {
-			
-			removeStarted();
-			removePersistentMenu();
 			
 			if(senderContext[event.sender.id]==null){
 				setContext(event.sender.id);
@@ -101,6 +98,8 @@ app.post('/webhook', function (req, res) {
 
 					}
 					
+				}else if(event.message.text=="remind_me"){
+					showReminders(event.sender.id);
 				}else{
 					sendMessage(event.sender.id, {text: "" + "Sorry, I don't understand that. Anyway, this is what I have on my menu"});
 					showMenu(event.sender.id);
