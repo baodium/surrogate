@@ -146,6 +146,8 @@ app.post('/webhook', function (req, res) {
 				showExperts(event.sender.id);
 			}else if(reply.payload=="my_students"){
 				showStudents(event.sender.id);
+			}else if(reply.payload=="my_reminders"){
+				showReminders(event.sender.id);
 			}else if(reply.payload=="next_expertise"){
 				if(senderContext[event.sender.id]!=null){
 					senderContext[event.sender.id].next++;
@@ -1080,23 +1082,23 @@ function addPersistentMenu(){
               type:"postback",
               title:"Home",
               payload:"home"
-            },
-			{
+            },{
               type:"postback",
               title:"My expertise",
               payload:"my_expertise"
-            },
-			{
+            },{
               type:"postback",
               title:"My Tutors",
               payload:"my_experts"
-            },
-			{
+            },{
               type:"postback",
               title:"My Students",
               payload:"my_students"
-            },
-			{
+            },{
+              type:"postback",
+              title:"My Class Reminders",
+              payload:"my_reminders"
+            },{
               type:"postback",
               title:"About",
               payload:"about_me"
@@ -1402,6 +1404,104 @@ function showExpertise(recipientId){
 		});
 	
 }
+
+
+function showReminders(recipientId){
+	var post_data = querystring.stringify({'facebook_id' : recipientId});	
+	request({
+			url: backurl+"reminder/get",
+			method: 'POST',
+			body: post_data,
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded',
+				'Content-Length':post_data.length
+				}
+		}, function(error, response, body) {
+			if (error) {
+				console.log('Error sending message: ', error);
+			} else if (response.body.error) {
+				console.log('Error: ', response.body.error);
+			}else{
+				output = JSON.parse(body);
+				var total = output.length;
+				elementss = new Array();
+				if(total<1){
+					sendMessage(recipientId, {text: "Oh! your class reminder list is empty"});
+					
+				message = {
+                "attachment": {
+                    "type": "template",
+                    "payload": {
+                        "template_type": "generic",
+                        "elements": [{
+                            "title":"Would you like to an add a class reminder?",
+                            "buttons": [{
+								"type": "postback",
+                                "title": "Yes",
+                                "payload": "set_class_reminder",
+                                },
+								{
+								"type": "postback",
+                                "title": "No",
+                                "payload": "postback_no",
+                                }
+								]
+                        }]
+                    }
+                }
+				};			
+				sendMessage(recipientId, message);	
+										
+				}else{
+					sendMessage(recipientId, {text: "Here is your class reminder list"});
+					for(i = 0; i<output.length; i++){
+						day = output[i].day;//.split("_");
+						time = output[i].time;
+						if(level!=null){
+							day = output[i].day.split("_");
+							day=day[1];
+						}else{
+							day="";
+						}
+						
+						if(time!=null){
+							time = output[i].time.split("_");
+							time=time[2]+" "+time[3];
+						}else{
+							time="";
+						}
+
+						
+						elementss[i]={                           
+							"title": output[i].subject.toUpperCase(),                  
+							"subtitle":"DAY:"+day+"/n/n TIME:"+time,   
+                            "buttons": [{
+								"type": "postback",
+                                "title": "Delete",
+                                "payload": "delete_reminder-"+output[i].reminder_id+"-"+output[i].subject
+                                }]
+                        };
+				
+					}
+										
+				message = {
+					"attachment": {
+                    "type": "template",
+                    "payload": {
+                        "template_type": "generic",
+                        "elements": elementss
+                    }
+					}
+				};
+				
+				sendMessage(recipientId,message);
+				}
+					
+			}			
+		});
+	
+}
+
 
 
 function showExperts(fromId){
