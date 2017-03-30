@@ -46,7 +46,7 @@ app.post('/webhook', function (req, res) {
     var events = req.body.entry[0].messaging;
     for (i = 0; i < events.length; i++) {		
         var event = events[i];						
-		if (event.message && (event.message.text || event.message.attachments) {
+		if (event.message && (event.message.text || event.message.attachments)) {
 			
 				 if(event.message.attachments){
 					 sendMessage(to, {text: "" + event.message.attachments+""});
@@ -90,7 +90,7 @@ app.post('/webhook', function (req, res) {
 				}
 				
 				
-				 if(sendMessage(event.sender.id, {text: "" + "message sent"}){
+				 if(sendMessage(event.sender.id, {text: "" + "message sent"})){
 					 messageOption(to,"Do you want to reply this message?",to,fromm,subject);
 				 }
 				 				  
