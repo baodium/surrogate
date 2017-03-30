@@ -37,8 +37,11 @@ app.get('/webhook', function (req, res) {
 
 app.post('/webhook', function (req, res) { 
 	//removeStarted();
-	getStarted();
-	addPersistentMenu();
+	
+	removeStarted();
+	removePersistentMenu();
+	//getStarted();
+	//addPersistentMenu();
 	var helprequest = false;
     var events = req.body.entry[0].messaging;
     for (i = 0; i < events.length; i++) {		
@@ -1165,6 +1168,23 @@ function removeStarted(){
 		});
 }
 
+
+function removePersistentMenu(){
+		var json = {
+		"setting_type":"call_to_actions",
+		"thread_state":"existing_thread"
+		};
+		request({
+        url: 'https://graph.facebook.com/v2.8/me/thread_settings',
+        method: 'DELETE',		
+        qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
+        json: json
+		}, function(error, response, body) {
+
+		});
+}
+
+
 function submitForm(post_data,url,userId,action){
 		request({
 			url: url,
@@ -1249,7 +1269,7 @@ function submitForm(post_data,url,userId,action){
 								period = period[period.length-1];
 								period = period.split("_");
 								period = period[1].toLowerCase();
-								msg = "You have already set up a reminder for "+period+" \n\n please select another day";
+								msg = "You have already set up a reminder for "+period+" \n. Please pick another day \n\n";
 								//if(sendMessage(userId, {text: "You have already set up a reminder for "+period+" \n\n please select another day"})){
 									pickPeriod(userId,msg);
 								//}
