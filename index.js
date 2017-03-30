@@ -47,6 +47,10 @@ app.post('/webhook', function (req, res) {
     for (i = 0; i < events.length; i++) {		
         var event = events[i];						
 		if (event.message && event.message.text) {
+			
+			removeStarted();
+			removePersistentMenu();
+			
 			if(senderContext[event.sender.id]==null){
 				setContext(event.sender.id);
 			}
