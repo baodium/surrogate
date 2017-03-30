@@ -1501,18 +1501,16 @@ function showReminders(recipientId){
 						}else{
 							time="";
 						}
-						
-						
+												
 						elementss[i]={                           
 							"title": output[i].subject.toUpperCase(),                  
 							"subtitle":"DAY:"+day+"\n\n TIME:"+time,   
                             "buttons": [{
 								"type": "postback",
                                 "title": "Delete",
-                                "payload": "delete_reminder-"+output[i].reminder_id+"-"+output[i].subject+", "+day+", "+time
+                                "payload": "delete_reminder-"+output[i].reminder_id+"-"+output[i].subject+"_"+day+"_"+time
                                 }]
-                        };
-				
+                        };				
 					}
 										
 				message = {
