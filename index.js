@@ -179,6 +179,11 @@ app.post('/webhook', function (req, res) {
 				 expertiseId = id[1];
 				 subject = id[2];
 				 removeExpertise(event.sender.id,expertiseId,subject);
+			}else if(reply.payload.indexOf("delete_reminder")>-1){
+				var id = reply.payload.split("-");
+				 reminderId = id[1];
+				 title = id[2];
+				 removeReminder(event.sender.id,reminderId,title);
 			}else if(reply.payload.indexOf("request_expertise")>-1){				
 				var expertise_id = reply.payload.split("-");
 				 expertise_id = expertise_id[1];
@@ -1504,7 +1509,7 @@ function showReminders(recipientId){
                             "buttons": [{
 								"type": "postback",
                                 "title": "Delete",
-                                "payload": "delete_reminder-"+output[i].reminder_id+"-"+output[i].subject
+                                "payload": "delete_reminder-"+output[i].reminder_id+"-"+output[i].subject+", "+day+", "+time
                                 }]
                         };
 				
@@ -1694,6 +1699,28 @@ function removeExpertise(recipientId,expertise_id,subject){
 			}else{
 				sendMessage(recipientId, {text: subject+ " expertise has been successfully deleted \n\n "});
 				showExpertise(recipientId);	
+			}			
+		});
+}
+
+function removeReminder(recipientId,reminder_id,title){
+		var post_data = querystring.stringify({'facebook_id' : recipientId,'reminder_id':reminder_id});
+	request({
+			url: backurl+"reminder/remove",
+			method: 'POST',
+			body: post_data,
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded',
+				'Content-Length':post_data.length
+				}
+		}, function(error, response, body) {
+			if (error) {
+				console.log('Error sending message: ', error);
+			} else if (response.body.error) {
+				console.log('Error: ', response.body.error);
+			}else{
+				sendMessage(recipientId, {text: title+ " reminder has been successfully deleted \n\n "});
+				showReminders(recipientId);	
 			}			
 		});
 }
