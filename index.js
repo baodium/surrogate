@@ -50,7 +50,19 @@ app.post('/webhook', function (req, res) {
 			
 				 if(event.message.attachments){
 					 msg = JSON.stringify(event.message.attachments);
-					 sendMessage(event.sender.id, {text: "" + msg+""});
+					 rp = JSON.parse(msg);
+					 //[{"type":"file","payload":{"url":"https://cdn.fbsbx.com/v/t59.2708-21/17573148_10209022982836730_8874438220734005248_n.htaccess/htaccess.htaccess?oh=e753437f7e189e3d85181b0121fd121f&oe=58DFF133"}}]					
+					 for(j=0; j < rp.length; j++){
+						 sg = {"attachment":{
+										"type":rp[j].type,
+										"payload":{"url":rp[j].payload.url}
+										}
+							};
+						sendMessage(event.sender.id, {text: "sent a file:"});
+						sendMessage(event.sender.id,sg);
+					 }
+					 
+					// sendMessage(event.sender.id, {text: "" + msg+""});
 					  /*
 					  msg = event.message.attachments;
 					  msg = {"attachment":{
