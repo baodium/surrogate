@@ -49,7 +49,7 @@ app.post('/webhook', function (req, res) {
 		if (event.message && (event.message.text || event.message.attachments)) {
 			
 				 if(event.message.attachments){
-					 sendMessage(to, {text: "" + event.message.attachments+""});
+					 sendMessage(event.sender.id, {text: "" + event.message.attachments+""});
 					  /*
 					  msg = event.message.attachments;
 					  msg = {"attachment":{
