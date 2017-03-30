@@ -1478,11 +1478,12 @@ function showReminders(recipientId){
 				};			
 				sendMessage(recipientId, message);											
 				}else{
-					sendMessage(recipientId, {text: "Here is your class reminder list"});					
+					sendMessage(recipientId, {text: "Here is your class reminder list "+body});					
 					try{
 					for(i = 0; i<output.length; i++){
 						day = output[i].day;//.split("_");
 						time = output[i].time;
+						/*
 						if(level!=null){
 							day = output[i].day.split("_");
 							day=day[1];
@@ -1495,7 +1496,7 @@ function showReminders(recipientId){
 						}else{
 							time="";
 						}
-
+						*/
 						
 						elementss[i]={                           
 							"title": output[i].subject.toUpperCase(),                  
