@@ -1436,7 +1436,7 @@ function showExpertise(recipientId){
 function showReminders(recipientId){
 	var post_data = querystring.stringify({'facebook_id' : recipientId});	
 	request({
-			url: backurl+"reminder/get",
+			url: backurl+"reminder/getreminders",
 			method: 'POST',
 			body: post_data,
 			headers: {
