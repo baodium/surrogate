@@ -1508,7 +1508,7 @@ function showReminders(recipientId){
                             "buttons": [{
 								"type": "postback",
                                 "title": "Delete",
-                                "payload": "delete_reminder-"+output[i].reminder_id+"-"+output[i].subject+"_"+day+"_"+time
+                                "payload": "delete_reminder-"+output[i].reminder_id+"-"+output[i].subject+", "+day+", "+time
                                 }]
                         };				
 					}
