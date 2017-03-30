@@ -1478,29 +1478,29 @@ function showReminders(recipientId){
 				};			
 				sendMessage(recipientId, message);											
 				}else{
-					sendMessage(recipientId, {text: "Here is your class reminder list "+body});					
+					sendMessage(recipientId, {text: "Here is your class reminder list "});					
 					try{
 					for(i = 0; i<output.length; i++){
 						day = output[i].day;//.split("_");
 						time = output[i].time;
-						/*
-						if(level!=null){
+						
+						if(day!=null){
 							day = output[i].day.split("_");
-							day=day[1];
+							day=day[1].toLowerCase();
 						}else{
 							day="";
 						}						
 						if(time!=null){
 							time = output[i].time.split("_");
-							time=time[2]+" "+time[3];
+							time=time[2].toLowerCase()+" "+time[3].toLowerCase();
 						}else{
 							time="";
 						}
-						*/
+						
 						
 						elementss[i]={                           
 							"title": output[i].subject.toUpperCase(),                  
-							"subtitle":"DAY:"+day+"/n/n TIME:"+time,   
+							"subtitle":"DAY:"+day+"\n\n TIME:"+time,   
                             "buttons": [{
 								"type": "postback",
                                 "title": "Delete",
