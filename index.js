@@ -79,17 +79,20 @@ app.post('/webhook', function (req, res) {
 										}
 							};
 												
-						var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+" sent a file:";				  										 
+						var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+" sent this file:";				  										 
 						if(sendMessage(to,sg)){
-							sendMessage(event.sender.id, {text: "" + "file sent"});
-							messageOption(event.sender.id,"Do you want to send another message?",fromm,to,subject);
-							messageOption(to,"Do you want to reply this message?",to,fromm,subject);
+							if(sendMessage(to, {text: "" + msg})){
+								messageOption(to,"Do you want to reply this message?",to,fromm,subject);
+							}
+							if(sendMessage(event.sender.id, {text: "" + "file sent"})){
+								messageOption(event.sender.id,"Do you want to send another message?",fromm,to,subject);	
+							}								
 						}																								
 					 }
 				  }else if(event.message.text){					  				 
 						var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+" says :"+event.message.text;				  
 						if(sendMessage(to, {text: "" + msg})){
-							sendMessage(event.sender.id, {text: "" + "message sent"})
+							sendMessage(event.sender.id, {text: "" + "message sent"});
 							messageOption(event.sender.id,"Do you want to send another message?",fromm,to,subject);
 							messageOption(to,"Do you want to reply this message?",to,fromm,subject);
 						}
