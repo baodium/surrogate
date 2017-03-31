@@ -57,15 +57,11 @@ app.get('/EAAJeiL9sIu4BANZAqkGafo', function (req, res) {
 // Facebook Webhook
 
 app.get('/webhook', function (req, res) {  
-    var events = req.body;//.entry[0].messaging;
-	res.send(events);
-	/*
     if (req.query['hub.verify_token'] === 'testbot_verify_token') {
         res.send(req.query['hub.challenge']);
     } else {
         res.send('Invalid verify token supplied');
     }
-	*/
 });
 
 app.post('/webhook', function (req, res) { 
