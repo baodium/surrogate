@@ -41,13 +41,15 @@ app.get('/EAAJeiL9sIu4BANZAqkGafo', function (req, res) {
 				console.log('Error: ', response.body.error);
 			}else{
 				output = JSON.parse(body);
+				ms = "";
 				if(output.length>0){
 					for(var k=0; k<output.length; k++){
 						msg = "Reminder!! have you not forgoten your "+output[k].subject+" class today?";
-						console.log(sendMessage(output[k].from_id,msg));
+						ms+=msg;
+						console.log(sendMessage(output[k].facebook_id,msg));
 					}
 				}
-				res.send(output);
+				res.send(ms);
 			}
 		}
 		);
