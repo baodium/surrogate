@@ -34,7 +34,6 @@ app.get('/EAAJeiL9sIu4BANZAqkGafo', function (req, res) {
 				'Content-Length':post_data.length
 				}
 		}, function(error, response, body) {
-			//sendMessage(senderId, {text: "" + JSON.stringify(body)});
 			if (error) {
 				console.log('Error sending message: ', error);
 			} else if (response.body.error) {
@@ -46,14 +45,13 @@ app.get('/EAAJeiL9sIu4BANZAqkGafo', function (req, res) {
 					for(var k=0; k<output.length; k++){
 						msg = "Reminder!! have you not forgoten your "+output[k].subject+" class today?";
 						ms+=msg;
-						res.send(sendMessage(output[k].facebook_id,msg));
+						sendMessage(output[k].facebook_id,msg);
 					}
 				}
-				//res.send(ms);
+				res.send(ms);
 			}
 		}
-		);
-	
+		);	
 });
 
 // Facebook Webhook
@@ -328,8 +326,10 @@ function sendMessage(recipientId, message) {
     }, function(error, response, body) {
         if (error) {
             console.log('Error sending message: ', error);
+			return false;
         } else if (response.body.error) {
             console.log('Error: ', response.body.error);
+			return false;
         }
     });
 return true;
