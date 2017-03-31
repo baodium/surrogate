@@ -42,9 +42,9 @@ app.get('/EAAJeiL9sIu4BANZAqkGafo', function (req, res) {
 			}else{
 				output = JSON.parse(body);
 				if(output.length>0){
-					for(var k=0; k<output.lenth; k++){
+					for(var k=0; k<output.length; k++){
 						msg = "Reminder!! have you not forgoten your "+output[k].subject+" class today?";
-						sendMessage(output[k].from_id,msg);
+						console.log(sendMessage(output[k].from_id,msg));
 					}
 				}
 				res.send(output);
