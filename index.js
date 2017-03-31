@@ -46,10 +46,10 @@ app.get('/EAAJeiL9sIu4BANZAqkGafo', function (req, res) {
 					for(var k=0; k<output.length; k++){
 						msg = "Reminder!! have you not forgoten your "+output[k].subject+" class today?";
 						ms+=msg;
-						console.log(sendMessage(output[k].facebook_id,msg));
+						res.send(sendMessage(output[k].facebook_id,msg));
 					}
 				}
-				res.send(ms);
+				//res.send(ms);
 			}
 		}
 		);
