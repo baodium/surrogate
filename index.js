@@ -5,7 +5,9 @@ var request = require('request');
 var querystring = require('querystring');
 var http = require('http');
 var fs = require('fs'); 
+var url = require('url');
 var app = express();
+
 
 
 var started=false;
@@ -17,12 +19,39 @@ app.use(bodyParser.json());
 app.listen((process.env.PORT || 3000));
 
 app.get('/', function (req, res) {  
-/*
-var body ='[{"expertise_id":"2","facebook_id":"1441254119239126","subject":"English","level":"amateur_expertise_level","date_added":"2017-03-18","status":"completed"}]';
-var js  = JSON.parse(body);
-console.log(js[0].facebook_id); 
-*/
-		res.send('Test Bot');
+	res.send('Surrogate Bot');
+	
+});
+
+app.get('/EAAJeiL9sIu4BANZAqkGafo', function (req, res) { 
+		var post_data = querystring.stringify({'status' : 'completed','day':'REMINDER_MONDAY','time':'REMINDER_TIME_SIX_AM'});	
+		request({
+			url: backurl+"reminder/getreminders",
+			method: 'POST',
+			body: post_data,
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded',
+				'Content-Length':post_data.length
+				}
+		}, function(error, response, body) {
+			//sendMessage(senderId, {text: "" + JSON.stringify(body)});
+			if (error) {
+				console.log('Error sending message: ', error);
+			} else if (response.body.error) {
+				console.log('Error: ', response.body.error);
+			}else{
+				output = JSON.parse(body);
+				if(output.length>0){
+					for(var k=0; k<output.lenth; k++){
+						msg = "Reminder!! have you not forgoten your "+output[k].subject+" class today?";
+						sendMessage(output[k].from_id,msg);
+					}
+				}
+				res.send(output);
+			}
+		}
+		);
+	
 });
 
 // Facebook Webhook
@@ -157,16 +186,8 @@ app.post('/webhook', function (req, res) {
 				}
 			}else if(reply.payload=="professional_expertise_level" || reply.payload=="intermediate_expertise_level" || reply.payload=="amateur_expertise_level"){					
 					subject = senderContext[event.sender.id].subject;
-				/*	var post_data = querystring.stringify({
-						'status':'completed',
-						'level':reply.payload,
-						'facebook_id' : event.sender.id,
-						'subject':subject
-					});					
-								
-				submitForm(post_data,backurl+"expertise/update",event.sender.id,"update_expertise");
-				*/
-				checkExpertise(event.sender.id,reply.payload,subject);
+				
+				    checkExpertise(event.sender.id,reply.payload,subject);
 			}else if(reply.payload=="postback_no"){
 				if(senderContext[event.sender.id]!=null){
 					sendMessage(event.sender.id, {text: "Okay then. This is what I have on my menu"});
@@ -218,8 +239,7 @@ app.post('/webhook', function (req, res) {
 				var expertise_id = reply.payload.split("-");
 				 expertiseId = expertise_id[1];
 				 fromId = expertise_id[2];
-				 if(senderContext[event.sender.id]!=null){
-					// sendMessage(fromId, {text: "hello from_id"+fromId+" - "+expertiseId});   
+				 if(senderContext[event.sender.id]!=null){ 
 					 sendRejection(fromId,expertiseId,event.sender.id);
 				}
 				
