@@ -45,7 +45,7 @@ app.get('/EAAJeiL9sIu4BANZAqkGafo', function (req, res) {
 					for(var k=0; k<output.length; k++){
 						msg = "Reminder!! have you not forgoten your "+output[k].subject+" class today?";
 						ms+=msg;
-						sendMessage(output[k].facebook_id,msg);
+						sendMessage2(output[k].facebook_id,msg);
 					}
 				}
 				res.send(ms);
@@ -54,6 +54,30 @@ app.get('/EAAJeiL9sIu4BANZAqkGafo', function (req, res) {
 		);	
 });
 
+
+function sendMessage2(recipientId, message) {  
+v="";
+    request({
+        url: 'https://graph.facebook.com/v2.8/me/messages',
+        qs: {access_token: "EAAJeiL9sIu4BANZAqkGafoMRa660rcdg9ViRLX75IFSvkZAZBe2TbgrSrdO2p5bt6psRcbNlrWSRu9GJOWXe9KdrjoB9LGznZASNP1AqWmjYKVeYHZCSjNcdxrtng8kwUk5BInXUsNKoYkfOE4ZCS5WRt0xdiLqb8a3j9zfIug5gZDZD"},
+        method: 'POST',
+        json: {
+            recipient: {id: recipientId},
+            message: message,
+        }
+    }, function(error, response, body) {
+		res.send(body);
+        if (error) {
+            console.log('Error sending message: ', error);
+			return false;
+        } else if (response.body.error) {
+            console.log('Error: ', response.body.error);
+			return false;
+        }
+		v=body;//JSON.stringify(body);
+    });
+return v;//true;
+}
 // Facebook Webhook
 
 app.get('/webhook', function (req, res) {  
@@ -156,7 +180,7 @@ app.post('/webhook', function (req, res) {
 				}else if(event.message.text=="remind_me"){
 					showReminders(event.sender.id);
 				}else{
-					sendMessage(event.sender.id, {text: "" + "Sorry, I don't understand that. Anyway, this is what I have on my menu"});
+					sendMessage(event.sender.id, {text: "" + "Sorry, I don't understand that. Anyway, this is what I have on my menu "+process.env.PAGE_ACCESS_TOKEN});
 					showMenu(event.sender.id);
 				}
 			 }else{
