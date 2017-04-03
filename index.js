@@ -38,11 +38,11 @@ app.get('/EAAJeiL9sIu4BANZAqkGafo', function (req, res) {
 		}else if(n==12){
 			time="REMINDER_TIME_TWELVE_PM";
 		}else if(n==15){
-			time="REMINDER_TIME_THREE_AM";
+			time="REMINDER_TIME_THREE_PM";
 		}else if(n==18){
-			time="REMINDER_TIME_SIX_AM";
+			time="REMINDER_TIME_SIX_PM";
 		}else if(n==21){
-			time ="REMINDER_TIME_NINE_AM";
+			time ="REMINDER_TIME_NINE_PM";
 		}
 		var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 		var d = new Date();
