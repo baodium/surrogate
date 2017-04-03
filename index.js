@@ -215,7 +215,7 @@ app.post('/webhook', function (req, res) {
 				}else if(event.message.text=="remind_me"){
 					showReminders(event.sender.id);
 				}else{
-					sendMessage(event.sender.id, {text: "" + "Sorry, I don't understand that. Anyway, this is what I have on my menu "+process.env.PAGE_ACCESS_TOKEN});
+					sendMessage(event.sender.id, {text: "" + "Sorry, I don't understand that. Anyway, this is what I have on my menu "});
 					showMenu(event.sender.id);
 				}
 			 }else{
