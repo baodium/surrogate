@@ -24,9 +24,38 @@ app.get('/', function (req, res) {
 });
 
 app.get('/EAAJeiL9sIu4BANZAqkGafo', function (req, res) { 
-		var post_data = querystring.stringify({'status' : 'completed','day':'REMINDER_MONDAY','time':'REMINDER_TIME_SIX_AM'});	
+		var d = new Date();
+		var n = d.getHours();
+		time ="";
+		if(n==0){
+			time="REMINDER_TIME_TWELVE_AM";
+		}else if(n==3){
+			time="REMINDER_TIME_THREE_AM";
+		}else if(n==6){
+			day="REMINDER_TIME_SIX_AM";
+		}else if(n==9){
+			time="REMINDER_TIME_NINE_AM";
+		}else if(n==12){
+			time="REMINDER_TIME_TWELVE_PM";
+		}else if(n==15){
+			time="REMINDER_TIME_THREE_AM";
+		}else if(n==18){
+			time="REMINDER_TIME_SIX_AM";
+		}else if(n==21){
+			time ="REMINDER_TIME_NINE_AM";
+		}
+		var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+		var d = new Date();
+		var dayName = days[d.getDay()];
+		dayName  = dayName.toUpperCase();
+		console.log(dayName);
+		console.log(time);
+		
+		var post_data = querystring.stringify({'status' : 'completed','day':'REMINDER_'+dayName,'time':'REMINDER_TIME_SIX_AM'});			
+		var sent = new Array();
+		if(time!=""){
 		request({
-			url: backurl+"reminder/getreminders",
+			url: backurl+"reminder/getmessages",
 			method: 'POST',
 			body: post_data,
 			headers: {
@@ -43,20 +72,25 @@ app.get('/EAAJeiL9sIu4BANZAqkGafo', function (req, res) {
 				ms = "";
 				if(output.length>0){
 					for(var k=0; k<output.length; k++){
-						msg = "Reminder!! have you not forgoten your "+output[k].subject+" class today?";
-						ms+=msg;
-						sendMessage2(output[k].facebook_id,msg);
+						name = output[k].name.split(" ");
+						msg = "Hey "+name[0]+"! have you not forgoten your "+output[k].subject+" class today?";
+						index = contains.call(sent, output[k].facebook_id); // true
+						if(!index){
+							sendMessage2(output[k].facebook_id,{text: "" + msg});
+							sent[k]=output[k].facebook_id;
+							ms+=msg;
+						}
 					}
 				}
-				res.send(ms);
+				//res.send(ms);
 			}
+		});	
 		}
-		);	
 });
 
 
 function sendMessage2(recipientId, message) {  
-v="";
+
     request({
         url: 'https://graph.facebook.com/v2.8/me/messages',
         qs: {access_token: "EAAJeiL9sIu4BANZAqkGafoMRa660rcdg9ViRLX75IFSvkZAZBe2TbgrSrdO2p5bt6psRcbNlrWSRu9GJOWXe9KdrjoB9LGznZASNP1AqWmjYKVeYHZCSjNcdxrtng8kwUk5BInXUsNKoYkfOE4ZCS5WRt0xdiLqb8a3j9zfIug5gZDZD"},
@@ -66,17 +100,18 @@ v="";
             message: message,
         }
     }, function(error, response, body) {
-		res.send(body);
+		//res.send(body);
         if (error) {
             console.log('Error sending message: ', error);
 			return false;
         } else if (response.body.error) {
             console.log('Error: ', response.body.error);
 			return false;
-        }
-		v=body;//JSON.stringify(body);
+        }else{
+			console.log(body);
+		}
     });
-return v;//true;
+
 }
 // Facebook Webhook
 
@@ -477,19 +512,7 @@ function checkHelper(subject,senderId){
 							senderContext[senderId].state = "provide_subject_done";	
 						
 					var total = output.length;
-					elementss = new Array();
-					/*
-							var start = (senderContext[senderId].nextexp!=null)?senderContext[senderId].nextexp:0;
-							if(total>3){
-								output = output.slice((start*2), ((start*2) + 2));
-							}
-					
-					elementss = new Array();
-					elementss[0] = {
-                    "title": "Expertise Help List",
-					"subtitle": "For "+subject+" "
-					};
-					*/		
+					elementss = new Array();	
 					for(i = 0; i<output.length; i++){
 						level = output[i].level;//.split("_");
 						if(level!=null){
@@ -499,19 +522,6 @@ function checkHelper(subject,senderId){
 							level="";
 						}
 						
-						
-						/*
-						elementss[i+1]={
-									"title": output[i].name,  
-									"image_url": output[i].profile_pic,									
-									"subtitle": "Level:"+level,
-									"buttons": [{
-												"title": "Request Expertise",
-												"type": "postback",
-												"payload": "request_expertise-"+output[i].expertise_id                     
-												}]
-										};
-										*/
 					elementss[i]={                           
 							"title": output[i].name, 
 							"image_url": output[i].profile_pic,                  
@@ -524,26 +534,6 @@ function checkHelper(subject,senderId){
                         };
 				
 					}
-					
-					
-					/*
-					message = {
-						"attachment": {
-						"type": "template",
-						"payload": {
-									"template_type": "list",
-									"top_element_style": "compact",
-									"elements": elementss,
-									"buttons": [{
-												"title": ((total<=3)?"Close":(((start+3)<total)?"More":"previous")),//((start+3)<total)?"More":(((start+3)==total)?"Close":"Previous"),
-												"type": "postback",
-												"payload":((total<=3)?"postback_no":(((start+3)<total)?"next_expert_list":"previous_expert_list"))//((start+3)<total)?"next_expertise":(((start+3)==total)?"postback_no":"previous_expertise")                        
-												}]  
-									}
-						}
-					};
-					
-					*/
 					
 				message = {
 					"attachment": {
@@ -1385,11 +1375,6 @@ function showExpertise(recipientId){
 			}else{
 				output = JSON.parse(body);
 				var total = output.length;
-				/*
-				var start =(senderContext[recipientId].next!=null)?senderContext[recipientId].next:0;
-				if(total>3){
-					output = output.slice((start*2), ((start*2) + 2));
-				}*/
 				elementss = new Array();
 				if(total<1){
 					sendMessage(recipientId, {text: "Oh! your expertise list is empty"});
@@ -1421,55 +1406,6 @@ function showExpertise(recipientId){
 					
 				}else{
 					sendMessage(recipientId, {text: "Here is your expertise list"});
-					/*
-					elementss[0] = {
-                    "title": "Expertise list",
-                    "image_url": (senderContext[recipientId]!=null)?senderContext[recipientId].profilePic:"http://graph.facebook.com/"+recipientId+"/picture?width=100&height=100",
-                    "subtitle": "Here's the list of your expertise"
-					};
-					
-				
-					
-					for(i = 0; i<output.length; i++){
-						console.log(output[i].subject);
-						level = output[i].level;//.split("_");
-						if(level!=null){
-							level = output[i].level.split("_");
-							level=level[0];
-						}else{
-							level="";
-						}
-						elementss[i+1]={
-									"title": output[i].subject,                   
-									"subtitle": "Expertise Level:"+level,
-									"buttons": [{
-												"title": "Delete",
-												"type": "postback",
-												"payload": "delete_expertise-"+output[i].expertise_id                     
-												}]
-										};
-				
-					}
-					
-					 message = {
-								"attachment": {
-								"type": "template",
-								"payload": {
-								"template_type": "list",
-								"top_element_style": "large",
-								"elements": elementss,
-											"buttons": [{
-														"title": ((total<3)?"Close":(((start+3)<total)?"More":"previous")),//((start+3)<total)?"More":(((start+3)==total)?"Close":"Previous"),
-														"type": "postback",
-														"payload":((total<3)?"postback_no":(((start+3)<total)?"next_expertise":"previous_expertise"))//((start+3)<total)?"next_expertise":(((start+3)==total)?"postback_no":"previous_expertise")                        
-														}]  
-										}
-								}
-					};
-					
-					*/
-					
-
 					for(i = 0; i<output.length; i++){
 						level = output[i].level;//.split("_");
 						if(level!=null){
@@ -1794,3 +1730,32 @@ function removeReminder(recipientId,reminder_id,title){
 			}			
 		});
 }
+
+
+
+var contains = function(needle) {
+    // Per spec, the way to identify NaN is that it is not equal to itself
+    var findNaN = needle !== needle;
+    var indexOf;
+
+    if(!findNaN && typeof Array.prototype.indexOf === 'function') {
+        indexOf = Array.prototype.indexOf;
+    } else {
+        indexOf = function(needle) {
+            var i = -1, index = -1;
+
+            for(i = 0; i < this.length; i++) {
+                var item = this[i];
+
+                if((findNaN && item !== item) || item === needle) {
+                    index = i;
+                    break;
+                }
+            }
+
+            return index;
+        };
+    }
+
+    return indexOf.call(this, needle) > -1;
+};
