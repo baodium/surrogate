@@ -92,7 +92,6 @@ app.get('/EAAJeiL9sIu4BANZAqkGafo', function (req, res) {
 
 
 function sendMessage2(recipientId, message) {  
-
     request({
         url: 'https://graph.facebook.com/v2.8/me/messages',
         qs: {access_token: "EAAJeiL9sIu4BANZAqkGafoMRa660rcdg9ViRLX75IFSvkZAZBe2TbgrSrdO2p5bt6psRcbNlrWSRu9GJOWXe9KdrjoB9LGznZASNP1AqWmjYKVeYHZCSjNcdxrtng8kwUk5BInXUsNKoYkfOE4ZCS5WRt0xdiLqb8a3j9zfIug5gZDZD"},
@@ -166,7 +165,9 @@ app.post('/webhook', function (req, res) {
 										"payload":{"url":rp[j].payload.url}
 										}
 							};
-												
+							var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+" sent this file.";
+							sendFile(to,sg,fromm,msg,subject);
+						/*				
 						var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+" sent this file.";				  										 
 						if(sendMessage(to,sg)){
 							if(sendMessage(to, {text: "" + msg})){
@@ -175,7 +176,8 @@ app.post('/webhook', function (req, res) {
 							if(sendMessage(event.sender.id, {text: "" + "file sent"})){
 								messageOption(event.sender.id,"Do you want to send another message?",fromm,to,subject);	
 							}								
-						}																								
+						}
+					   */						
 					 }
 				  }else if(event.message.text){					  				 
 						var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+" says:"+event.message.text;				  
@@ -416,6 +418,38 @@ function sendMessage(recipientId, message) {
 return true;
 }
 
+
+// generic function sending messages
+function sendFile(recipientId, message,thirdParty,msg,subject) {  
+    request({
+        url: 'https://graph.facebook.com/v2.8/me/messages',
+        qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
+        method: 'POST',
+        json: {
+            recipient: {id: recipientId},
+            message: message,
+        }
+    }, function(error, response, body) {
+        if (error) {
+            console.log('Error sending message: ', error);
+			return false;
+        } else if (response.body.error) {
+            console.log('Error: ', response.body.error);
+			return false;
+        }else{				  										 
+					//	if(sendMessage(to,sg)){
+							if(sendMessage(recipientId, {text: "" + msg})){
+								messageOption(recipientId,"Do you want to reply this message?",recipientId,thirdParty,subject);
+							}
+							if(sendMessage(thirdParty, {text: "" + "file sent"})){
+								messageOption(thirdParty,"Do you want to send another message?",thirdParty,recipientId,subject);	
+							}								
+					//	}
+			
+		}
+    });
+return true;
+}
 
 function pickPeriod(senderId,msg){
 	message = {
@@ -1551,19 +1585,15 @@ function showReminders(recipientId){
                         "elements": elementss
                     }
 					}
-				};
-				
+				};				
 				sendMessage(recipientId,message);
 				}catch(err){
 				sendMessage(recipientId,{text: err+" "+body});
 				}
 			}	
 			}			
-		});
-	
+		});	
 }
-
-
 
 function showExperts(fromId){
 	var post_data = querystring.stringify({'from_id':fromId,'status':'completed'});	
@@ -1684,8 +1714,7 @@ function showStudents(toId){
                                 "title": "Remove",
                                 "payload": "remove_student-"+output[i].to_id+"-"+output[i].expertise_id,
                                 }]
-                        };
-				
+                        };				
 					}
 										
 				message = {
@@ -1819,30 +1848,23 @@ function removeReminder(recipientId,reminder_id,title){
 }
 
 
-
 var contains = function(needle) {
-    // Per spec, the way to identify NaN is that it is not equal to itself
     var findNaN = needle !== needle;
     var indexOf;
-
     if(!findNaN && typeof Array.prototype.indexOf === 'function') {
         indexOf = Array.prototype.indexOf;
     } else {
         indexOf = function(needle) {
             var i = -1, index = -1;
-
             for(i = 0; i < this.length; i++) {
                 var item = this[i];
-
                 if((findNaN && item !== item) || item === needle) {
                     index = i;
                     break;
                 }
             }
-
             return index;
         };
     }
-
     return indexOf.call(this, needle) > -1;
 };
