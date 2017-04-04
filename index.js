@@ -225,7 +225,7 @@ app.post('/webhook', function (req, res) {
 				}else{
 					defaultMsg ="Sorry, I don't understand that. Anyway, ";
 					if(event.message.text.toLowerCase().indexOf("thank")>-1){
-						defaultMsg ="You are welcome!. Anyway, ";
+						defaultMsg ="You are welcome! Anyway, ";
 					}
 					sendMessage(event.sender.id, {text: "" + defaultMsg+"this is what I have on my menu "});
 					showMenu(event.sender.id);
