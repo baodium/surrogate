@@ -143,6 +143,12 @@ app.post('/webhook', function (req, res) {
 				setContext(event.sender.id);
 			}
 			 if(senderContext[event.sender.id]!=null){
+				 
+					if(msgin.indexOf("thank")>-1 || (msgin.indexOf("cancel")>-1 || msgin.indexOf("quit")>-1) || (msgin.indexOf("hello")>-1 || msgin.indexOf("hi")>-1) ){
+						senderContext[event.sender.id].state === "restart";
+					}
+				 
+				 
 				if(senderContext[event.sender.id].state === "provide_subject"){									
 					checkHelper(event.message.text,event.sender.id);									
 				}else if(senderContext[event.sender.id].state === "type_expertise"){
