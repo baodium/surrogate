@@ -50,7 +50,6 @@ app.get('/EAAJeiL9sIu4BANZAqkGafo', function (req, res) {
 		var d = new Date();
 		var dayName = days[d.getDay()];
 		dayName  = dayName.toUpperCase();
-
 		
 		var post_data = querystring.stringify({'status' : 'completed','day':'REMINDER_'+dayName,'time':time});			
 		var sent = new Array();
@@ -87,8 +86,7 @@ app.get('/EAAJeiL9sIu4BANZAqkGafo', function (req, res) {
 				
 			}
 		});	
-		}
-		
+		}		
 		res.send("You are welcome!");
 });
 
@@ -228,6 +226,8 @@ app.post('/webhook', function (req, res) {
 						defaultMsg ="You are welcome! Anyway, ";
 					}else if(msgin.indexOf("cancel")>-1 || msgin.indexOf("quit")>-1){
 						defaultMsg ="Okay then, ";
+					}else if(msgin.indexOf("hello")>-1 || msgin.indexOf("hi")>-1){
+						defaultMsg ="How may I help you "+senderContext[event.sender.id].lastName+"? ";
 					}
 					sendMessage(event.sender.id, {text: "" + defaultMsg+"this is what I have on my menu "});
 					senderContext[event.sender.id].state="begin";
