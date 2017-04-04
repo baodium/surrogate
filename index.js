@@ -158,12 +158,10 @@ app.post('/webhook', function (req, res) {
 				}else if(senderContext[event.sender.id].message==="true"){				 
 					var fromm =  event.sender.id;
 					var to  = senderContext[event.sender.id].message_to;
-					var subject = senderContext[event.sender.id].message_subject;
-					
+					var subject = senderContext[event.sender.id].message_subject;					
 				 	if(event.message.attachments){
 					 msg = JSON.stringify(event.message.attachments);
 					 rp = JSON.parse(msg);
-					 //[{"type":"file","payload":{"url":"https://cdn.fbsbx.com/v/t59.2708-21/17573148_10209022982836730_8874438220734005248_n.htaccess/htaccess.htaccess?oh=e753437f7e189e3d85181b0121fd121f&oe=58DFF133"}}]					
 					 for(j=0; j < rp.length; j++){
 						 sg = {"attachment":{
 										"type":rp[j].type,
@@ -216,10 +214,20 @@ app.post('/webhook', function (req, res) {
 
 					}
 					
-				}else if(event.message.text=="remind_me"){
+				}else if(event.message.text.indexOf("show reminder")>-1){
 					showReminders(event.sender.id);
+				}else if(event.message.text.indexOf("show expertise")>-1){
+					showExpertise(event.sender.id);
+				}else if(event.message.text.indexOf("show expert")>-1){
+					showExperts(event.sender.id);
+				}else if(event.message.text.indexOf("show student")>-1){
+					showStudents(event.sender.id);
 				}else{
-					sendMessage(event.sender.id, {text: "" + "Sorry, I don't understand that. Anyway, this is what I have on my menu "});
+					defaultMsg ="Sorry, I don't understand that. Anyway, ";
+					if(event.message.text.toLowerCase().indexOf("thank")>-1){
+						defaultMsg ="You are welcome!. Anyway, ";
+					}
+					sendMessage(event.sender.id, {text: "" + defaultMsg+"this is what I have on my menu "});
 					showMenu(event.sender.id);
 				}
 			 }else{
@@ -248,8 +256,7 @@ app.post('/webhook', function (req, res) {
 					senderContext[event.sender.id].state = "type_expertise";
 				}
 			}else if(reply.payload=="professional_expertise_level" || reply.payload=="intermediate_expertise_level" || reply.payload=="amateur_expertise_level"){					
-					subject = senderContext[event.sender.id].subject;
-				
+					subject = senderContext[event.sender.id].subject;				
 				    checkExpertise(event.sender.id,reply.payload,subject);
 			}else if(reply.payload=="postback_no"){
 				if(senderContext[event.sender.id]!=null){
@@ -289,22 +296,18 @@ app.post('/webhook', function (req, res) {
 				 expertiseId = id[1];
 				 subject = id[2];
 				 removeExpertise(event.sender.id,expertiseId,subject);
-				 //"remove_expert-"+output[i].from_id+"-"+"-"+output[i].request_id,
 			}else if(reply.payload.indexOf("remove_expert")>-1){
 				var id = reply.payload.split("-");
 				 toId = id[1];
 				 requestId = id[2];
 				 type="tutor";
-				 sendMessage(event.sender.id, {text: ""+reply.payload});
 				 removeExpertOrStudent(toId,event.sender.id,requestId,type);
-				 //"remove_expert-"+output[i].from_id+"-"+"-"+output[i].request_id,
 			}else if(reply.payload.indexOf("remove_student")>-1){
 				var id = reply.payload.split("-");
 				 toId = id[1];
 				 requestId = id[2];
 				 type="student";
 				 removeExpertOrStudent(toId,event.sender.id,requestId,type);
-				 //"remove_expert-"+output[i].from_id+"-"+"-"+output[i].request_id,
 			}else if(reply.payload.indexOf("delete_reminder")>-1){
 				var id = reply.payload.split("-");
 				 reminderId = id[1];
@@ -320,18 +323,14 @@ app.post('/webhook', function (req, res) {
 				 fromId = expertise_id[2];
 				 if(senderContext[event.sender.id]!=null){ 
 					 sendRejection(fromId,expertiseId,event.sender.id);
-				}
-				
+				}				
 			}else if(reply.payload.indexOf("accept_request")>-1){
-
 				var expertise_id = reply.payload.split("-");
 				 expertiseId = expertise_id[1];
 				 fromId = expertise_id[2];
 				if(senderContext[event.sender.id]!=null){  
 					sendAcceptance(fromId,expertiseId,event.sender.id);
-				}
-				
-				
+				}								
 			}else if(reply.payload=="home"){
 				 welcomeUser(event.sender.id);				
 			}else if(reply.payload.indexOf("postback_message_yes")>-1){				
