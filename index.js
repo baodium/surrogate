@@ -293,18 +293,18 @@ app.post('/webhook', function (req, res) {
 				 //"remove_expert-"+output[i].from_id+"-"+"-"+output[i].request_id,
 			}else if(reply.payload.indexOf("remove_expert")>-1){
 				var id = reply.payload.split("-");
-				 fromId = id[1];
+				 toId = id[1];
 				 requestId = id[2];
-				 type="expert";
+				 type="tutor";
 				 sendMessage(event.sender.id, {text: ""+reply.payload});
-				 removeExpertOrStudent(fromId,event.sender.id,requestId,type);
+				 removeExpertOrStudent(toId,event.sender.id,requestId,type);
 				 //"remove_expert-"+output[i].from_id+"-"+"-"+output[i].request_id,
 			}else if(reply.payload.indexOf("remove_student")>-1){
 				var id = reply.payload.split("-");
-				 fromId = id[1];
+				 toId = id[1];
 				 requestId = id[2];
 				 type="student";
-				 removeExpertOrStudent(fromId,event.sender.id,requestId,type);
+				 removeExpertOrStudent(toId,event.sender.id,requestId,type);
 				 //"remove_expert-"+output[i].from_id+"-"+"-"+output[i].request_id,
 			}else if(reply.payload.indexOf("delete_reminder")>-1){
 				var id = reply.payload.split("-");
@@ -1610,7 +1610,7 @@ function showExperts(fromId){
                                 },{
 								"type": "postback",
                                 "title": "Remove",
-                                "payload": "remove_expert-"+output[i].from_id+"-"+output[i].expertise_id,
+                                "payload": "remove_expert-"+output[i].to_id+"-"+output[i].expertise_id,
                                 }]
                         };
 				
@@ -1681,7 +1681,7 @@ function showStudents(toId){
                                 },{
 								"type": "postback",
                                 "title": "Remove",
-                                "payload": "remove_student-"+output[i].from_id+"-"+output[i].expertise_id,
+                                "payload": "remove_student-"+output[i].to_id+"-"+output[i].expertise_id,
                                 }]
                         };
 				
@@ -1731,7 +1731,7 @@ function removeExpertise(recipientId,expertise_id,subject){
 
 
 function removeExpertOrStudent(fromId,senderId,requestId,type){
-	var post_data = querystring.stringify({'expertise_id' : requestId,'from_id':fromId,'special_field':'from_id'});
+	var post_data = querystring.stringify({'expertise_id' : requestId,'to_id':fromId,'special_field':'to_id'});
 			request({
 			url: backurl+"requests/get",
 			method: 'POST',
@@ -1754,7 +1754,8 @@ function removeExpertOrStudent(fromId,senderId,requestId,type){
 			to = bodyObject.to_id;
 			name = bodyObject.name;	
 			reqId = bodyObject.request_id;
-			sendMessage(fromId, {text: senderContext[senderId].firstName+" "+senderContext[senderId].lastName+" has removed you from his "+subject+" "+type+" list"});
+			type2=(type=="tutor")?"student":"tutor";
+			sendMessage(to, {text: senderContext[senderId].firstName+" "+senderContext[senderId].lastName+" has removed you from his "+subject+" "+type2+" list"});
 			sendMessage(senderId, {text: name+" has been removed  from your "+subject+" "+type+" list"});
 			var p_data = querystring.stringify({'request_id' : reqId});
 			var p_data2 = querystring.stringify({'facebook_id':senderId,'expertise_id' : requestId});
