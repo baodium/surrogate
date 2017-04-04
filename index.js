@@ -139,7 +139,7 @@ app.post('/webhook', function (req, res) {
     for (i = 0; i < events.length; i++) {		
         var event = events[i];						
 		if (event.message && (event.message.text || event.message.attachments)) {
-						
+			msgin = event.message.text+"";	
 			if(senderContext[event.sender.id]==null){
 				setContext(event.sender.id);
 			}
@@ -214,17 +214,17 @@ app.post('/webhook', function (req, res) {
 
 					}
 					
-				}else if(event.message.text.indexOf("show reminder")>-1){
+				}else if(msgin.indexOf("show reminder")>-1){
 					showReminders(event.sender.id);
-				}else if(event.message.text.indexOf("show expertise")>-1){
+				}else if(msgin.indexOf("show expertise")>-1){
 					showExpertise(event.sender.id);
-				}else if(event.message.text.indexOf("show expert")>-1){
+				}else if(msgin.indexOf("show expert")>-1){
 					showExperts(event.sender.id);
-				}else if(event.message.text.indexOf("show student")>-1){
+				}else if(msgin.indexOf("show student")>-1){
 					showStudents(event.sender.id);
 				}else{
 					defaultMsg ="Sorry, I don't understand that. Anyway, ";
-					if(event.message.text.toLowerCase().indexOf("thank")>-1){
+					if(msgin.indexOf("thank")>-1){
 						defaultMsg ="You are welcome! Anyway, ";
 					}
 					sendMessage(event.sender.id, {text: "" + defaultMsg+"this is what I have on my menu "});
