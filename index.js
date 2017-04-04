@@ -1610,7 +1610,7 @@ function showExperts(fromId){
                                 },{
 								"type": "postback",
                                 "title": "Remove",
-                                "payload": "remove_expert-"+output[i].from_id+"-"+"-"+output[i].expertise_id,
+                                "payload": "remove_expert-"+output[i].from_id+"-"+output[i].expertise_id,
                                 }]
                         };
 				
@@ -1681,7 +1681,7 @@ function showStudents(toId){
                                 },{
 								"type": "postback",
                                 "title": "Remove",
-                                "payload": "remove_student-"+output[i].from_id+"-"+"-"+output[i].expertise_id,
+                                "payload": "remove_student-"+output[i].from_id+"-"+output[i].expertise_id,
                                 }]
                         };
 				
