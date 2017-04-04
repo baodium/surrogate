@@ -46,7 +46,6 @@ app.get('/EAAJeiL9sIu4BANZAqkGafo', function (req, res) {
 			time ="REMINDER_TIME_NINE_PM";
 		}
 
-		time="REMINDER_TIME_SIX_AM";
 		var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 		var d = new Date();
 		var dayName = days[d.getDay()];
@@ -71,7 +70,7 @@ app.get('/EAAJeiL9sIu4BANZAqkGafo', function (req, res) {
 				console.log('Error: ', response.body.error);
 			}else{
 				output = JSON.parse(body);
-				//console.log(output);
+				console.log(output);
 				ms = "";
 				if(output.length>0){
 					for(var k=0; k<output.length; k++){
