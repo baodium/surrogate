@@ -142,12 +142,10 @@ app.post('/webhook', function (req, res) {
 			if(senderContext[event.sender.id]==null){
 				setContext(event.sender.id);
 			}
-			 if(senderContext[event.sender.id]!=null){
-				 
+			 if(senderContext[event.sender.id]!=null){				 
 					if(msgin.indexOf("thank")>-1 || msgin=="no" || msgin.indexOf("cancel")>-1 || msgin.indexOf("quit")>-1 || msgin.indexOf("hello")>-1 || msgin.indexOf("hi")>-1 ){
 						senderContext[event.sender.id].state = "restart";
-					}
-				 
+					}				 
 				 
 				if(senderContext[event.sender.id].state === "provide_subject"){									
 					checkHelper(event.message.text,event.sender.id);									
@@ -234,7 +232,7 @@ app.post('/webhook', function (req, res) {
 					defaultMsg ="Sorry, I don't understand that. Anyway, ";
 					if(msgin.indexOf("thank")>-1){
 						defaultMsg ="You are welcome! Anyway, ";
-					}else if(msgin.indexOf("cancel")>-1 || msgin.indexOf("quit")>-1 || || msgin.indexOf("exit")>-1){
+					}else if(msgin.indexOf("cancel")>-1 || msgin.indexOf("quit")>-1 || msgin.indexOf("exit")>-1 || msgin.indexOf("stop")>-1 || msgin=="no"){
 						defaultMsg ="Okay then, ";
 					}else if(msgin.indexOf("hello")>-1 || msgin.indexOf("hi")>-1 || msgin.indexOf("hey")>-1 || msgin.indexOf("wassup")>-1 || msgin.indexOf("how far")>-1){
 						defaultMsg ="Hi "+senderContext[event.sender.id].firstName+", how are you doing? I am surrogate bot. I am an artificial intelligent designed to assist students learn from their friends on messenger. You can also render help to someone based on your proficiency. ";
