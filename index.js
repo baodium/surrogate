@@ -874,7 +874,7 @@ function displayWelcomeMessage(recipientId) {
                     "payload": {
                         "template_type": "generic",
                         "elements": [{
-                            "title": " Surrogate is an artificial intelligent designed to assist students learn from their friends on messenger. \n\n It also allows experts/tutors to render help to people based on his/her proficiency.\n\n ",
+                            "title": " Surrogate is an artificial intelligent designed to assist students learn from their friends on messenger. \n\n It also allows experts/tutors to render help to people based on their individual proficiencies.\n\n ",
                             "buttons": [{
 								"type": "postback",
                                 "title": "Get Started",
@@ -1008,7 +1008,7 @@ function showMenu(recipientId){
 }
 
 function about(recipientId) {
-		msg="Surrogate is an artificial intelligent designed to assist students learn from their friends on messenger. \n\n It also allows experts/tutors to render help to people based on his/her proficiency.\n\n Since college is a lot of work on its own, Surrogate bot takes off of the stress of its human counterpart and does the less desirable job of having to find a suitable tutor.";
+		msg="Surrogate is an artificial intelligent designed to assist students learn from their friends on messenger. \n\n It also allows experts/tutors to render help to people based on their proficiencies.\n\n Since college is a lot of work on its own, Surrogate bot takes off of the stress of its human counterpart and does the less desirable job of having to find a suitable tutor.";
 			sendMessage(recipientId,{text: "" + msg});
 			     message = {
                 "attachment": {
