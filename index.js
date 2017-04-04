@@ -46,6 +46,7 @@ app.get('/EAAJeiL9sIu4BANZAqkGafo', function (req, res) {
 			time ="REMINDER_TIME_NINE_PM";
 		}
 
+		time="REMINDER_TIME_SIX_AM";
 		var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 		var d = new Date();
 		var dayName = days[d.getDay()];
@@ -289,6 +290,21 @@ app.post('/webhook', function (req, res) {
 				 expertiseId = id[1];
 				 subject = id[2];
 				 removeExpertise(event.sender.id,expertiseId,subject);
+				 //"remove_expert-"+output[i].from_id+"-"+"-"+output[i].request_id,
+			}else if(reply.payload.indexOf("remove_expert")>-1){
+				var id = reply.payload.split("-");
+				 fromId = id[1];
+				 requestId = id[2];
+				 type="expert";
+				 removeExpertOrStudent(fromId,event.sender.id,requestId,type);
+				 //"remove_expert-"+output[i].from_id+"-"+"-"+output[i].request_id,
+			}else if(reply.payload.indexOf("remove_student")>-1){
+				var id = reply.payload.split("-");
+				 fromId = id[1];
+				 requestId = id[2];
+				 type="student";
+				 removeExpertOrStudent(fromId,event.sender.id,requestId,type);
+				 //"remove_expert-"+output[i].from_id+"-"+"-"+output[i].request_id,
 			}else if(reply.payload.indexOf("delete_reminder")>-1){
 				var id = reply.payload.split("-");
 				 reminderId = id[1];
@@ -681,7 +697,7 @@ function sendAcceptance(fromId,requestId,senderId){
 			
 			//senderContext[senderId].firstName+" "+senderContext[senderId].lastName
 			
-			sendMessage(fromId, {text: "Obadimu wale has accepted your "+subject+" expertise request. He's now in your tutors list."});
+			sendMessage(fromId, {text: senderContext[senderId].firstName+" "+senderContext[senderId].lastName+" has accepted your "+subject+" expertise request. He's now in your tutors list."});
 			messageOption(fromId,"Do you want to message him?",fromId,senderId,subject);
 						
 			var p_data = querystring.stringify({'request_id' : reqId,'status':'completed'});
@@ -1593,7 +1609,7 @@ function showExperts(fromId){
                                 },{
 								"type": "postback",
                                 "title": "Remove",
-                                "payload": "remove_expert-"+output[i].from_id+"-"+"-"+output[i].request_id,
+                                "payload": "remove_expert-"+output[i].from_id+"-"+"-"+output[i].expertise_id,
                                 }]
                         };
 				
@@ -1664,7 +1680,7 @@ function showStudents(toId){
                                 },{
 								"type": "postback",
                                 "title": "Remove",
-                                "payload": "remove_expert-"+output[i].from_id+"-"+"-"+output[i].request_id,
+                                "payload": "remove_student-"+output[i].from_id+"-"+"-"+output[i].expertise_id,
                                 }]
                         };
 				
@@ -1690,8 +1706,7 @@ function showStudents(toId){
 }
 
 function removeExpertise(recipientId,expertise_id,subject){
-		var post_data = querystring.stringify({'facebook_id' : recipientId,'expertise_id':expertise_id});
-		//submitForm(post_data,backurl+"expertise/delete");
+	var post_data = querystring.stringify({'facebook_id' : recipientId,'expertise_id':expertise_id});
 	request({
 			url: backurl+"expertise/remove",
 			method: 'POST',
@@ -1712,6 +1727,69 @@ function removeExpertise(recipientId,expertise_id,subject){
 			}			
 		});
 }
+
+
+function removeExpertOrStudent(fromId,senderId,requestId,type){
+	var post_data = querystring.stringify({'expertise_id' : requestId,'from_id':fromId,'special_field':'from_id'});
+			request({
+			url: backurl+"requests/get",
+			method: 'POST',
+			body: post_data,
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded',
+				'Content-Length':post_data.length
+				}
+		}, function(error, response, body) {
+		
+        if (error) {
+			//
+        } else if (response.body.error) {
+           //
+        }else{
+		try{		
+			var bodyObject = JSON.parse(body);
+			bodyObject = bodyObject[0];
+			subject = bodyObject.subject;
+			to = bodyObject.to_id;
+			name = bodyObject.name;	
+			reqId = bodyObject.request_id;
+			sendMessage(fromId, {text: senderContext[senderId].firstName+" "+senderContext[senderId].lastName+" has removed you from his "+subject+" "+type+" list"});
+			sendMessage(senderId, {text: name+" has been removed  from your "+subject+" "+type+" list"});
+			var p_data = querystring.stringify({'request_id' : reqId});
+			submitForm(p_data,backurl+"requests/remove",senderId,"update_request");
+		}catch(err){
+			sendMessage(fromId, {text: body+""});  
+		}       		
+		}
+		});
+			
+    return true;
+}
+
+
+function removeStudent(recipientId,expertise_id,subject){
+	var post_data = querystring.stringify({'facebook_id' : recipientId,'expertise_id':expertise_id});
+	request({
+			url: backurl+"requests/remove",
+			method: 'POST',
+			body: post_data,
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded',
+				'Content-Length':post_data.length
+				}
+		}, function(error, response, body) {
+			//sendMessage(recipientId, {text: "" + JSON.stringify(body)});
+			if (error) {
+				console.log('Error sending message: ', error);
+			} else if (response.body.error) {
+				console.log('Error: ', response.body.error);
+			}else{
+				sendMessage(recipientId, {text: subject+ " student has been successfully removed \n\n "});
+				showStudents(recipientId);	
+			}			
+		});
+}
+
 
 function removeReminder(recipientId,reminder_id,title){
 		var post_data = querystring.stringify({'facebook_id' : recipientId,'reminder_id':reminder_id});
