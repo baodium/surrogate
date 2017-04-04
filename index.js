@@ -87,7 +87,7 @@ app.get('/EAAJeiL9sIu4BANZAqkGafo', function (req, res) {
 			}
 		});	
 		}		
-		res.send("You are welcome!");
+		res.send("You are cool!");
 });
 
 
