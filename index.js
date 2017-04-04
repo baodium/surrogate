@@ -227,7 +227,7 @@ app.post('/webhook', function (req, res) {
 					}else if(msgin.indexOf("cancel")>-1 || msgin.indexOf("quit")>-1){
 						defaultMsg ="Okay then, ";
 					}else if(msgin.indexOf("hello")>-1 || msgin.indexOf("hi")>-1){
-						defaultMsg ="How may I help you "+senderContext[event.sender.id].lastName+"? ";
+						defaultMsg ="How may I help you "+senderContext[event.sender.id].firstName+"? ";
 					}
 					sendMessage(event.sender.id, {text: "" + defaultMsg+"this is what I have on my menu "});
 					senderContext[event.sender.id].state="begin";
