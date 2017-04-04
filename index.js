@@ -45,7 +45,9 @@ app.get('/EAAJeiL9sIu4BANZAqkGafo', function (req, res) {
 		}else if(n==21){
 			time ="REMINDER_TIME_NINE_PM";
 		}
-
+		
+		console.log("hello -"+time);
+		
 		var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 		var d = new Date();
 		var dayName = days[d.getDay()];
@@ -87,7 +89,7 @@ app.get('/EAAJeiL9sIu4BANZAqkGafo', function (req, res) {
 			}
 		});	
 		}		
-		res.send("You are cool!");
+		res.send("Hello "+time);
 });
 
 
