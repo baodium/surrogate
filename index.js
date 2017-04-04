@@ -144,7 +144,7 @@ app.post('/webhook', function (req, res) {
 			}
 			 if(senderContext[event.sender.id]!=null){				 
 					if(msgin.indexOf("thank")>-1 || msgin=="no" || msgin.indexOf("cancel")>-1 || msgin.indexOf("quit")>-1 || msgin.indexOf("hello")>-1 || msgin.indexOf("hi")>-1 ){
-						senderContext[event.sender.id].state = "restart";
+						senderContext[event.sender.id].state="begin";
 					}				 
 				 
 				if(senderContext[event.sender.id].state === "provide_subject"){									
@@ -221,24 +221,40 @@ app.post('/webhook', function (req, res) {
 					}
 					
 				}else if(msgin.indexOf("show reminder")>-1){
+					senderContext[event.sender.id].state="begin";
 					showReminders(event.sender.id);
 				}else if(msgin.indexOf("show expertise")>-1){
+					senderContext[event.sender.id].state="begin";
 					showExpertise(event.sender.id);
 				}else if(msgin.indexOf("show expert")>-1 || msgin.indexOf("show tutor")>-1){
+					senderContext[event.sender.id].state="begin";
 					showExperts(event.sender.id);
 				}else if(msgin.indexOf("show student")>-1){
+					senderContext[event.sender.id].state="begin";
 					showStudents(event.sender.id);
+				}else if(msgin.indexOf("menu")>-1){
+					senderContext[event.sender.id].state="begin";
+					showMenu(event.sender.id);
+				}else if(msgin.indexOf("help")>-1){
+					sendMessage(event.sender.id, {text: "" + "Hi "+senderContext[event.sender.id].firstName+", I am surrogate bot. I am an artificial intelligent designed to assist students learn from their friends on messenger. You can also render help to someone based on your proficiency.\n\n Here are the things I can do "});
+					senderContext[event.sender.id].state="begin";
+					showMenu(event.sender.id);
 				}else{
 					defaultMsg ="Sorry, I don't understand that. Anyway, ";
 					if(msgin.indexOf("thank")>-1){
-						defaultMsg ="You are welcome! Anyway, ";
+						defaultMsg ="You are welcome "+senderContext[event.sender.id].firstName+".";
 					}else if(msgin.indexOf("cancel")>-1 || msgin.indexOf("quit")>-1 || msgin.indexOf("exit")>-1 || msgin.indexOf("stop")>-1 || msgin=="no"){
-						defaultMsg ="Okay then, ";
+						defaultMsg ="Okay.";
 					}else if(msgin.indexOf("hello")>-1 || msgin.indexOf("hi")>-1 || msgin.indexOf("hey")>-1 || msgin.indexOf("wassup")>-1 || msgin.indexOf("how far")>-1){
 						defaultMsg ="Hi "+senderContext[event.sender.id].firstName+", how are you doing? I am surrogate bot. I am an artificial intelligent designed to assist students learn from their friends on messenger. You can also render help to someone based on your proficiency. ";
+					}else if(msgin.indexOf("how are you")>-1 || msgin.indexOf("what is happening")>-1 || msgin.indexOf("what is happening")>-1 ){
+						defaultMsg =" ";
+					}else if(msgin.indexOf("damn")>-1 || msgin.indexOf("fuck")>-1 || msgin.indexOf("insane")>-1 || msgin.indexOf("crazy")>-1 || msgin.indexOf("mad")>-1 ){
+						defaultMsg ="Oh "+senderContext[event.sender.id].firstName+", that is not a very nice thing to say. Maybe you will feel better by providing help to someone on a subject you are proficient at. ";
 					}
 					
-					sendMessage(event.sender.id, {text: "" + defaultMsg+"this is what I have on my menu "});
+					
+					sendMessage(event.sender.id, {text: "" + defaultMsg+" This is what I have on my menu "});
 					senderContext[event.sender.id].state="begin";
 					showMenu(event.sender.id);
 				}
