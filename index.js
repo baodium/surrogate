@@ -1757,7 +1757,9 @@ function removeExpertOrStudent(fromId,senderId,requestId,type){
 			sendMessage(fromId, {text: senderContext[senderId].firstName+" "+senderContext[senderId].lastName+" has removed you from his "+subject+" "+type+" list"});
 			sendMessage(senderId, {text: name+" has been removed  from your "+subject+" "+type+" list"});
 			var p_data = querystring.stringify({'request_id' : reqId});
+			var p_data2 = querystring.stringify({'facebook_id':senderId,'expertise_id' : requestId});
 			submitForm(p_data,backurl+"requests/remove",senderId,"update_request");
+			submitForm(p_data2,backurl+"reminder/remove",senderId,"update_request");
 		}catch(err){
 			sendMessage(senderId, {text: body+""});  
 		}       		
