@@ -143,7 +143,7 @@ app.post('/webhook', function (req, res) {
 				setContext(event.sender.id);
 			}
 			 if(senderContext[event.sender.id]!=null){				 
-					if(msgin.indexOf("thank")>-1 || msgin=="no" || msgin.indexOf("cancel")>-1 || msgin.indexOf("quit")>-1 || msgin.indexOf("hello")>-1 || msgin.indexOf("hi")>-1 ){
+					if(msgin.indexOf("thank")>-1 || msgin=="no" || msgin=="cancel" || msgin=="quit"  || msgin=="exit" || msgin=="hello" || msgin=="hi" ){
 						senderContext[event.sender.id].state="begin";
 					}				 
 				 
