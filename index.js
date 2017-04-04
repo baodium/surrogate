@@ -236,9 +236,10 @@ app.post('/webhook', function (req, res) {
 						defaultMsg ="You are welcome! Anyway, ";
 					}else if(msgin.indexOf("cancel")>-1 || msgin.indexOf("quit")>-1){
 						defaultMsg ="Okay then, ";
-					}else if(msgin.indexOf("hello")>-1 || msgin.indexOf("hi")>-1){
-						defaultMsg ="How may I help you "+senderContext[event.sender.id].firstName+"? ";
+					}else if(msgin.indexOf("hello")>-1 || msgin.indexOf("hi")>-1 || msgin.indexOf("hey")>-1 || msgin.indexOf("wassup")>-1 || msgin.indexOf("how far")>-1){
+						defaultMsg ="Hi "+senderContext[event.sender.id].firstName+", how are you doing? I am surrogate bot. I am an artificial intelligent designed to assist students learn from their friends on messenger. You can also render help to someone based on your proficiency ";
 					}
+					
 					sendMessage(event.sender.id, {text: "" + defaultMsg+"this is what I have on my menu "});
 					senderContext[event.sender.id].state="begin";
 					showMenu(event.sender.id);
