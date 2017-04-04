@@ -26,13 +26,14 @@ app.get('/', function (req, res) {
 app.get('/EAAJeiL9sIu4BANZAqkGafo', function (req, res) { 
 		var d = new Date();
 		var n = d.getHours();
+
 		time ="";
 		if(n==0){
 			time="REMINDER_TIME_TWELVE_AM";
 		}else if(n==3){
 			time="REMINDER_TIME_THREE_AM";
 		}else if(n==6){
-			day="REMINDER_TIME_SIX_AM";
+			time="REMINDER_TIME_SIX_AM";
 		}else if(n==9){
 			time="REMINDER_TIME_NINE_AM";
 		}else if(n==12){
@@ -44,14 +45,14 @@ app.get('/EAAJeiL9sIu4BANZAqkGafo', function (req, res) {
 		}else if(n==21){
 			time ="REMINDER_TIME_NINE_PM";
 		}
+
 		var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 		var d = new Date();
 		var dayName = days[d.getDay()];
 		dayName  = dayName.toUpperCase();
-		console.log(dayName);
-		console.log(time);
+
 		
-		var post_data = querystring.stringify({'status' : 'completed','day':'REMINDER_'+dayName,'time':'REMINDER_TIME_SIX_AM'});			
+		var post_data = querystring.stringify({'status' : 'completed','day':'REMINDER_'+dayName,'time':time});			
 		var sent = new Array();
 		if(time!=""){
 		request({
@@ -69,6 +70,7 @@ app.get('/EAAJeiL9sIu4BANZAqkGafo', function (req, res) {
 				console.log('Error: ', response.body.error);
 			}else{
 				output = JSON.parse(body);
+				//console.log(output);
 				ms = "";
 				if(output.length>0){
 					for(var k=0; k<output.length; k++){
@@ -82,10 +84,12 @@ app.get('/EAAJeiL9sIu4BANZAqkGafo', function (req, res) {
 						}
 					}
 				}
-				//res.send(ms);
+				
 			}
 		});	
 		}
+		
+		res.send("You are welcome!");
 });
 
 
@@ -1648,7 +1652,7 @@ function showStudents(toId){
 						elementss[i]={                           
 							"title": output[i].name, 
 							"image_url": output[i].profile_pic,                  
-							"subtitle": output[i].subject+", Level:"+level+" student",   
+							"subtitle": output[i].subject+" student",   
                             "buttons": [{
 								"type": "postback",
                                 "title": "Set class reminder",
