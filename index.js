@@ -236,7 +236,7 @@ app.post('/webhook', function (req, res) {
 					senderContext[event.sender.id].state="begin";
 					showMenu(event.sender.id);
 				}else if(msgin.indexOf("help")>-1){
-					sendMessage(event.sender.id, {text: "" + "Hi "+senderContext[event.sender.id].firstName+", I am surrogate bot. I am an artificial intelligent designed to assist students learn from their friends on messenger. You can also render help to someone based on your proficiency.\n\n Here are the things I can do "});
+					sendMessage(event.sender.id, {text: "" + "Hi "+senderContext[event.sender.id].firstName+", I am surrogate bot. I am an artificial intelligent designed to assist students learn from their friends on messenger. \n\n You can also render help to someone based on your proficiency.\n\n Here are the things I can do "});
 					senderContext[event.sender.id].state="begin";
 					showMenu(event.sender.id);
 				}else{
@@ -246,11 +246,11 @@ app.post('/webhook', function (req, res) {
 					}else if(msgin.indexOf("cancel")>-1 || msgin.indexOf("quit")>-1 || msgin.indexOf("exit")>-1 || msgin.indexOf("stop")>-1 || msgin=="no"){
 						defaultMsg ="Okay.";
 					}else if(msgin.indexOf("hello")>-1 || msgin.indexOf("hi")>-1 || msgin.indexOf("hey")>-1 || msgin.indexOf("wassup")>-1 || msgin.indexOf("how far")>-1){
-						defaultMsg ="Hi "+senderContext[event.sender.id].firstName+", how are you doing? I am surrogate bot. I am an artificial intelligent designed to assist students learn from their friends on messenger. You can also render help to someone based on your proficiency. ";
+						defaultMsg ="Hi "+senderContext[event.sender.id].firstName+", how are you doing? I am surrogate bot. I am an artificial intelligent designed to assist students learn from their friends on messenger.\n\n You can also render help to someone based on your proficiency. \n\n ";
 					}else if(msgin.indexOf("how are you")>-1 || msgin.indexOf("what is happening")>-1 || msgin.indexOf("what is happening")>-1 ){
 						defaultMsg =" ";
 					}else if(msgin.indexOf("damn")>-1 || msgin.indexOf("fuck")>-1 || msgin.indexOf("insane")>-1 || msgin.indexOf("crazy")>-1 || msgin.indexOf("mad")>-1 ){
-						defaultMsg ="Oh "+senderContext[event.sender.id].firstName+", that is not a very nice thing to say. Maybe you will feel better by providing help to someone on a subject you are proficient at. ";
+						defaultMsg ="Oh "+senderContext[event.sender.id].firstName+", that is not a very nice thing to say. \n\n Maybe you will feel better by providing help to someone on a subject you are proficient at. ";
 					}
 					
 					
