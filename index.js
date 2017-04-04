@@ -165,9 +165,9 @@ app.post('/webhook', function (req, res) {
 										"payload":{"url":rp[j].payload.url}
 										}
 							};
-							var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+" sent this file.";
-							sendFile(to,sg,fromm,msg,subject);
-						/*				
+							//var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+" sent this file.";
+							//sendFile(to,sg,fromm,msg,subject);
+									
 						var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+" sent this file.";				  										 
 						if(sendMessage(to,sg)){
 							if(sendMessage(to, {text: "" + msg})){
@@ -177,7 +177,7 @@ app.post('/webhook', function (req, res) {
 								messageOption(event.sender.id,"Do you want to send another message?",fromm,to,subject);	
 							}								
 						}
-					   */						
+					   						
 					 }
 				  }else if(event.message.text){					  				 
 						var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+" says:"+event.message.text;				  
@@ -444,8 +444,7 @@ function sendFile(recipientId, message,thirdParty,msg,subject) {
 							if(sendMessage(thirdParty, {text: "" + "file sent"})){
 								messageOption(thirdParty,"Do you want to send another message?",thirdParty,recipientId,subject);	
 							}								
-					//	}
-			
+					//	}			
 		}
     });
 return true;
