@@ -296,6 +296,7 @@ app.post('/webhook', function (req, res) {
 				 fromId = id[1];
 				 requestId = id[2];
 				 type="expert";
+				 sendMessage(event.sender.id, {text: ""+reply.payload});
 				 removeExpertOrStudent(fromId,event.sender.id,requestId,type);
 				 //"remove_expert-"+output[i].from_id+"-"+"-"+output[i].request_id,
 			}else if(reply.payload.indexOf("remove_student")>-1){
@@ -1758,7 +1759,7 @@ function removeExpertOrStudent(fromId,senderId,requestId,type){
 			var p_data = querystring.stringify({'request_id' : reqId});
 			submitForm(p_data,backurl+"requests/remove",senderId,"update_request");
 		}catch(err){
-			sendMessage(fromId, {text: body+""});  
+			sendMessage(senderId, {text: body+""});  
 		}       		
 		}
 		});
