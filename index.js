@@ -143,7 +143,7 @@ app.post('/webhook', function (req, res) {
 				setContext(event.sender.id);
 			}
 			 if(senderContext[event.sender.id]!=null){				 
-					if(msgin.indexOf("thank")>-1 || msgin=="no" || msgin=="cancel" || msgin=="quit"  || msgin=="exit" || msgin=="hello" || msgin=="hi" ){
+					if(msgin.indexOf("thank")>-1 || msgin=="no" || msgin=="ok" || msgin=="cancel" || msgin=="quit"  || msgin=="exit" || msgin=="end" || msgin=="hello" || msgin=="hi" ){
 						senderContext[event.sender.id].state="begin";
 					}				 
 				 
@@ -243,9 +243,9 @@ app.post('/webhook', function (req, res) {
 					defaultMsg ="Sorry, I don't understand that. Anyway, ";
 					if(msgin.indexOf("thank")>-1){
 						defaultMsg ="You are welcome "+senderContext[event.sender.id].firstName+".";
-					}else if(msgin.indexOf("cancel")>-1 || msgin.indexOf("quit")>-1 || msgin.indexOf("exit")>-1 || msgin.indexOf("stop")>-1 || msgin=="no"){
+					}else if(msgin.indexOf("cancel")>-1 || msgin.indexOf("ok")>-1 || msgin.indexOf("quit")>-1 || msgin.indexOf("end")>-1 || msgin.indexOf("exit")>-1 || msgin.indexOf("stop")>-1 || msgin=="no"){
 						defaultMsg ="Okay.";
-					}else if(msgin.indexOf("hello")>-1 || msgin.indexOf("hi")>-1 || msgin.indexOf("hey")>-1 || msgin.indexOf("wassup")>-1 || msgin.indexOf("how far")>-1){
+					}else if(msgin.indexOf("hello")>-1 || msgin.indexOf("hi")>-1 || msgin.indexOf("start")>-1 || msgin.indexOf("hey")>-1 || msgin.indexOf("wassup")>-1 || msgin.indexOf("how far")>-1){
 						defaultMsg ="Hi "+senderContext[event.sender.id].firstName+", how are you doing? I am surrogate bot. I am an artificial intelligent designed to assist students learn from their friends on messenger.\n\n You can also render help to someone based on your proficiency. \n\n ";
 					}else if(msgin.indexOf("how are you")>-1 || msgin.indexOf("what is happening")>-1 || msgin.indexOf("tell me something")>-1 ){
 						defaultMsg ="Cool! "+senderContext[event.sender.id].firstName+".";
@@ -1231,7 +1231,7 @@ function addPersistentMenu(){
         call_to_actions:[
             {
               type:"postback",
-              title:"Home",
+              title:"Home 3",
               payload:"home"
             },{
               type:"postback",
