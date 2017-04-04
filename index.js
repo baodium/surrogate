@@ -128,8 +128,6 @@ app.get('/webhook', function (req, res) {
 
 app.post('/webhook', function (req, res) { 
 	//removeStarted();
-	
-	//removeStarted();
 	//removePersistentMenu();
 	getStarted();
 	addPersistentMenu();
@@ -235,10 +233,12 @@ app.post('/webhook', function (req, res) {
 				}else if(msgin.indexOf("menu")>-1){
 					senderContext[event.sender.id].state="begin";
 					showMenu(event.sender.id);
-				}else if(msgin.indexOf("help")>-1 || msgin.indexOf("about")>-1){
+				}else if(msgin.indexOf("help")>-1){
 					sendMessage(event.sender.id, {text: "" + "Hi "+senderContext[event.sender.id].firstName+", I am surrogate bot. I am an artificial intelligent designed to assist students learn from their friends on messenger. \n\n You can also render help to someone based on your proficiency.\n\n Here are the things I can do "});
 					senderContext[event.sender.id].state="begin";
 					showMenu(event.sender.id);
+				}else if(msgin.indexOf("about")>-1){
+					about(event.sender.id);
 				}else{
 					defaultMsg ="Sorry, I don't understand that. Anyway, ";
 					if(msgin.indexOf("thank")>-1){
@@ -252,8 +252,7 @@ app.post('/webhook', function (req, res) {
 					}else if(msgin.indexOf("damn")>-1 || msgin.indexOf("fuck")>-1 || msgin.indexOf("insane")>-1 || msgin.indexOf("crazy")>-1 || msgin.indexOf("mad")>-1 ){
 						defaultMsg ="Oh "+senderContext[event.sender.id].firstName+", that is not a very nice thing to say. \n\n Maybe you will feel better by providing help to someone on a subject you are proficient at. ";
 					}
-					
-					
+										
 					sendMessage(event.sender.id, {text: "" + defaultMsg+" This is what I have on my menu "});
 					senderContext[event.sender.id].state="begin";
 					showMenu(event.sender.id);
@@ -875,7 +874,7 @@ function displayWelcomeMessage(recipientId) {
                     "payload": {
                         "template_type": "generic",
                         "elements": [{
-                            "title": "Surrogate app helps you get help or render help on various subject matters",
+                            "title": " Surrogate is an artificial intelligent designed to assist students learn from their friends on messenger. \n\n It also allows experts/tutors to render help to people based on his/her proficiency.\n\n ",
                             "buttons": [{
 								"type": "postback",
                                 "title": "Get Started",
@@ -1009,7 +1008,7 @@ function showMenu(recipientId){
 }
 
 function about(recipientId) {
-		msg="Since college is a lot of work on its own, Surrogate bot takes off of the stress of its human counterpart and does the less desirable job of having to find a suitable tutor.";
+		msg="Surrogate is an artificial intelligent designed to assist students learn from their friends on messenger. \n\n It also allows experts/tutors to render help to people based on his/her proficiency.\n\n Since college is a lot of work on its own, Surrogate bot takes off of the stress of its human counterpart and does the less desirable job of having to find a suitable tutor.";
 			sendMessage(recipientId,{text: "" + msg});
 			     message = {
                 "attachment": {
@@ -1231,7 +1230,7 @@ function addPersistentMenu(){
         call_to_actions:[
             {
               type:"postback",
-              title:"Home 3",
+              title:"Home",
               payload:"home"
             },{
               type:"postback",
@@ -1278,7 +1277,7 @@ function getStarted(){
 					
 		var welcome = {"greeting":[{
 						"locale":"default",
-						"text":"You are welcome {{user_first_name}}!."
+						"text":"Good to have you {{user_first_name}}!."
 						}] 
 					};		
 					
@@ -1561,8 +1560,7 @@ function showReminders(recipientId){
 								"type": "postback",
                                 "title": "No",
                                 "payload": "postback_no",
-                                }
-								]
+                                }]
                         }]
                     }
                 }
@@ -1748,8 +1746,6 @@ function showStudents(toId){
                     }
 					}
 				};	
-				//sendMessage(toId, {text: "Here is your student list"});
-				//sendMessage(toId,message);
 				if(sendMessage(toId, {text: "Here is your student list"})){
 						sendMessage(toId,message);
 					}	
@@ -1769,7 +1765,6 @@ function removeExpertise(recipientId,expertise_id,subject){
 				'Content-Length':post_data.length
 				}
 		}, function(error, response, body) {
-			//sendMessage(recipientId, {text: "" + JSON.stringify(body)});
 			if (error) {
 				console.log('Error sending message: ', error);
 			} else if (response.body.error) {
@@ -1834,7 +1829,6 @@ function removeStudent(recipientId,expertise_id,subject){
 				'Content-Length':post_data.length
 				}
 		}, function(error, response, body) {
-			//sendMessage(recipientId, {text: "" + JSON.stringify(body)});
 			if (error) {
 				console.log('Error sending message: ', error);
 			} else if (response.body.error) {
