@@ -218,7 +218,7 @@ app.post('/webhook', function (req, res) {
 					showReminders(event.sender.id);
 				}else if(msgin.indexOf("show expertise")>-1){
 					showExpertise(event.sender.id);
-				}else if(msgin.indexOf("show expert")>-1){
+				}else if(msgin.indexOf("show expert")>-1 || msgin.indexOf("show tutor")>-1){
 					showExperts(event.sender.id);
 				}else if(msgin.indexOf("show student")>-1){
 					showStudents(event.sender.id);
@@ -226,8 +226,11 @@ app.post('/webhook', function (req, res) {
 					defaultMsg ="Sorry, I don't understand that. Anyway, ";
 					if(msgin.indexOf("thank")>-1){
 						defaultMsg ="You are welcome! Anyway, ";
+					}else if(msgin.indexOf("cancel")>-1 || msgin.indexOf("quit")>-1){
+						defaultMsg ="Okay then, ";
 					}
 					sendMessage(event.sender.id, {text: "" + defaultMsg+"this is what I have on my menu "});
+					senderContext[event.sender.id].state="begin";
 					showMenu(event.sender.id);
 				}
 			 }else{
