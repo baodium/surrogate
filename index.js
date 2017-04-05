@@ -80,7 +80,7 @@ app.get('/EAAJeiL9sIu4BANZAqkGafo', function (req, res) {
 				if(output.length>0){
 					for(var k=0; k<output.length; k++){
 						name = output[k].name.split(" ");
-						msg = "Hey "+name[0]+"! have you not forgoten your "+output[k].subject+" class today?";
+						msg = "Hi "+name[0]+", I hope you have not forgoten your "+output[k].subject+" class today!";
 						index = contains.call(sent, output[k].facebook_id); // true
 						if(!index){
 							sendMessage2(output[k].facebook_id,{text: "" + msg});
