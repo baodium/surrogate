@@ -1029,7 +1029,7 @@ function showDefault(recipientId) {
 			senderContext[recipientId].next=0;
 			senderContext[recipientId].message="false";			
 				defaultMsg ="Hello "+firstName+"!  This is what I have on my menu";
-				sendMessage(recipientId, defaultMsg);									
+				sendMessage(recipientId, {text: ""+defaultMsg});									
 				showMenu(recipientId);
 		}
 		});
