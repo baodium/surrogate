@@ -287,7 +287,7 @@ app.post('/webhook', function (req, res) {
 				    checkExpertise(event.sender.id,reply.payload,subject);
 			}else if(reply.payload=="postback_no"){
 				if(senderContext[event.sender.id]!=null){
-					sendMessage(event.sender.id, {text: "Okay then. This is what I have on my menu"});
+					sendMessage(event.sender.id, {text: "Alright "+senderContext[event.sender.id].firstName+". This is what I have on my menu"});
 					showMenu(event.sender.id);
 					senderContext[event.sender.id].state="begin";
 				}
@@ -1475,7 +1475,7 @@ function showExpertise(recipientId){
                     "payload": {
                         "template_type": "generic",
                         "elements": [{
-                            "title":"Would you like to an add expertise?",
+                            "title":"Would you like to add an expertise?",
                             "buttons": [{
 								"type": "postback",
                                 "title": "Yes",
@@ -1791,7 +1791,7 @@ function removeExpertise(recipientId,expertise_id,subject){
 
 
 function removeExpertOrStudent(fromId,senderId,requestId,type){
-	var post_data = querystring.stringify({'expertise_id' : requestId,'to_id':fromId,'special_field':'to_id'});
+	var post_data = querystring.stringify({'expertise_id' : requestId,'from_id':fromId,'special_field':'from_id'});
 			request({
 			url: backurl+"requests/get",
 			method: 'POST',
