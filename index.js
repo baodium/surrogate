@@ -752,21 +752,17 @@ function sendAcceptance(fromId,requestId,senderId){
         }else{
 		try{		
 			var bodyObject = JSON.parse(body);
-			bodyObject = bodyObject[0];
-			//sendMessage(senderId, {text: body+""});  		
+			bodyObject = bodyObject[0]; 		
 			subject = bodyObject.subject;
 			to = bodyObject.to_id;
 			name = bodyObject.name;	
 			reqId = bodyObject.request_id;
 			
 			sendMessage(senderId, {text: name+" is now your "+subject+" student."});
-			messageOption(senderId,"Do you want to message him?",senderId,fromId,subject);
-			//recipientId,msg,fromm,to,subject
-			
-			//senderContext[senderId].firstName+" "+senderContext[senderId].lastName
+			messageOption(senderId,"Would you like to message "+name+"?",senderId,fromId,subject);
 			
 			sendMessage(fromId, {text: senderContext[senderId].firstName+" "+senderContext[senderId].lastName+" has accepted your "+subject+" expertise request. He's now in your tutors list."});
-			messageOption(fromId,"Do you want to message him?",fromId,senderId,subject);
+			messageOption(fromId,"Would you like to message "+senderContext[senderId].firstName+"?",fromId,senderId,subject);
 						
 			var p_data = querystring.stringify({'request_id' : reqId,'status':'completed'});
 			submitForm(p_data,backurl+"requests/update",senderId,"update_request2");
@@ -1304,11 +1300,11 @@ function addPersistentMenu(){
               type:"postback",
               title:"My Students",
               payload:"my_students"
-            },{
+            }/*,{
               type:"postback",
               title:"My Class Reminders",
               payload:"my_reminders"
-            },{
+            }*/,{
               type:"postback",
               title:"About",
               payload:"about_me"
@@ -1349,7 +1345,7 @@ function getStarted(){
 			}else{
 					var welcome = {"greeting":[{
 						"locale":"default",
-						"text":"Good to have you {{user_first_name}}!."
+						"text":"Good to have you {{user_first_name}}!"
 						}] 
 					};
 				
