@@ -254,7 +254,7 @@ app.post('/webhook', function (req, res) {
 					}else if(msgin.indexOf("how are you")>-1 || msgin.indexOf("what is happening")>-1 || msgin.indexOf("tell me something")>-1 ){
 						defaultMsg ="Cool! "+senderContext[event.sender.id].firstName+".";
 					}else if(msgin.indexOf("damn")>-1 || msgin.indexOf("fuck")>-1 || msgin.indexOf("insane")>-1 || msgin.indexOf("crazy")>-1 || msgin.indexOf("mad")>-1 ){
-						defaultMsg ="Oh "+senderContext[event.sender.id].firstName+", that is not a very nice thing to say. \n\n Maybe you will feel better by providing help to someone on a subject you are proficient at. ";
+						defaultMsg ="Oh "+senderContext[event.sender.id].firstName+", that is not a very nice thing to say. \n\n Maybe you will feel better by providing help to someone on a subject you are proficient at. \n\n ";
 					}
 										
 					sendMessage(event.sender.id, {text: "" + defaultMsg+" This is what I have on my menu "});
