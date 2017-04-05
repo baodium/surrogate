@@ -980,7 +980,7 @@ function welcomeUser(recipientId) {
 				submitForm(post_data,backurl+"users/add",recipientId,"add_user");
 				//var msg = "Hi "+firstName+"! I am excited to have you around. I can help you get tutors on subjects you need help on. \n\n I can also assist you to render help to people based on your proficiency. \n\n You'll get recognition for that, you know?";			
 				//sendMessage(recipientId, {text: "" + msg});
-				var msg="Surrogate bot is an artificial intelligent designed to assist students learn from their friends on messenger. \n\n It also allows experts/tutors to render help to people based on their area of expertise.";
+				var msg="Surrogate bot is an artificial intelligent designed to assist students learn from experts on messenger. \n\n It also allows experts/tutors to render help to people based on their area of expertise.";
 				message = {
                 "attachment": {
                     "type": "template",
@@ -1068,7 +1068,7 @@ function showMenu(recipientId){
 }
 
 function about(recipientId) {
-		msg="Surrogate is an artificial intelligent designed to assist students learn from experts friends on messenger. \n\n It also allows experts/tutors to render help to people based on their proficiencies.\n\n Since college is a lot of work on its own, Surrogate bot takes off of the stress of its human counterpart and does the less desirable job of having to find a suitable tutor.";
+		msg="Surrogate is an artificial intelligent designed to assist students learn from experts on messenger. \n\n It also allows experts/tutors to render help to people based on their proficiencies.\n\n Since college is a lot of work on its own, Surrogate bot takes off of the stress of its human counterpart and does the less desirable job of having to find a suitable tutor.";
 			sendMessage(recipientId,{text: "" + msg});
 			     message = {
                 "attachment": {
