@@ -48,9 +48,13 @@ app.get('/EAAJeiL9sIu4BANZAqkGafo', function (req, res) {
 		
 		console.log("hello -"+time);
 		
-		var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+		var days = ['Sunday', 'Monday', 'Tuesday', 'Wedsday', 'Thursday', 'Friday', 'Saturday'];
 		var d = new Date();
-		var dayName = days[d.getDay()];
+		dayy = d.getDay();
+		if(dayy=="Wednessday"){
+			dayy=="Wedsday";
+		}
+		var dayName = days[dayy];
 		dayName  = dayName.toUpperCase();
 		
 		var post_data = querystring.stringify({'status' : 'completed','day':'REMINDER_'+dayName,'time':time});			
@@ -89,7 +93,7 @@ app.get('/EAAJeiL9sIu4BANZAqkGafo', function (req, res) {
 			}
 		});	
 		}		
-		res.send("Hello "+time);
+		res.send("Hello "+time+" - "+dayName);
 });
 
 
