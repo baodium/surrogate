@@ -262,7 +262,7 @@ app.post('/webhook', function (req, res) {
 					showMenu(event.sender.id);
 				}
 			 }else{
-				welcomeUser(event.sender.id);
+				showDefault(event.sender.id);
 			 }
 		} else if (event.postback) {
 			if(senderContext[event.sender.id]==null){
@@ -921,8 +921,7 @@ function setContext(recipientId) {
             console.log('Error sending message: ', error);
         } else if (response.body.error) {
             console.log('Error: ', response.body.error);
-        }else{
-			
+        }else{			
 			var bodyObject = JSON.parse(body);
 			firstName = bodyObject.first_name;
 			lastName = bodyObject.last_name;
@@ -935,6 +934,7 @@ function setContext(recipientId) {
 			senderContext[recipientId].profilePic = profilePic;
 			senderContext[recipientId].state = "just_welcomed";
 			senderContext[recipientId].next=0;
+			senderContext[recipientId].message="false";
             return true;		
 		}
 		});
@@ -996,15 +996,46 @@ function welcomeUser(recipientId) {
                 }
              };			
 			sendMessage(recipientId, message);									
-			//showMenu(recipientId);
 			}
             return true;		
 		}
 		});
 			
     return true;
-};
+}
 
+
+function showDefault(recipientId) {
+		request({
+			url: 'https://graph.facebook.com/v2.8/'+recipientId+'?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token='+process.env.PAGE_ACCESS_TOKEN,
+			method: 'GET'
+		}, function(error, response, body) {
+		
+        if (error) {
+            console.log('Error sending message: ', error);
+        } else if (response.body.error) {
+            console.log('Error: ', response.body.error);
+        }else{			
+			var bodyObject = JSON.parse(body);
+			firstName = bodyObject.first_name;
+			lastName = bodyObject.last_name;
+			profilePic=bodyObject.profile_pic;
+			locale = bodyObject.locale;			
+			senderContext[recipientId] = {};
+			senderContext[recipientId].firstName = firstName;
+			senderContext[recipientId].lastName = lastName;
+			senderContext[recipientId].profilePic = profilePic;
+			senderContext[recipientId].state = "newly_welcomed";
+			senderContext[recipientId].next=0;
+			senderContext[recipientId].message="false";			
+				defaultMsg ="Hello "+firstName+"!  This is what I have on my menu";
+				sendMessage(recipientId, defaultMsg);									
+				showMenu(recipientId);
+		}
+		});
+			
+    return true;
+}
 
 function showMenu(recipientId){
 			message = {
