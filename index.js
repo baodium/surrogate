@@ -274,7 +274,7 @@ app.post('/webhook', function (req, res) {
 				about(event.sender.id);
 			}else if(reply.payload=="get_assignment_help" || (reply.payload=="postback_yes" && senderContext[event.sender.id]!=null && senderContext[event.sender.id].state == "type_expertise" )){
 				if(senderContext[event.sender.id]!=null){
-					sendMessage(event.sender.id, {text: "which subject do you need help on?"});
+					sendMessage(event.sender.id, {text: "Which subject do you need help on?"});
 					senderContext[event.sender.id].state = "provide_subject";
 				}
 			}else if(reply.payload=="set_expertise" || (reply.payload=="postback_yes" && senderContext[event.sender.id]!=null && senderContext[event.sender.id].state == "expertise_saved" )){
