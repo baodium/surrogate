@@ -411,10 +411,15 @@ app.post('/webhook', function (req, res) {
 				if(senderContext[event.sender.id]!=null){
 					reminderOption(event.sender.id);
 				}
+			}else if(reply.payload=="postback_just_registered"){
+				if(senderContext[event.sender.id]!=null){
+					sendMessage(event.sender.id, {text: "Hi "+senderContext[event.sender.id].firstName+", I am excited to have you around "});
+					showMenu(event.sender.id);
+				}
 			}else{
 				sendMessage(event.sender.id, {text: reply.payload+" "});
 			}
-			
+			//postback_just_registered
 			 continue;
 		}
 				
@@ -970,11 +975,29 @@ function welcomeUser(recipientId) {
 				'name':firstName+" "+lastName,
 				'profile_pic':profilePic
 			});
-								
-			submitForm(post_data,backurl+"users/add",recipientId,"add_user");
-			var msg = "Hi "+firstName+"! Surrogate bot lets you get help or render help on various subjects";			
-			sendMessage(recipientId, {text: "" + msg});
-			showMenu(recipientId);
+			
+			if(firstName!=null){
+				submitForm(post_data,backurl+"users/add",recipientId,"add_user");
+				//var msg = "Hi "+firstName+"! I am excited to have you around. I can help you get tutors on subjects you need help on. \n\n I can also assist you to render help to people based on your proficiency. \n\n You'll get recognition for that, you know?";			
+				//sendMessage(recipientId, {text: "" + msg});
+				var msg="Surrogate bot is an artificial intelligent designed to assist students learn from their friends on messenger. \n\n It also allows experts/tutors to render help to people based on their area of expertise.";
+				message = {
+                "attachment": {
+                    "type": "template",
+                    "payload": {
+						"template_type":"button",
+						"text":msg,
+                        "buttons": [{
+								"type": "postback",
+                                "title": "I got it!",
+                                "payload": "postback_just_registered",
+                                }]
+                    }
+                }
+             };			
+			sendMessage(recipientId, message);									
+			//showMenu(recipientId);
+			}
             return true;		
 		}
 		});
