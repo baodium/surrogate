@@ -1791,7 +1791,11 @@ function removeExpertise(recipientId,expertise_id,subject){
 
 
 function removeExpertOrStudent(fromId,senderId,requestId,type){
-	var post_data = querystring.stringify({'expertise_id' : requestId,'from_id':fromId,'special_field':'from_id'});
+	if(type=="student"){
+		var post_data = querystring.stringify({'expertise_id' : requestId,'from_id':fromId,'special_field':'from_id'});
+	}else{
+		var post_data = querystring.stringify({'expertise_id' : requestId,'to_id':fromId,'special_field':'to_id'});
+	}
 			request({
 			url: backurl+"requests/get",
 			method: 'POST',
@@ -1815,7 +1819,7 @@ function removeExpertOrStudent(fromId,senderId,requestId,type){
 			name = bodyObject.name;	
 			reqId = bodyObject.request_id;
 			type2=(type=="tutor")?"student":"tutor";
-			sendMessage(to, {text: senderContext[senderId].firstName+" "+senderContext[senderId].lastName+" has removed you from his "+subject+" "+type2+" list"});
+			sendMessage(fromId, {text: senderContext[senderId].firstName+" "+senderContext[senderId].lastName+" has removed you from his "+subject+" "+type2+" list"});
 			sendMessage(senderId, {text: name+" has been removed  from your "+subject+" "+type+" list"});
 			var p_data = querystring.stringify({'request_id' : reqId});
 			var p_data2 = querystring.stringify({'facebook_id':senderId,'expertise_id' : requestId});
