@@ -141,9 +141,9 @@ app.post('/webhook', function (req, res) {
 				setContext(event.sender.id);
 			}
 			 if(senderContext[event.sender.id]!=null){				 
-					if(msgin.indexOf("thank")>-1 || msgin=="no" || msgin=="ok" || msgin=="cancel" || msgin=="quit"  || msgin=="exit" || msgin=="end" || msgin=="hello" || msgin=="hi" ){
-						senderContext[event.sender.id].state="begin";
-					}				 
+				if(msgin.indexOf("thank")>-1 || msgin=="no" || msgin=="help" || msgin=="about" || msgin=="hello" || msgin=="hey" || msgin=="wassup" || msgin=="how are you" || msgin=="how far" || msgin=="about" || msgin=="okay" || msgin=="hi"  || msgin=="ok" || msgin=="cancel" || msgin=="quit"  || msgin=="exit" || msgin=="end" || msgin=="hello" || msgin=="hi" ){
+					senderContext[event.sender.id].state="begin";
+				}				 
 				 
 				if(senderContext[event.sender.id].state === "provide_subject"){									
 					checkHelper(event.message.text,event.sender.id);									
@@ -240,7 +240,7 @@ app.post('/webhook', function (req, res) {
 				}else if(msgin.indexOf("about")>-1){
 					about(event.sender.id);
 				}else{
-					defaultMsg ="Sorry, I don't understand that. Anyway, ";
+					defaultMsg ="Hello "+senderContext[event.sender.id].firstName+"!";
 					if(msgin.indexOf("thank")>-1){
 						defaultMsg ="You are welcome "+senderContext[event.sender.id].firstName+".";
 					}else if(msgin.indexOf("cancel")>-1 || msgin.indexOf("ok")>-1 || msgin.indexOf("quit")>-1 || msgin.indexOf("end")>-1 || msgin.indexOf("exit")>-1 || msgin.indexOf("stop")>-1 || msgin=="no"){
@@ -272,7 +272,7 @@ app.post('/webhook', function (req, res) {
 				help(event.sender.id);
 			}else if(reply.payload=="about_me"){
 				about(event.sender.id);
-			}else if(reply.payload=="get_assignment_help"){
+			}else if(reply.payload=="get_assignment_help" || (reply.payload=="postback_yes" && senderContext[event.sender.id]!=null && senderContext[event.sender.id].state == "type_expertise" )){
 				if(senderContext[event.sender.id]!=null){
 					sendMessage(event.sender.id, {text: "which subject do you need help on?"});
 					senderContext[event.sender.id].state = "provide_subject";
@@ -289,6 +289,7 @@ app.post('/webhook', function (req, res) {
 				if(senderContext[event.sender.id]!=null){
 					sendMessage(event.sender.id, {text: "Okay then. This is what I have on my menu"});
 					showMenu(event.sender.id);
+					senderContext[event.sender.id].state="begin";
 				}
 			}else if(reply.payload=="my_expertise"){
 				showExpertise(event.sender.id);
@@ -626,6 +627,7 @@ function checkHelper(subject,senderId){
 							
 					}else{
 						sendMessage(senderId, {text: "Sorry, I dont personally know people with "+subject+" expertise"});
+						displayOption(senderId,"Do you want to try another subject?","yes_no");
 					}
 					
 					}catch(err){
@@ -1270,36 +1272,47 @@ function addPersistentMenu(){
 
 
 function getStarted(){
-		var post = {"get_started":{
+		var postt = {"get_started":{
 						"payload":"get_started_button"
 						}
 					};
-					
-		var welcome = {"greeting":[{
-						"locale":"default",
-						"text":"Good to have you {{user_first_name}}!."
-						}] 
-					};		
-					
-		
+											
 		
 		request({
         url: 'https://graph.facebook.com/v2.8/me/messenger_profile',			
         qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
         method: 'POST',	
-        json: post
+        json: postt
 		}, function(error, response, body) {
-
+			if (error) {
+				console.log('Error sending message: ', error);
+			} else if (response.body.error) {
+				console.log('Error: ', response.body.error);
+			}else{
+					var welcome = {"greeting":[{
+						"locale":"default",
+						"text":"Good to have you {{user_first_name}}!."
+						}] 
+					};
+				
+				request({
+					url: 'https://graph.facebook.com/v2.8/me/thread_settings',		
+					qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
+					method: 'POST',		
+					json: welcome
+					}, function(error, response, body) {
+							if (error) {
+								console.log('Error sending message: ', error);
+							} else if (response.body.error) {
+								console.log('Error: ', response.body.error);
+							}else{
+								
+							}
+					});				
+			}
 		});
 		
-		request({
-        url: 'https://graph.facebook.com/v2.8/me/thread_settings',		
-        qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
-        method: 'POST',		
-        json: welcome
-		}, function(error, response, body) {
-
-		});
+		
 }
 
 
