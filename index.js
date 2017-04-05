@@ -134,7 +134,7 @@ app.post('/webhook', function (req, res) {
 	//removeStarted();
 	//removePersistentMenu();
 	getStarted();
-	addPersistentMenu();
+	//addPersistentMenu();
 	var helprequest = false;
     var events = req.body.entry[0].messaging;
     for (i = 0; i < events.length; i++) {		
@@ -1326,43 +1326,71 @@ function addPersistentMenu(){
 
 
 function getStarted(){
-		var postt = {"get_started":{
+		var start = {"get_started":{
 						"payload":"get_started_button"
 						}
-					};
+				};
 											
+		var audience = {
+						"target_audience":{
+						"audience_type":"all"
+						}
+			};
 		
+	var message = {
+				"get_started":{
+						"payload":"get_started_button"
+						},
+				"greeting":[{
+						"locale":"default",
+						"text":"Good to have you {{user_first_name}}!"
+						}],
+				"target_audience": {
+						"audience_type":"all"
+					},
+				"persistent_menu": [{
+						"locale":"default",
+						"composer_input_disabled":true,
+						"call_to_actions":[{
+						"title":"Menu",
+						"type":"nested",
+						"call_to_actions":[{
+									"type":"postback",
+									"title":"Home",
+									"payload":"home"},
+									{
+									"type":"postback",
+									"title":"My expertise",
+									"payload":"my_expertise"
+									},{
+									"type":"postback",
+									"title":"My Tutors",
+									"payload":"my_experts"
+									},{
+									"type":"postback",
+									"title":"My Students",
+									"payload":"my_students"
+									},{
+									"type":"postback",
+									"title":"About",
+									"payload":"about_me"
+									}]
+								}]
+						}]
+				};
+					
 		request({
         url: 'https://graph.facebook.com/v2.8/me/messenger_profile',			
         qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
         method: 'POST',	
-        json: postt
+        json: message
 		}, function(error, response, body) {
 			if (error) {
 				console.log('Error sending message: ', error);
 			} else if (response.body.error) {
 				console.log('Error: ', response.body.error);
 			}else{
-					var welcome = {"greeting":[{
-						"locale":"default",
-						"text":"Good to have you {{user_first_name}}!"
-						}] 
-					};
-				
-				request({
-					url: 'https://graph.facebook.com/v2.8/me/thread_settings',		
-					qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
-					method: 'POST',		
-					json: welcome
-					}, function(error, response, body) {
-							if (error) {
-								console.log('Error sending message: ', error);
-							} else if (response.body.error) {
-								console.log('Error: ', response.body.error);
-							}else{
-								
-							}
-					});				
+					console.log(body);
 			}
 		});
 		
