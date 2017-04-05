@@ -234,7 +234,7 @@ app.post('/webhook', function (req, res) {
 					senderContext[event.sender.id].state="begin";
 					showMenu(event.sender.id);
 				}else if(msgin.indexOf("help")>-1){
-					sendMessage(event.sender.id, {text: "" + "Hi "+senderContext[event.sender.id].firstName+", I am surrogate bot. I am an artificial intelligent designed to assist students learn from their friends on messenger. \n\n You can also render help to someone based on your proficiency.\n\n Here are the things I can do "});
+					sendMessage(event.sender.id, {text: "" + "Hi "+senderContext[event.sender.id].firstName+", I am surrogate bot. I am an artificial intelligent designed to assist students learn from experts on messenger. \n\n You can also render help to someone based on your proficiency.\n\n Here are the things I can do "});
 					senderContext[event.sender.id].state="begin";
 					showMenu(event.sender.id);
 				}else if(msgin.indexOf("about")>-1){
@@ -246,7 +246,7 @@ app.post('/webhook', function (req, res) {
 					}else if(msgin.indexOf("cancel")>-1 || msgin.indexOf("ok")>-1 || msgin.indexOf("quit")>-1 || msgin.indexOf("end")>-1 || msgin.indexOf("exit")>-1 || msgin.indexOf("stop")>-1 || msgin=="no"){
 						defaultMsg ="Okay.";
 					}else if(msgin.indexOf("hello")>-1 || msgin.indexOf("hi")>-1 || msgin.indexOf("start")>-1 || msgin.indexOf("hey")>-1 || msgin.indexOf("wassup")>-1 || msgin.indexOf("how far")>-1){
-						defaultMsg ="Hi "+senderContext[event.sender.id].firstName+", how are you doing? I am surrogate bot. I am an artificial intelligent designed to assist students learn from their friends on messenger.\n\n You can also render help to someone based on your proficiency. \n\n ";
+						defaultMsg ="Hi "+senderContext[event.sender.id].firstName+", how are you doing? I am surrogate bot. I am an artificial intelligent designed to assist students learn from experts on messenger.\n\n You can also render help to someone based on your proficiency. \n\n ";
 					}else if(msgin.indexOf("how are you")>-1 || msgin.indexOf("what is happening")>-1 || msgin.indexOf("tell me something")>-1 ){
 						defaultMsg ="Cool! "+senderContext[event.sender.id].firstName+".";
 					}else if(msgin.indexOf("damn")>-1 || msgin.indexOf("fuck")>-1 || msgin.indexOf("insane")>-1 || msgin.indexOf("crazy")>-1 || msgin.indexOf("mad")>-1 ){
@@ -626,7 +626,7 @@ function checkHelper(subject,senderId){
 					sendMessage(senderId,message);	
 							
 					}else{
-						sendMessage(senderId, {text: "Sorry, I dont personally know people with "+subject+" expertise"});
+						sendMessage(senderId, {text: "Sorry, I don't know anyone that is proficient in "+subject+", kindly tell your friends about me so I can render help to more people"});
 						displayOption(senderId,"Do you want to try another subject?","yes_no");
 					}
 					
@@ -876,7 +876,7 @@ function displayWelcomeMessage(recipientId) {
                     "payload": {
                         "template_type": "generic",
                         "elements": [{
-                            "title": " Surrogate is an artificial intelligent designed to assist students learn from their friends on messenger. \n\n It also allows experts/tutors to render help to people based on their individual proficiencies.\n\n ",
+                            "title": " Surrogate is an artificial intelligent designed to assist students learn from experts on messenger. \n\n It also allows experts/tutors to render help to people based on their individual proficiencies.\n\n ",
                             "buttons": [{
 								"type": "postback",
                                 "title": "Get Started",
@@ -1010,7 +1010,7 @@ function showMenu(recipientId){
 }
 
 function about(recipientId) {
-		msg="Surrogate is an artificial intelligent designed to assist students learn from their friends on messenger. \n\n It also allows experts/tutors to render help to people based on their proficiencies.\n\n Since college is a lot of work on its own, Surrogate bot takes off of the stress of its human counterpart and does the less desirable job of having to find a suitable tutor.";
+		msg="Surrogate is an artificial intelligent designed to assist students learn from experts friends on messenger. \n\n It also allows experts/tutors to render help to people based on their proficiencies.\n\n Since college is a lot of work on its own, Surrogate bot takes off of the stress of its human counterpart and does the less desirable job of having to find a suitable tutor.";
 			sendMessage(recipientId,{text: "" + msg});
 			     message = {
                 "attachment": {
@@ -1368,7 +1368,7 @@ function submitForm(post_data,url,userId,action){
 
 						if(action=="update_expertise" && !exists){
 							senderContext[userId].error = false;
-							sendMessage(userId, {text: "Your expertise has been successfully saved"});
+							sendMessage(userId, {text: "I have successfully saved your expertise"});
 							displayOption(userId,"Do you want to add another expertise?","yes_no");
 							senderContext[userId].state = "expertise_saved"; 
 						}
@@ -1379,7 +1379,7 @@ function submitForm(post_data,url,userId,action){
 								getExpertiseLevel(userId);
 								senderContext[userId].state = "type_expertise_done";
 							}else{
-								sendMessage(userId, {text: "You have saved this expertise before. Please specify another expertise"});
+								sendMessage(userId, {text: "You have added this expertise before. Please specify another expertise"});
 								getOut(userId);								
 								senderContext[userId].state = "type_expertise";
 							}
@@ -1391,7 +1391,7 @@ function submitForm(post_data,url,userId,action){
 								subject = senderContext[userId].requestSubject;
 								ownerId = senderContext[userId].requestTo;
 								requestId = senderContext[userId].expertiseId;
-								sendMessage(userId, {text: "Your request has been sent. Hopefully, you will get a reply very soon."});				
+								sendMessage(userId, {text: "I have sent your request. Hopefully, you will get a reply very soon."});				
 								//sendMessage(userId, {text: "You have a new request. "+name+" wants to learn "+subject+" from you"});	
 								sendMessage(ownerId, {text: "You have a new request. "+name+" wants to learn "+subject+" from you"});									
 								
@@ -1783,7 +1783,7 @@ function removeExpertise(recipientId,expertise_id,subject){
 			} else if (response.body.error) {
 				console.log('Error: ', response.body.error);
 			}else{
-				sendMessage(recipientId, {text: subject+ " expertise has been successfully deleted \n\n "});
+				sendMessage(recipientId, {text: "I have successfully deleted "+subject+"  as one of your expertise  \n\n "});
 				showExpertise(recipientId);	
 			}			
 		});
