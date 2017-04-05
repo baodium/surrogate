@@ -272,7 +272,7 @@ app.post('/webhook', function (req, res) {
 				help(event.sender.id);
 			}else if(reply.payload=="about_me"){
 				about(event.sender.id);
-			}else if(reply.payload=="get_assignment_help" || (reply.payload=="postback_yes" && senderContext[event.sender.id]!=null && senderContext[event.sender.id].state == "type_expertise" )){
+			}else if(reply.payload=="get_assignment_help" || (reply.payload=="postback_yes" && senderContext[event.sender.id]!=null && senderContext[event.sender.id].state == "provide_subject" )){
 				if(senderContext[event.sender.id]!=null){
 					sendMessage(event.sender.id, {text: "Which subject do you need help on?"});
 					senderContext[event.sender.id].state = "provide_subject";
@@ -1674,7 +1674,7 @@ function showExperts(fromId){
                                 },{
 								"type": "postback",
                                 "title": "Remove",
-                                "payload": "remove_expert-"+output[i].to_id+"-"+output[i].expertise_id,
+                                "payload": "remove_expert-"+output[i].from_id+"-"+output[i].expertise_id,
                                 }]
                         };
 				
