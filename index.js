@@ -33,9 +33,8 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());  
 app.listen((process.env.PORT || 3000));
 
-app.get('/', function (req, res) {  
-	res.send('Surrogate Bot');
-	
+app.get('/', function (req, res) { 
+	res.send('Surrogate Bot');	
 });
 
 app.get('/EAAJeiL9sIu4BANZAqkGafo', function (req, res) { 
@@ -158,9 +157,9 @@ app.post('/webhook', function (req, res) {
 			if(senderContext[event.sender.id]==null){
 				setContext(event.sender.id);
 			}
-			 if(senderContext[event.sender.id]!=null){				 
+			 if(senderContext[event.sender.id]!=null){			 
 				//if(msgin.indexOf("thank")>-1 || msgin=="no" || msgin=="help" || msgin=="about" || msgin=="hello" || msgin=="hey" || msgin=="wassup" || msgin=="how are you" || msgin=="how far" || msgin=="about" || msgin=="okay" || msgin=="hi"  || msgin=="ok" || msgin=="cancel" || msgin=="quit"  || msgin=="exit" || msgin=="end" || msgin=="hello" || msgin=="hi" ){
-				if(greetings_pool.contains(msgin) || cancellation_pool.contains(msgin)){
+				if(contains.call(greetings_pool, msgin) || contains.call(cancellation_pool, msgin)){
 					senderContext[event.sender.id].state="begin";
 				}				 
 				 
@@ -236,40 +235,40 @@ app.post('/webhook', function (req, res) {
 						}
 
 					}
-				}else if(reminder_pool.contains(msgin)){
+				}else if(contains.call(reminder_pool, msgin)){
 					senderContext[event.sender.id].state="begin";
 					showReminders(event.sender.id);
-				}else if(expertise_pool.contains(msgin)){
+				}else if(contains.call(expertise_pool, msgin)){
 					senderContext[event.sender.id].state="begin";
 					showExpertise(event.sender.id);
-				}else if(experts_pool.contains(msgin)){
+				}else if(contains.call(experts_pool, msgin)){
 					senderContext[event.sender.id].state="begin";
 					showExperts(event.sender.id);
-				}else if(students_pool.contains(msgin)){
+				}else if(contains.call(students_pool, msgin)){
 					senderContext[event.sender.id].state="begin";
 					showStudents(event.sender.id);
-				}else if(menu_pool.contains(msgin)){
+				}else if(contains.call(menu_pool, msgin)){
 					senderContext[event.sender.id].state="begin";
 					showMenu(event.sender.id);
-				}else if(help_pool.contains(msgin)){
+				}else if(contains.call(help_pool, msgin)){
 					sendMessage(event.sender.id, {text: "" + "Hi "+senderContext[event.sender.id].firstName+", I am surrogate bot. I am an artificial intelligent designed to assist students learn from experts on messenger. \n\n You can also render help to someone based on your proficiency.\n\n Here are the things I can do "});
 					senderContext[event.sender.id].state="begin";
 					showMenu(event.sender.id);
-				}else if(about_pool.contains(msgin)){
+				}else if(contains.call(about_pool, msgin)){
 					about(event.sender.id);
 				}else{
 					defaultMsg ="Hello "+senderContext[event.sender.id].firstName+"! \n\n";					
-					if(welcome_pool.contains(msgin)){
+					if(contains.call(welcome_pool, msgin)){
 						defaultMsg ="You are welcome "+senderContext[event.sender.id].firstName+".";
-					}else if(cancellation_pool.contains(msgin)){
+					}else if(contains.call(cancellation_pool, msgin)){
 						defaultMsg ="Okay.";
-					}else if(hi_pool.contains(msgin)){
+					}else if(contains.call(hi_pool, msgin)){
 						defaultMsg ="Hi "+senderContext[event.sender.id].firstName+", how are you doing? I am surrogate bot. I am an artificial intelligent designed to assist students learn from experts on messenger.\n\n You can also render help to someone based on your proficiency. \n\n ";
-					}else if(wellwish_pool.contains(msgin)){
+					}else if(contains.call(wellwish_pool, msgin)){
 						defaultMsg ="And you too, "+senderContext[event.sender.id].firstName+" \n\n";
-					}else if(greetings_pool.contains(msgin)){
+					}else if(contains.call(greetings_pool, msgin)){
 						defaultMsg ="I'm cool! "+senderContext[event.sender.id].firstName+". \n\n";
-					}else if(abuse_pool.contains(msgin)){
+					}else if(contains.call(abuse_pool, msgin)){
 						defaultMsg ="Oh "+senderContext[event.sender.id].firstName+", that is not a very nice thing to say. \n\n Maybe you will feel better by providing help to someone on a subject you are proficient at. \n\n ";
 					}
 										
