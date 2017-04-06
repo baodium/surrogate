@@ -13,7 +13,22 @@ var app = express();
 var started=false;
 var backurl="http://surrogation.com.ng/surrogateapp/";
 var senderContext = {};
+var greetings_pool = ["how are you","how far","wassup","kilonshele","bawo ni","wetin dey happen","wetin dey","what is happening"];
+var cancellation_pool=["quit","cancel","exit","abort","no","end","terminate","stop"];
+var abuse_pool=["damn","fuck","insane","crazy","mad","shit","oloriburuku","mugun"];
+var students_pool=["show students","show my students","my students","show me my students","who are my students","who is my student","show student","show my student","my student","show me my student"];
+var experts_pool=["show tutors","show my tutors","my tutors","show me my tutors","who are my tutors","who is my expert","show expert","show my expert","my expert","show me my expert","show experts","show my experts","my experts","show me my experts","who are my experts","who is my experts","show experts","show my experts","my experts","show me my experts"];
+var expertise_pool=["show expertise","show my expertise","my expertise","show me my expertise","show subjects","show my subjects","my subjects","show me my subjects"];
+var reminder_pool=["show reminders","show my reminders","my reminders","show me my reminders","show reminders","show my reminder","my reminder","show me my reminder"];
+var help_pool=["help","help me","help please","please help","i need help","how to","how to use","i want help"];
+var about_pool=["about","about me","about surrogate","who are you","who are you?","what is surrogate","what is surrogate app","about you"];
+var menu_pool=["show menu","menu","my menu","show me menu","show me the menu","where is the menu","menu please","the menu"];
+var hi_pool=["hello","hi","hey","may i know you","tell me something"];
+var welcome_pool=["thank","thanks","thank you","oshe","thanks a bunch"];
+var wellwish_pool=["god bless","god bless you","bless you","you are great","you are good","you are too much","wish you the best","good luck"];
 
+//if(msgin.indexOf("thank")>-1 || msgin=="no" || msgin=="help" || msgin=="about" || msgin=="hello" || msgin=="hey" || msgin=="wassup" || msgin=="how are you" || msgin=="how far" || msgin=="about" || msgin=="okay" || msgin=="hi"  || msgin=="ok" || msgin=="cancel" || msgin=="quit"  || msgin=="exit" || msgin=="end" || msgin=="hello" || msgin=="hi" ){
+				
 app.use(bodyParser.urlencoded({extended: false}));  
 app.use(bodyParser.json());  
 app.listen((process.env.PORT || 3000));
@@ -131,7 +146,7 @@ app.get('/webhook', function (req, res) {
 });
 
 app.post('/webhook', function (req, res) { 
-
+	
 	getStarted();
 	var helprequest = false;
     var events = req.body.entry[0].messaging;
@@ -139,11 +154,13 @@ app.post('/webhook', function (req, res) {
         var event = events[i];						
 		if (event.message && (event.message.text || event.message.attachments)) {
 			msgin = event.message.text+"";	
+			msgin = msgin.toLowerCase();
 			if(senderContext[event.sender.id]==null){
 				setContext(event.sender.id);
 			}
 			 if(senderContext[event.sender.id]!=null){				 
-				if(msgin.indexOf("thank")>-1 || msgin=="no" || msgin=="help" || msgin=="about" || msgin=="hello" || msgin=="hey" || msgin=="wassup" || msgin=="how are you" || msgin=="how far" || msgin=="about" || msgin=="okay" || msgin=="hi"  || msgin=="ok" || msgin=="cancel" || msgin=="quit"  || msgin=="exit" || msgin=="end" || msgin=="hello" || msgin=="hi" ){
+				//if(msgin.indexOf("thank")>-1 || msgin=="no" || msgin=="help" || msgin=="about" || msgin=="hello" || msgin=="hey" || msgin=="wassup" || msgin=="how are you" || msgin=="how far" || msgin=="about" || msgin=="okay" || msgin=="hi"  || msgin=="ok" || msgin=="cancel" || msgin=="quit"  || msgin=="exit" || msgin=="end" || msgin=="hello" || msgin=="hi" ){
+				if(greetings_pool.contains(msgin) || cancellation_pool.contains(msgin)){
 					senderContext[event.sender.id].state="begin";
 				}				 
 				 
@@ -219,43 +236,44 @@ app.post('/webhook', function (req, res) {
 						}
 
 					}
-					
-				}else if(msgin.indexOf("show reminder")>-1){
+				}else if(reminder_pool.contains(msgin)){
 					senderContext[event.sender.id].state="begin";
 					showReminders(event.sender.id);
-				}else if(msgin.indexOf("show expertise")>-1){
+				}else if(expertise_pool.contains(msgin)){
 					senderContext[event.sender.id].state="begin";
 					showExpertise(event.sender.id);
-				}else if(msgin.indexOf("show expert")>-1 || msgin.indexOf("show tutor")>-1){
+				}else if(experts_pool.contains(msgin)){
 					senderContext[event.sender.id].state="begin";
 					showExperts(event.sender.id);
-				}else if(msgin.indexOf("show student")>-1){
+				}else if(students_pool.contains(msgin)){
 					senderContext[event.sender.id].state="begin";
 					showStudents(event.sender.id);
-				}else if(msgin.indexOf("menu")>-1){
+				}else if(menu_pool.contains(msgin)){
 					senderContext[event.sender.id].state="begin";
 					showMenu(event.sender.id);
-				}else if(msgin.indexOf("help")>-1){
+				}else if(help_pool.contains(msgin)){
 					sendMessage(event.sender.id, {text: "" + "Hi "+senderContext[event.sender.id].firstName+", I am surrogate bot. I am an artificial intelligent designed to assist students learn from experts on messenger. \n\n You can also render help to someone based on your proficiency.\n\n Here are the things I can do "});
 					senderContext[event.sender.id].state="begin";
 					showMenu(event.sender.id);
-				}else if(msgin.indexOf("about")>-1){
+				}else if(about_pool.contains(msgin)){
 					about(event.sender.id);
 				}else{
-					defaultMsg ="Hello "+senderContext[event.sender.id].firstName+"!";
-					if(msgin.indexOf("thank")>-1){
+					defaultMsg ="Hello "+senderContext[event.sender.id].firstName+"! \n\n";					
+					if(welcome_pool.contains(msgin)){
 						defaultMsg ="You are welcome "+senderContext[event.sender.id].firstName+".";
-					}else if(msgin.indexOf("cancel")>-1 || msgin.indexOf("ok")>-1 || msgin.indexOf("quit")>-1 || msgin.indexOf("end")>-1 || msgin.indexOf("exit")>-1 || msgin.indexOf("stop")>-1 || msgin=="no"){
+					}else if(cancellation_pool.contains(msgin)){
 						defaultMsg ="Okay.";
-					}else if(msgin.indexOf("hello")>-1 || msgin.indexOf("hi")>-1 || msgin.indexOf("start")>-1 || msgin.indexOf("hey")>-1 || msgin.indexOf("wassup")>-1 || msgin.indexOf("how far")>-1){
+					}else if(hi_pool.contains(msgin)){
 						defaultMsg ="Hi "+senderContext[event.sender.id].firstName+", how are you doing? I am surrogate bot. I am an artificial intelligent designed to assist students learn from experts on messenger.\n\n You can also render help to someone based on your proficiency. \n\n ";
-					}else if(msgin.indexOf("how are you")>-1 || msgin.indexOf("what is happening")>-1 || msgin.indexOf("tell me something")>-1 ){
-						defaultMsg ="Cool! "+senderContext[event.sender.id].firstName+".";
-					}else if(msgin.indexOf("damn")>-1 || msgin.indexOf("fuck")>-1 || msgin.indexOf("insane")>-1 || msgin.indexOf("crazy")>-1 || msgin.indexOf("mad")>-1 ){
+					}else if(wellwish_pool.contains(msgin)){
+						defaultMsg ="And you too, "+senderContext[event.sender.id].firstName+" \n\n";
+					}else if(greetings_pool.contains(msgin)){
+						defaultMsg ="I'm cool! "+senderContext[event.sender.id].firstName+". \n\n";
+					}else if(abuse_pool.contains(msgin)){
 						defaultMsg ="Oh "+senderContext[event.sender.id].firstName+", that is not a very nice thing to say. \n\n Maybe you will feel better by providing help to someone on a subject you are proficient at. \n\n ";
 					}
 										
-					sendMessage(event.sender.id, {text: "" + defaultMsg+" This is what I have on my menu "});
+					sendMessage(event.sender.id, {text: "" + defaultMsg+"This is what I have on my menu "});
 					senderContext[event.sender.id].state="begin";
 					showMenu(event.sender.id);
 				}
