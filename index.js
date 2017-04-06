@@ -131,10 +131,8 @@ app.get('/webhook', function (req, res) {
 });
 
 app.post('/webhook', function (req, res) { 
-	//removeStarted();
-	//removePersistentMenu();
+
 	getStarted();
-	//addPersistentMenu();
 	var helprequest = false;
     var events = req.body.entry[0].messaging;
     for (i = 0; i < events.length; i++) {		
@@ -1275,68 +1273,8 @@ function getOut(recipientId){
             return true;
 }
 
-function addPersistentMenu(){
- request({
-    url: 'https://graph.facebook.com/v2.8/me/thread_settings',
-    qs: { access_token: process.env.PAGE_ACCESS_TOKEN },
-    method: 'POST',
-    json:{
-        setting_type : "call_to_actions",
-        thread_state : "existing_thread",
-        call_to_actions:[
-            {
-              type:"postback",
-              title:"Home",
-              payload:"home"
-            },{
-              type:"postback",
-              title:"My expertise",
-              payload:"my_expertise"
-            },{
-              type:"postback",
-              title:"My Tutors",
-              payload:"my_experts"
-            },{
-              type:"postback",
-              title:"My Students",
-              payload:"my_students"
-            }/*,{
-              type:"postback",
-              title:"My Class Reminders",
-              payload:"my_reminders"
-            }*/,{
-              type:"postback",
-              title:"About",
-              payload:"about_me"
-            }
-          ]
-    }
-
-}, function(error, response, body) {
-    console.log(response)
-    if (error) {
-        console.log('Error sending messages: ', error)
-    } else if (response.body.error) {
-        console.log('Error: ', response.body.error)
-    }
-})
-
-}
-
-
 
 function getStarted(){
-		var start = {"get_started":{
-						"payload":"get_started_button"
-						}
-				};
-											
-		var audience = {
-						"target_audience":{
-						"audience_type":"all"
-						}
-			};
-		
 	var message = {
 				"get_started":{
 						"payload":"get_started_button"
@@ -1351,13 +1289,21 @@ function getStarted(){
 				"persistent_menu": [{
 						"locale":"default",
 						"composer_input_disabled":true,
-						"call_to_actions":[{
-						"title":"Menu",
-						"type":"nested",
-						"call_to_actions":[{
+						"call_to_actions":[
+						{
 									"type":"postback",
 									"title":"Home",
-									"payload":"home"},
+									"payload":"home"
+						},
+						{
+									"type":"postback",
+									"title":"About",
+									"payload":"about_me"
+						},
+						{
+						"title":"My Contents",
+						"type":"nested",
+						"call_to_actions":[
 									{
 									"type":"postback",
 									"title":"My expertise",
@@ -1370,10 +1316,11 @@ function getStarted(){
 									"type":"postback",
 									"title":"My Students",
 									"payload":"my_students"
-									},{
+									},
+									{
 									"type":"postback",
-									"title":"About",
-									"payload":"about_me"
+									"title":"My Reminders",
+									"payload":"my_reminders"
 									}]
 								}]
 						}]
@@ -1396,36 +1343,6 @@ function getStarted(){
 		
 		
 }
-
-
-function removeStarted(){
-		var json = {"setting_type":"greeting"};
-		request({
-        url: 'https://graph.facebook.com/v2.8/me/thread_settings',
-        method: 'DELETE',		
-        qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
-        json: json
-		}, function(error, response, body) {
-
-		});
-}
-
-
-function removePersistentMenu(){
-		var json = {
-		"setting_type":"call_to_actions",
-		"thread_state":"existing_thread"
-		};
-		request({
-        url: 'https://graph.facebook.com/v2.8/me/thread_settings',
-        method: 'DELETE',		
-        qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
-        json: json
-		}, function(error, response, body) {
-
-		});
-}
-
 
 function submitForm(post_data,url,userId,action){
 		request({
