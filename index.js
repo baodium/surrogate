@@ -241,9 +241,9 @@ app.post('/webhook', function (req, res) {
 					senderContext[event.sender.id].state="begin";
 					showMenu(event.sender.id);
 				}else if(contains.call(help_pool, msgin) || contains.call(help_pool, msgin2)){
-					sendMessage(event.sender.id, {text: "" + "Hi "+senderContext[event.sender.id].firstName+", I am surrogate bot. I am an artificial intelligent designed to assist students learn from experts on messenger. \n\n You can also render help to someone based on your proficiency.\n\n Here are the things I can do "});
+					//sendMessage(event.sender.id, {text: "" + "Hi "+senderContext[event.sender.id].firstName+", I am surrogate bot. I am an artificial intelligent designed to assist students learn from experts on messenger. \n\n You can also render help to someone based on your proficiency.\n\n Here are the things I can do "});					
+					help(event.sender.id,senderContext[event.sender.id].firstName);
 					senderContext[event.sender.id].state="begin";
-					showMenu(event.sender.id);
 				}else if(contains.call(about_pool, msgin) || contains.call(about_pool, msgin2)){
 					about(event.sender.id);
 				}else{
@@ -369,7 +369,8 @@ app.post('/webhook', function (req, res) {
 					sendAcceptance(fromId,expertiseId,event.sender.id);
 				}								
 			}else if(reply.payload=="home"){
-				 welcomeUser(event.sender.id);				
+				// welcomeUser(event.sender.id);
+				showMenu(event.sender.id);				
 			}else if(reply.payload.indexOf("postback_message_yes")>-1){				
 				var members_id = reply.payload.split("-");
 				 fromId = members_id[1];
@@ -879,38 +880,6 @@ function kittenMessage(recipientId, text) {
 };
 
 
-function displayWelcomeMessage(recipientId) {
-			message = {
-                "attachment": {
-                    "type": "template",
-                    "payload": {
-                        "template_type": "generic",
-                        "elements": [{
-                            "title": " Surrogate is an artificial intelligent designed to assist students learn from experts on messenger. \n\n It also allows experts/tutors to render help to people based on their individual proficiencies.\n\n ",
-                            "buttons": [{
-								"type": "postback",
-                                "title": "Get Started",
-                                "payload": "start_me",
-                                }, {
-                                "type": "postback",
-                                "title": "About",
-                                "payload": "about_me",
-                                }, {
-								"title": "Help",
-                                "type": "postback",
-                                "payload": "help_me",
-                            }]
-                        }]
-                    }
-                }
-            };
-			
-			sendMessage(recipientId, message);
-
-    return false;
-};
-
-
 function setContext(recipientId) {
 
 		request({
@@ -1109,27 +1078,25 @@ function about(recipientId) {
 };
 
 
-function help(recipientId) {
+function help(recipientId,name) {
+			msg="Hi "+name+", my name is surrogate, you can use the following commands to communicate with me.\n\n -Type menu to access the main menu. \n -Type cancel or exit to cancel current operation. \n -Type my expertise to access your subject list. \n Type my tutors or my experts to access your tutor list. \n -Type my students to access your student list. \n -Type my reminders to access your reminder list. \n -Type about to know more about me. \n\n Thank you.";	
 			message = {
                 "attachment": {
                     "type": "template",
                     "payload": {
-                        "template_type": "generic",
-                        "elements": [{
-                            "title": "You can get help here",
-                            "buttons": [{
+						"template_type":"button",
+						"text":msg,
+                        "buttons": [{
 								"type": "postback",
                                 "title": "I got it!",
-                                "payload": "quit_help_about",
+                                "payload": "postback_no",
                                 }]
-                        }]
                     }
                 }
-            };
+             };
 			
 			sendMessage(recipientId, message);
-			
-            return false;		
+            return true;		
 };
 
 function getExpertiseLevel(recipientId){
