@@ -142,20 +142,21 @@ app.get('/webhook', function (req, res) {
     }
 });
 
+
+
 app.post('/webhook', function (req, res) { 
 	
 	getStarted();
 	var helprequest = false;
     var events = req.body.entry[0].messaging;
     for (i = 0; i < events.length; i++) {		
-        var event = events[i];						
-		if (event.message && (event.message.text || event.message.attachments)) {
+        var event = events[i];	
+			setContext(event.sender.id).then(
+						if (event.message && (event.message.text || event.message.attachments)) {
 			msgin = event.message.text+"";	
 			msgin = msgin.toLowerCase();
 			msgin2  = msgin.replace(/s+$/, '');
-			if(senderContext[event.sender.id]==null){
-				setContext(event.sender.id);
-			}
+			
 			 if(senderContext[event.sender.id]!=null){			 
 				if(contains.call(greetings_pool, msgin) || contains.call(cancellation_pool, msgin)){
 					senderContext[event.sender.id].state="begin";
@@ -427,7 +428,8 @@ app.post('/webhook', function (req, res) {
 			}
 			//postback_just_registered
 			 continue;
-		}
+		});
+		
 				
     }
     res.sendStatus(200);
@@ -838,50 +840,10 @@ function checkExpertise(senderId,payload,subject){
     return true;
 }
 
-function kittenMessage(recipientId, text) {
-
-    text = text || "";
-    var values = text.split(' ');
-
-    if (values.length === 3 && values[0] === 'kitten') {
-        if (Number(values[1]) > 0 && Number(values[2]) > 0) {
-            var imageUrl = "https://placekitten.com/" + Number(values[1]) + "/" + Number(values[2]);			
-            message = {
-                "attachment": {
-                    "type": "template",
-                    "payload": {
-                        "template_type": "generic",
-                        "elements": [{
-                            "title": "Kitten",
-                            "subtitle": "Cute kitten picture",
-                            "image_url": imageUrl ,
-                            "buttons": [{
-                                "type": "web_url",
-                                "url": imageUrl,
-                                "title": "Show kitten"
-                                }, {
-                                "type": "postback",
-                                "title": "I like this",
-                                "payload": "User " + recipientId + " likes kitten " + imageUrl,
-                            }]
-                        }]
-                    }
-                }
-            };
-
-            sendMessage(recipientId, message);
-
-            return true;
-        }
-    }
-
-    return false;
-
-};
-
-
 function setContext(recipientId) {
-
+		if(senderContext[recipientId].firstName !=null){
+			return true;
+		}
 		request({
 			url: 'https://graph.facebook.com/v2.8/'+recipientId+'?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token='+process.env.PAGE_ACCESS_TOKEN,
 			method: 'GET'
@@ -889,15 +851,16 @@ function setContext(recipientId) {
 		
         if (error) {
             console.log('Error sending message: ', error);
+			return false;
         } else if (response.body.error) {
             console.log('Error: ', response.body.error);
+			return false;
         }else{			
 			var bodyObject = JSON.parse(body);
 			firstName = bodyObject.first_name;
 			lastName = bodyObject.last_name;
 			profilePic=bodyObject.profile_pic;
-			locale = bodyObject.locale;
-			
+			locale = bodyObject.locale;			
 			senderContext[recipientId] = {};
 			senderContext[recipientId].firstName = firstName;
 			senderContext[recipientId].lastName = lastName;
@@ -909,7 +872,6 @@ function setContext(recipientId) {
 		}
 		});
 			
-    return true;
 };
 
 function welcomeUser(recipientId) {
@@ -1079,7 +1041,7 @@ function about(recipientId) {
 
 
 function help(recipientId,name) {
-			msg="Hi "+name+", my name is surrogate, you can use the following commands to communicate with me.\n\n -Type menu to access the main menu.\n\n -Type cancel or exit to cancel current operation. \n\n -Type my expertise to access your subject list. \n\n -Type my tutors or my experts to access your tutor list. \n\n -Type my students to access your student list. \n\n -Type my reminders to access your reminder list. \n\n -Type about to know more about me. \n\n Thank you.";	
+			msg="Hi "+name+", my name is surrogate, you can use the following commands to communicate with me.\n\n -Type menu to access the main menu.\n\n -Type cancel or exit to cancel current operation. \n\n -Type my expertise to access your subject list. \n\n -Type my tutors to access your tutor list. \n\n -Type my students to access your student list. \n\n -Type my reminders to access your reminder list. \n\n -Type about to know more about me. \n\n Thank you.";	
 			message = {
                 "attachment": {
                     "type": "template",
