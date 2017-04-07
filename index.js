@@ -32,7 +32,7 @@ var wellwish_pool=["god bless","god bless you","bless you","you are great","you 
 app.use(bodyParser.urlencoded({extended: false}));  
 app.use(bodyParser.json());  
 app.listen((process.env.PORT || 3000));
-console.log(hello);
+
 app.get('/', function (req, res) { 
 	res.send('Surrogate Bot');	
 });
@@ -236,7 +236,7 @@ app.post('/webhook', function (req, res) {
 						}
 
 					}
-				}else if(contains.call(reminder_pool, msgin) || (contains.call(reminder_pool, msgin2)){
+				}else if(contains.call(reminder_pool, msgin) || contains.call(reminder_pool, msgin2)){
 					senderContext[event.sender.id].state="begin";
 					showReminders(event.sender.id);
 				}else if(contains.call(expertise_pool, msgin) || contains.call(expertise_pool, msgin2)){
