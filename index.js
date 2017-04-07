@@ -1070,7 +1070,7 @@ function showMenu(recipientId){
 
 function about(recipientId) {
 		msg="Surrogate is an artificial intelligent designed to assist students learn from experts on messenger. \n\n It also allows experts/tutors to render help to people based on their proficiencies.\n\n Since college is a lot of work on its own, Surrogate bot takes off of the stress of its human counterpart and does the less desirable job of having to find a suitable tutor.";
-			sendMessage(recipientId,{text: "" + msg});
+		/*	sendMessage(recipientId,{text: "" + msg});
 			     message = {
                 "attachment": {
                     "type": "template",
@@ -1087,6 +1087,22 @@ function about(recipientId) {
                     }
                 }
             };
+			*/
+			
+			message = {
+                "attachment": {
+                    "type": "template",
+                    "payload": {
+						"template_type":"button",
+						"text":msg,
+                        "buttons": [{
+								"type": "postback",
+                                "title": "I got it!",
+                                "payload": "postback_no",
+                                }]
+                    }
+                }
+             };
 			
 			sendMessage(recipientId, message);
             return true;		
@@ -1288,7 +1304,7 @@ function getStarted(){
 						},
 				"greeting":[{
 						"locale":"default",
-						"text":"Good to have you {{user_first_name}}! My name is Surrogate, I can assist you learn from experts or render help to people based on your proficiencies"
+						"text":"Good to have you {{user_first_name}}! I can assist you learn from experts or render help to people based on your proficiencies"
 						}],
 				"target_audience": {
 						"audience_type":"all"
@@ -1308,7 +1324,7 @@ function getStarted(){
 									"payload":"about_me"
 						},
 						{
-						"title":"My Contents",
+						"title":"My Dashboard",
 						"type":"nested",
 						"call_to_actions":[
 									{
