@@ -16,10 +16,10 @@ var senderContext = {};
 var greetings_pool = ["how are you","how far","wassup","kilonshele","bawo ni","wetin dey happen","wetin dey","what is happening"];
 var cancellation_pool=["quit","cancel","exit","abort","no","end","terminate","stop"];
 var abuse_pool=["damn","fuck","insane","crazy","mad","shit","oloriburuku","mugun"];
-var students_pool=["show students","show my students","my students","show me my students","who are my students","who is my student","show student","show my student","my student","show me my student"];
-var experts_pool=["show tutors","show my tutors","my tutors","show me my tutors","who are my tutors","who is my expert","show expert","show my expert","my expert","show me my expert","show experts","show my experts","my experts","show me my experts","who are my experts","who is my experts","show experts","show my experts","my experts","show me my experts"];
+var students_pool=["show students","show my students","my students","show me my students","who are my students","who is my student"];
+var experts_pool=["show tutors","show my tutors","my tutors","show me my tutors","who are my tutors","show experts","show my experts","my experts","show me my experts","who are my experts","who is my experts","show experts","show my experts","my experts","show me my experts"];
 var expertise_pool=["show expertise","show my expertise","my expertise","show me my expertise","show subjects","show my subjects","my subjects","show me my subjects"];
-var reminder_pool=["reminders","reminder","show reminders","show my reminders","my reminders","show me my reminders","show reminders","show my reminder","my reminder","show me my reminder"];
+var reminder_pool=["reminders","show reminders","show my reminders","my reminders","show me my reminders","show reminders"];
 var help_pool=["help","help me","help please","please help","i need help","how to","how to use","i want help"];
 var about_pool=["about","about me","about surrogate","who are you","who are you?","what is surrogate","what is surrogate app","about you"];
 var menu_pool=["show menu","menu","my menu","show me menu","show me the menu","where is the menu","menu please","the menu"];
@@ -32,7 +32,7 @@ var wellwish_pool=["god bless","god bless you","bless you","you are great","you 
 app.use(bodyParser.urlencoded({extended: false}));  
 app.use(bodyParser.json());  
 app.listen((process.env.PORT || 3000));
-
+console.log(hello);
 app.get('/', function (req, res) { 
 	res.send('Surrogate Bot');	
 });
@@ -154,6 +154,7 @@ app.post('/webhook', function (req, res) {
 		if (event.message && (event.message.text || event.message.attachments)) {
 			msgin = event.message.text+"";	
 			msgin = msgin.toLowerCase();
+			msgin2  = msgin.replace(/s+$/, '');
 			if(senderContext[event.sender.id]==null){
 				setContext(event.sender.id);
 			}
@@ -235,26 +236,26 @@ app.post('/webhook', function (req, res) {
 						}
 
 					}
-				}else if(contains.call(reminder_pool, msgin)){
+				}else if(contains.call(reminder_pool, msgin) || (contains.call(reminder_pool, msgin2)){
 					senderContext[event.sender.id].state="begin";
 					showReminders(event.sender.id);
-				}else if(contains.call(expertise_pool, msgin)){
+				}else if(contains.call(expertise_pool, msgin) || contains.call(expertise_pool, msgin2)){
 					senderContext[event.sender.id].state="begin";
 					showExpertise(event.sender.id);
-				}else if(contains.call(experts_pool, msgin)){
+				}else if(contains.call(experts_pool, msgin) || contains.call(experts_pool, msgin2)){
 					senderContext[event.sender.id].state="begin";
 					showExperts(event.sender.id);
-				}else if(contains.call(students_pool, msgin)){
+				}else if(contains.call(students_pool, msgin) || contains.call(students_pool, msgin2)){
 					senderContext[event.sender.id].state="begin";
 					showStudents(event.sender.id);
-				}else if(contains.call(menu_pool, msgin)){
+				}else if(contains.call(menu_pool, msgin) || contains.call(menu_pool, msgin2)){
 					senderContext[event.sender.id].state="begin";
 					showMenu(event.sender.id);
-				}else if(contains.call(help_pool, msgin)){
+				}else if(contains.call(help_pool, msgin) || contains.call(help_pool, msgin2)){
 					sendMessage(event.sender.id, {text: "" + "Hi "+senderContext[event.sender.id].firstName+", I am surrogate bot. I am an artificial intelligent designed to assist students learn from experts on messenger. \n\n You can also render help to someone based on your proficiency.\n\n Here are the things I can do "});
 					senderContext[event.sender.id].state="begin";
 					showMenu(event.sender.id);
-				}else if(contains.call(about_pool, msgin)){
+				}else if(contains.call(about_pool, msgin) || contains.call(about_pool, msgin2)){
 					about(event.sender.id);
 				}else{
 					defaultMsg ="Hello "+senderContext[event.sender.id].firstName+"! \n\n";					
