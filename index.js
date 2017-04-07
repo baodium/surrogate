@@ -151,8 +151,8 @@ app.post('/webhook', function (req, res) {
     var events = req.body.entry[0].messaging;
     for (i = 0; i < events.length; i++) {		
         var event = events[i];	
-			setContext(event.sender.id).then(
-						if (event.message && (event.message.text || event.message.attachments)) {
+		setContext(event.sender.id);
+		if (event.message && (event.message.text || event.message.attachments)) {
 			msgin = event.message.text+"";	
 			msgin = msgin.toLowerCase();
 			msgin2  = msgin.replace(/s+$/, '');
@@ -271,9 +271,6 @@ app.post('/webhook', function (req, res) {
 				showDefault(event.sender.id);
 			 }
 		} else if (event.postback) {
-			if(senderContext[event.sender.id]==null){
-				setContext(event.sender.id);
-			}
 			var reply = JSON.stringify(event.postback);
 			reply = JSON.parse(reply);
 			if(reply.payload=="get_started_button"){
@@ -428,8 +425,7 @@ app.post('/webhook', function (req, res) {
 			}
 			//postback_just_registered
 			 continue;
-		});
-		
+		}
 				
     }
     res.sendStatus(200);
