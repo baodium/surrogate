@@ -837,7 +837,7 @@ function checkExpertise(senderId,payload,subject){
 }
 
 function setContext(recipientId) {
-		if(senderContext[recipientId].firstName !=null){
+		if(senderContext[recipientId] !=null){
 			return true;
 		}
 		request({
