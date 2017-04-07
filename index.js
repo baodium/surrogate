@@ -1079,7 +1079,7 @@ function about(recipientId) {
 
 
 function help(recipientId,name) {
-			msg="Hi "+name+", my name is surrogate, you can use the following commands to communicate with me.\n\n -Type menu to access the main menu. \n -Type cancel or exit to cancel current operation. \n -Type my expertise to access your subject list. \n Type my tutors or my experts to access your tutor list. \n -Type my students to access your student list. \n -Type my reminders to access your reminder list. \n -Type about to know more about me. \n\n Thank you.";	
+			msg="Hi "+name+", my name is surrogate, you can use the following commands to communicate with me.\n\n -Type menu to access the main menu.\n\n -Type cancel or exit to cancel current operation. \n\n -Type my expertise to access your subject list. \n\n -Type my tutors or my experts to access your tutor list. \n\n -Type my students to access your student list. \n\n -Type my reminders to access your reminder list. \n\n -Type about to know more about me. \n\n Thank you.";	
 			message = {
                 "attachment": {
                     "type": "template",
