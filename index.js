@@ -266,7 +266,7 @@ app.post('/webhook', function (req, res) {
 					}else if(contains.call(hi_pool, msgin)){
 						defaultMsg ="Hi "+senderContext[event.sender.id].firstName+", how are you doing? I am surrogate bot. I am an artificial intelligent designed to assist students learn from experts on messenger.\n\n You can also render help to someone based on your proficiency. \n\n ";
 					}else if(contains.call(wellwish_pool, msgin)){
-						defaultMsg ="And you too, "+senderContext[event.sender.id].firstName+" \n\n";
+						defaultMsg ="And you too, "+senderContext[event.sender.id].firstName+". \n\n";
 					}else if(contains.call(greetings_pool, msgin)){
 						defaultMsg ="I'm cool! "+senderContext[event.sender.id].firstName+". \n\n";
 					}else if(contains.call(abuse_pool, msgin)){
