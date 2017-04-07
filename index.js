@@ -26,9 +26,7 @@ var menu_pool=["show menu","menu","my menu","show me menu","show me the menu","w
 var hi_pool=["hello","hi","hey","may i know you","tell me something"];
 var welcome_pool=["thank","thanks","thank you","oshe","thanks a bunch"];
 var wellwish_pool=["god bless","god bless you","bless you","you are great","you are good","you are too much","wish you the best","good luck"];
-
-//if(msgin.indexOf("thank")>-1 || msgin=="no" || msgin=="help" || msgin=="about" || msgin=="hello" || msgin=="hey" || msgin=="wassup" || msgin=="how are you" || msgin=="how far" || msgin=="about" || msgin=="okay" || msgin=="hi"  || msgin=="ok" || msgin=="cancel" || msgin=="quit"  || msgin=="exit" || msgin=="end" || msgin=="hello" || msgin=="hi" ){
-				
+			
 app.use(bodyParser.urlencoded({extended: false}));  
 app.use(bodyParser.json());  
 app.listen((process.env.PORT || 3000));
@@ -159,7 +157,6 @@ app.post('/webhook', function (req, res) {
 				setContext(event.sender.id);
 			}
 			 if(senderContext[event.sender.id]!=null){			 
-				//if(msgin.indexOf("thank")>-1 || msgin=="no" || msgin=="help" || msgin=="about" || msgin=="hello" || msgin=="hey" || msgin=="wassup" || msgin=="how are you" || msgin=="how far" || msgin=="about" || msgin=="okay" || msgin=="hi"  || msgin=="ok" || msgin=="cancel" || msgin=="quit"  || msgin=="exit" || msgin=="end" || msgin=="hello" || msgin=="hi" ){
 				if(contains.call(greetings_pool, msgin) || contains.call(cancellation_pool, msgin)){
 					senderContext[event.sender.id].state="begin";
 				}				 
@@ -180,29 +177,20 @@ app.post('/webhook', function (req, res) {
 					var to  = senderContext[event.sender.id].message_to;
 					var subject = senderContext[event.sender.id].message_subject;					
 				 	if(event.message.attachments){
-					 msg = JSON.stringify(event.message.attachments);
-					 rp = JSON.parse(msg);
-					 for(j=0; j < rp.length; j++){
-						 sg = {"attachment":{
+						msg = JSON.stringify(event.message.attachments);
+						rp = JSON.parse(msg);
+						for(j=0; j < rp.length; j++){
+							sg = {"attachment":{
 										"type":rp[j].type,
 										"payload":{"url":rp[j].payload.url}
 										}
 							};
 							var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+" sent this file.";
-							sendFile(to,sg,fromm,msg,subject);
-						/*			
-						var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+" sent this file.";				  										 
-						if(sendMessage(to,sg)){
-							if(sendMessage(to, {text: "" + msg})){
-								messageOption(to,"Do you want to reply this message?",to,fromm,subject);
-							}
-							if(sendMessage(event.sender.id, {text: "" + "file sent"})){
-								messageOption(event.sender.id,"Do you want to send another message?",fromm,to,subject);	
-							}								
+							sendFile(to,sg,fromm,msg,subject);				
 						}
-					   	*/					
-					 }
-				  }else if(event.message.text){					  				 
+					}
+				  
+				  if(event.message.text){					  				 
 						var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+" says:"+event.message.text;				  
 						if(sendMessage(to, {text: "" + msg})){
 							sendMessage(event.sender.id, {text: "" + "message sent"});
@@ -487,10 +475,10 @@ function sendFile(recipientId, message,thirdParty,msg,subject) {
         }else{				  										 
 					//	if(sendMessage(to,sg)){
 							if(sendMessage(recipientId, {text: "" + msg})){
-								messageOption(recipientId,"Do you want to reply this message?",recipientId,thirdParty,subject);
+								//messageOption(recipientId,"Do you want to reply this message?",recipientId,thirdParty,subject);
 							}
 							if(sendMessage(thirdParty, {text: "" + "file sent"})){
-								messageOption(thirdParty,"Do you want to send another message?",thirdParty,recipientId,subject);	
+								//messageOption(thirdParty,"Do you want to send another message?",thirdParty,recipientId,subject);	
 							}								
 					//	}			
 		}
