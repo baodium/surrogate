@@ -197,8 +197,9 @@ app.post('/webhook', function (req, res) {
 							messageOption(event.sender.id,"Do you want to send another message?",fromm,to,subject);
 							messageOption(to,"Do you want to reply this message?",to,fromm,subject);
 						}
+					senderContext[event.sender.id].message="false";
 				  }			 				  
-				  senderContext[event.sender.id].message="false";
+				  
 				  
 				}else if(event.message.quick_reply){
 					reply = event.message.quick_reply.payload;
