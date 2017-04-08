@@ -1659,10 +1659,18 @@ function showReminders(recipientId){
 					for(i = 0; i<output.length; i++){
 						day = output[i].day;//.split("_");
 						time = output[i].time;
-						
+						rtype =  output[i].type;
+						if(rtype=="type_remind_expert"){
+							rtype="CLASS WITH TUTOR";
+						}else{
+							rtype="CLASS WITH STUDENT";
+						}
 						if(day!=null){
 							day = output[i].day.split("_");
 							day=day[1].toLowerCase();
+							if(day=="allday"){
+								day ="every day";
+							}
 						}else{
 							day="";
 						}						
@@ -1672,10 +1680,11 @@ function showReminders(recipientId){
 						}else{
 							time="";
 						}
+					
 												
 						elementss[i]={                           
 							"title": output[i].subject.toUpperCase(),                  
-							"subtitle":"DAY:"+day+"\n\n TIME:"+time,   
+							"subtitle":rtype+"\n\nDAY:"+day+"\n\n TIME:"+time,   
                             "buttons": [{
 								"type": "postback",
                                 "title": "Delete",
