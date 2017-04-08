@@ -151,8 +151,9 @@ app.post('/webhook', function (req, res) {
     var events = req.body.entry[0].messaging;
     for (i = 0; i < events.length; i++) {		
         var event = events[i];	
-		setContext(event.sender.id);
+		var intialized = setContext(event.sender.id);
 		if (event.message && (event.message.text || event.message.attachments)) {
+			try{
 			msgin = event.message.text+"";	
 			msgin = msgin.toLowerCase();
 			msgin2  = msgin.replace(/s+$/, '');
@@ -271,6 +272,7 @@ app.post('/webhook', function (req, res) {
 			 }else{
 				showDefault(event.sender.id);
 			 }
+			}catch(err){sendMessage(event.sender.id, {text: "" +"Error"});}
 		} else if (event.postback) {
 			var reply = JSON.stringify(event.postback);
 			reply = JSON.parse(reply);
