@@ -148,6 +148,7 @@ app.post('/webhook', function (req, res) {
 	
 	getStarted();
 	var helprequest = false;
+	var message_count=0;
     var events = req.body.entry[0].messaging;
     for (i = 0; i < events.length; i++) {		
         var event = events[i];	
@@ -377,10 +378,15 @@ app.post('/webhook', function (req, res) {
 				 fromId = members_id[1];
 				 toId = members_id[2];
 				 sub= members_id[3];
+				 usertype= members_id[4];
 				 if(senderContext[event.sender.id]!=null){
 					 sendBusy(toId,"typing_on");
 					 sendMessage(event.sender.id, {text: "Okay then! please type your messege "});
 					 senderContext[event.sender.id].message="true";
+					 senderContext[event.sender.id].userType=usertype;
+					 if(usertype=="student"){
+						 message_count++;
+					 }
 					 senderContext[event.sender.id].message_from=event.sender.id;
 					 senderContext[event.sender.id].message_to=toId;
 					 senderContext[event.sender.id].message_subject=sub;
@@ -390,7 +396,13 @@ app.post('/webhook', function (req, res) {
 				 fromId = members_id[1];
 				 toId = members_id[2];
 				 sub= members_id[3];
-				 rateOption(fromId,toId,sub);				 
+				 if(senderContext[event.sender.id].userType=="student" && message_count==1){
+					rateOption(fromId,toId,sub);			
+				}else{
+					sendMessage(event.sender.id, {text: "Alright "+senderContext[event.sender.id].firstName+". This is what I have on my menu"});
+					showMenu(event.sender.id);
+					senderContext[event.sender.id].state="begin";
+				}				 		 
 			}else if(reply.payload.indexOf("postback_rate_yes")>-1){				
 				var members_id = reply.payload.split("-");
 				 fromId = members_id[1];
@@ -935,6 +947,7 @@ function setContext(recipientId) {
 			senderContext[recipientId].state = "just_welcomed";
 			senderContext[recipientId].next=0;
 			senderContext[recipientId].message="false";
+			senderContext[recipientId].userType="anonymous";
             return true;		
 		}
 		});
@@ -967,6 +980,7 @@ function welcomeUser(recipientId) {
 			senderContext[recipientId].state = "newly_welcomed";
 			senderContext[recipientId].next=0;
 			senderContext[recipientId].message="false";
+			senderContext[recipientId].userType="anonymous";
 			
 			//{"first_name":"Adedayo","last_name":"Olubunmi","profile_pic":"https:\/\/scontent.xx.fbcdn.net\/v\/t1.0-1\/180239_1589652066179_7006637_n.jpg?oh=7ca52055172d91e1c914fcd1110d17a6&oe=596F62FA","locale":"en_US","timezone":1,"gender":"male"}
 			var post_data = querystring.stringify({
@@ -1231,7 +1245,7 @@ function messageOption(recipientId,msg,fromm,to,subject){
                             "buttons": [{
 								"type": "postback",
                                 "title": "Yes",
-                                "payload": "postback_message_yes-"+fromm+"-"+to+"-"+subject,
+                                "payload": "postback_message_yes-"+fromm+"-"+to+"-"+subject+"-all",
                                 },
 								{
 								"type": "postback",
@@ -1261,7 +1275,7 @@ function replyOption(recipientId,msg,fromm,to,subject){
                             "buttons": [{
 								"type": "postback",
                                 "title": "Yes",
-                                "payload": "postback_message_yes-"+fromm+"-"+to+"-"+subject,
+                                "payload": "postback_message_yes-"+fromm+"-"+to+"-"+subject+"-all",
                                 },
 								{
 								"type": "postback",
@@ -1733,7 +1747,7 @@ function showExperts(fromId){
                                 },{
 								"type": "postback",
                                 "title": "Send Message",
-                                "payload": "postback_message_yes-"+output[i].from_id+"-"+output[i].to_id+"-"+output[i].subject,
+                                "payload": "postback_message_yes-"+output[i].from_id+"-"+output[i].to_id+"-"+output[i].subject+"-expert",
                                 },{
 								"type": "postback",
                                 "title": "Remove",
@@ -1804,7 +1818,7 @@ function showStudents(toId){
                                 },{
 								"type": "postback",
                                 "title": "Send Message",
-                                "payload": "postback_message_yes-"+output[i].to_id+"-"+output[i].from_id+"-"+output[i].subject,
+                                "payload": "postback_message_yes-"+output[i].to_id+"-"+output[i].from_id+"-"+output[i].subject+"-student",
                                 },{
 								"type": "postback",
                                 "title": "Remove",
