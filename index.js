@@ -396,7 +396,7 @@ app.post('/webhook', function (req, res) {
 				 fromId = members_id[1];
 				 toId = members_id[2];
 				 sub= members_id[3];
-				 if(senderContext[event.sender.id].userType=="expert" && message_count==1){
+				 if(senderContext[event.sender.id].userType=="expert"){
 					rateOption(fromId,toId,sub);			
 				}else{
 					sendMessage(event.sender.id, {text: "Alright "+senderContext[event.sender.id].firstName+". This is what I have on my menu"});
