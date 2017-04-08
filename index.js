@@ -1289,10 +1289,10 @@ function rateExpert(fromm,to,subject){
                     }
                 }
             };
-	if( senderContext[recipientId]!=null){
-		senderContext[recipientId].state = "rate expertise";
+	if( senderContext[fromm]!=null){
+		senderContext[fromm].state = "rate expertise";
 	}
-		sendMessage(recipientId, message);			
+		sendMessage(fromm, message);			
         return true;
 }
 
