@@ -58,8 +58,6 @@ app.get('/EAAJeiL9sIu4BANZAqkGafo', function (req, res) {
 			time ="REMINDER_TIME_NINE_PM";
 		}
 		
-		console.log("hello -"+time);
-		
 		var days = ['Sunday', 'Monday', 'Tuesday', 'Wedsday', 'Thursday', 'Friday', 'Saturday'];
 		var d = new Date();
 		dayy = d.getDay();
@@ -132,6 +130,8 @@ function sendMessage2(recipientId, message) {
     });
 
 }
+
+
 // Facebook Webhook
 
 app.get('/webhook', function (req, res) {  
@@ -196,6 +196,7 @@ app.post('/webhook', function (req, res) {
 				  if(event.message.text){					  				 
 						var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+" says:"+event.message.text;				  
 						if(sendMessage(to, {text: "" + msg})){
+							sendBusy(toId,"typing_off");
 							sendMessage(event.sender.id, {text: "" + "message sent"});
 							messageOption(event.sender.id,"Do you want to send another message?",fromm,to,subject);
 							messageOption(to,"Do you want to reply this message?",to,fromm,subject);
@@ -377,7 +378,8 @@ app.post('/webhook', function (req, res) {
 				 fromId = members_id[1];
 				 toId = members_id[2];
 				 sub= members_id[3];
-				 if(senderContext[event.sender.id]!=null){  
+				 if(senderContext[event.sender.id]!=null){
+					 sendBusy(toId,"typing_on");
 					 sendMessage(event.sender.id, {text: "Okay then! please type your messege "});
 					 senderContext[event.sender.id].message="true";
 					 senderContext[event.sender.id].message_from=event.sender.id;
@@ -457,6 +459,28 @@ function sendMessage(recipientId, message) {
 return true;
 }
 
+
+// generic function sending messages
+function sendBusy(recipientId,type) {  
+    request({
+        url: 'https://graph.facebook.com/v2.8/me/messages',
+        qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
+        method: 'POST',
+        json: {
+            recipient: {id: recipientId},
+            sender_action: type,
+        }
+    }, function(error, response, body) {
+        if (error) {
+            console.log('Error sending message: ', error);
+			return false;
+        } else if (response.body.error) {
+            console.log('Error: ', response.body.error);
+			return false;
+        }
+    });
+return true;
+}
 
 // generic function sending messages
 function sendFile(recipientId, message,thirdParty,msg,subject) {  
