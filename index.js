@@ -157,7 +157,7 @@ app.post('/webhook', function (req, res) {
 			msgin = event.message.text+"";	
 			msgin = msgin.toLowerCase();
 			msgin2  = msgin.replace(/s+$/, '');
-			msgin3  = msgin.replace(/?+$/, '');
+			//msgin3  = msgin.replace(/?+$/, '');
 			
 			 if(senderContext[event.sender.id]!=null){			 
 				if(contains.call(greetings_pool, msgin) || contains.call(cancellation_pool, msgin)){
@@ -259,7 +259,7 @@ app.post('/webhook', function (req, res) {
 						defaultMsg ="Hi "+senderContext[event.sender.id].firstName+", how are you doing? I am surrogate bot. I am an artificial intelligent designed to assist students learn from experts on messenger.\n\n You can also render help to someone based on your proficiency. \n\n ";
 					}else if(contains.call(wellwish_pool, msgin)){
 						defaultMsg ="And you too, "+senderContext[event.sender.id].firstName+". \n\n";
-					}else if(contains.call(greetings_pool, msgin) || contains.call(greetings_pool, msgin3)){
+					}else if(contains.call(greetings_pool, msgin) || contains.call(greetings_pool, msgin2)){
 						defaultMsg ="I'm cool! "+senderContext[event.sender.id].firstName+". \n\n";
 					}else if(msgin.indexOf("damn")>-1 || msgin.indexOf("fuck")>-1 || msgin.indexOf("insane")>-1 || msgin.indexOf("crazy")>-1 || msgin.indexOf("mad")>-1 ){					
 						defaultMsg ="Oh "+senderContext[event.sender.id].firstName+", that is not a very nice thing to say. \n\n Maybe you will feel better by providing help to someone on a subject you are proficient at. \n\n ";
