@@ -198,8 +198,8 @@ app.post('/webhook', function (req, res) {
 						if(sendMessage(to, {text: "" + msg})){
 							sendBusy(to,"typing_off");
 							sendMessage(event.sender.id, {text: "" + "message sent"});
-							messageOption(event.sender.id,"Do you want to send another message?",fromm,to,subject);
-							messageOption(to,"Do you want to reply this message?",to,fromm,subject);
+							replyOption(event.sender.id,"Do you want to send another message?",fromm,to,subject);
+							replyOption(to,"Do you want to reply this message?",to,fromm,subject);
 						}
 					senderContext[event.sender.id].message="false";
 				  }			 				  
@@ -371,7 +371,6 @@ app.post('/webhook', function (req, res) {
 					sendAcceptance(fromId,expertiseId,event.sender.id);
 				}								
 			}else if(reply.payload=="home"){
-				// welcomeUser(event.sender.id);
 				showMenu(event.sender.id);				
 			}else if(reply.payload.indexOf("postback_message_yes")>-1){				
 				var members_id = reply.payload.split("-");
@@ -386,6 +385,12 @@ app.post('/webhook', function (req, res) {
 					 senderContext[event.sender.id].message_to=toId;
 					 senderContext[event.sender.id].message_subject=sub;
 				}				
+			}else if(reply.payload.indexOf("postback_message_no")>-1){				
+				var members_id = reply.payload.split("-");
+				 fromId = members_id[1];
+				 toId = members_id[2];
+				 sub= members_id[3];
+				 rateExpert(fromId,toId,sub);				 
 			}else if(reply.payload=="set_class_reminder"){
 				if(senderContext[event.sender.id]!=null){
 					sendMessage(event.sender.id, {text: "Cool! you can now setup a class reminder for meetings with your tutor(s) or student(s) \n\n\n"});
@@ -507,7 +512,8 @@ function sendFile(recipientId, message,thirdParty,msg,subject) {
 							if(sendMessage(thirdParty, {text: "" + "file sent"})){
 								//messageOption(thirdParty,"Do you want to send another message?",thirdParty,recipientId,subject);	
 							}								
-					//	}			
+					//	}	
+						return true;
 		}
     });
 return true;
@@ -1192,7 +1198,37 @@ function messageOption(recipientId,msg,fromm,to,subject){
 								{
 								"type": "postback",
                                 "title": "No",
-                                "payload": "postback_no",
+                                "payload": "postback_no"
+                                }
+								]
+                        }]
+                    }
+                }
+            };
+	if( senderContext[recipientId]!=null){
+		senderContext[recipientId].state = "send message";
+	}
+		sendMessage(recipientId, message);			
+        return true;
+}
+
+function replyOption(recipientId,msg,fromm,to,subject){
+	message = {
+                "attachment": {
+                    "type": "template",
+                    "payload": {
+                        "template_type": "generic",
+                        "elements": [{
+                            "title": msg,
+                            "buttons": [{
+								"type": "postback",
+                                "title": "Yes",
+                                "payload": "postback_message_yes-"+fromm+"-"+to+"-"+subject,
+                                },
+								{
+								"type": "postback",
+                                "title": "No",
+                                "payload": "postback_message_no-"+fromm+"-"+to+"-"+subject,
                                 }
 								]
                         }]
@@ -1227,6 +1263,37 @@ function getOut(recipientId){
             };		
 			sendMessage(recipientId, message);			
             return true;
+}
+
+
+
+function rateExpert(fromm,to,subject){
+	message = {
+                "attachment": {
+                    "type": "template",
+                    "payload": {
+                        "template_type": "generic",
+                        "elements": [{
+                            "title": "Do you want to rate this expertise?",
+                            "buttons": [{
+								"type": "postback",
+                                "title": "Yes",
+                                "payload": "postback_rate_yes-"+fromm+"-"+to+"-"+subject,
+                                },
+								{
+								"type": "postback",
+                                "title": "No",
+                                "payload": "postback_no"
+                                }]
+                        }]
+                    }
+                }
+            };
+	if( senderContext[recipientId]!=null){
+		senderContext[recipientId].state = "rate expertise";
+	}
+		sendMessage(recipientId, message);			
+        return true;
 }
 
 
