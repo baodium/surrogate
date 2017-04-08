@@ -196,7 +196,7 @@ app.post('/webhook', function (req, res) {
 				  if(event.message.text){					  				 
 						var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+" says:"+event.message.text;				  
 						if(sendMessage(to, {text: "" + msg})){
-							sendBusy(toId,"typing_off");
+							sendBusy(to,"typing_off");
 							sendMessage(event.sender.id, {text: "" + "message sent"});
 							messageOption(event.sender.id,"Do you want to send another message?",fromm,to,subject);
 							messageOption(to,"Do you want to reply this message?",to,fromm,subject);
@@ -460,7 +460,7 @@ return true;
 }
 
 
-// generic function sending messages
+// Notify message recipient of current user action
 function sendBusy(recipientId,type) {  
     request({
         url: 'https://graph.facebook.com/v2.8/me/messages',
