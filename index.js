@@ -390,7 +390,13 @@ app.post('/webhook', function (req, res) {
 				 fromId = members_id[1];
 				 toId = members_id[2];
 				 sub= members_id[3];
-				 rateExpert(fromId,toId,sub);				 
+				 rateOption(fromId,toId,sub);				 
+			}else if(reply.payload.indexOf("postback_rate_yes")>-1){				
+				var members_id = reply.payload.split("-");
+				 fromId = members_id[1];
+				 toId = members_id[2];
+				 sub= members_id[3];
+				 pickRating(event.sender.id);					 
 			}else if(reply.payload=="set_class_reminder"){
 				if(senderContext[event.sender.id]!=null){
 					sendMessage(event.sender.id, {text: "Cool! you can now setup a class reminder for meetings with your tutor(s) or student(s) \n\n\n"});
@@ -563,6 +569,38 @@ function pickPeriod(senderId,msg){
 							}]
 		};
 sendMessage(senderId,message);
+}
+
+
+function pickRating(senderId){
+	message = {
+			"text":"please pick a rating out of 5, with 5 being the highest:",
+			"quick_replies":[{
+							"content_type":"text",
+							"title":"1",
+							"payload":"RATING_ONE"
+							},{
+							"content_type":"text",
+							"title":"Every 2",
+							"payload":"RATING_TWO"
+							},
+							{
+							"content_type":"text",
+							"title":"3",
+							"payload":"RATING_THREE"
+							},
+							{
+							"content_type":"text",
+							"title":"4",
+							"payload":"RATING_FOUR"
+							},
+							{
+							"content_type":"text",
+							"title":"5",
+							"payload":"RATING_FIVE"
+							}]
+		};
+		sendMessage(senderId,message);
 }
 
 function pickTime(senderId){
@@ -1267,7 +1305,7 @@ function getOut(recipientId){
 
 
 
-function rateExpert(fromm,to,subject){
+function rateOption(fromm,to,subject){
 	message = {
                 "attachment": {
                     "type": "template",
