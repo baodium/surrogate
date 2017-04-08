@@ -13,7 +13,7 @@ var app = express();
 var started=false;
 var backurl="http://surrogation.com.ng/surrogateapp/";
 var senderContext = {};
-var greetings_pool = ["how are you","how far","wassup","kilonshele","bawo ni","wetin dey happen","wetin dey","what is happening"];
+var greetings_pool = ["how are you","how far","wassup","kilonshele","bawo ni","wetin dey happen","wetin dey","what is happening","how are you?","how far?","what is happening?"];
 var cancellation_pool=["quit","cancel","exit","abort","no","end","terminate","stop"];
 var abuse_pool=["damn","fuck","insane","crazy","mad","shit","oloriburuku","mugun"];
 var students_pool=["show student","show my student","my student","show me my student","who are my student","who is my student"];
@@ -259,7 +259,7 @@ app.post('/webhook', function (req, res) {
 						defaultMsg ="Hi "+senderContext[event.sender.id].firstName+", how are you doing? I am surrogate bot. I am an artificial intelligent designed to assist students learn from experts on messenger.\n\n You can also render help to someone based on your proficiency. \n\n ";
 					}else if(contains.call(wellwish_pool, msgin)){
 						defaultMsg ="And you too, "+senderContext[event.sender.id].firstName+". \n\n";
-					}else if(contains.call(greetings_pool, msgin) || contains.call(greetings_pool, msgin2)){
+					}else if(contains.call(greetings_pool, msgin)){
 						defaultMsg ="I'm cool! "+senderContext[event.sender.id].firstName+". \n\n";
 					}else if(msgin.indexOf("damn")>-1 || msgin.indexOf("fuck")>-1 || msgin.indexOf("insane")>-1 || msgin.indexOf("crazy")>-1 || msgin.indexOf("mad")>-1 ){					
 						defaultMsg ="Oh "+senderContext[event.sender.id].firstName+", that is not a very nice thing to say. \n\n Maybe you will feel better by providing help to someone on a subject you are proficient at. \n\n ";
@@ -1589,7 +1589,9 @@ function showExperts(fromId){
 						}else{
 							level="";
 						}
-
+						
+						firstName  = output[i].name.split(" ");
+						
 						elementss[i]={                           
 							"title": output[i].name, 
 							"image_url": output[i].profile_pic,                  
@@ -1602,6 +1604,10 @@ function showExperts(fromId){
 								"type": "postback",
                                 "title": "Send Message",
                                 "payload": "postback_message_yes-"+output[i].from_id+"-"+output[i].to_id+"-"+output[i].subject,
+                                },{
+								"type": "postback",
+                                "title": "Rate "+firstName[0],
+                                "payload": "postback_rate_yes-"+output[i].to_id+"-"+output[i].expertise_id+"-"+output[i].subject,
                                 },{
 								"type": "postback",
                                 "title": "Remove",
