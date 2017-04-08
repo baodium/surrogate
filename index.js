@@ -1356,7 +1356,7 @@ function getStarted(){
 						},
 				"greeting":[{
 						"locale":"default",
-						"text":"Good to have you {{user_first_name}}! I can assist you learn from experts or render help to people based on your proficiencies"
+						"text":"Good to have you {{user_first_name}}! I can help you learn from experts or render help to people based on your proficiencies"
 						}],
 				"target_audience": {
 						"audience_type":"all"
