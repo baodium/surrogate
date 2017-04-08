@@ -1590,7 +1590,8 @@ function showExperts(fromId){
 							level="";
 						}
 						
-						firstName  = output[i].name.split(" ");
+						//firstName  = output[i].name;
+						//firstName = firstName.split(" ");
 						
 						elementss[i]={                           
 							"title": output[i].name, 
@@ -1604,10 +1605,6 @@ function showExperts(fromId){
 								"type": "postback",
                                 "title": "Send Message",
                                 "payload": "postback_message_yes-"+output[i].from_id+"-"+output[i].to_id+"-"+output[i].subject,
-                                },{
-								"type": "postback",
-                                "title": "Rate "+firstName[0],
-                                "payload": "postback_rate_yes-"+output[i].to_id+"-"+output[i].expertise_id+"-"+output[i].subject,
                                 },{
 								"type": "postback",
                                 "title": "Remove",
