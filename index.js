@@ -581,7 +581,7 @@ function pickRating(senderId){
 							"payload":"RATING_ONE"
 							},{
 							"content_type":"text",
-							"title":"Every 2",
+							"title":"2",
 							"payload":"RATING_TWO"
 							},
 							{
