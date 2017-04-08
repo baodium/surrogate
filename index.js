@@ -156,6 +156,7 @@ app.post('/webhook', function (req, res) {
 			msgin = event.message.text+"";	
 			msgin = msgin.toLowerCase();
 			msgin2  = msgin.replace(/s+$/, '');
+			msgin3  = msgin.replace(/?+$/, '');
 			
 			 if(senderContext[event.sender.id]!=null){			 
 				if(contains.call(greetings_pool, msgin) || contains.call(cancellation_pool, msgin)){
@@ -226,7 +227,7 @@ app.post('/webhook', function (req, res) {
 						}
 
 					}
-				}else if(contains.call(reminder_pool, msgin) || contains.call(reminder_pool, msgin2)){
+				}else if(contains.call(reminder_pool, msgin) || contains.call(reminder_pool, msgin2) ){
 					senderContext[event.sender.id].state="begin";
 					showReminders(event.sender.id);
 				}else if(contains.call(expertise_pool, msgin) || contains.call(expertise_pool, msgin2)){
@@ -257,9 +258,10 @@ app.post('/webhook', function (req, res) {
 						defaultMsg ="Hi "+senderContext[event.sender.id].firstName+", how are you doing? I am surrogate bot. I am an artificial intelligent designed to assist students learn from experts on messenger.\n\n You can also render help to someone based on your proficiency. \n\n ";
 					}else if(contains.call(wellwish_pool, msgin)){
 						defaultMsg ="And you too, "+senderContext[event.sender.id].firstName+". \n\n";
-					}else if(contains.call(greetings_pool, msgin)){
+					}else if(contains.call(greetings_pool, msgin) || contains.call(greetings_pool, msgin3)){
 						defaultMsg ="I'm cool! "+senderContext[event.sender.id].firstName+". \n\n";
-					}else if(contains.call(abuse_pool, msgin)){
+					}else if(msgin.indexOf("fuck")>-1 || msgin.indexOf("damn")>-1 || msgin.indexOf("insane")>-1 || msgin.indexOf("shit")>-1 || msgin.indexOf("crazy")>-1 || msgin.indexOf("mad")>-1){
+						
 						defaultMsg ="Oh "+senderContext[event.sender.id].firstName+", that is not a very nice thing to say. \n\n Maybe you will feel better by providing help to someone on a subject you are proficient at. \n\n ";
 					}
 										
@@ -996,26 +998,7 @@ function showMenu(recipientId){
 }
 
 function about(recipientId) {
-		msg="Surrogate is an artificial intelligent designed to assist students learn from experts on messenger. \n\n It also allows experts/tutors to render help to people based on their proficiencies.\n\n Since college is a lot of work on its own, Surrogate bot takes off of the stress of its human counterpart and does the less desirable job of having to find a suitable tutor.";
-		/*	sendMessage(recipientId,{text: "" + msg});
-			     message = {
-                "attachment": {
-                    "type": "template",
-                    "payload": {
-                        "template_type": "generic",
-                        "elements": [{
-                            "title": "About Surrogate",
-                            "buttons": [{
-								"type": "postback",
-                                "title": "I got it!",
-                                "payload": "postback_no",
-                                }]
-                        }]
-                    }
-                }
-            };
-			*/
-			
+		msg="My name is Surrogate, I am an artificial intelligent designed to assist students learn from experts on messenger. \n\n I also allow experts or tutors to render help to people based on their proficiencies.\n\n";
 			message = {
                 "attachment": {
                     "type": "template",
@@ -1037,7 +1020,7 @@ function about(recipientId) {
 
 
 function help(recipientId,name) {
-			msg="Hi "+name+", my name is surrogate, you can use the following commands to communicate with me.\n\n -Type menu to access the main menu.\n\n -Type cancel or exit to cancel current operation. \n\n -Type my expertise to access your subject list. \n\n -Type my tutors to access your tutor list. \n\n -Type my students to access your student list. \n\n -Type my reminders to access your reminder list. \n\n -Type about to know more about me. \n\n Thank you.";	
+			msg="Hi "+name+", my name is Surrogate, you can use the following commands to communicate with me.\n\n -Type menu to access the main menu.\n\n -Type cancel or exit to cancel current operation. \n\n -Type my expertise to access your subject list. \n\n -Type my tutors to access your tutor list. \n\n -Type my students to access your student list. \n\n -Type my reminders to access your reminder list. \n\n -Type about to know more about me. \n\n Thank you.";	
 			message = {
                 "attachment": {
                     "type": "template",
