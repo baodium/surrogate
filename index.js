@@ -196,7 +196,8 @@ app.post('/webhook', function (req, res) {
 				  
 				  if(event.message.text){					  				 
 						var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+" says:"+event.message.text;				  
-						if(sendMessage(to, {text: "" + msg})){
+						//if(sendMessage(to, {text: "" + msg})){
+						if(startConversation(to,event.sender.id,subject,msg)){
 							sendBusy(to,"typing_off");
 							//sendMessage(event.sender.id, {text: "" + "message sent"});
 							
@@ -207,9 +208,11 @@ app.post('/webhook', function (req, res) {
 							senderContext[to].message="true";
 							*/
 							endConversation(event.sender.id,"message sent");
-							endConversation(to,"");
+							
+							startConversation(to,event.sender.id,subject,"message sent");
+							//endConversation(to,"");
 							//replyOption(event.sender.id,"Do you want to send another message?",fromm,to,subject);
-							//replyOption(to,"Do you want to reply this message?",to,fromm,subject);
+							replyOption(to,"Do you want to reply this message?",to,fromm,subject);
 						}
 					//senderContext[event.sender.id].message="false";
 				  }			 				  
@@ -695,6 +698,18 @@ function endConversation(senderId,msg){
 							}]
 		};
 sendMessage(senderId,message);
+}
+
+function startConversation(toId,fromm,subject,msg){
+	message = {
+			"text":msg,
+			"quick_replies":[{
+							"content_type":"text",
+							"title":"end conversation",
+							"payload":"START_CONVERSATION-"+toId+"-"+fromm+"-"+subject
+							}]
+		};
+sendMessage(toId,message);
 }
 
 
