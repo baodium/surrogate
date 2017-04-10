@@ -198,7 +198,7 @@ app.post('/webhook', function (req, res) {
 						var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+" says:"+event.message.text;				  
 						if(sendMessage(to, {text: "" + msg})){
 							sendBusy(to,"typing_off");
-							sendMessage(event.sender.id, {text: "" + "message sent"});
+							//sendMessage(event.sender.id, {text: "" + "message sent"});
 							
 							/*
 							senderContext[to].message_from=to;
