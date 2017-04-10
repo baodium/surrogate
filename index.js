@@ -200,11 +200,12 @@ app.post('/webhook', function (req, res) {
 							sendBusy(to,"typing_off");
 							sendMessage(event.sender.id, {text: "" + "message sent"});
 							
+							/*
 							senderContext[to].message_from=to;
 							senderContext[to].message_to=event.sender.id;
 							senderContext[to].message_subject=subject;
 							senderContext[to].message="true";
-							
+							*/
 							endConversation(event.sender.id);
 							endConversation(to);
 							//replyOption(event.sender.id,"Do you want to send another message?",fromm,to,subject);
