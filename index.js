@@ -1824,7 +1824,7 @@ function showExperts(fromId){
                                 },{
 								"type": "postback",
                                 "title": "Send Message",
-                                "payload": "postback_message_yes-"+output[i].from_id+"-"+output[i].to_id+"-"+output[i].subject+"-expert:"+expertise_id,
+                                "payload": "postback_message_yes-"+output[i].from_id+"-"+output[i].to_id+"-"+output[i].subject+"-expert:"+output[i].expertise_id,
                                 },{
 								"type": "postback",
                                 "title": "Remove",
@@ -1895,7 +1895,7 @@ function showStudents(toId){
                                 },{
 								"type": "postback",
                                 "title": "Send Message",
-                                "payload": "postback_message_yes-"+output[i].to_id+"-"+output[i].from_id+"-"+output[i].subject+"-student:"+expertise_id,
+                                "payload": "postback_message_yes-"+output[i].to_id+"-"+output[i].from_id+"-"+output[i].subject+"-student:"+output[i].expertise_id,
                                 },{
 								"type": "postback",
                                 "title": "Remove",
