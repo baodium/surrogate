@@ -205,7 +205,7 @@ app.post('/webhook', function (req, res) {
 							senderContext[to].message_subject=sub;
 							senderContext[to].message="true";
 							*/
-							//endConversation(to);
+							endConversation(event.sender.id);
 							//replyOption(event.sender.id,"Do you want to send another message?",fromm,to,subject);
 							replyOption(to,"Do you want to reply this message?",to,fromm,subject);
 						}
