@@ -231,9 +231,36 @@ app.post('/webhook', function (req, res) {
 											submitForm(post_data,backurl+"ratings/add",event.sender.id,"add_rating");											
 					}else if(reply=="END_CONVERSATION"){
 						senderContext[event.sender.id].message="false";
-						sendMessage(event.sender.id, {text: "" +"Okay then, this is what I have on my menu "});
-						senderContext[event.sender.id].state="begin";
-						showMenu(event.sender.id);
+						 if(senderContext[event.sender.id].userType=="expert" && message_count==0){
+							currentExpertise = senderContext[event.sender.id].currentExpertise;
+							rateOption(event.sender.id,currentExpertise);			
+						}else{
+							sendMessage(event.sender.id, {text: "Alright "+senderContext[event.sender.id].firstName+". This is what I have on my menu"});
+							showMenu(event.sender.id);
+							senderContext[event.sender.id].state="begin";
+						}								
+					}else if(reply.indexOf("START_CONVERSATION")>-1){
+						var members_id = reply.payload.split("-");
+						fromId = members_id[1];
+						toId = members_id[2];
+						sub= members_id[3];
+						usertype= members_id[4].split(":");
+						expertise_id = usertype[1];
+						usertype=usertype[0];
+						if(senderContext[event.sender.id]!=null){
+							sendBusy(toId,"typing_on");
+							sendMessage(event.sender.id, {text: "Okay then! please type your messege "});
+							senderContext[event.sender.id].message="true";
+							//senderContext[event.sender.id].userType=usertype;
+							//senderContext[event.sender.id].currentExpertise=expertise_id;
+							if(usertype=="expert"){
+								message_count++;
+							}
+							senderContext[event.sender.id].message_from=event.sender.id;
+							senderContext[event.sender.id].message_to=toId;
+							senderContext[event.sender.id].message_subject=sub;
+					 //endConversation(event.sender.id);
+				}							
 					}else{
 						if(senderContext[event.sender.id].request_id!=null){
 						reqId =  senderContext[event.sender.id].request_id;
@@ -702,13 +729,13 @@ return true;
 }
 
 function startConversation(toId,fromm,subject,msg){
-	//startConversation(to,event.sender.id,subject,msg)
+
 	message = {
 			"text":msg,
 			"quick_replies":[{
 							"content_type":"text",
 							"title":"start conversation",
-							"payload":"START_CONVERSATION-"+toId+"-"+fromm+"-"+subject
+							"payload":"START_CONVERSATION-"+fromm+"-"+toId+"-"+subject"-all:0";
 							}]
 		};
 sendMessage(toId,message);
