@@ -414,7 +414,7 @@ app.post('/webhook', function (req, res) {
 					 senderContext[event.sender.id].message_from=event.sender.id;
 					 senderContext[event.sender.id].message_to=toId;
 					 senderContext[event.sender.id].message_subject=sub;
-					 endConversation(event.sender.id);
+					 //endConversation(event.sender.id);
 				}				
 			}else if(reply.payload.indexOf("postback_message_no")>-1){				
 				 if(senderContext[event.sender.id].userType=="expert" && message_count==0){
