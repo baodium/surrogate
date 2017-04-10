@@ -202,7 +202,7 @@ app.post('/webhook', function (req, res) {
 							
 							senderContext[to].message_from=to;
 							senderContext[to].message_to=event.sender.id;
-							senderContext[to].message_subject=sub;
+							senderContext[to].message_subject=subject;
 							senderContext[to].message="true";
 							
 							endConversation(event.sender.id);
@@ -295,7 +295,7 @@ app.post('/webhook', function (req, res) {
 			 }else{
 				showDefault(event.sender.id);
 			 }
-			}catch(err){sendMessage(event.sender.id, {text: "" +"Error"});}
+			}catch(err){sendMessage(event.sender.id, {text: "" +"Error:"+err});}
 		} else if (event.postback) {
 			var reply = JSON.stringify(event.postback);
 			reply = JSON.parse(reply);
