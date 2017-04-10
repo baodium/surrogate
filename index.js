@@ -209,10 +209,10 @@ app.post('/webhook', function (req, res) {
 							*/
 							endConversation(event.sender.id,"message sent");
 							
-							startConversation(to,event.sender.id,subject,"message sent");
+							//startConversation(to,event.sender.id,subject,"message sent");
 							//endConversation(to,"");
 							//replyOption(event.sender.id,"Do you want to send another message?",fromm,to,subject);
-							replyOption(to,"Do you want to reply this message?",to,fromm,subject);
+							//replyOption(to,"Do you want to reply this message?",to,fromm,subject);
 						}
 					//senderContext[event.sender.id].message="false";
 				  }			 				  
@@ -701,11 +701,12 @@ sendMessage(senderId,message);
 }
 
 function startConversation(toId,fromm,subject,msg){
+	//startConversation(to,event.sender.id,subject,msg)
 	message = {
 			"text":msg,
 			"quick_replies":[{
 							"content_type":"text",
-							"title":"end conversation",
+							"title":"start conversation",
 							"payload":"START_CONVERSATION-"+toId+"-"+fromm+"-"+subject
 							}]
 		};
