@@ -683,6 +683,7 @@ sendMessage(senderId,message);
 
 function endConversation(senderId){
 	message = {
+			"text":"click to end conversation:",
 			"quick_replies":[{
 							"content_type":"text",
 							"title":"end conversation",
