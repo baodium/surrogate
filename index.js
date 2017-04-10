@@ -206,8 +206,8 @@ app.post('/webhook', function (req, res) {
 							senderContext[to].message_subject=subject;
 							senderContext[to].message="true";
 							*/
-							endConversation(event.sender.id);
-							endConversation(to);
+							endConversation(event.sender.id,"message sent");
+							endConversation(to,"");
 							//replyOption(event.sender.id,"Do you want to send another message?",fromm,to,subject);
 							//replyOption(to,"Do you want to reply this message?",to,fromm,subject);
 						}
@@ -682,9 +682,9 @@ function pickTime(senderId){
 sendMessage(senderId,message);
 }
 
-function endConversation(senderId){
+function endConversation(senderId,msg){
 	message = {
-			"text":"click to end conversation:",
+			"text":msg,
 			"quick_replies":[{
 							"content_type":"text",
 							"title":"end conversation",
