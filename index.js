@@ -199,15 +199,16 @@ app.post('/webhook', function (req, res) {
 						if(sendMessage(to, {text: "" + msg})){
 							sendBusy(to,"typing_off");
 							sendMessage(event.sender.id, {text: "" + "message sent"});
-							/*
+							
 							senderContext[to].message_from=to;
 							senderContext[to].message_to=event.sender.id;
 							senderContext[to].message_subject=sub;
 							senderContext[to].message="true";
-							*/
+							
 							endConversation(event.sender.id);
+							endConversation(to);
 							//replyOption(event.sender.id,"Do you want to send another message?",fromm,to,subject);
-							replyOption(to,"Do you want to reply this message?",to,fromm,subject);
+							//replyOption(to,"Do you want to reply this message?",to,fromm,subject);
 						}
 					//senderContext[event.sender.id].message="false";
 				  }			 				  
@@ -691,6 +692,8 @@ function endConversation(senderId){
 		};
 sendMessage(senderId,message);
 }
+
+
 
 function checkHelper(subject,senderId){
 	
