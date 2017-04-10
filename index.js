@@ -199,10 +199,17 @@ app.post('/webhook', function (req, res) {
 						if(sendMessage(to, {text: "" + msg})){
 							sendBusy(to,"typing_off");
 							sendMessage(event.sender.id, {text: "" + "message sent"});
-							replyOption(event.sender.id,"Do you want to send another message?",fromm,to,subject);
+							/*
+							senderContext[to].message_from=to;
+							senderContext[to].message_to=event.sender.id;
+							senderContext[to].message_subject=sub;
+							senderContext[to].message="true";
+							*/
+							//endConversation(to);
+							//replyOption(event.sender.id,"Do you want to send another message?",fromm,to,subject);
 							replyOption(to,"Do you want to reply this message?",to,fromm,subject);
 						}
-					senderContext[event.sender.id].message="false";
+					//senderContext[event.sender.id].message="false";
 				  }			 				  
 				  				  
 				}else if(event.message.quick_reply){
@@ -217,6 +224,8 @@ app.post('/webhook', function (req, res) {
 											'expertise_id':expertise_id,
 											'rating':rating });				
 											submitForm(post_data,backurl+"ratings/add",event.sender.id,"add_rating");											
+					}else if(reply=="END_CONVERSATION"){
+						senderContext[event.sender.id].message="false";
 					}else{
 						if(senderContext[event.sender.id].request_id!=null){
 						reqId =  senderContext[event.sender.id].request_id;
@@ -404,6 +413,7 @@ app.post('/webhook', function (req, res) {
 					 senderContext[event.sender.id].message_from=event.sender.id;
 					 senderContext[event.sender.id].message_to=toId;
 					 senderContext[event.sender.id].message_subject=sub;
+					 endConversation(event.sender.id);
 				}				
 			}else if(reply.payload.indexOf("postback_message_no")>-1){				
 				 if(senderContext[event.sender.id].userType=="expert" && message_count==0){
@@ -666,6 +676,18 @@ function pickTime(senderId){
 							"payload":"REMINDER_TIME_NINE_PM"
 							}
 							]
+		};
+sendMessage(senderId,message);
+}
+
+function endConversation(senderId){
+	message = {
+			"text":":",
+			"quick_replies":[{
+							"content_type":"text",
+							"title":"end conversation",
+							"payload":"END_CONVERSATION"
+							}]
 		};
 sendMessage(senderId,message);
 }
