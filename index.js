@@ -228,6 +228,9 @@ app.post('/webhook', function (req, res) {
 											submitForm(post_data,backurl+"ratings/add",event.sender.id,"add_rating");											
 					}else if(reply=="END_CONVERSATION"){
 						senderContext[event.sender.id].message="false";
+						sendMessage(event.sender.id, {text: "" +"Okay then, this is what I have on my menu "});
+						senderContext[event.sender.id].state="begin";
+						showMenu(event.sender.id);
 					}else{
 						if(senderContext[event.sender.id].request_id!=null){
 						reqId =  senderContext[event.sender.id].request_id;
