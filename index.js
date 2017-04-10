@@ -204,13 +204,23 @@ app.post('/webhook', function (req, res) {
 						}
 					senderContext[event.sender.id].message="false";
 				  }			 				  
-				  
-				  
+				  				  
 				}else if(event.message.quick_reply){
 					reply = event.message.quick_reply.payload;
-					if(senderContext[event.sender.id].request_id!=null){
+					if(reply.indexOf("RATING")>-1){
+						var rating = reply.split("-");
+						expertise_id = rating[1];
+						rating = rating[0].split("_");
+						rating = rating[1];
+							var post_data = querystring.stringify({
+											'rated_by' : event.sender.id,
+											'expertise_id':expertise_id,
+											'rating':rating });				
+											submitForm(post_data,backurl+"ratings/add",event.sender.id,"add_rating");											
+					}else{
+						if(senderContext[event.sender.id].request_id!=null){
 						reqId =  senderContext[event.sender.id].request_id;
-						type =  senderContext[event.sender.id].reminder_type;						
+						type =  senderContext[event.sender.id].reminder_type;
 						if(reply.indexOf("REMINDER_TIME")>-1){
 							var post_data = querystring.stringify({
 											'status' : 'completed',
@@ -230,6 +240,7 @@ app.post('/webhook', function (req, res) {
 						}
 
 					}
+				 }
 				}else if(contains.call(reminder_pool, msgin) || contains.call(reminder_pool, msgin2) ){
 					senderContext[event.sender.id].state="begin";
 					showReminders(event.sender.id);
@@ -378,12 +389,15 @@ app.post('/webhook', function (req, res) {
 				 fromId = members_id[1];
 				 toId = members_id[2];
 				 sub= members_id[3];
-				 usertype= members_id[4];
+				 usertype= members_id[4].split(":");
+				 expertise_id = usertype[1];
+				 usertype=usertype[0];
 				 if(senderContext[event.sender.id]!=null){
 					 sendBusy(toId,"typing_on");
 					 sendMessage(event.sender.id, {text: "Okay then! please type your messege "});
 					 senderContext[event.sender.id].message="true";
 					 senderContext[event.sender.id].userType=usertype;
+					 senderContext[event.sender.id].currentExpertise=expertise_id;
 					 if(usertype=="expert"){
 						 message_count++;
 					 }
@@ -392,23 +406,18 @@ app.post('/webhook', function (req, res) {
 					 senderContext[event.sender.id].message_subject=sub;
 				}				
 			}else if(reply.payload.indexOf("postback_message_no")>-1){				
-				var members_id = reply.payload.split("-");
-				 fromId = members_id[1];
-				 toId = members_id[2];
-				 sub= members_id[3];
 				 if(senderContext[event.sender.id].userType=="expert" && message_count==0){
-					rateOption(fromId,toId,sub);			
+					currentExpertise = senderContext[event.sender.id].currentExpertise;
+					rateOption(event.sender.id,currentExpertise);			
 				}else{
 					sendMessage(event.sender.id, {text: "Alright "+senderContext[event.sender.id].firstName+". This is what I have on my menu"});
 					showMenu(event.sender.id);
 					senderContext[event.sender.id].state="begin";
 				}				 		 
 			}else if(reply.payload.indexOf("postback_rate_yes")>-1){				
-				var members_id = reply.payload.split("-");
-				 fromId = members_id[1];
-				 toId = members_id[2];
-				 sub= members_id[3];
-				 pickRating(event.sender.id);					 
+				 var members_id = reply.payload.split("-");
+				 expId = members_id[1];
+				 pickRating(event.sender.id,expId);					 
 			}else if(reply.payload=="set_class_reminder"){
 				if(senderContext[event.sender.id]!=null){
 					sendMessage(event.sender.id, {text: "Cool! you can now setup a class reminder for meetings with your tutor(s) or student(s) \n\n\n"});
@@ -584,32 +593,32 @@ sendMessage(senderId,message);
 }
 
 
-function pickRating(senderId){
+function pickRating(senderId,expertise_id){
 	message = {
 			"text":"please pick a rating out of 5, with 5 being the highest:",
 			"quick_replies":[{
 							"content_type":"text",
 							"title":"1",
-							"payload":"RATING_ONE"
+							"payload":"RATING_1-"+expertise_id
 							},{
 							"content_type":"text",
 							"title":"2",
-							"payload":"RATING_TWO"
+							"payload":"RATING_2-"+expertise_id
 							},
 							{
 							"content_type":"text",
 							"title":"3",
-							"payload":"RATING_THREE"
+							"payload":"RATING_3-"+expertise_id
 							},
 							{
 							"content_type":"text",
 							"title":"4",
-							"payload":"RATING_FOUR"
+							"payload":"RATING_4-"+expertise_id
 							},
 							{
 							"content_type":"text",
 							"title":"5",
-							"payload":"RATING_FIVE"
+							"payload":"RATING_5-"+expertise_id
 							}]
 		};
 		sendMessage(senderId,message);
@@ -1275,7 +1284,7 @@ function replyOption(recipientId,msg,fromm,to,subject){
                             "buttons": [{
 								"type": "postback",
                                 "title": "Yes",
-                                "payload": "postback_message_yes-"+fromm+"-"+to+"-"+subject+"-all",
+                                "payload": "postback_message_yes-"+fromm+"-"+to+"-"+subject+"-all:0",
                                 },
 								{
 								"type": "postback",
@@ -1319,8 +1328,27 @@ function getOut(recipientId){
 
 
 
-function rateOption(fromm,to,subject){
-	message = {
+function rateOption(fromm,expertise_id){
+	
+	var post_data = querystring.stringify({'rated_by' : fromm,'expertise_id':expertise_id});
+	request({
+			url: backurl+"ratings/get",
+			method: 'POST',
+			body: post_data,
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded',
+				'Content-Length':post_data.length
+				}
+		}, function(error, response, body) {
+			if (error) {
+				console.log('Error sending message: ', error);
+			} else if (response.body.error) {
+				console.log('Error: ', response.body.error);
+			}else{
+			output = JSON.parse(body);
+			var total = output.length;
+			if(total<1){
+			 message = {
                 "attachment": {
                     "type": "template",
                     "payload": {
@@ -1330,7 +1358,7 @@ function rateOption(fromm,to,subject){
                             "buttons": [{
 								"type": "postback",
                                 "title": "Yes",
-                                "payload": "postback_rate_yes-"+fromm+"-"+to+"-"+subject,
+                                "payload": "postback_rate_yes-"+expertise_id,
                                 },
 								{
 								"type": "postback",
@@ -1341,11 +1369,18 @@ function rateOption(fromm,to,subject){
                     }
                 }
             };
-	if( senderContext[fromm]!=null){
-		senderContext[fromm].state = "rate expertise";
-	}
-		sendMessage(fromm, message);			
-        return true;
+			if( senderContext[fromm]!=null){
+				senderContext[fromm].state = "rate_expertise";
+			}
+			sendMessage(fromm, message);							
+			}else{
+				sendMessage(fromm, {text: "Alright "+senderContext[fromm].firstName+". This is what I have on my menu"});
+				showMenu(fromm);
+				senderContext[fromm].state="begin";
+			}			
+		});
+	
+	return true;
 }
 
 
@@ -1445,6 +1480,7 @@ function submitForm(post_data,url,userId,action){
 							sendMessage(userId, {text: "I have successfully saved your expertise"});
 							displayOption(userId,"Do you want to add another expertise?","yes_no");
 							senderContext[userId].state = "expertise_saved"; 
+							return true;
 						}
 						
 						if(action == "type_expertise"){
@@ -1457,6 +1493,7 @@ function submitForm(post_data,url,userId,action){
 								getOut(userId);								
 								senderContext[userId].state = "type_expertise";
 							}
+							return true;
 						}
 						
 						if(action == "save_request"){
@@ -1492,6 +1529,7 @@ function submitForm(post_data,url,userId,action){
 							}else{
 								sendMessage(userId, {text: "Oh! did you forget? You have already requested this expertise!"});																
 							}
+							return true;
 						}
 						
 						if(action=="add_reminder"){
@@ -1508,11 +1546,18 @@ function submitForm(post_data,url,userId,action){
 									pickPeriod(userId,msg);
 								//}
 							}
+							return true;
 						}
 						
 						if(action=="update_reminder"){
 							sendMessage(userId, {text: "Your reminder has been saved"});
-							reminderOptionYesNo(userId);						
+							reminderOptionYesNo(userId);
+							return true;
+						}
+						
+						if(action=="add_rating"){
+							sendMessage(userId, {text: "Thanks! your rating has been saved"});
+							return true;
 						}
 							
 				} 
@@ -1756,7 +1801,7 @@ function showExperts(fromId){
                                 },{
 								"type": "postback",
                                 "title": "Send Message",
-                                "payload": "postback_message_yes-"+output[i].from_id+"-"+output[i].to_id+"-"+output[i].subject+"-expert",
+                                "payload": "postback_message_yes-"+output[i].from_id+"-"+output[i].to_id+"-"+output[i].subject+"-expert:"+expertise_id,
                                 },{
 								"type": "postback",
                                 "title": "Remove",
@@ -1827,7 +1872,7 @@ function showStudents(toId){
                                 },{
 								"type": "postback",
                                 "title": "Send Message",
-                                "payload": "postback_message_yes-"+output[i].to_id+"-"+output[i].from_id+"-"+output[i].subject+"-student",
+                                "payload": "postback_message_yes-"+output[i].to_id+"-"+output[i].from_id+"-"+output[i].subject+"-student:"+expertise_id,
                                 },{
 								"type": "postback",
                                 "title": "Remove",
@@ -1918,29 +1963,6 @@ function removeExpertOrStudent(fromId,senderId,requestId,type){
 		});
 			
     return true;
-}
-
-
-function removeStudent(recipientId,expertise_id,subject){
-	var post_data = querystring.stringify({'facebook_id' : recipientId,'expertise_id':expertise_id});
-	request({
-			url: backurl+"requests/remove",
-			method: 'POST',
-			body: post_data,
-			headers: {
-				'Content-Type': 'application/x-www-form-urlencoded',
-				'Content-Length':post_data.length
-				}
-		}, function(error, response, body) {
-			if (error) {
-				console.log('Error sending message: ', error);
-			} else if (response.body.error) {
-				console.log('Error: ', response.body.error);
-			}else{
-				sendMessage(recipientId, {text: subject+ " student has been successfully removed \n\n "});
-				showStudents(recipientId);	
-			}			
-		});
 }
 
 
