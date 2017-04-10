@@ -698,6 +698,7 @@ function endConversation(senderId,msg){
 							}]
 		};
 sendMessage(senderId,message);
+return true;
 }
 
 function startConversation(toId,fromm,subject,msg){
@@ -711,6 +712,7 @@ function startConversation(toId,fromm,subject,msg){
 							}]
 		};
 sendMessage(toId,message);
+return true;
 }
 
 
