@@ -1378,6 +1378,7 @@ function rateOption(fromm,expertise_id){
 				showMenu(fromm);
 				senderContext[fromm].state="begin";
 			}			
+		}
 		});
 	
 	return true;
