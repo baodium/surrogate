@@ -1378,7 +1378,7 @@ function replyOption(recipientId,msg,fromm,to,subject){
 		sendMessage(recipientId, message);	
 		if( senderContext[recipientId]!=null){
 			senderContext[recipientId].state = "send message";
-			if(senderContext[recipientId].conversation_started=="true";){
+			if(senderContext[recipientId].conversation_started=="true"){
 				endConversation(recipientId,"");
 			}
 		}
