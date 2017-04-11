@@ -251,6 +251,7 @@ app.post('/webhook', function (req, res) {
 							sendBusy(toId,"typing_on");
 							sendMessage(event.sender.id, {text: "Okay then! please type your messege "});
 							senderContext[event.sender.id].message="true";
+							senderContext[event.sender.id].conversation_started="true";
 							//senderContext[event.sender.id].userType=usertype;
 							//senderContext[event.sender.id].currentExpertise=expertise_id;
 							if(usertype=="expert"){
@@ -738,7 +739,9 @@ function startConversation(toId,fromm,subject,msg){
 							"payload":"START_CONVERSATION-"+fromm+"-"+toId+"-"+subject+"-all:0"
 							}]
 		};
-sendMessage(toId,message);
+//if(senderContext[toId].conversation_started==null){
+	sendMessage(toId,message);
+//}
 return true;
 }
 
