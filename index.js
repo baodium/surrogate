@@ -240,7 +240,7 @@ app.post('/webhook', function (req, res) {
 							senderContext[event.sender.id].state="begin";
 						}								
 					}else if(reply.indexOf("START_CONVERSATION")>-1){
-						var members_id = reply.payload.split("-");
+						var members_id = reply.split("-");
 						fromId = members_id[1];
 						toId = members_id[2];
 						sub= members_id[3];
