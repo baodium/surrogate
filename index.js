@@ -196,8 +196,8 @@ app.post('/webhook', function (req, res) {
 				  
 				  if(event.message.text){					  				 
 						var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+" says:"+event.message.text;				  
-						//if(sendMessage(to, {text: "" + msg})){
-						if(startConversation(to,event.sender.id,subject,msg)){
+						if(sendMessage(to, {text: "" + msg})){
+						//if(startConversation(to,event.sender.id,subject,msg)){
 							sendBusy(to,"typing_off");
 							//sendMessage(event.sender.id, {text: "" + "message sent"});
 							
@@ -212,7 +212,7 @@ app.post('/webhook', function (req, res) {
 							//startConversation(to,event.sender.id,subject,"message sent");
 							//endConversation(to,"");
 							//replyOption(event.sender.id,"Do you want to send another message?",fromm,to,subject);
-							//replyOption(to,"Do you want to reply this message?",to,fromm,subject);
+							replyOption(to,"Do you want to reply this message?",to,fromm,subject);
 						}
 					//senderContext[event.sender.id].message="false";
 				  }			 				  
@@ -739,9 +739,9 @@ function startConversation(toId,fromm,subject,msg){
 							"payload":"START_CONVERSATION-"+toId+"-"+fromm+"-"+subject+"-all:0"
 							}]
 		};
-if(senderContext[toId].conversation_started==null){
+//if(senderContext[toId].conversation_started==null){
 	sendMessage(toId,message);
-}
+//}
 return true;
 }
 
