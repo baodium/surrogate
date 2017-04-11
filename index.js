@@ -447,9 +447,10 @@ app.post('/webhook', function (req, res) {
 						 message_count++;
 					 }
 					 senderContext[event.sender.id].message_from=event.sender.id;
+					 senderContext[event.sender.id].conversation_started="true";
 					 senderContext[event.sender.id].message_to=toId;
 					 senderContext[event.sender.id].message_subject=sub;
-					 endConversation(event.sender.id);
+					 
 				}				
 			}else if(reply.payload.indexOf("postback_message_no")>-1){				
 				 if(senderContext[event.sender.id].userType=="expert" && message_count==0){
@@ -1373,10 +1374,15 @@ function replyOption(recipientId,msg,fromm,to,subject){
                     }
                 }
             };
-	if( senderContext[recipientId]!=null){
-		senderContext[recipientId].state = "send message";
-	}
-		sendMessage(recipientId, message);			
+			
+		sendMessage(recipientId, message);	
+		if( senderContext[recipientId]!=null){
+			senderContext[recipientId].state = "send message";
+			if(senderContext[recipientId].conversation_started=="true";){
+				endConversation(recipientId,"");
+			}
+		}
+		
         return true;
 }
 
