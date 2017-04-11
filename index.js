@@ -739,9 +739,9 @@ function startConversation(toId,fromm,subject,msg){
 							"payload":"START_CONVERSATION-"+toId+"-"+fromm+"-"+subject+"-all:0"
 							}]
 		};
-//if(senderContext[toId].conversation_started==null){
+if(senderContext[toId].conversation_started==null){
 	sendMessage(toId,message);
-//}
+}
 return true;
 }
 
