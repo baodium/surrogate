@@ -734,7 +734,7 @@ function startConversation(toId,fromm,subject,msg){
 			"text":msg,
 			"quick_replies":[{
 							"content_type":"text",
-							"title":"start conversation",
+							"title":"Reply message",
 							"payload":"START_CONVERSATION-"+fromm+"-"+toId+"-"+subject+"-all:0"
 							}]
 		};
