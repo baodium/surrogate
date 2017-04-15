@@ -157,11 +157,6 @@ app.post('/webhook', function (req, res) {
 			//msgin3  = msgin.replace(/?+$/, '');
 			
 			 if(senderContext[event.sender.id]!=null){
-
-			
-				//if(senderContext[recipientId].conversation_started=="true"){
-						endConversation(event.sender.id,"");
-				//}
 			
 				if(contains.call(greetings_pool, msgin) || contains.call(cancellation_pool, msgin)){
 					senderContext[event.sender.id].state="begin";
@@ -201,6 +196,7 @@ app.post('/webhook', function (req, res) {
 						if(sendMessage(to, {text: "" + msg})){
 						//if(startConversation(to,event.sender.id,subject,msg)){
 							sendBusy(to,"typing_off");
+							endConversation(to,"");
 							//sendMessage(event.sender.id, {text: "" + "message sent"});
 							
 							/*
