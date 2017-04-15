@@ -782,7 +782,7 @@ function checkHelper(subject,senderId){
 						}
 						
 						rate = (rating/totalr);//round(rating/totalr);
-						
+						//Math.round(2.5);
 						
 						for(k=0; k<rate; k++){
 							con+="🌟";
@@ -792,7 +792,7 @@ function checkHelper(subject,senderId){
 					elementss[i]={                           
 							"title": output[i].name, 
 							"image_url": output[i].profile_pic,                  
-							"subtitle":  "Expert in:"+output[i].subject+", \n\n Level:"+level+"\n\n"+rating,   
+							"subtitle":  "Expert in:"+output[i].subject+", \n\n Level:"+level+"\n\n"+con,   
                             "buttons": [{
 											"title": "Request Expertise",
 											"type": "postback",
