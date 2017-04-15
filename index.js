@@ -183,7 +183,7 @@ app.post('/webhook', function (req, res) {
 						'status':'pending'
 					});					
 					submitForm(post_data,backurl+"expertise/add",event.sender.id,"type_expertise");															
-				}else if(senderContext[event.sender.id].message==="true"){				 
+				}else if(senderContext[event.sender.id].message==="true" && event.message.quick_reply==null){				 
 					var fromm =  event.sender.id;
 					var to  = senderContext[event.sender.id].message_to;
 					var subject = senderContext[event.sender.id].message_subject;					
