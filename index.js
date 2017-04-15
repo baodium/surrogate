@@ -203,7 +203,6 @@ app.post('/webhook', function (req, res) {
 				  
 				  if(event.message.text){					  				 
 						var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+" says:\n"+event.message.text;				  
-						var sent = false;
 						if(senderContext[to]!=null){				
 								if(senderContext[to].conversation_started=="true"){
 									//sendMessage(to, {text: "still here "+senderContext[to].conversation_started});
@@ -222,7 +221,10 @@ app.post('/webhook', function (req, res) {
 							sendBusy(to,"typing_off");
 							endConversation(event.sender.id,"message sent");						
 						}
-				  }else if(event.message.quick_reply){
+					//senderContext[event.sender.id].message="false";
+				  }			 				  
+				  				  
+				}else if(event.message.quick_reply){
 					reply = event.message.quick_reply.payload;
 					if(reply.indexOf("RATING")>-1){
 						var rating = reply.split("-");
