@@ -148,6 +148,9 @@ app.post('/webhook', function (req, res) {
     var events = req.body.entry[0].messaging;
     for (i = 0; i < events.length; i++) {		
         var event = events[i];	
+		
+		sendMessage(event.sender.id,{text: ""+event});
+		
 		var intialized = setContext(event.sender.id);
 		if (event.message && (event.message.text || event.message.attachments)) {
 			try{
@@ -158,8 +161,8 @@ app.post('/webhook', function (req, res) {
 			
 			 if(senderContext[event.sender.id]!=null){
 				if(senderContext[event.sender.id].conversation_started=="true"){
-					endConversation(event.sender.id,"");
-					sendMessage(event.sender.id,{text: "Cool you "});
+					//endConversation(event.sender.id,"");
+					//sendMessage(event.sender.id,{text: "Cool you "});
 				}
 			
 				if(contains.call(greetings_pool, msgin) || contains.call(cancellation_pool, msgin)){
