@@ -521,7 +521,7 @@ app.post('/webhook', function (req, res) {
 		var con = JSON.stringify(event);
 		if(event.read){
 			if(senderContext[event.sender.id]!=null){
-				sendMessage(event.sender.id, {text: "still here "});
+				sendMessage(event.sender.id, {text: "still here "+senderContext[event.sender.id].conversation_started});
 				if(senderContext[event.sender.id].conversation_started=="true"){
 					endConversation(event.sender.id,"");
 				}
