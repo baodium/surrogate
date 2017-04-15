@@ -167,7 +167,11 @@ app.post('/webhook', function (req, res) {
 				if(contains.call(greetings_pool, msgin) || contains.call(cancellation_pool, msgin)){
 					senderContext[event.sender.id].state="begin";
 				}				 
-				 
+				
+				if(msgin=="end conversation"){
+				  senderContext[event.sender.id].message==="false";
+				}
+				
 				if(senderContext[event.sender.id].state === "provide_subject"){									
 					checkHelper(event.message.text,event.sender.id);									
 				}else if(senderContext[event.sender.id].state === "type_expertise"){
@@ -221,7 +225,7 @@ app.post('/webhook', function (req, res) {
 							replyOption(to,"Do you want to reply this message?",to,fromm,subject);
 							if(senderContext[to]!=null){				
 								if(senderContext[to].conversation_started=="true"){
-									sendMessage(event.sender.id, {text: "still here "+senderContext[to].conversation_started});
+									sendMessage(to, {text: "still here "+senderContext[to].conversation_started});
 									endConversation(to,"");
 								}
 							}
