@@ -149,7 +149,8 @@ app.post('/webhook', function (req, res) {
     for (i = 0; i < events.length; i++) {		
         var event = events[i];	
 		
-		sendMessage(event.sender.id,{text: ""+event});
+		var con = JSON.stringify(event);
+		sendMessage(event.sender.id,{text: ""+con});
 		
 		var intialized = setContext(event.sender.id);
 		if (event.message && (event.message.text || event.message.attachments)) {
