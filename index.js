@@ -767,16 +767,18 @@ function checkHelper(subject,senderId){
 						}else{
 							level="";
 						}
+						
 						var rating = output[i].rating;
 						var totalr = output[i].total_rating;
-						if(rating==null){
+						if(rating==null || rating=="NULL"){
 							rating = 0;
 						}
 						
-						var rate =0;
-						if(totalr!=null){
-							rate = round(rating/totalr);
+						if(totalr==null || totalr=="NULL"){
+							totalr=1;
 						}
+						
+						rate = round(rating/totalr);
 						
 						var con ="";
 						for(k=0; k<rate; k++){
