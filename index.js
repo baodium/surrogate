@@ -241,9 +241,11 @@ app.post('/webhook', function (req, res) {
 							currentExpertise = senderContext[event.sender.id].currentExpertise;
 							rateOption(event.sender.id,currentExpertise);			
 						}else{
+							senderContext[event.sender.id].message="false";
+							senderContext[event.sender.id].conversation_started=="false";
+							senderContext[event.sender.id].state="begin";
 							sendMessage(event.sender.id, {text: "Alright "+senderContext[event.sender.id].firstName+". This is what I have on my menu"});
 							showMenu(event.sender.id);
-							senderContext[event.sender.id].state="begin";
 						}								
 					}else{
 						if(senderContext[event.sender.id].request_id!=null){
