@@ -769,9 +769,9 @@ function checkHelper(subject,senderId){
 						}
 						
 						//var con =JSON.stringify(output[i]);
-						
+						con="";
 						var rating = output[i].rating;
-						/*
+						
 						var totalr = output[i].total_rating;
 						if(rating==null || rating=="NULL"){
 							rating = 0;
@@ -781,13 +781,13 @@ function checkHelper(subject,senderId){
 							totalr=1;
 						}
 						
-						rate = round(rating/totalr);
+						rate = (rating/totalr);//round(rating/totalr);
 						
 						
 						for(k=0; k<rate; k++){
 							con+="🌟";
 						}
-						*/
+						
 						//var rate = rating/total_rating;
 					elementss[i]={                           
 							"title": output[i].name, 
