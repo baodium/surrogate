@@ -191,7 +191,7 @@ app.post('/webhook', function (req, res) {
 					}
 				  
 				  if(event.message.text){					  				 
-						var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+" says:"+event.message.text;				  
+						var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+" says:\n"+event.message.text;				  
 						if(sendMessage(to, {text: "" + msg})){
 						//if(startConversation(to,event.sender.id,subject,msg)){
 							sendBusy(to,"typing_off");
@@ -206,7 +206,7 @@ app.post('/webhook', function (req, res) {
 							endConversation(event.sender.id,"message sent");
 							
 							//startConversation(to,event.sender.id,subject,"message sent");
-							//endConversation(to,"");
+							endConversation(to,"");
 							//replyOption(event.sender.id,"Do you want to send another message?",fromm,to,subject);
 							replyOption(to,"Do you want to reply this message?",to,fromm,subject);
 						}
