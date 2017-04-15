@@ -519,7 +519,11 @@ app.post('/webhook', function (req, res) {
 		
 		var con = JSON.stringify(event);
 		if(event.read){
-			sendMessage(event.sender.id,{text: ""+con});
+			if(senderContext[event.sender.id]!=null){
+				if(senderContext[event.sender.id].conversation_started=="true"){
+					endConversation(event.sender.id,"");
+				}
+			}
 		}
 		
     }
