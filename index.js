@@ -197,7 +197,8 @@ app.post('/webhook', function (req, res) {
 										}
 							};
 							var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+" sent this file.";
-							sendFile(to,sg,fromm,msg,subject);				
+							sendFile(to,sg,fromm,msg,subject);
+							
 						}
 					}
 				  
@@ -768,7 +769,6 @@ function checkHelper(subject,senderId){
 							level="";
 						}
 						
-						//var con =JSON.stringify(output[i]);
 						con="";
 						var rating = output[i].rating;
 						
@@ -781,7 +781,7 @@ function checkHelper(subject,senderId){
 							totalr=1;
 						}
 						
-						rate = (rating/totalr);//round(rating/totalr);
+						rate = Math.round(rating/totalr);//round(rating/totalr);
 						//Math.round(2.5);
 						
 						for(k=0; k<rate; k++){
@@ -1881,9 +1881,6 @@ function showExperts(fromId){
 							level="";
 						}
 						
-						//firstName  = output[i].name;
-						//firstName = firstName.split(" ");
-						
 						elementss[i]={                           
 							"title": output[i].name, 
 							"image_url": output[i].profile_pic,                  
@@ -1901,19 +1898,18 @@ function showExperts(fromId){
                                 "title": "Remove",
                                 "payload": "remove_expert-"+output[i].to_id+"-"+output[i].expertise_id,
                                 }]
-                        };
-				
+                        };				
 					}
 										
-				message = {
-					"attachment": {
-                    "type": "template",
-                    "payload": {
-                        "template_type": "generic",
-                        "elements": elementss
-                    }
-					}
-				};
+					message = {
+								"attachment": {
+								"type": "template",
+								"payload": {
+											"template_type": "generic",
+											"elements": elementss
+											}
+									}
+								};
 					senderContext[fromId].state="send message";
 					if(sendMessage(fromId, {text: "Here is your expert list"})){
 						sendMessage(fromId,message);
