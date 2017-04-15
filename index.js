@@ -149,11 +149,7 @@ app.post('/webhook', function (req, res) {
     for (i = 0; i < events.length; i++) {		
         var event = events[i];	
 		
-		var con = JSON.stringify(event);
-		if(event.read){
-			sendMessage(event.sender.id,{text: ""+con});
-		}
-		
+	
 		var intialized = setContext(event.sender.id);
 		if (event.message && (event.message.text || event.message.attachments)) {
 			try{
@@ -520,7 +516,12 @@ app.post('/webhook', function (req, res) {
 			//postback_just_registered
 			 continue;
 		}
-				
+		
+		var con = JSON.stringify(event);
+		if(event.read){
+			sendMessage(event.sender.id,{text: ""+con});
+		}
+		
     }
     res.sendStatus(200);
 });
