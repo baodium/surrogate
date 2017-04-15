@@ -768,7 +768,7 @@ function checkHelper(subject,senderId){
 							level="";
 						}
 						
-						var con =JSON.stringify(output[i]);
+						//var con =JSON.stringify(output[i]);
 						
 						var rating = output[i].rating;
 						/*
