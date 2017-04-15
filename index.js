@@ -237,6 +237,7 @@ app.post('/webhook', function (req, res) {
 											submitForm(post_data,backurl+"ratings/add",event.sender.id,"add_rating");											
 					}else if(reply=="END_CONVERSATION"){
 						senderContext[event.sender.id].message="false";
+						senderContext[event.sender.id].conversation_started=="false";
 						 if(senderContext[event.sender.id].userType=="expert" && message_count==0){
 							currentExpertise = senderContext[event.sender.id].currentExpertise;
 							rateOption(event.sender.id,currentExpertise);			
@@ -245,29 +246,6 @@ app.post('/webhook', function (req, res) {
 							showMenu(event.sender.id);
 							senderContext[event.sender.id].state="begin";
 						}								
-					}else if(reply.indexOf("START_CONVERSATION")>-1){
-						var members_id = reply.split("-");
-						fromId = members_id[1];
-						toId = members_id[2];
-						sub= members_id[3];
-						usertype= members_id[4].split(":");
-						expertise_id = usertype[1];
-						usertype=usertype[0];
-						if(senderContext[event.sender.id]!=null){
-							sendBusy(toId,"typing_on");
-							sendMessage(event.sender.id, {text: "Okay then! please type your messege "});
-							senderContext[event.sender.id].message="true";
-							senderContext[event.sender.id].conversation_started="true";
-							//senderContext[event.sender.id].userType=usertype;
-							//senderContext[event.sender.id].currentExpertise=expertise_id;
-							if(usertype=="expert"){
-								message_count++;
-							}
-							senderContext[event.sender.id].message_from=event.sender.id;
-							senderContext[event.sender.id].message_to=toId;
-							senderContext[event.sender.id].message_subject=sub;
-					 //endConversation(event.sender.id);
-						}							
 					}else{
 						if(senderContext[event.sender.id].request_id!=null){
 						reqId =  senderContext[event.sender.id].request_id;
