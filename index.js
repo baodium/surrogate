@@ -206,7 +206,6 @@ app.post('/webhook', function (req, res) {
 							endConversation(event.sender.id,"message sent");
 							
 							//startConversation(to,event.sender.id,subject,"message sent");
-							endConversation(to,"");
 							//replyOption(event.sender.id,"Do you want to send another message?",fromm,to,subject);
 							replyOption(to,"Do you want to reply this message?",to,fromm,subject);
 						}
@@ -323,6 +322,11 @@ app.post('/webhook', function (req, res) {
 					senderContext[event.sender.id].state="begin";
 					showMenu(event.sender.id);
 				}
+				
+				if(senderContext[event.sender.id].conversation_started=="true"){
+					endConversation(event.sender.id,"");
+				}
+				
 			 }else{
 				showDefault(event.sender.id);
 			 }
