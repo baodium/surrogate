@@ -203,8 +203,6 @@ app.post('/webhook', function (req, res) {
 				  
 				  if(event.message.text){					  				 
 						var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+" says:\n"+event.message.text;
-							var con = JSON.stringify(event);
-							sendMessage(event.sender.id, {text: "" + con});
 						if(senderContext[to]!=null){				
 								if(senderContext[to].conversation_started=="true"){
 									sent = endConversation(to,"" + msg);
