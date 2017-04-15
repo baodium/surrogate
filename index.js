@@ -204,11 +204,6 @@ app.post('/webhook', function (req, res) {
 							senderContext[to].message="true";
 							*/
 							endConversation(event.sender.id,"message sent");
-							if(senderContext[to]!=null){
-								if(senderContext[to].conversation_started=="true"){
-									endConversation(to,"");
-								}	
-							}
 							
 							//startConversation(to,event.sender.id,subject,"message sent");
 							//endConversation(to,"");
