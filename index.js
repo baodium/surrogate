@@ -1385,7 +1385,8 @@ function replyOption(recipientId,msg,fromm,to,subject){
                 }
             };
 			
-		
+		sendMessage(recipientId, message);
+		/*
 		if( senderContext[recipientId]!=null){
 			senderContext[recipientId].state = "send message";
 			if(senderContext[recipientId].conversation_started=="true"){
@@ -1394,7 +1395,7 @@ function replyOption(recipientId,msg,fromm,to,subject){
 				sendMessage(recipientId, message);	
 			}
 		}
-		
+		*/
         return true;
 }
 
