@@ -771,7 +771,7 @@ function checkHelper(subject,senderId){
 					elementss[i]={                           
 							"title": output[i].name, 
 							"image_url": output[i].profile_pic,                  
-							"subtitle":  "Expert in:"+output[i].subject+", \n\n Level:"+level+"\n\n "+"ðŸ‘© 🌟",   
+							"subtitle":  "Expert in:"+output[i].subject+", \n\n Level:"+level+"\n\n 🌟🌟🌟🌟",   
                             "buttons": [{
 											"title": "Request Expertise",
 											"type": "postback",
