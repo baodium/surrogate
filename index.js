@@ -204,18 +204,16 @@ app.post('/webhook', function (req, res) {
 							senderContext[to].message="true";
 							*/
 							endConversation(event.sender.id,"message sent");
-							if( senderContext[to]!=null){
+							if(senderContext[to]!=null){
 								if(senderContext[to].conversation_started=="true"){
 									endConversation(to,"");
 								}	
-							}else{
-								replyOption(to,"Do you want to reply this message?",to,fromm,subject);
 							}
 							
 							//startConversation(to,event.sender.id,subject,"message sent");
 							//endConversation(to,"");
 							//replyOption(event.sender.id,"Do you want to send another message?",fromm,to,subject);
-							
+							replyOption(to,"Do you want to reply this message?",to,fromm,subject);
 						}
 					//senderContext[event.sender.id].message="false";
 				  }			 				  
@@ -1376,14 +1374,14 @@ function replyOption(recipientId,msg,fromm,to,subject){
             };
 			
 		
-		//if( senderContext[recipientId]!=null){
+		if( senderContext[recipientId]!=null){
 			senderContext[recipientId].state = "send message";
-		//	if(senderContext[recipientId].conversation_started=="true"){
-			//	endConversation(recipientId,"");
-			//}else{
+			if(senderContext[recipientId].conversation_started=="true"){
+				endConversation(recipientId,"");
+			}else{
 				sendMessage(recipientId, message);	
-			//}
-		//}
+			}
+		}
 		
         return true;
 }
