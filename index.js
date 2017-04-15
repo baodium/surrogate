@@ -769,8 +769,9 @@ function checkHelper(subject,senderId){
 						}
 						
 						var con =JSON.stringify(output[i]);
-						/*
+						
 						var rating = output[i].rating;
+						/*
 						var totalr = output[i].total_rating;
 						if(rating==null || rating=="NULL"){
 							rating = 0;
@@ -791,7 +792,7 @@ function checkHelper(subject,senderId){
 					elementss[i]={                           
 							"title": output[i].name, 
 							"image_url": output[i].profile_pic,                  
-							"subtitle":  "Expert in:"+output[i].subject+", \n\n Level:"+level+"\n\n"+con,   
+							"subtitle":  "Expert in:"+output[i].subject+", \n\n Level:"+level+"\n\n"+rating,   
                             "buttons": [{
 											"title": "Request Expertise",
 											"type": "postback",
