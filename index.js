@@ -225,8 +225,8 @@ app.post('/webhook', function (req, res) {
 							replyOption(to,"Do you want to reply this message?",to,fromm,subject);
 							if(senderContext[to]!=null){				
 								if(senderContext[to].conversation_started=="true"){
-									sendMessage(to, {text: "still here "+senderContext[to].conversation_started});
-									endConversation(to,"");
+									//sendMessage(to, {text: "still here "+senderContext[to].conversation_started});
+									endConversation(to,"end now");
 								}
 							}
 						
