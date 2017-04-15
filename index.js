@@ -203,38 +203,26 @@ app.post('/webhook', function (req, res) {
 				  
 				  if(event.message.text){					  				 
 						var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+" says:\n"+event.message.text;				  
-						if(sendMessage(to, {text: "" + msg})){
-						//if(startConversation(to,event.sender.id,subject,msg)){
-							sendBusy(to,"typing_off");
-							//endConversation(to,"");
-							//sendMessage(event.sender.id, {text: "" + "message sent"});
-							
-							/*
-							senderContext[to].message_from=to;
-							senderContext[to].message_to=event.sender.id;
-							senderContext[to].message_subject=subject;
-							senderContext[to].message="true";
-							*/
-							endConversation(event.sender.id,"message sent");
-
-						
-					
-							
-							//startConversation(to,event.sender.id,subject,"message sent");
-							//replyOption(event.sender.id,"Do you want to send another message?",fromm,to,subject);
-							replyOption(to,"Do you want to reply this message?",to,fromm,subject);
-							if(senderContext[to]!=null){				
+						var sent = false;
+						if(senderContext[to]!=null){				
 								if(senderContext[to].conversation_started=="true"){
 									//sendMessage(to, {text: "still here "+senderContext[to].conversation_started});
-									endConversation(to,"end now");
+									sent = endConversation(to,"" + msg);
+								}else{
+									sent = sendMessage(to, {text: "" + msg});
+									replyOption(to,"Do you want to reply this message?",to,fromm,subject);
 								}
-							}
-						
+						}else{
+							     sent = sendMessage(to, {text: "" + msg});
+								 replyOption(to,"Do you want to reply this message?",to,fromm,subject);
 						}
-					//senderContext[event.sender.id].message="false";
-				  }			 				  
-				  				  
-				}else if(event.message.quick_reply){
+						
+						if(sent){
+						//if(startConversation(to,event.sender.id,subject,msg)){
+							sendBusy(to,"typing_off");
+							endConversation(event.sender.id,"message sent");						
+						}
+				  }else if(event.message.quick_reply){
 					reply = event.message.quick_reply.payload;
 					if(reply.indexOf("RATING")>-1){
 						var rating = reply.split("-");
