@@ -156,7 +156,13 @@ app.post('/webhook', function (req, res) {
 			msgin2  = msgin.replace(/s+$/, '');
 			//msgin3  = msgin.replace(/?+$/, '');
 			
-			 if(senderContext[event.sender.id]!=null){			 
+			 if(senderContext[event.sender.id]!=null){
+
+			
+				//if(senderContext[recipientId].conversation_started=="true"){
+						endConversation(event.sender.id,"");
+				//}
+			
 				if(contains.call(greetings_pool, msgin) || contains.call(cancellation_pool, msgin)){
 					senderContext[event.sender.id].state="begin";
 				}				 
@@ -531,13 +537,7 @@ function sendMessage(recipientId, message) {
             console.log('Error: ', response.body.error);
 			return false;
         }else{
-			
-		if(senderContext[recipientId]!=null){
-			if(senderContext[recipientId].conversation_started=="true"){
-					endConversation(recipientId,"");
-			}
-		 }
-		 
+				 
 		}
     });
 return true;
