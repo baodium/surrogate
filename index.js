@@ -774,8 +774,8 @@ function checkHelper(subject,senderId){
 						}
 						
 						var rate =0;
-						if(total_rating!=null){
-							rate = round(rating/total_rating);
+						if(totalr!=null){
+							rate = round(rating/totalr);
 						}
 						
 						var con ="";
