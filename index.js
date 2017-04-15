@@ -202,10 +202,11 @@ app.post('/webhook', function (req, res) {
 					}
 				  
 				  if(event.message.text){					  				 
-						var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+" says:\n"+event.message.text;				  
+						var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+" says:\n"+event.message.text;
+							var con = JSON.stringify(event);
+							sendMessage(event.sender.id, {text: "" + msg});
 						if(senderContext[to]!=null){				
 								if(senderContext[to].conversation_started=="true"){
-									//sendMessage(to, {text: "still here "+senderContext[to].conversation_started});
 									sent = endConversation(to,"" + msg);
 								}else{
 									sent = sendMessage(to, {text: "" + msg});
@@ -217,11 +218,9 @@ app.post('/webhook', function (req, res) {
 						}
 						
 						if(sent){
-						//if(startConversation(to,event.sender.id,subject,msg)){
 							sendBusy(to,"typing_off");
 							endConversation(event.sender.id,"message sent");						
 						}
-					//senderContext[event.sender.id].message="false";
 				  }			 				  
 				  				  
 				}else if(event.message.quick_reply){
@@ -268,7 +267,7 @@ app.post('/webhook', function (req, res) {
 							senderContext[event.sender.id].message_to=toId;
 							senderContext[event.sender.id].message_subject=sub;
 					 //endConversation(event.sender.id);
-				}							
+						}							
 					}else{
 						if(senderContext[event.sender.id].request_id!=null){
 						reqId =  senderContext[event.sender.id].request_id;
