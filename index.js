@@ -323,9 +323,7 @@ app.post('/webhook', function (req, res) {
 					showMenu(event.sender.id);
 				}
 				
-				if(senderContext[event.sender.id].conversation_started=="true"){
-					endConversation(event.sender.id,"");
-				}
+				
 				
 			 }else{
 				showDefault(event.sender.id);
@@ -532,7 +530,15 @@ function sendMessage(recipientId, message) {
         } else if (response.body.error) {
             console.log('Error: ', response.body.error);
 			return false;
-        }
+        }else{
+			
+		if(senderContext[recipientId]!=null){
+			if(senderContext[recipientId].conversation_started=="true"){
+					endConversation(recipientId,"");
+			}
+		 }
+		 
+		}
     });
 return true;
 }
@@ -1032,6 +1038,7 @@ function setContext(recipientId) {
 			senderContext[recipientId].next=0;
 			senderContext[recipientId].message="false";
 			senderContext[recipientId].userType="anonymous";
+			senderContext[recipientId].conversation_started="false";
             return true;		
 		}
 		});
@@ -1065,6 +1072,7 @@ function welcomeUser(recipientId) {
 			senderContext[recipientId].next=0;
 			senderContext[recipientId].message="false";
 			senderContext[recipientId].userType="anonymous";
+			senderContext[recipientId].conversation_started="false";
 			
 			//{"first_name":"Adedayo","last_name":"Olubunmi","profile_pic":"https:\/\/scontent.xx.fbcdn.net\/v\/t1.0-1\/180239_1589652066179_7006637_n.jpg?oh=7ca52055172d91e1c914fcd1110d17a6&oe=596F62FA","locale":"en_US","timezone":1,"gender":"male"}
 			var post_data = querystring.stringify({
