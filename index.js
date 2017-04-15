@@ -337,6 +337,7 @@ app.post('/webhook', function (req, res) {
 				showDefault(event.sender.id);
 			 }
 			}catch(err){sendMessage(event.sender.id, {text: "" +"Error:"+err});}
+			continue;
 		} else if (event.postback) {
 			var reply = JSON.stringify(event.postback);
 			reply = JSON.parse(reply);
@@ -520,6 +521,7 @@ app.post('/webhook', function (req, res) {
 		var con = JSON.stringify(event);
 		if(event.read){
 			if(senderContext[event.sender.id]!=null){
+				sendMessage(event.sender.id, {text: "still here "});
 				if(senderContext[event.sender.id].conversation_started=="true"){
 					endConversation(event.sender.id,"");
 				}
