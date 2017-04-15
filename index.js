@@ -150,7 +150,9 @@ app.post('/webhook', function (req, res) {
         var event = events[i];	
 		
 		var con = JSON.stringify(event);
-		sendMessage(event.sender.id,{text: ""+con});
+		if(event.read){
+			sendMessage(event.sender.id,{text: ""+con});
+		}
 		
 		var intialized = setContext(event.sender.id);
 		if (event.message && (event.message.text || event.message.attachments)) {
@@ -204,7 +206,7 @@ app.post('/webhook', function (req, res) {
 						if(sendMessage(to, {text: "" + msg})){
 						//if(startConversation(to,event.sender.id,subject,msg)){
 							sendBusy(to,"typing_off");
-							endConversation(to,"");
+							//endConversation(to,"");
 							//sendMessage(event.sender.id, {text: "" + "message sent"});
 							
 							/*
