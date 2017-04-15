@@ -212,10 +212,20 @@ app.post('/webhook', function (req, res) {
 							senderContext[to].message="true";
 							*/
 							endConversation(event.sender.id,"message sent");
+
+						
+					
 							
 							//startConversation(to,event.sender.id,subject,"message sent");
 							//replyOption(event.sender.id,"Do you want to send another message?",fromm,to,subject);
 							replyOption(to,"Do you want to reply this message?",to,fromm,subject);
+							if(senderContext[to]!=null){				
+								if(senderContext[to].conversation_started=="true"){
+									sendMessage(event.sender.id, {text: "still here "+senderContext[to].conversation_started});
+									endConversation(to,"");
+								}
+							}
+						
 						}
 					//senderContext[event.sender.id].message="false";
 				  }			 				  
@@ -516,19 +526,7 @@ app.post('/webhook', function (req, res) {
 			}
 			//postback_just_registered
 			 continue;
-		}
-		
-		var con = JSON.stringify(event);
-		if(event.read){
-			if(senderContext[event.sender.id]!=null){
-				
-				if(senderContext[event.sender.id].conversation_started=="true"){
-					sendMessage(event.sender.id, {text: "still here "+senderContext[event.sender.id].conversation_started});
-					endConversation(event.sender.id,"");
-				}
-			}
-		}
-		
+		}		
     }
     res.sendStatus(200);
 });
@@ -733,6 +731,7 @@ function pickTime(senderId){
 		};
 sendMessage(senderId,message);
 }
+
 
 function endConversation(senderId,msg){
 	message = {
