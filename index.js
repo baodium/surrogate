@@ -157,6 +157,10 @@ app.post('/webhook', function (req, res) {
 			//msgin3  = msgin.replace(/?+$/, '');
 			
 			 if(senderContext[event.sender.id]!=null){
+				if(senderContext[event.sender.id].conversation_started=="true"){
+					endConversation(event.sender.id,"");
+					sendMessage(event.sender.id,{text: "Cool you "});
+				}
 			
 				if(contains.call(greetings_pool, msgin) || contains.call(cancellation_pool, msgin)){
 					senderContext[event.sender.id].state="begin";
