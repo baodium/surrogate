@@ -8,8 +8,6 @@ var fs = require('fs');
 var url = require('url');
 var app = express();
 
-
-
 var started=false;
 var backurl="http://surrogation.com.ng/surrogateapp/";
 var senderContext = {};
@@ -38,7 +36,6 @@ app.get('/', function (req, res) {
 app.get('/EAAJeiL9sIu4BANZAqkGafo', function (req, res) { 
 		var d = new Date();
 		var n = d.getHours();
-
 		time ="";
 		if(n==0){
 			time="REMINDER_TIME_TWELVE_AM";
@@ -56,8 +53,7 @@ app.get('/EAAJeiL9sIu4BANZAqkGafo', function (req, res) {
 			time="REMINDER_TIME_SIX_PM";
 		}else if(n==21){
 			time ="REMINDER_TIME_NINE_PM";
-		}
-		
+		}		
 		var days = ['Sunday', 'Monday', 'Tuesday', 'Wedsday', 'Thursday', 'Friday', 'Saturday'];
 		var d = new Date();
 		dayy = d.getDay();
@@ -515,7 +511,6 @@ app.post('/webhook', function (req, res) {
     res.sendStatus(200);
 });
 
-
 // generic function sending messages
 function sendMessage(recipientId, message) {  
     request({
@@ -537,8 +532,6 @@ function sendMessage(recipientId, message) {
     });
 return true;
 }
-
-
 // Notify message recipient of current user action
 function sendBusy(recipientId,type) {  
     request({
@@ -1375,11 +1368,13 @@ function replyOption(recipientId,msg,fromm,to,subject){
                 }
             };
 			
-		sendMessage(recipientId, message);	
+		
 		if( senderContext[recipientId]!=null){
 			senderContext[recipientId].state = "send message";
 			if(senderContext[recipientId].conversation_started=="true"){
 				endConversation(recipientId,"");
+			}else{
+				sendMessage(recipientId, message);	
 			}
 		}
 		
