@@ -767,11 +767,26 @@ function checkHelper(subject,senderId){
 						}else{
 							level="";
 						}
+						var rating = output[i].rating;
+						var totalr = output[i].total_rating;
+						if(rating==null){
+							rating = 0;
+						}
 						
+						var rate =0;
+						if(total_rating!=null){
+							rate = round(rating/total_rating);
+						}
+						
+						var con ="";
+						for(k=0; k<rate; k++){
+							con+="🌟";
+						}
+						//var rate = rating/total_rating;
 					elementss[i]={                           
 							"title": output[i].name, 
 							"image_url": output[i].profile_pic,                  
-							"subtitle":  "Expert in:"+output[i].subject+", \n\n Level:"+level+"\n\n 🌟🌟🌟🌟",   
+							"subtitle":  "Expert in:"+output[i].subject+", \n\n Level:"+level+"\n\n"+con,   
                             "buttons": [{
 											"title": "Request Expertise",
 											"type": "postback",
