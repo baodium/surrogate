@@ -168,10 +168,6 @@ app.post('/webhook', function (req, res) {
 					senderContext[event.sender.id].state="begin";
 				}				 
 				
-				if(msgin==="end conversation"){
-				  senderContext[event.sender.id].message="false";
-				  senderContext[event.sender.id].conversation_started=="false";
-				}
 				
 				if(senderContext[event.sender.id].state === "provide_subject"){									
 					checkHelper(event.message.text,event.sender.id);									
@@ -709,7 +705,7 @@ function endConversation(senderId,msg){
 			"text":msg,
 			"quick_replies":[{
 							"content_type":"text",
-							"title":"end conversation",
+							"title":"suspend conversation",
 							"payload":"END_CONVERSATION"
 							}]
 		};
