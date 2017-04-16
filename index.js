@@ -1167,7 +1167,7 @@ function showMenu(recipientId){
 
 function about(recipientId) {
 		msg="My name is Surrogate, I am an artificial intelligent designed to assist students learn from experts on messenger. \n\n I also allow experts or tutors to render help to people based on their proficiencies.\n\n";
-			message = {
+	/*		message = {
                 "attachment": {
                     "type": "template",
                     "payload": {
@@ -1181,6 +1181,34 @@ function about(recipientId) {
                     }
                 }
              };
+		*/	
+			
+			// "type":"element_share"
+  message = {
+    "attachment":{
+      "type":"template",
+      "payload":{
+        "template_type":"generic",
+        "elements":[
+          {
+            "title":"Surrogate Bot",
+            "subtitle":msg,
+            "buttons":[
+              {
+				  "type": "element_share",
+                  "title": "Share It!"
+              },
+				{
+					"type": "postback",
+                    "title": "I got it!",
+                    "payload": "postback_no"
+                }
+            ]
+          }
+        ]
+      }
+    }
+  };
 			
 			sendMessage(recipientId, message);
             return true;		
@@ -2087,6 +2115,7 @@ function removeReminder(recipientId,reminder_id,title){
 
 
 function shareIt(senderId){
+	// "type":"element_share"
   message = {
     "attachment":{
       "type":"template",
@@ -2095,10 +2124,12 @@ function shareIt(senderId){
         "elements":[
           {
             "title":"Hi Adedayo",
-            "subtitle":"I hope you have not forgotten your maths class today",
+            "subtitle":"I hope you have not forgotten your maths class today!",
             "buttons":[
               {
-                "type":"element_share"
+				  "type": "postback",
+                  "title": "I got it!",
+                  "payload": "postback_just_registered",
               }              
             ]
           }
