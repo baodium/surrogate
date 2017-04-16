@@ -2147,7 +2147,7 @@ function shareIt(senderId){
               "elements": [
                 {
                   "title": "I took Peter's 'Which Hat Are You?' Quiz",
-                  "subtitle": "My result: Fez"
+                  "subtitle": "My result: Fez",
                   "buttons": [
                     {
                       "type": "web_url",
