@@ -158,17 +158,11 @@ app.post('/webhook', function (req, res) {
 			msgin2  = msgin.replace(/s+$/, '');
 			//msgin3  = msgin.replace(/?+$/, '');
 			
-			 if(senderContext[event.sender.id]!=null){
-				if(senderContext[event.sender.id].conversation_started=="true"){
-					//endConversation(event.sender.id,"");
-					//sendMessage(event.sender.id,{text: "Cool you "});
-				}
-			
+			 if(senderContext[event.sender.id]!=null){			
 				if(contains.call(greetings_pool, msgin) || contains.call(cancellation_pool, msgin)){
 					senderContext[event.sender.id].state="begin";
 				}				 
-				
-				
+								
 				if(senderContext[event.sender.id].state === "provide_subject"){									
 					checkHelper(event.message.text,event.sender.id);									
 				}else if(senderContext[event.sender.id].state === "type_expertise"){
@@ -301,6 +295,8 @@ app.post('/webhook', function (req, res) {
 						defaultMsg ="I'm cool! "+senderContext[event.sender.id].firstName+". \n\n";
 					}else if(msgin.indexOf("damn")>-1 || msgin.indexOf("fuck")>-1 || msgin.indexOf("fool")>-1 || msgin.indexOf("insane")>-1 || msgin.indexOf("crazy")>-1 || msgin.indexOf("mad")>-1 ){					
 						defaultMsg ="Oh "+senderContext[event.sender.id].firstName+", that is not a very nice thing to say. \n\n Maybe you will feel better by providing help to someone on a subject you are proficient at. \n\n ";
+					}else if((msgin=="share it"){
+						shareIt(event.sender.id);
 					}
 										
 					sendMessage(event.sender.id, {text: "" + defaultMsg+"This is what I have on my menu "});
@@ -2091,6 +2087,30 @@ function removeReminder(recipientId,reminder_id,title){
 		});
 }
 
+
+function shareIt(senderId){
+  message = {
+    "attachment":{
+      "type":"template",
+      "payload":{
+        "template_type":"generic",
+        "elements":[
+          {
+            "title":"Hi Adedayo",
+            "subtitle":"I hope you have not forgotten your maths class today",
+            "buttons":[
+              {
+                "type":"element_share"
+              }              
+            ]
+          }
+        ]
+      }
+    }
+  };
+  
+return sendMessage(message,senderId);
+}
 
 var contains = function(needle) {
     var findNaN = needle !== needle;
