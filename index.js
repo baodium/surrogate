@@ -1195,8 +1195,7 @@ function about(recipientId) {
             "subtitle":"Hello there",
             "buttons":[
               {
-				  "type": "element_share",
-                  "title": "Share It!"
+				  "type": "element_share"
               },
 				{
 					"type": "postback",
