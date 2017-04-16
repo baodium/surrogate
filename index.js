@@ -1202,7 +1202,7 @@ function about(recipientId) {
         "elements":[
           {
             "title":"Surrogate Bot",
-            "subtitle":"Assist students learn from experts. Also allow experts render help to people on messenger.",
+            "subtitle":"Assist students learn from experts. Also allow experts render help on messenger.",
 			"image_url": "http://surrogation.com.ng/surrogateapp/resources/images/logo.png",
             "buttons":[
               {
