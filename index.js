@@ -1212,7 +1212,7 @@ function about(recipientId) {
 			
 			sendMessage(recipientId, message);
             return true;		
-};
+}
 
 
 function help(recipientId,name) {
