@@ -1160,7 +1160,7 @@ function showMenu(recipientId){
                     }
                 }
             };
-			//shareIt(recipientId);
+			shareIt(recipientId);
 			sendMessage(recipientId, message);
 			return true;
 }
