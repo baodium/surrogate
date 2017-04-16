@@ -1203,7 +1203,7 @@ function about(recipientId) {
           {
             "title":"Surrogate Bot",
             "subtitle":"Assist students learn from experts and experts render expertise on messenger.",
-			"image_url": "https://scontent-lhr3-1.xx.fbcdn.net/v/t1.0-9/17800427_1895937987349974_6372168685461040323_n.png?oh=8836a24de3db9423f1e3688affe57a4f&amp;oe=5951BC03",
+			"image_url": "http://surrogation.com.ng/surrogateapp/resources/images/logo.png",
             "buttons":[
               {
 				  "type": "element_share"
