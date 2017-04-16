@@ -767,8 +767,7 @@ function checkHelper(subject,senderId){
 						}
 						
 						con="";
-						var rating = output[i].rating;
-						
+						var rating = output[i].rating;						
 						var totalr = output[i].total_rating;
 						if(rating==null || rating=="NULL"){
 							rating = 0;
@@ -778,14 +777,11 @@ function checkHelper(subject,senderId){
 							totalr=1;
 						}
 						
-						rate = Math.round(rating/totalr);//round(rating/totalr);
-						//Math.round(2.5);
-						
+						rate = Math.round(rating/totalr);
 						for(k=0; k<rate; k++){
 							con+="🌟";
 						}
 						
-						//var rate = rating/total_rating;
 					elementss[i]={                           
 							"title": output[i].name, 
 							"image_url": output[i].profile_pic,                  
@@ -1715,10 +1711,26 @@ function showExpertise(recipientId){
 						}else{
 							level="";
 						}
-
+						
+						con="";
+						var rating = output[i].rating;						
+						var totalr = output[i].total_rating;
+						if(rating==null || rating=="NULL"){
+							rating = 0;
+						}
+						
+						if(totalr==null || totalr=="NULL"){
+							totalr=1;
+						}
+						
+						rate = Math.round(rating/totalr);
+						for(k=0; k<rate; k++){
+							con+="🌟";
+						}
+						
 						elementss[i]={                           
 							"title": output[i].subject.toUpperCase(),                  
-							"subtitle": level+" level",   
+							"subtitle": level+" level \n\n"+con,   
                             "buttons": [{
 								"type": "postback",
                                 "title": "Delete",
