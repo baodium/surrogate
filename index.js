@@ -29,9 +29,19 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());  
 app.listen((process.env.PORT || 3000));
 
+
+
+
+app.use(express.static(__dirname + 'resources')); 
+
 app.get('/', function (req, res) { 
 	res.send('Surrogate Bot');	
 });
+
+app.get('/resources/', function (req, res) { 
+	res.writeHead(200, {'Content-Type': 'image/png'});	
+});
+ 
 
 app.get('/EAAJeiL9sIu4BANZAqkGafo', function (req, res) { 
 		var d = new Date();
@@ -2137,12 +2147,7 @@ function shareIt(senderId){
               "elements": [
                 {
                   "title": "I took Peter's 'Which Hat Are You?' Quiz",
-                  "subtitle": "My result: Fez",
-                  "image_url": "https://bot.peters-hats.com/img/hats/fez.jpg",
-                  "default_action": {
-                    "type": "web_url",
-                    "url": "https://m.me/petershats?ref=invited_by_24601"
-                  },
+                  "subtitle": "My result: Fez"
                   "buttons": [
                     {
                       "type": "web_url",
