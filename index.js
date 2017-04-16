@@ -159,70 +159,19 @@ app.post('/webhook', function (req, res) {
 			//msgin3  = msgin.replace(/?+$/, '');
 			
 			 if(senderContext[event.sender.id]!=null){
-				if(senderContext[event.sender.id].conversation_started=="true"){
-					//endConversation(event.sender.id,"");
-					//sendMessage(event.sender.id,{text: "Cool you "});
-				}
-			
+
 				if(contains.call(greetings_pool, msgin) || contains.call(cancellation_pool, msgin)){
 					senderContext[event.sender.id].state="begin";
 				}				 
 				
-				if(msgin=="end conversation"){
-				  senderContext[event.sender.id].message==="false";
+				if(msgin==="end conversation"){
+				  senderContext[event.sender.id].message=="false";
+				  senderContext[event.sender.id].conversation_started=="false";
 				}
 				
-				if(senderContext[event.sender.id].state === "provide_subject"){									
-					checkHelper(event.message.text,event.sender.id);									
-				}else if(senderContext[event.sender.id].state === "type_expertise"){
-					var subject = event.message.text;
-					senderContext[event.sender.id].subject = subject;
-					var post_data = querystring.stringify({
-						'facebook_id' : event.sender.id,
-						'subject':subject,
-						'status':'pending'
-					});					
-					submitForm(post_data,backurl+"expertise/add",event.sender.id,"type_expertise");															
-				}else if(senderContext[event.sender.id].message==="true" && event.message.quick_reply==null){				 
-					var fromm =  event.sender.id;
-					var to  = senderContext[event.sender.id].message_to;
-					var subject = senderContext[event.sender.id].message_subject;					
-				 	if(event.message.attachments){
-						msg = JSON.stringify(event.message.attachments);
-						rp = JSON.parse(msg);
-						for(j=0; j < rp.length; j++){
-							sg = {"attachment":{
-										"type":rp[j].type,
-										"payload":{"url":rp[j].payload.url}
-										}
-							};
-							var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+" sent this file.";
-							sendFile(to,sg,fromm,msg,subject);
-							
-						}
-					}
-				  
-				  if(event.message.text){					  				 
-						var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+" says:\n"+event.message.text;
-						if(senderContext[to]!=null){				
-								if(senderContext[to].conversation_started=="true"){
-									sent = endConversation(to,"" + msg);
-								}else{
-									sent = sendMessage(to, {text: "" + msg});
-									replyOption(to,"Do you want to reply this message?",to,fromm,subject);
-								}
-						}else{
-							     sent = sendMessage(to, {text: "" + msg});
-								 replyOption(to,"Do you want to reply this message?",to,fromm,subject);
-						}
-						
-						if(sent){
-							sendBusy(to,"typing_off");
-							endConversation(event.sender.id,"message sent");						
-						}
-				  }			 				  
-				  				  
-				}else if(event.message.quick_reply){
+				
+				
+				if(event.message.quick_reply){
 					reply = event.message.quick_reply.payload;
 					if(reply.indexOf("RATING")>-1){
 						var rating = reply.split("-");
@@ -271,6 +220,60 @@ app.post('/webhook', function (req, res) {
 
 					}
 				 }
+				}
+				
+				
+				
+				if(senderContext[event.sender.id].state === "provide_subject"){									
+					checkHelper(event.message.text,event.sender.id);									
+				}else if(senderContext[event.sender.id].state === "type_expertise"){
+					var subject = event.message.text;
+					senderContext[event.sender.id].subject = subject;
+					var post_data = querystring.stringify({
+						'facebook_id' : event.sender.id,
+						'subject':subject,
+						'status':'pending'
+					});					
+					submitForm(post_data,backurl+"expertise/add",event.sender.id,"type_expertise");															
+				}else if(senderContext[event.sender.id].message==="true"){				 
+					var fromm =  event.sender.id;
+					var to  = senderContext[event.sender.id].message_to;
+					var subject = senderContext[event.sender.id].message_subject;					
+				 	if(event.message.attachments){
+						msg = JSON.stringify(event.message.attachments);
+						rp = JSON.parse(msg);
+						for(j=0; j < rp.length; j++){
+							sg = {"attachment":{
+										"type":rp[j].type,
+										"payload":{"url":rp[j].payload.url}
+										}
+							};
+							var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+" sent this file.";
+							sendFile(to,sg,fromm,msg,subject);
+							
+						}
+					}
+				  
+				  if(event.message.text){					  				 
+						var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+" says:\n"+event.message.text;
+						if(senderContext[to]!=null){				
+								if(senderContext[to].conversation_started=="true"){
+									sent = endConversation(to,"" + msg);
+								}else{
+									sent = sendMessage(to, {text: "" + msg});
+									replyOption(to,"Do you want to reply this message?",to,fromm,subject);
+								}
+						}else{
+							     sent = sendMessage(to, {text: "" + msg});
+								 replyOption(to,"Do you want to reply this message?",to,fromm,subject);
+						}
+						
+						if(sent){
+							sendBusy(to,"typing_off");
+							endConversation(event.sender.id,"message sent");						
+						}
+				  }			 				  
+				  				  
 				}else if(contains.call(reminder_pool, msgin) || contains.call(reminder_pool, msgin2) ){
 					senderContext[event.sender.id].state="begin";
 					showReminders(event.sender.id);
@@ -1385,7 +1388,7 @@ function replyOption(recipientId,msg,fromm,to,subject){
                 }
             };
 			
-		sendMessage(recipientId, message);
+		return sendMessage(recipientId, message);
 		/*
 		if( senderContext[recipientId]!=null){
 			senderContext[recipientId].state = "send message";
@@ -1396,7 +1399,7 @@ function replyOption(recipientId,msg,fromm,to,subject){
 			}
 		}
 		*/
-        return true;
+       // return true;
 }
 
 function getOut(recipientId){
