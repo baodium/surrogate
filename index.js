@@ -489,7 +489,10 @@ app.post('/webhook', function (req, res) {
 					showMenu(event.sender.id);
 				}
 			}else{
-				sendMessage(event.sender.id, {text: reply.payload+" "});
+				//sendMessage(event.sender.id, {text: reply.payload+" "});
+				defaultMsg ="This is what I have on my menu";
+				sendMessage(event.sender.id, {text: ""+defaultMsg});									
+				showMenu(event.sender.id);
 			}
 			//postback_just_registered
 			 continue;
