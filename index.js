@@ -295,7 +295,7 @@ app.post('/webhook', function (req, res) {
 						defaultMsg ="I'm cool! "+senderContext[event.sender.id].firstName+". \n\n";
 					}else if(msgin.indexOf("damn")>-1 || msgin.indexOf("fuck")>-1 || msgin.indexOf("fool")>-1 || msgin.indexOf("insane")>-1 || msgin.indexOf("crazy")>-1 || msgin.indexOf("mad")>-1 ){					
 						defaultMsg ="Oh "+senderContext[event.sender.id].firstName+", that is not a very nice thing to say. \n\n Maybe you will feel better by providing help to someone on a subject you are proficient at. \n\n ";
-					}else if((msgin=="share it"){
+					}else if(msgin=="share it"){
 						shareIt(event.sender.id);
 					}
 										
