@@ -1160,7 +1160,7 @@ function showMenu(recipientId){
                     }
                 }
             };
-			shareIt(recipientId);
+			//shareIt(recipientId);
 			sendMessage(recipientId, message);
 			return true;
 }
@@ -1192,7 +1192,7 @@ function about(recipientId) {
         "elements":[
           {
             "title":"Surrogate Bot",
-            "subtitle":msg,
+            "subtitle":"Hello there",
             "buttons":[
               {
 				  "type": "element_share",
