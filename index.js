@@ -1192,7 +1192,7 @@ function about(recipientId) {
         "elements":[
           {
             "title":"Surrogate Bot",
-            "subtitle":"Hello there",
+            "subtitle":"is an artificial intelligent designed to assist students learn from experts on messenger.\n\n I also allow experts or tutors to render help to people based on their proficiencies.",
             "buttons":[
               {
 				  "type": "element_share"
