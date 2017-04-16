@@ -169,7 +169,7 @@ app.post('/webhook', function (req, res) {
 				}				 
 				
 				if(msgin==="end conversation"){
-				  senderContext[event.sender.id].message==="false";
+				  senderContext[event.sender.id].message="false";
 				  senderContext[event.sender.id].conversation_started=="false";
 				}
 				
@@ -237,13 +237,13 @@ app.post('/webhook', function (req, res) {
 											submitForm(post_data,backurl+"ratings/add",event.sender.id,"add_rating");											
 					}else if(reply=="END_CONVERSATION"){
 						senderContext[event.sender.id].message="false";
-						senderContext[event.sender.id].conversation_started=="false";
+						senderContext[event.sender.id].conversation_started="false";
 						 if(senderContext[event.sender.id].userType=="expert" && message_count==0){
 							currentExpertise = senderContext[event.sender.id].currentExpertise;
 							rateOption(event.sender.id,currentExpertise);			
 						}else{
 							senderContext[event.sender.id].message="false";
-							senderContext[event.sender.id].conversation_started=="false";
+							senderContext[event.sender.id].conversation_started="false";
 							senderContext[event.sender.id].state="begin";
 							sendMessage(event.sender.id, {text: "Alright "+senderContext[event.sender.id].firstName+". This is what I have on my menu"});
 							showMenu(event.sender.id);
