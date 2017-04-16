@@ -1192,7 +1192,8 @@ function about(recipientId) {
         "elements":[
           {
             "title":"Surrogate Bot",
-            "subtitle":"Surrogate is an artificial intelligent designed to assist students learn from experts and experts render expertise on messenger.",
+            "subtitle":"Assist students learn from experts and experts render expertise on messenger.",
+			"image_url": "https://scontent-lhr3-1.xx.fbcdn.net/v/t1.0-9/17800427_1895937987349974_6372168685461040323_n.png?oh=8836a24de3db9423f1e3688affe57a4f&amp;oe=5951BC03",
             "buttons":[
               {
 				  "type": "element_share"
@@ -1215,7 +1216,7 @@ function about(recipientId) {
 
 
 function help(recipientId,name) {
-			msg="Hi "+name+", my name is Surrogate, you can use the following commands to communicate with me.\n\n -Type menu to access the main menu.\n\n -Type cancel or exit to cancel current operation. \n\n -Type my expertise to access your subject list. \n\n -Type my tutors to access your tutor list. \n\n -Type my students to access your student list. \n\n -Type my reminders to access your reminder list. \n\n -Type about to know more about me. \n\n Thank you.";	
+			msg="Hi "+name+", I am Surrogate, you can use the following commands to communicate with me.\n\n -Type menu to access the main menu.\n\n -Type cancel or exit to cancel current operation. \n\n -Type my expertise to access your subject list. \n\n -Type my tutors to access your tutor list. \n\n -Type my students to access your student list. \n\n -Type my reminders to access your reminder list. \n\n -Type about to know more about me. \n\n Thank you.";	
 			message = {
                 "attachment": {
                     "type": "template",
@@ -1528,7 +1529,7 @@ function getStarted(){
 						"call_to_actions":[
 									{
 									"type":"postback",
-									"title":"My expertise",
+									"title":"My Expertise",
 									"payload":"my_expertise"
 									},{
 									"type":"postback",
@@ -2124,13 +2125,39 @@ function shareIt(senderId){
           {
             "title":"Hi Adedayo",
             "subtitle":"I hope you have not forgotten your maths class today!",
-            "buttons":[
-              {
-				  "type": "postback",
-                  "title": "I got it!",
-                  "payload": "postback_just_registered",
-              }              
-            ]
+            
+			    "buttons": [
+      {
+        "type": "element_share",
+        "share_contents": { 
+          "attachment": {
+            "type": "template",
+            "payload": {
+              "template_type": "generic",
+              "elements": [
+                {
+                  "title": "I took Peter's 'Which Hat Are You?' Quiz",
+                  "subtitle": "My result: Fez",
+                  "image_url": "https://bot.peters-hats.com/img/hats/fez.jpg",
+                  "default_action": {
+                    "type": "web_url",
+                    "url": "https://m.me/petershats?ref=invited_by_24601"
+                  },
+                  "buttons": [
+                    {
+                      "type": "web_url",
+                      "url": "https://m.me/petershats?ref=invited_by_24601", 
+                      "title": "Take Quiz"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      }
+    ]
+			
           }
         ]
       }
