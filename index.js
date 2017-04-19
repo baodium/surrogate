@@ -200,8 +200,14 @@ app.post('/webhook', function (req, res) {
 						}
 					}
 				  
-				  if(event.message.text){					  				 
-						var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+" says:\n"+event.message.text;
+				  if(event.message.text){	
+						var userSel = senderContext[event.sender.id].userType;
+						if(userSel=="expert"){
+							userSel="student";
+						}else{
+							userSel="tutor";
+						}
+						var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+"("+subject+" "+userSel+") says:\n"+event.message.text;
 						if(senderContext[to]!=null){				
 								if(senderContext[to].conversation_started=="true"){
 									sent = endConversation(to,"" + msg);
