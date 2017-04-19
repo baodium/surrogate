@@ -237,7 +237,7 @@ app.post('/webhook', function (req, res) {
 					var to  = senderContext[event.sender.id].message_to;
 					var subject = senderContext[event.sender.id].message_subject;
 					var userSel = senderContext[event.sender.id].userType;
-					var pic =  senderContext[recipientId].profilePic;
+					var pic =  senderContext[event.sender.id].profilePic;
 						if(userSel=="expert" || userSel=="tutor"){
 							userSel="student";
 						}else{
