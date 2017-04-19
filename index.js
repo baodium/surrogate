@@ -442,9 +442,9 @@ app.post('/webhook', function (req, res) {
 				 type = id[3];
 
 				 if(type=="type_remind_student"){
-					showStudents(event.sender.id,reqId); 
-				 }else{
 					showExperts(event.sender.id,reqId); 
+				 }else{
+					showStudents(event.sender.id,reqId); 
 				 }
 			}else if(reply.payload.indexOf("remove_expert")>-1){
 				var id = reply.payload.split("-");
