@@ -94,10 +94,30 @@ app.get('/EAAJeiL9sIu4BANZAqkGafo', function (req, res) {
 				if(output.length>0){
 					for(var k=0; k<output.length; k++){
 						name = output[k].name.split(" ");
-						msg = "Hi "+name[0]+", I hope you have not forgoten your "+output[k].subject+" class today!";
+						msg = "Hi "+name[0]+", I hope you have not forgoten your "+output[k].subject+" class today!";						
+						day = output[k].day;//.split("_");
+						time = output[k].time;
+
+						if(day!=null){
+							day = output[k].day.split("_");
+							day=day[1].toLowerCase();
+							if(day=="allday"){
+								day ="every day";
+							}
+						}else{
+							day="";
+						}
+						
+						if(time!=null){
+							time = output[k].time.split("_");
+							time=time[2].toLowerCase()+" "+time[3].toLowerCase();
+						}else{
+							time="";
+						}					
+						
 						index = contains.call(sent, output[k].facebook_id); // true
 						if(!index){
-					message = {
+						message = {
 								"attachment": {
 								"type": "template",
 								"payload": {
@@ -106,8 +126,14 @@ app.get('/EAAJeiL9sIu4BANZAqkGafo', function (req, res) {
 											"buttons": [{
 														"type": "postback",
 														"title": "Attend Class",
-														"payload": "postback_attend_class-"+output[k].request_id+"-"+subject,
-											}]
+														"payload": "postback_attend_class-"+output[k].request_id+"-"+subject
+											},
+											{
+														"type": "postback",
+														"title": "Delete Reminder",
+														"payload": "delete_reminder-"+output[k].reminder_id+"-"+output[k].subject+", "+day+", "+time
+											}
+											]
 											}
 								}
 							};	
