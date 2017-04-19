@@ -234,7 +234,7 @@ app.post('/webhook', function (req, res) {
 					var to  = senderContext[event.sender.id].message_to;
 					var subject = senderContext[event.sender.id].message_subject;
 					var userSel = senderContext[event.sender.id].userType;
-						if(userSel=="expert"){
+						if(userSel=="expert" || userSel=="tutor"){
 							userSel="student";
 						}else{
 							userSel="tutor";
@@ -255,18 +255,17 @@ app.post('/webhook', function (req, res) {
 					}
 				  
 				  if(event.message.text){	
-						var msg = "From: "+senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+", [your "+subject+" "+userSel+"] sent: \n ---------------------- \n "+event.message.text;
+						var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+", [your "+subject+" "+userSel+"] sent: \n ---------------------- \n "+event.message.text;
 						if(senderContext[to]!=null){				
 								if(senderContext[to].conversation_started=="true"){
-									senderContext[to].userType = "student";
 									sent = endConversation(to,"" + msg);
 								}else{
 									sent = sendMessage(to, {text: "" + msg});
-									replyOption(to,"Do you want to reply this message?",to,fromm,subject);
+									replyOption(to,"Do you want to reply this message?",to,fromm,subject,userSel);
 								}
 						}else{
 							     sent = sendMessage(to, {text: "" + msg});
-								 replyOption(to,"Do you want to reply this message?",to,fromm,subject);
+								 replyOption(to,"Do you want to reply this message?",to,fromm,subject,userSel);
 						}
 						
 						if(sent){
@@ -1003,10 +1002,10 @@ function sendAcceptance(fromId,requestId,senderId){
 			reqId = bodyObject.request_id;
 			
 			sendMessage(senderId, {text: name+" is now your "+subject+" student."});
-			messageOption(senderId,"Would you like to message "+name+"?",senderId,fromId,subject);
+			messageOption(senderId,"Would you like to message "+name+"?",senderId,fromId,subject,"student");
 			
 			sendMessage(fromId, {text: senderContext[senderId].firstName+" "+senderContext[senderId].lastName+" has accepted your "+subject+" expertise request. He's now in your tutors list."});
-			messageOption(fromId,"Would you like to message "+senderContext[senderId].firstName+"?",fromId,senderId,subject);
+			messageOption(fromId,"Would you like to message "+senderContext[senderId].firstName+"?",fromId,senderId,subject,"expert");
 						
 			var p_data = querystring.stringify({'request_id' : reqId,'status':'completed'});
 			submitForm(p_data,backurl+"requests/update",senderId,"update_request2");
@@ -1440,7 +1439,7 @@ function reminderOptionYesNo(recipientId){
 }
 
 
-function messageOption(recipientId,msg,fromm,to,subject){
+function messageOption(recipientId,msg,fromm,to,subject,usertype){
 	message = {
                 "attachment": {
                     "type": "template",
@@ -1451,7 +1450,7 @@ function messageOption(recipientId,msg,fromm,to,subject){
                             "buttons": [{
 								"type": "postback",
                                 "title": "Yes",
-                                "payload": "postback_message_yes-"+fromm+"-"+to+"-"+subject+"-all",
+                                "payload": "postback_message_yes-"+fromm+"-"+to+"-"+subject+"-"+usertype+":0",
                                 },
 								{
 								"type": "postback",
@@ -1470,7 +1469,7 @@ function messageOption(recipientId,msg,fromm,to,subject){
         return true;
 }
 
-function replyOption(recipientId,msg,fromm,to,subject){
+function replyOption(recipientId,msg,fromm,to,subject,fromtype){
 	message = {
                 "attachment": {
                     "type": "template",
@@ -1481,7 +1480,7 @@ function replyOption(recipientId,msg,fromm,to,subject){
                             "buttons": [{
 								"type": "postback",
                                 "title": "Yes",
-                                "payload": "postback_message_yes-"+fromm+"-"+to+"-"+subject+"-all:0",
+                                "payload": "postback_message_yes-"+fromm+"-"+to+"-"+subject+"-"+fromtype+":0",
                                 },
 								{
 								"type": "postback",
