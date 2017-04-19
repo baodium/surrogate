@@ -31,9 +31,6 @@ app.listen((process.env.PORT || 3000));
 
 
 
-
-app.use(express.static(__dirname + 'resources')); 
-
 app.get('/', function (req, res) { 
 	res.send('Surrogate Bot');	
 });
@@ -497,6 +494,8 @@ app.post('/webhook', function (req, res) {
 				defaultMsg ="This is what I have on my menu";
 				sendMessage(event.sender.id, {text: ""+defaultMsg});									
 				showMenu(event.sender.id);
+			}else if(reply.payload=="postback_more_about"){
+				showMoreAbout(event.sender.id);
 			}
 			//postback_just_registered
 			 continue;
@@ -1210,8 +1209,8 @@ function about(recipientId) {
               },
 				{
 					"type": "postback",
-                    "title": "I got it!",
-                    "payload": "postback_no"
+                    "title": "More",
+                    "payload": "postback_more_about"
                 }
             ]
           }
@@ -1222,6 +1221,25 @@ function about(recipientId) {
 			
 			sendMessage(recipientId, message);
             return true;		
+}
+
+function showMoreAbout(recipientId){
+				var msg="Surrogate bot is an artificial intelligent designed to assist students learn from experts on messenger. \n\n It also allows experts/tutors to render help to people based on their area of expertise.";
+				message = {
+                "attachment": {
+                    "type": "template",
+                    "payload": {
+						"template_type":"button",
+						"text":msg,
+                        "buttons": [{
+								"type": "postback",
+                                "title": "I got it!",
+                                "payload": "postback_just_registered",
+                                }]
+                    }
+                }
+             };			
+			sendMessage(recipientId, message);	
 }
 
 
