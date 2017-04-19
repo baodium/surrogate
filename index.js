@@ -258,7 +258,7 @@ app.post('/webhook', function (req, res) {
 					}
 				  
 				  if(event.message.text){	
-						var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+", [your "+subject+" "+userSel+"] sent: \n ----------------------------- \n "+event.message.text;
+						var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+" (your "+subject+" "+userSel+") sent: \n ----------------------------- \n "+event.message.text;
 						if(senderContext[to]!=null){				
 								if(senderContext[to].conversation_started=="true"){
 									sent = endConversation(to,"" + msg);
