@@ -2065,7 +2065,6 @@ function showExperts(fromId,request_id){
 
 
 function showStudents(toId,request_id){
-	sendMessage(toId, {text: "Hey"});
 	var post_data = querystring.stringify({'to_id':toId});	
 	if(request_id!==false){
 		post_data = querystring.stringify({'request_id':request_id,'to_id':toId});	
@@ -2085,7 +2084,6 @@ function showStudents(toId,request_id){
 			} else if (response.body.error) {
 				console.log('Error: ', response.body.error);
 			}else{
-				sendMessage(toId, {text: body+""});
 				output = JSON.parse(body);
 				var total = output.length;
 				elementss = new Array();
