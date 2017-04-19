@@ -439,6 +439,7 @@ app.post('/webhook', function (req, res) {
 				 reqId = id[1];
 				 subject = id[2];
 				 type = id[3];
+				sendMessage(event.sender.id, {text: reqId+":"+subject+":"+type});
 				 if(type=="type_remind_expert"){
 					showExperts(event.sender.id,reqId); 
 				 }else{
