@@ -43,7 +43,7 @@ app.get('/resources/', function (req, res) {
 app.get('/EAAJeiL9sIu4BANZAqkGafo', function (req, res) { 
 		var d = new Date();
 		var n = d.getHours();
-		time ="";
+		time ="4";
 		if(n==0){
 			time="REMINDER_TIME_TWELVE_AM";
 		}else if(n==3){
@@ -2070,7 +2070,7 @@ function showStudents(toId,request_id){
 	if(request_id!==false){
 		post_data = querystring.stringify({'request_id':request_id});	
 	}
-	
+	sendMessage(toId, {text: post_data+""});
 	request({
 			url: backurl+"requests/get",
 			method: 'POST',
@@ -2087,6 +2087,7 @@ function showStudents(toId,request_id){
 				console.log('Error: ', response.body.error);
 				sendMessage(toId, {text: response.body.error});
 			}else{
+				sendMessage(toId, {text: body+""});
 				output = JSON.parse(body);
 				var total = output.length;
 				elementss = new Array();
