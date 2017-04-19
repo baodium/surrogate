@@ -1252,14 +1252,14 @@ function about(recipientId) {
             "subtitle":"Assist students learn from experts and allow experts render help on messenger.",
 			"image_url": "http://surrogation.com.ng/surrogateapp/resources/images/logo.png",
             "buttons":[
-              {
-				  "type": "element_share"
-              },
 				{
 					"type": "postback",
                     "title": "More",
                     "payload": "postback_more_about"
-                }
+                },
+				{
+				  "type": "element_share"
+				}
             ]
           }
         ]
