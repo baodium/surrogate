@@ -1985,6 +1985,7 @@ function showExperts(fromId,request_id){
 	var post_data = querystring.stringify({'from_id':fromId,'status':'completed'});
 	if(request_id!==false){
 		post_data = querystring.stringify({'request_id':request_id});	
+		post_data = querystring.stringify({'request_id':request_id,'from_id':fromId});	
 	}	
 	sendMessage(fromId, {text: "Hi"});
 	request({
@@ -2068,7 +2069,7 @@ function showStudents(toId,request_id){
 	sendMessage(toId, {text: "Hey"});
 	var post_data = querystring.stringify({'to_id':toId});	
 	if(request_id!==false){
-		post_data = querystring.stringify({'request_id':request_id});	
+		post_data = querystring.stringify({'request_id':request_id,'to_id':toId});	
 	}
 	sendMessage(toId, {text: post_data+""});
 	request({
