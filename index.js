@@ -537,13 +537,13 @@ app.post('/webhook', function (req, res) {
 					sendMessage(event.sender.id, {text: "Hi "+senderContext[event.sender.id].firstName+", I am excited to have you around "});
 					showMenu(event.sender.id);
 				}
+			}else if(reply.payload=="postback_more_about"){
+				showMoreAbout(event.sender.id);
 			}else{
 				//sendMessage(event.sender.id, {text: reply.payload+" "});
 				defaultMsg ="This is what I have on my menu";
 				sendMessage(event.sender.id, {text: ""+defaultMsg});									
 				showMenu(event.sender.id);
-			}else if(reply.payload=="postback_more_about"){
-				showMoreAbout(event.sender.id);
 			}
 			//postback_just_registered
 			 continue;
