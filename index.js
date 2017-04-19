@@ -94,13 +94,16 @@ app.get('/EAAJeiL9sIu4BANZAqkGafo', function (req, res) {
 				if(output.length>0){
 					for(var k=0; k<output.length; k++){
 						name = output[k].name.split(" ");
+						var tp ="";
 						rtype =  output[k].type;
 						if(rtype=="type_remind_expert"){
 							rtype="WITH TUTOR";
+							tp="tutor";
 						}else{
 							rtype="WITH STUDENT";
+							tp="student";
 						}
-						msg = "Hi "+name[0]+", I hope you have not forgoten your "+output[k].subject+" class ("+rtype+") today!";						
+						msg = "Hi "+name[0]+", I hope you have not forgoten your "+output[k].subject+" class with "+output[k].from_name+", your "+tp+", today!";						
 						day = output[k].day;//.split("_");
 						time = output[k].time;
 
@@ -132,7 +135,7 @@ app.get('/EAAJeiL9sIu4BANZAqkGafo', function (req, res) {
 											"buttons": [{
 														"type": "postback",
 														"title": "Attend Class",
-														"payload": "postback_attend_class-"+output[k].request_id+"-"+subject+"-"+output[k].type
+														"payload": "postback_attend_class-"+output[k].request_id+"-"+output[k].subject+"-"+output[k].type
 											},
 											{
 														"type": "postback",
@@ -144,7 +147,7 @@ app.get('/EAAJeiL9sIu4BANZAqkGafo', function (req, res) {
 								}
 							};	
 							
-							sendMessage2(output[k].facebook_id,{text: "" + msg});
+							sendMessage2(output[k].facebook_id,message);
 							sent[k]=output[k].facebook_id;
 							ms+=msg;
 						}
@@ -1993,8 +1996,10 @@ function showExperts(fromId,request_id){
 		}, function(error, response, body) {
 			if (error) {
 				console.log('Error sending message: ', error);
+				sendMessage(fromId, {text: error+""});
 			} else if (response.body.error) {
 				console.log('Error: ', response.body.error);
+				sendMessage(fromId, {text: response.body.error});
 			}else{
 				output = JSON.parse(body);
 				var total = output.length;
@@ -2041,9 +2046,16 @@ function showExperts(fromId,request_id){
 									}
 								};
 					senderContext[fromId].state="send message";
-					if(sendMessage(fromId, {text: "Here is your expert list"})){
+					
+					
+					if(request_id==false){
+						if(sendMessage(fromId, {text: "Here is your expert list"})){
+							sendMessage(fromId,message);
+						}	
+					}else{
 						sendMessage(fromId,message);
-					}			
+					}
+							
 				}					
 			}			
 		});	
@@ -2066,8 +2078,10 @@ function showStudents(toId,request_id){
 		}, function(error, response, body) {
 			if (error) {
 				console.log('Error sending message: ', error);
+				sendMessage(toId, {text: error+""});
 			} else if (response.body.error) {
 				console.log('Error: ', response.body.error);
+				sendMessage(toId, {text: response.body.error});
 			}else{
 				output = JSON.parse(body);
 				var total = output.length;
@@ -2113,10 +2127,15 @@ function showStudents(toId,request_id){
                     }
 					}
 				};	
-				if(sendMessage(toId, {text: "Here is your student list"})){
+				
+				if(request_id==false){
+					if(sendMessage(toId, {text: "Here is your student list"})){
 						sendMessage(toId,message);
-					}	
-				}					
+					}
+				}else{
+					sendMessage(toId,message);
+				}
+			  }					
 			}			
 		});	
 }
