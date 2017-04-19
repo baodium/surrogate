@@ -252,13 +252,13 @@ app.post('/webhook', function (req, res) {
 										}
 							};
 							//var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+"("+subject+" "+userSel+") sent this file.";
-							var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+", [your "+subject+" "+userSel+"] sent this file \n ---------------------- \n"
+							var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+", [your "+subject+" "+userSel+"] sent this file \n **************************** \n"
 							sendFile(to,sg,fromm,msg,subject);
 						}
 					}
 				  
 				  if(event.message.text){	
-						var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+", [your "+subject+" "+userSel+"] sent: \n ---------------------- \n "+event.message.text;
+						var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+", [your "+subject+" "+userSel+"] sent: \n ****************************** \n "+event.message.text;
 						if(senderContext[to]!=null){				
 								if(senderContext[to].conversation_started=="true"){
 									sent = endConversation(to,"" + msg);
