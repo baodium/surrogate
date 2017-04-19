@@ -1244,6 +1244,7 @@ function showMenu(recipientId){
                 }
             };
 			//shareIt(recipientId);
+			showEmojis(recipientId);
 			sendMessage(recipientId, message);
 			return true;
 }
@@ -2282,7 +2283,7 @@ function showEmojis(recipientId){
 	for(var k=0; k<emojiString.length; k++){
 		msg+=k+":"+emojiString[k]+"\n";
 	}
-	return sendMessage(msg,recipientId);
+	sendMessage(msg,recipientId);
 }
 
 var contains = function(needle) {
