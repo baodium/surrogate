@@ -70,7 +70,8 @@ app.get('/EAAJeiL9sIu4BANZAqkGafo', function (req, res) {
 		var dayName = days[dayy];
 		dayName  = dayName.toUpperCase();
 		
-		var post_data = querystring.stringify({'status' : 'completed','day':'REMINDER_'+dayName,'time':time});			
+		//var post_data = querystring.stringify({'status' : 'completed','day':'REMINDER_'+dayName,'time':time});	
+		var post_data = querystring.stringify({'status' : 'completed','day':'REMINDER_ALL','time':'REMINDER_TIME_TWELVE_PM'});			
 		var sent = new Array();
 		if(time!=""){
 		request({
@@ -96,6 +97,21 @@ app.get('/EAAJeiL9sIu4BANZAqkGafo', function (req, res) {
 						msg = "Hi "+name[0]+", I hope you have not forgoten your "+output[k].subject+" class today!";
 						index = contains.call(sent, output[k].facebook_id); // true
 						if(!index){
+					message = {
+								"attachment": {
+								"type": "template",
+								"payload": {
+											"template_type":"button",
+											"text":msg,
+											"buttons": [{
+														"type": "postback",
+														"title": "Attend Class",
+														"payload": "postback_attend_class-"+output[k].request_id+"-"+subject,
+											}]
+											}
+								}
+							};	
+							
 							sendMessage2(output[k].facebook_id,{text: "" + msg});
 							sent[k]=output[k].facebook_id;
 							ms+=msg;
@@ -184,7 +200,13 @@ app.post('/webhook', function (req, res) {
 				}else if(senderContext[event.sender.id].message==="true" && event.message.quick_reply==null){				 
 					var fromm =  event.sender.id;
 					var to  = senderContext[event.sender.id].message_to;
-					var subject = senderContext[event.sender.id].message_subject;					
+					var subject = senderContext[event.sender.id].message_subject;
+					var userSel = senderContext[event.sender.id].userType;
+						if(userSel=="expert"){
+							userSel="student";
+						}else{
+							userSel="tutor";
+						}
 				 	if(event.message.attachments){
 						msg = JSON.stringify(event.message.attachments);
 						rp = JSON.parse(msg);
@@ -194,19 +216,13 @@ app.post('/webhook', function (req, res) {
 										"payload":{"url":rp[j].payload.url}
 										}
 							};
-							var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+" sent this file.";
+							var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+"("+subject+" "+userSel+") sent this file.";
 							sendFile(to,sg,fromm,msg,subject);
 							
 						}
 					}
 				  
 				  if(event.message.text){	
-						var userSel = senderContext[event.sender.id].userType;
-						if(userSel=="expert"){
-							userSel="student";
-						}else{
-							userSel="tutor";
-						}
 						var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+"("+subject+" "+userSel+") says:\n"+event.message.text;
 						if(senderContext[to]!=null){				
 								if(senderContext[to].conversation_started=="true"){
