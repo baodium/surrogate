@@ -237,6 +237,7 @@ app.post('/webhook', function (req, res) {
 					var to  = senderContext[event.sender.id].message_to;
 					var subject = senderContext[event.sender.id].message_subject;
 					var userSel = senderContext[event.sender.id].userType;
+					var pic =  senderContext[recipientId].profilePic;
 						if(userSel=="expert" || userSel=="tutor"){
 							userSel="student";
 						}else{
@@ -264,11 +265,11 @@ app.post('/webhook', function (req, res) {
 									sent = endConversation(to,"" + msg);
 								}else{
 									sent = sendMessage(to, {text: "" + msg});
-									replyOption(to,"Do you want to reply this message?",to,fromm,subject,userSel);
+									replyOption(to,"Do you want to reply "+senderContext[event.sender.id].firstName+"?",to,fromm,subject,userSel,pic);
 								}
 						}else{
 							     sent = sendMessage(to, {text: "" + msg});
-								 replyOption(to,"Do you want to reply this message?",to,fromm,subject,userSel);
+								 replyOption(to,"Do you want to reply "+senderContext[event.sender.id].firstName+"?",to,fromm,subject,userSel,pic);
 						}
 						
 						if(sent){
@@ -1473,7 +1474,7 @@ function messageOption(recipientId,msg,fromm,to,subject,usertype){
         return true;
 }
 
-function replyOption(recipientId,msg,fromm,to,subject,fromtype){
+function replyOption(recipientId,msg,fromm,to,subject,fromtype,profilePic){
 	message = {
                 "attachment": {
                     "type": "template",
@@ -1481,6 +1482,7 @@ function replyOption(recipientId,msg,fromm,to,subject,fromtype){
                         "template_type": "generic",
                         "elements": [{
                             "title": msg,
+							"image_url": profilePic,    
                             "buttons": [{
 								"type": "postback",
                                 "title": "Yes",
@@ -1498,17 +1500,6 @@ function replyOption(recipientId,msg,fromm,to,subject,fromtype){
             };
 			
 		return sendMessage(recipientId, message);
-		/*
-		if( senderContext[recipientId]!=null){
-			senderContext[recipientId].state = "send message";
-			if(senderContext[recipientId].conversation_started=="true"){
-				endConversation(recipientId,"");
-			}else{
-				sendMessage(recipientId, message);	
-			}
-		}
-		*/
-       // return true;
 }
 
 function getOut(recipientId){
