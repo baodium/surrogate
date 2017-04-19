@@ -43,7 +43,7 @@ app.get('/resources/', function (req, res) {
 app.get('/EAAJeiL9sIu4BANZAqkGafo', function (req, res) { 
 		var d = new Date();
 		var n = d.getHours();
-		time ="4";
+		time ="";
 		if(n==0){
 			time="REMINDER_TIME_TWELVE_AM";
 		}else if(n==3){
@@ -70,8 +70,8 @@ app.get('/EAAJeiL9sIu4BANZAqkGafo', function (req, res) {
 		var dayName = days[dayy];
 		dayName  = dayName.toUpperCase();
 		
-		//var post_data = querystring.stringify({'status' : 'completed','day':'REMINDER_'+dayName,'time':time});	
-		var post_data = querystring.stringify({'status' : 'completed','day':'REMINDER_'+dayName,'time':'REMINDER_TIME_TWELVE_PM'});			
+		var post_data = querystring.stringify({'status' : 'completed','day':'REMINDER_'+dayName,'time':time});	
+		//var post_data = querystring.stringify({'status' : 'completed','day':'REMINDER_'+dayName,'time':'REMINDER_TIME_TWELVE_PM'});			
 		var sent = new Array();
 		if(time!=""){
 		request({
