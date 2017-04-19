@@ -439,7 +439,7 @@ app.post('/webhook', function (req, res) {
 				 reqId = id[1];
 				 subject = id[2];
 				 type = id[3];
-				sendMessage(event.sender.id, {text: reqId+":"+subject+":"+type});
+
 				 if(type=="type_remind_student"){
 					showStudents(event.sender.id,reqId); 
 				 }else{
@@ -1987,7 +1987,7 @@ function showExperts(fromId,request_id){
 		post_data = querystring.stringify({'request_id':request_id});	
 		post_data = querystring.stringify({'request_id':request_id,'from_id':fromId});	
 	}	
-	sendMessage(fromId, {text: "Hi"});
+
 	request({
 			url: backurl+"requests/get",
 			method: 'POST',
@@ -2002,7 +2002,6 @@ function showExperts(fromId,request_id){
 				sendMessage(fromId, {text: error+""});
 			} else if (response.body.error) {
 				console.log('Error: ', response.body.error);
-				sendMessage(fromId, {text: response.body.error});
 			}else{
 				output = JSON.parse(body);
 				var total = output.length;
@@ -2071,7 +2070,7 @@ function showStudents(toId,request_id){
 	if(request_id!==false){
 		post_data = querystring.stringify({'request_id':request_id,'to_id':toId});	
 	}
-	sendMessage(toId, {text: post_data+""});
+
 	request({
 			url: backurl+"requests/get",
 			method: 'POST',
@@ -2083,10 +2082,8 @@ function showStudents(toId,request_id){
 		}, function(error, response, body) {
 			if (error) {
 				console.log('Error sending message: ', error);
-				sendMessage(toId, {text: error+""});
 			} else if (response.body.error) {
 				console.log('Error: ', response.body.error);
-				sendMessage(toId, {text: response.body.error});
 			}else{
 				sendMessage(toId, {text: body+""});
 				output = JSON.parse(body);
