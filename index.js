@@ -440,10 +440,10 @@ app.post('/webhook', function (req, res) {
 				 subject = id[2];
 				 type = id[3];
 				sendMessage(event.sender.id, {text: reqId+":"+subject+":"+type});
-				 if(type=="type_remind_expert"){
-					showExperts(event.sender.id,reqId); 
-				 }else{
+				 if(type=="type_remind_student"){
 					showStudents(event.sender.id,reqId); 
+				 }else{
+					showExperts(event.sender.id,reqId); 
 				 }
 			}else if(reply.payload.indexOf("remove_expert")>-1){
 				var id = reply.payload.split("-");
@@ -2065,11 +2065,12 @@ function showExperts(fromId,request_id){
 
 
 function showStudents(toId,request_id){
+	sendMessage(toId, {text: "Hey"});
 	var post_data = querystring.stringify({'to_id':toId});	
 	if(request_id!==false){
 		post_data = querystring.stringify({'request_id':request_id});	
 	}
-	sendMessage(toId, {text: "Hey"});
+	
 	request({
 			url: backurl+"requests/get",
 			method: 'POST',
@@ -2131,7 +2132,7 @@ function showStudents(toId,request_id){
 					}
 				};	
 				
-				if(request_id==false){
+				if(request_id===false){
 					if(sendMessage(toId, {text: "Here is your student list"})){
 						sendMessage(toId,message);
 					}
