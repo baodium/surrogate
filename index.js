@@ -1234,7 +1234,7 @@ function showMoreAbout(recipientId){
                         "buttons": [{
 								"type": "postback",
                                 "title": "I got it!",
-                                "payload": "postback_just_registered",
+                                "payload": "postback_no",
                                 }]
                     }
                 }
