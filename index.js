@@ -251,7 +251,6 @@ app.post('/webhook', function (req, res) {
 							//var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+"("+subject+" "+userSel+") sent this file.";
 							var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+", your "+subject+" "+userSel+" sent this file \n ---------------------- \n"
 							sendFile(to,sg,fromm,msg,subject);
-							
 						}
 					}
 				  
