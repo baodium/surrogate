@@ -94,7 +94,13 @@ app.get('/EAAJeiL9sIu4BANZAqkGafo', function (req, res) {
 				if(output.length>0){
 					for(var k=0; k<output.length; k++){
 						name = output[k].name.split(" ");
-						msg = "Hi "+name[0]+", I hope you have not forgoten your "+output[k].subject+" class today!";						
+						rtype =  output[k].type;
+						if(rtype=="type_remind_expert"){
+							rtype="WITH TUTOR";
+						}else{
+							rtype="WITH STUDENT";
+						}
+						msg = "Hi "+name[0]+", I hope you have not forgoten your "+output[k].subject+" class ("+rtype+") today!";						
 						day = output[k].day;//.split("_");
 						time = output[k].time;
 
@@ -126,7 +132,7 @@ app.get('/EAAJeiL9sIu4BANZAqkGafo', function (req, res) {
 											"buttons": [{
 														"type": "postback",
 														"title": "Attend Class",
-														"payload": "postback_attend_class-"+output[k].request_id+"-"+subject
+														"payload": "postback_attend_class-"+output[k].request_id+"-"+subject+"-"+output[k].type
 											},
 											{
 														"type": "postback",
@@ -323,10 +329,10 @@ app.post('/webhook', function (req, res) {
 					showExpertise(event.sender.id);
 				}else if(contains.call(experts_pool, msgin) || contains.call(experts_pool, msgin2)){
 					senderContext[event.sender.id].state="begin";
-					showExperts(event.sender.id);
+					showExperts(event.sender.id,false);
 				}else if(contains.call(students_pool, msgin) || contains.call(students_pool, msgin2)){
 					senderContext[event.sender.id].state="begin";
-					showStudents(event.sender.id);
+					showStudents(event.sender.id,false);
 				}else if(contains.call(menu_pool, msgin) || contains.call(menu_pool, msgin2)){
 					senderContext[event.sender.id].state="begin";
 					showMenu(event.sender.id);
@@ -395,9 +401,9 @@ app.post('/webhook', function (req, res) {
 			}else if(reply.payload=="my_expertise"){
 				showExpertise(event.sender.id);
 			}else if(reply.payload=="my_experts"){
-				showExperts(event.sender.id);
+				showExperts(event.sender.id,false);
 			}else if(reply.payload=="my_students"){
-				showStudents(event.sender.id);
+				showStudents(event.sender.id,false);
 			}else if(reply.payload=="my_reminders"){
 				showReminders(event.sender.id);
 			}else if(reply.payload=="next_expertise"){
@@ -425,6 +431,16 @@ app.post('/webhook', function (req, res) {
 				 expertiseId = id[1];
 				 subject = id[2];
 				 removeExpertise(event.sender.id,expertiseId,subject);
+			}else if(reply.payload.indexOf("postback_attend_class")>-1){
+				var id = reply.payload.split("-");
+				 reqId = id[1];
+				 subject = id[2];
+				 type = id[3];
+				 if(type=="type_remind_expert"){
+					showExperts(event.sender.id,reqId); 
+				 }else{
+					showStudents(event.sender.id,reqId); 
+				 }
 			}else if(reply.payload.indexOf("remove_expert")>-1){
 				var id = reply.payload.split("-");
 				 toId = id[1];
@@ -522,11 +538,11 @@ app.post('/webhook', function (req, res) {
 				}				
 			}else if(reply.payload=="postback_student_meeting"){
 				if(senderContext[event.sender.id]!=null){
-					showStudents(event.sender.id);
+					showStudents(event.sender.id,false);
 				}
 			}else if(reply.payload=="postback_tutor_meeting"){
 				if(senderContext[event.sender.id]!=null){
-					showExperts(event.sender.id);
+					showExperts(event.sender.id,false);
 				}
 			}else if(reply.payload=="postback_yes_reminder"){
 				if(senderContext[event.sender.id]!=null){
@@ -1961,8 +1977,11 @@ function showReminders(recipientId){
 		});	
 }
 
-function showExperts(fromId){
-	var post_data = querystring.stringify({'from_id':fromId,'status':'completed'});	
+function showExperts(fromId,request_id){
+	var post_data = querystring.stringify({'from_id':fromId,'status':'completed'});
+	if(request_id!=false){
+		post_data = querystring.stringify({'request_id':request_id});	
+	}	
 	request({
 			url: backurl+"requests/get",
 			method: 'POST',
@@ -2031,8 +2050,11 @@ function showExperts(fromId){
 }
 
 
-function showStudents(toId){
+function showStudents(toId,request_id){
 	var post_data = querystring.stringify({'to_id':toId});	
+	if(request_id!=false){
+		post_data = querystring.stringify({'request_id':request_id});	
+	}
 	request({
 			url: backurl+"requests/get",
 			method: 'POST',
