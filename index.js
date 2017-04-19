@@ -441,7 +441,7 @@ app.post('/webhook', function (req, res) {
 				 subject = id[2];
 				 type = id[3];
 
-				 if(type=="type_remind_student"){
+				 if(type=="type_remind_expert"){
 					showExperts(event.sender.id,reqId); 
 				 }else{
 					showStudents(event.sender.id,reqId); 
