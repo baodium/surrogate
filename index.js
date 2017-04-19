@@ -71,7 +71,7 @@ app.get('/EAAJeiL9sIu4BANZAqkGafo', function (req, res) {
 		dayName  = dayName.toUpperCase();
 		
 		//var post_data = querystring.stringify({'status' : 'completed','day':'REMINDER_'+dayName,'time':time});	
-		var post_data = querystring.stringify({'status' : 'completed','day':'REMINDER_ALL','time':'REMINDER_TIME_TWELVE_PM'});			
+		var post_data = querystring.stringify({'status' : 'completed','day':'REMINDER_'+dayName,'time':'REMINDER_TIME_TWELVE_PM'});			
 		var sent = new Array();
 		if(time!=""){
 		request({
