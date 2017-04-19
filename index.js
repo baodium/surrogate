@@ -1983,9 +1983,10 @@ function showReminders(recipientId){
 
 function showExperts(fromId,request_id){
 	var post_data = querystring.stringify({'from_id':fromId,'status':'completed'});
-	if(request_id!=false){
+	if(request_id!==false){
 		post_data = querystring.stringify({'request_id':request_id});	
 	}	
+	sendMessage(fromId, {text: "Hi"});
 	request({
 			url: backurl+"requests/get",
 			method: 'POST',
@@ -2065,9 +2066,10 @@ function showExperts(fromId,request_id){
 
 function showStudents(toId,request_id){
 	var post_data = querystring.stringify({'to_id':toId});	
-	if(request_id!=false){
+	if(request_id!==false){
 		post_data = querystring.stringify({'request_id':request_id});	
 	}
+	sendMessage(toId, {text: "Hey"});
 	request({
 			url: backurl+"requests/get",
 			method: 'POST',
@@ -2242,7 +2244,7 @@ function shareIt(senderId){
         "elements":[
           {
             "title":"Hi Adedayo",
-            "subtitle":"I hope you have not forgotten your maths class today!",
+            "subtitle":"I hope you have not forgotten your maths class today",
             
 			    "buttons": [
       {
