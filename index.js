@@ -205,7 +205,7 @@ app.get('/webhook', function (req, res) {
 
 app.post('/webhook', function (req, res) { 
 	
-	getStarted();
+	//getStarted();
 	var helprequest = false;
 	var message_count=0;
     var events = req.body.entry[0].messaging;
