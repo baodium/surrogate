@@ -385,6 +385,7 @@ app.post('/webhook', function (req, res) {
 			var reply = JSON.stringify(event.postback);
 			reply = JSON.parse(reply);
 			if(reply.payload=="get_started_button"){
+				showPersistence();
 				welcomeUser(event.sender.id);
 			}else if(reply.payload=="help_me"){
 				help(event.sender.id);
@@ -1277,7 +1278,7 @@ function about(recipientId) {
         "elements":[
           {
             "title":"💡 Surrogate Bot",
-            "subtitle":"Assist students learn from experts and allow experts render help on messenger.",
+            "subtitle":"Building a stronger learning community.",
 			"image_url": "http://surrogation.com.ng/surrogateapp/resources/images/logo.png",
             "buttons":[
 				{
@@ -1492,12 +1493,12 @@ function replyOption(recipientId,msg,fromm,to,subject,fromtype,profilePic){
 							"image_url": profilePic,    
                             "buttons": [{
 								"type": "postback",
-                                "title": "Yes",
+                                "title": "Reply",
                                 "payload": "postback_message_yes-"+fromm+"-"+to+"-"+subject+"-"+fromtype+":0",
                                 },
 								{
 								"type": "postback",
-                                "title": "No",
+                                "title": "Ignore",
                                 "payload": "postback_message_no-"+fromm+"-"+to+"-"+subject,
                                 }
 								]
@@ -1618,20 +1619,20 @@ function getStarted(){
 									"payload":"about_me"
 						},
 						{
-						"title":"My Dashboard",
+						"title":"Dashboard",
 						"type":"nested",
 						"call_to_actions":[
 									{
 									"type":"postback",
-									"title":"📕 My Expertise",
+									"title":"📕 Expertise",
 									"payload":"my_expertise"
 									},{
 									"type":"postback",
-									"title":"My Tutors",
+									"title":"Tutors",
 									"payload":"my_experts"
 									},{
 									"type":"postback",
-									"title":"My Students",
+									"title":"Students",
 									"payload":"my_students"
 									},
 									{
@@ -1657,9 +1658,102 @@ function getStarted(){
 					console.log(body);
 			}
 		});
-		
-		
+				
 }
+
+
+
+function getStarted(){
+	var message = {
+				"get_started":{
+						"payload":"get_started_button"
+						},
+				"greeting":[{
+						"locale":"default",
+						"text":"Good to have you {{user_first_name}}! I can help you learn from experts or render help to people based on your proficiencies"
+						}],
+				"target_audience": {
+						"audience_type":"all"
+					}
+				};
+					
+		request({
+        url: 'https://graph.facebook.com/v2.8/me/messenger_profile',			
+        qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
+        method: 'POST',	
+        json: message
+		}, function(error, response, body) {
+			if (error) {
+				console.log('Error sending message: ', error);
+			} else if (response.body.error) {
+				console.log('Error: ', response.body.error);
+			}else{
+					console.log(body);
+			}
+		});
+				
+}
+
+function showPersistence(){
+	var message = {
+				"persistent_menu": [{
+						"locale":"default",
+						"composer_input_disabled":true,
+						"call_to_actions":[
+						{
+									"type":"postback",
+									"title":"Home",
+									"payload":"home"
+						},
+						{
+									"type":"postback",
+									"title":"💡 About",
+									"payload":"about_me"
+						},
+						{
+						"title":"Dashboard",
+						"type":"nested",
+						"call_to_actions":[
+									{
+									"type":"postback",
+									"title":"📕 Expertise",
+									"payload":"my_expertise"
+									},{
+									"type":"postback",
+									"title":"Tutors",
+									"payload":"my_experts"
+									},{
+									"type":"postback",
+									"title":"Students",
+									"payload":"my_students"
+									},
+									{
+									"type":"postback",
+									"title":"My Reminders",
+									"payload":"my_reminders"
+									}]
+								}]
+						}]
+				};
+					
+		request({
+        url: 'https://graph.facebook.com/v2.8/me/messenger_profile',			
+        qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
+        method: 'POST',	
+        json: message
+		}, function(error, response, body) {
+			if (error) {
+				console.log('Error sending message: ', error);
+			} else if (response.body.error) {
+				console.log('Error: ', response.body.error);
+			}else{
+					console.log(body);
+			}
+		});
+				
+}
+
+
 
 function submitForm(post_data,url,userId,action){
 		request({
