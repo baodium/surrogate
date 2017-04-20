@@ -205,7 +205,7 @@ app.get('/webhook', function (req, res) {
 
 app.post('/webhook', function (req, res) { 
 	
-	//getStarted();
+	getStarted();
 	var helprequest = false;
 	var message_count=0;
     var events = req.body.entry[0].messaging;
@@ -1164,7 +1164,8 @@ function welcomeUser(recipientId) {
 				submitForm(post_data,backurl+"users/add",recipientId,"add_user");
 				//var msg = "Hi "+firstName+"! I am excited to have you around. I can help you get tutors on subjects you need help on. \n\n I can also assist you to render help to people based on your proficiency. \n\n You'll get recognition for that, you know?";			
 				//sendMessage(recipientId, {text: "" + msg});
-				var msg="Surrogate bot is an artificial intelligent designed to assist students learn from experts on messenger. \n\n It also allows experts/tutors to render help to people based on their area of expertise.";
+				var msg="Hi "+firstName+"! \n My name is Surrogate bot, I believe together we can build a stronger learning community on messenger";
+				
 				message = {
                 "attachment": {
                     "type": "template",
@@ -1179,7 +1180,8 @@ function welcomeUser(recipientId) {
                     }
                 }
              };			
-			sendMessage(recipientId, message);									
+			sendMessage(recipientId, {text: "" + msg});	
+				showMenu(recipientId);
 			}
             return true;		
 		}
@@ -1591,7 +1593,7 @@ function rateOption(fromm,expertise_id){
 	return true;
 }
 
-
+/*
 function getStarted(){
 	var message = {
 				"get_started":{
@@ -1662,7 +1664,7 @@ function getStarted(){
 }
 
 
-
+*/
 function getStarted(){
 	var message = {
 				"get_started":{
