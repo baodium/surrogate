@@ -264,7 +264,7 @@ app.post('/webhook', function (req, res) {
 					}
 				  
 				  if(event.message.text){	
-						var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+"("+subject+" "+userSel+"): \n "+event.message.text;
+						var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+" ("+subject+" "+userSel+"): \n "+event.message.text;
 						if(senderContext[to]!=null){				
 								if(senderContext[to].conversation_started=="true"){
 									sent = endConversation(to,"" + msg);
@@ -281,7 +281,7 @@ app.post('/webhook', function (req, res) {
 						
 						if(sent){
 							sendBusy(to,"typing_off");
-							endConversation(event.sender.id,"✅");						
+							endConversation(event.sender.id,"sent");						
 						}
 				  }			 				  
 				  				  
@@ -648,7 +648,7 @@ function sendFile(recipientId, message,thirdParty,msg,subject) {
 							if(sendMessage(recipientId, {text: "" + msg})){
 								//messageOption(recipientId,"Do you want to reply this message?",recipientId,thirdParty,subject);
 							}
-							if(sendMessage(thirdParty, {text: "" + "✅"})){
+							if(sendMessage(thirdParty, {text: "" + "sent"})){
 								//messageOption(thirdParty,"Do you want to send another message?",thirdParty,recipientId,subject);	
 							}								
 					//	}	
@@ -1164,7 +1164,7 @@ function welcomeUser(recipientId) {
 				submitForm(post_data,backurl+"users/add",recipientId,"add_user");
 				//var msg = "Hi "+firstName+"! I am excited to have you around. I can help you get tutors on subjects you need help on. \n\n I can also assist you to render help to people based on your proficiency. \n\n You'll get recognition for that, you know?";			
 				//sendMessage(recipientId, {text: "" + msg});
-				var msg="Hi "+firstName+"! ☺� \nMy name is Surrogate bot, I believe together we can build a stronger learning community on messenger 📖";
+				var msg="Hi "+firstName+"! 😃 \nMy name is Surrogate bot, I believe together we can build a stronger learning community on messenger 📖";
 				
 				message = {
                 "attachment": {
