@@ -1274,7 +1274,7 @@ function about(recipientId) {
         "template_type":"generic",
         "elements":[
           {
-            "title":"💡 Surrogate Bot",
+            "title":"Surrogate Bot 💡",
             "subtitle":"Assist students learn from experts and allow experts render help on messenger.",
 			"image_url": "http://surrogation.com.ng/surrogateapp/resources/images/logo.png",
             "buttons":[
