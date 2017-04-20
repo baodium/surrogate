@@ -229,9 +229,7 @@ app.post('/webhook', function (req, res) {
 			msgin = msgin.toLowerCase();
 			msgin2  = msgin.replace(/s+$/, '');
 			//msgin3  = msgin.replace(/?+$/, '');
-			var cont = JSON.parse(event);
-				console.log("Message here:"+JSON.stringify(cont));
-			
+
 			 if(senderContext[event.sender.id]!=null){			
 				if(contains.call(greetings_pool, msgin) || contains.call(cancellation_pool, msgin)){
 					senderContext[event.sender.id].state="begin";
