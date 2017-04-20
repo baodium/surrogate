@@ -384,7 +384,7 @@ app.post('/webhook', function (req, res) {
 		} else if (event.postback) {
 			var reply = JSON.stringify(event.postback);
 			reply = JSON.parse(reply);
-			sendMessage(event.sender.id, {text: ""+reply});
+			
 			if(reply.payload=="get_started_button"){
 				showPersistence();
 				welcomeUser(event.sender.id);
