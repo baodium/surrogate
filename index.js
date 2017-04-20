@@ -281,7 +281,7 @@ app.post('/webhook', function (req, res) {
 						
 						if(sent){
 							sendBusy(to,"typing_off");
-							endConversation(event.sender.id,"sent");						
+							endConversation(event.sender.id,"âœ”ï¸ ");						
 						}
 				  }			 				  
 				  				  
@@ -648,7 +648,7 @@ function sendFile(recipientId, message,thirdParty,msg,subject) {
 							if(sendMessage(recipientId, {text: "" + msg})){
 								//messageOption(recipientId,"Do you want to reply this message?",recipientId,thirdParty,subject);
 							}
-							if(sendMessage(thirdParty, {text: "" + "sent"})){
+							if(sendMessage(thirdParty, {text: "" + "âœ”ï¸"})){
 								//messageOption(thirdParty,"Do you want to send another message?",thirdParty,recipientId,subject);	
 							}								
 					//	}	
