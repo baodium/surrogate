@@ -384,6 +384,7 @@ app.post('/webhook', function (req, res) {
 		} else if (event.postback) {
 			var reply = JSON.stringify(event.postback);
 			reply = JSON.parse(reply);
+			sendMessage(event.sender.id, {text: ""+reply});
 			if(reply.payload=="get_started_button"){
 				showPersistence();
 				welcomeUser(event.sender.id);
@@ -2018,7 +2019,7 @@ function showReminders(recipientId){
 				};			
 				sendMessage(recipientId, message);											
 				}else{
-					sendMessage(recipientId, {text: "Here is your class reminder list "});					
+					sendMessage(recipientId, {text: "⏰ Here is your class reminder list "});					
 					try{
 					for(i = 0; i<output.length; i++){
 						day = output[i].day;//.split("_");
@@ -2145,7 +2146,7 @@ function showExperts(fromId,request_id){
 					
 					
 					if(request_id==false){
-						if(sendMessage(fromId, {text: "Here is your expert list"})){
+						if(sendMessage(fromId, {text: "🚻 Here is your expert list"})){
 							sendMessage(fromId,message);
 						}	
 					}else{
@@ -2224,7 +2225,7 @@ function showStudents(toId,request_id){
 				};	
 				
 				if(request_id===false){
-					if(sendMessage(toId, {text: "Here is your student list"})){
+					if(sendMessage(toId, {text: "🎓 Here is your student list"})){
 						sendMessage(toId,message);
 					}
 				}else{
