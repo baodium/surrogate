@@ -264,7 +264,7 @@ app.post('/webhook', function (req, res) {
 					}
 				  
 				  if(event.message.text){	
-						var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+": \n "+event.message.text;
+						var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+"("+subject+" "+userSel+"): \n "+event.message.text;
 						if(senderContext[to]!=null){				
 								if(senderContext[to].conversation_started=="true"){
 									sent = endConversation(to,"" + msg);
@@ -281,7 +281,7 @@ app.post('/webhook', function (req, res) {
 						
 						if(sent){
 							sendBusy(to,"typing_off");
-							endConversation(event.sender.id,"message sent");						
+							endConversation(event.sender.id,"sent");						
 						}
 				  }			 				  
 				  				  
