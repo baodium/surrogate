@@ -648,7 +648,7 @@ function sendFile(recipientId, message,thirdParty,msg,subject) {
 							if(sendMessage(recipientId, {text: "" + msg})){
 								//messageOption(recipientId,"Do you want to reply this message?",recipientId,thirdParty,subject);
 							}
-							if(sendMessage(thirdParty, {text: "" + "✔�"})){
+							if(sendMessage(thirdParty, {text: "✔️"})){
 								//messageOption(thirdParty,"Do you want to send another message?",thirdParty,recipientId,subject);	
 							}								
 					//	}	
