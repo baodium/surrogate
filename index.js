@@ -1283,7 +1283,7 @@ function about(recipientId) {
         "template_type":"generic",
         "elements":[
           {
-            "title":"Surrogate Bot",
+            "title":"💡 Surrogate Bot",
             "subtitle":"Assist students learn from experts and allow experts render help on messenger.",
 			"image_url": "http://surrogation.com.ng/surrogateapp/resources/images/logo.png",
             "buttons":[
@@ -1621,7 +1621,7 @@ function getStarted(){
 						},
 						{
 									"type":"postback",
-									"title":"About",
+									"title":"💡 About",
 									"payload":"about_me"
 						},
 						{
@@ -1630,7 +1630,7 @@ function getStarted(){
 						"call_to_actions":[
 									{
 									"type":"postback",
-									"title":"My Expertise",
+									"title":"📕 My Expertise",
 									"payload":"my_expertise"
 									},{
 									"type":"postback",
@@ -1828,7 +1828,7 @@ function showExpertise(recipientId){
 					
 					
 				}else{
-					sendMessage(recipientId, {text: "Here is your expertise list"});
+					sendMessage(recipientId, {text: "📕 Here is your expertise list"});
 					for(i = 0; i<output.length; i++){
 						level = output[i].level;//.split("_");
 						if(level!=null){
