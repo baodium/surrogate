@@ -1704,7 +1704,7 @@ function showPersistence(){
 						"call_to_actions":[
 						{
 									"type":"postback",
-									"title":"Home",
+									"title":"🏡 Home",
 									"payload":"home"
 						},
 						{
@@ -1713,7 +1713,7 @@ function showPersistence(){
 									"payload":"about_me"
 						},
 						{
-						"title":"Dashboard",
+						"title":"🛂 Dashboard",
 						"type":"nested",
 						"call_to_actions":[
 									{
@@ -1722,16 +1722,16 @@ function showPersistence(){
 									"payload":"my_expertise"
 									},{
 									"type":"postback",
-									"title":"Tutors",
+									"title":"🚻 Tutors",
 									"payload":"my_experts"
 									},{
 									"type":"postback",
-									"title":"Students",
+									"title":"🎓 Students",
 									"payload":"my_students"
 									},
 									{
 									"type":"postback",
-									"title":"My Reminders",
+									"title":"⏰ Reminders",
 									"payload":"my_reminders"
 									}]
 								}]
