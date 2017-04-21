@@ -1400,6 +1400,9 @@ function displayOption(recipientId,msg,option_type){
 								"type": "postback",
                                 "title": "No",
                                 "payload": "postback_no",
+                                },{
+								"type":"element_share",
+                                "title": "Tell a friend",
                                 }
 								]
                         }]
@@ -1408,6 +1411,7 @@ function displayOption(recipientId,msg,option_type){
             };			
 			sendMessage(recipientId, message);			
             return false;
+			
 }
 
 
