@@ -31,7 +31,7 @@ var menu_pool=["show menu","menu","my menu","show me menu","show me the menu","w
 var hi_pool=["hello","hi","hey","may i know you","tell me something"];
 var welcome_pool=["thank","thanks","thank you","oshe","thanks a bunch"];
 var wellwish_pool=["god bless","god bless you","bless you","you are great","you are good","you are too much","wish you the best","good luck"];
-var hours = ["twelve_am","","","three_am","","","six_am","","","nine_am","","","twelve_pm","","","three_pm","","","six_pm","","","nine_pm","",""];	
+var hours = ["","","","three","","","six","","","nine","","","twelve"];	
 app.use(bodyParser.urlencoded({extended: false}));  
 app.use(bodyParser.json());  
 app.listen((process.env.PORT || 3000));
@@ -42,8 +42,8 @@ app.listen((process.env.PORT || 3000));
 
 
 app.get('/', function (req, res) { 
-
-	res.send('Surrogate Bot');	
+					
+	res.send('Surrogate Bot'+time);	
 	
 });
 
@@ -2073,15 +2073,11 @@ function showReminders(recipientId){
 							day="";
 						}						
 						if(time!=null){
-							time = output[i].time.split("_");
-							
-							tm=time[2].toLowerCase()+"_"+time[3].toLowerCase();
-							var hr = (hours.indexOf(tm)+1);
-							if(hr>12){
-								hr = (hr%12)+" "+time[3].toLowerCase();
-							}else{
-								hr = hr+" "+time[3].toLowerCase();
-							}
+							time = output[i].time.toLowerCase();
+							time = output[i].time.split("_");							
+							tm=time[2];
+							var hr = (hours.indexOf(tm));						
+							hr = hr+" "+time[3];
 							time = hr;
 						}else{
 							time="";
@@ -2268,15 +2264,16 @@ function showStudents(toId,request_id){
 				};	
 				
 				if(request_id===false){
-				/*	if(total<2){
+					//if(total<2){
 						if(sendMessage(toId, {text: "🎓 Here is your student list"})){
 							sendMessage(toId,message);
 						}
-					}else{ */
+						/*
+					}else{ 
 						if(showMore(toId, "🎓 Here is your student list","student",total)){
 							sendMessage(toId,message);
 						}
-				//	}
+					}*/
 				}else{
 					sendMessage(toId,message);
 				}
