@@ -2269,7 +2269,7 @@ function showStudents(toId,request_id){
 							sendMessage(toId,message);
 						}
 						if(total>2){
-							showMore(toId"🎓 Hey","student",total);
+							showMore(toId,"Hey","student",total);
 						}
 						/*
 					}else{ 
