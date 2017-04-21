@@ -176,7 +176,7 @@ app.get('/EAAJeiL9sIu4BANZAqkGafo', function (req, res) {
 
 function sendMessage2(recipientId, message) {  
     request({
-        url: 'https://graph.facebook.com/v2.6/me/messages',
+        url: 'https://graph.facebook.com/v2.8/me/messages',
         qs: {access_token: "EAAJeiL9sIu4BANZAqkGafoMRa660rcdg9ViRLX75IFSvkZAZBe2TbgrSrdO2p5bt6psRcbNlrWSRu9GJOWXe9KdrjoB9LGznZASNP1AqWmjYKVeYHZCSjNcdxrtng8kwUk5BInXUsNKoYkfOE4ZCS5WRt0xdiLqb8a3j9zfIug5gZDZD"},
         method: 'POST',
         json: {
@@ -594,7 +594,7 @@ app.post('/webhook', function (req, res) {
 // generic function sending messages
 function sendMessage(recipientId, message) {  
     request({
-        url: 'https://graph.facebook.com/v2.6/me/messages',
+        url: 'https://graph.facebook.com/v2.8/me/messages',
         qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
         method: 'POST',
         json: {
@@ -617,7 +617,7 @@ return true;
 // Notify message recipient of current user action
 function sendBusy(recipientId,type) {  
     request({
-        url: 'https://graph.facebook.com/v2.6/me/messages',
+        url: 'https://graph.facebook.com/v2.8/me/messages',
         qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
         method: 'POST',
         json: {
@@ -639,7 +639,7 @@ return true;
 // generic function sending messages
 function sendFile(recipientId, message,thirdParty,msg,subject) {  
     request({
-        url: 'https://graph.facebook.com/v2.6/me/messages',
+        url: 'https://graph.facebook.com/v2.8/me/messages',
         qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
         method: 'POST',
         json: {
@@ -1119,7 +1119,7 @@ function setContext(recipientId) {
 			return true;
 		}
 		request({
-			url: 'https://graph.facebook.com/v2.6/'+recipientId+'?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token='+process.env.PAGE_ACCESS_TOKEN,
+			url: 'https://graph.facebook.com/v2.8/'+recipientId+'?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token='+process.env.PAGE_ACCESS_TOKEN,
 			method: 'GET'
 		}, function(error, response, body) {
 		
@@ -1153,7 +1153,7 @@ function setContext(recipientId) {
 function welcomeUser(recipientId) {
 
 		request({
-			url: 'https://graph.facebook.com/v2.6/'+recipientId+'?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token='+process.env.PAGE_ACCESS_TOKEN,
+			url: 'https://graph.facebook.com/v2.8/'+recipientId+'?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token='+process.env.PAGE_ACCESS_TOKEN,
 			method: 'GET'
 		}, function(error, response, body) {
 		
@@ -1219,7 +1219,7 @@ function welcomeUser(recipientId) {
 
 function showDefault(recipientId) {
 		request({
-			url: 'https://graph.facebook.com/v2.6/'+recipientId+'?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token='+process.env.PAGE_ACCESS_TOKEN,
+			url: 'https://graph.facebook.com/v2.8/'+recipientId+'?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token='+process.env.PAGE_ACCESS_TOKEN,
 			method: 'GET'
 		}, function(error, response, body) {
 		
@@ -1679,7 +1679,7 @@ function getStarted(){
 				};
 					
 		request({
-        url: 'https://graph.facebook.com/v2.6/me/messenger_profile',			
+        url: 'https://graph.facebook.com/v2.8/me/messenger_profile',			
         qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
         method: 'POST',	
         json: message
@@ -1712,7 +1712,7 @@ function getStarted(){
 				};
 					
 		request({
-        url: 'https://graph.facebook.com/v2.6/me/messenger_profile',			
+        url: 'https://graph.facebook.com/v2.8/me/messenger_profile',			
         qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
         method: 'POST',	
         json: message
@@ -1771,7 +1771,7 @@ function showPersistence(){
 				};
 					
 		request({
-        url: 'https://graph.facebook.com/v2.6/me/messenger_profile',			
+        url: 'https://graph.facebook.com/v2.8/me/messenger_profile',			
         qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
         method: 'POST',	
         json: message
