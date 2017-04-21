@@ -2259,7 +2259,7 @@ function removeExpertise(recipientId,expertise_id,subject){
 			} else if (response.body.error) {
 				console.log('Error: ', response.body.error);
 			}else{
-				sendMessage(recipientId, {text: "I have successfully deleted "+subject+"  as one of your expertise  \n\n "});
+				sendMessage(recipientId, {text: "I have successfully removed "+subject+"  as one of your expertise  \n\n "});
 				showExpertise(recipientId);	
 			}			
 		});
