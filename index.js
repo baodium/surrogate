@@ -1401,8 +1401,7 @@ function displayOption(recipientId,msg,option_type){
                                 "title": "No",
                                 "payload": "postback_no",
                                 },{
-								"type":"element_share",
-                                "title": "Tell a friend",
+								"type":"element_share"
                                 }
 								]
                         }]
