@@ -1291,7 +1291,12 @@ function about(recipientId) {
                 },
 				{
 				  "type": "element_share"
-				}
+				},
+				{
+					"type": "postback",
+                    "title": "Check it out!",
+                     "payload": "postback_no",
+                }
             ]
           }
         ]
