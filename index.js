@@ -1401,7 +1401,29 @@ function displayOption(recipientId,msg,option_type){
                                 "title": "No",
                                 "payload": "postback_no",
                                 },{
-								"type":"element_share"
+								"type":"element_share",
+								"share_contents": { 
+          "attachment": {
+            "type": "template",
+            "payload": {
+              "template_type": "generic",
+              "elements": [
+                {
+                  "title":"💡 Surrogate Bot",
+            		"subtitle":"Building a stronger learning community.",						
+					"image_url":"http://surrogation.com.ng/surrogateapp/resources/images/logo.png",       
+					"buttons": [
+                    {
+                      "type": "web_url",
+                      "url": "https://www.facebook.com/surrogatebot/", 
+                      "title": "Check it out!"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        }
                                 }
 								]
                         }]
