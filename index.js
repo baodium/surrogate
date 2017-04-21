@@ -2191,8 +2191,10 @@ function showStudents(toId,request_id){
 				elementss = new Array();
 				if(total<1){
 					sendMessage(toId, {text: "Oh! your student list is empty"});
-				}else{										
+				}else{	
+					var j=0;				
 					for(i = 0; i<output.length; i++){
+						j=i;
 						level = output[i].level;//.split("_");
 						if(level!=null){
 							level = output[i].level.split("_");
@@ -2220,7 +2222,18 @@ function showStudents(toId,request_id){
                                 }]
                         };				
 					}
-										
+					
+
+				elementss[j+1]={                           
+							"title":"Show more",   
+                            "buttons": [{
+								"type": "postback",
+                                "title": "More",
+                                "payload": "remind_student-"+output[i].request_id,
+                                }]
+                        };				
+
+					
 				message = {
 					"attachment": {
                     "type": "template",
