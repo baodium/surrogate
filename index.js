@@ -281,6 +281,7 @@ app.post('/webhook', function (req, res) {
 						
 						if(sent){
 							sendBusy(to,"typing_off");
+							//endConversation(event.sender.id,"✔� ");		
 							endConversation(event.sender.id,"✔� ");						
 						}
 				  }			 				  
@@ -392,7 +393,7 @@ app.post('/webhook', function (req, res) {
 				help(event.sender.id);
 			}else if(reply.payload=="about_me"){
 				about(event.sender.id);
-			}else if(reply.payload=="get_assignment_help" || (reply.payload=="postback_yes" && senderContext[event.sender.id]!=null)){
+			}else if(reply.payload=="get_assignment_help" || (reply.payload=="postback_yes" && senderContext[event.sender.id]!=null && senderContext[event.sender.id].state == "provide_subject")){
 				if(senderContext[event.sender.id]!=null){
 					sendMessage(event.sender.id, {text: "Which subject do you need help on?"});
 					senderContext[event.sender.id].state = "provide_subject";
@@ -786,7 +787,7 @@ sendMessage(senderId,message);
 
 function endConversation(senderId,msg){
 	message = {
-			"text":"✔️ ",
+			"text":msg,
 			"quick_replies":[{
 							"content_type":"text",
 							"title":"suspend conversation",
