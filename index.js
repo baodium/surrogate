@@ -2268,6 +2268,9 @@ function showStudents(toId,request_id){
 						if(sendMessage(toId, {text: "🎓 Here is your student list"})){
 							sendMessage(toId,message);
 						}
+						if(total>2){
+							showMore(toId"🎓 Hey","student",total);
+						}
 						/*
 					}else{ 
 						if(showMore(toId, "🎓 Here is your student list","student",total)){
