@@ -31,7 +31,7 @@ var menu_pool=["show menu","menu","my menu","show me menu","show me the menu","w
 var hi_pool=["hello","hi","hey","may i know you","tell me something"];
 var welcome_pool=["thank","thanks","thank you","oshe","thanks a bunch"];
 var wellwish_pool=["god bless","god bless you","bless you","you are great","you are good","you are too much","wish you the best","good luck"];
-			
+var hours = ["twelve_am","","","three_am","","","six_am","","","nine_am","","","twelve_pm","","","three_pm","","","six_pm","","","nine_pm","",""];	
 app.use(bodyParser.urlencoded({extended: false}));  
 app.use(bodyParser.json());  
 app.listen((process.env.PORT || 3000));
@@ -2056,7 +2056,7 @@ function showReminders(recipientId){
 						day = output[i].day;//.split("_");
 						time = output[i].time;
 						rtype =  output[i].type;
-						rtype="Class with: "+output[i].from_name;
+						rtype="CLASS WITH: "+output[i].from_name;
 						/*
 						if(rtype=="type_remind_expert"){
 							rtype="Class with: "+output[i].from_name;
@@ -2074,7 +2074,15 @@ function showReminders(recipientId){
 						}						
 						if(time!=null){
 							time = output[i].time.split("_");
-							time=time[2].toLowerCase()+" "+time[3].toLowerCase();
+							
+							tm=time[2].toLowerCase()+"_"+time[3].toLowerCase();
+							var hr = (hours.indexOf(tm)+1);
+							if(hr>12){
+								hr = (hr%12)+" "+time[3].toLowerCase();
+							}else{
+								hr = hr+" "+time[3].toLowerCase();
+							}
+							time = hr;
 						}else{
 							time="";
 						}
@@ -2260,15 +2268,15 @@ function showStudents(toId,request_id){
 				};	
 				
 				if(request_id===false){
-					if(total<2){
+				/*	if(total<2){
 						if(sendMessage(toId, {text: "🎓 Here is your student list"})){
 							sendMessage(toId,message);
 						}
-					}else{
+					}else{ */
 						if(showMore(toId, "🎓 Here is your student list","student",total)){
 							sendMessage(toId,message);
 						}
-					}
+				//	}
 				}else{
 					sendMessage(toId,message);
 				}
