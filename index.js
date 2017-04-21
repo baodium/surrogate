@@ -1410,8 +1410,7 @@ function displayOption(recipientId,msg,option_type){
               "elements": [
                 {
                   "title":"💡 Surrogate Bot",
-            		"subtitle":"Building a stronger learning community.",						
-					"image_url":"http://surrogation.com.ng/surrogateapp/resources/images/logo.png",       
+            		"subtitle":"Building a stronger learning community.",						      
 					"buttons": [
                     {
                       "type": "web_url",
