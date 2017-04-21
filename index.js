@@ -1283,7 +1283,7 @@ function about(recipientId) {
           {
             "title":"💡 Surrogate Bot",
             "subtitle":"Building a stronger learning community.",
-			"image_url": "http://surrogation.com.ng/surrogateapp/resources/images/logo.png",
+			"image_url": "http://surrogation.com.ng/surrogateapp/resources/images/logo.jpg",
             "buttons":[
 				{
 					"type": "postback",
