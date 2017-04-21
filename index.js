@@ -2074,7 +2074,7 @@ function showReminders(recipientId){
 						}						
 						if(time!=null){
 							time = output[i].time.toLowerCase();
-							time = output[i].time.split("_");							
+							time = time.split("_");							
 							tm=time[2];
 							var hr = (hours.indexOf(tm));						
 							hr = hr+" "+time[3];
