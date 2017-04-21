@@ -799,6 +799,20 @@ sendMessage(senderId,message);
 return true;
 }
 
+function showMore(senderId,msg,type,page){
+	message = {
+			"text":msg,
+			"quick_replies":[{
+							"content_type":"text",
+							"title":"show more",
+							"payload":"SHOW_MORE-"+type+"-"+page
+							}]
+		};
+sendMessage(senderId,message);
+return true;
+}
+
+
 function startConversation(toId,fromm,subject,msg){
 
 	message = {
@@ -2235,8 +2249,14 @@ function showStudents(toId,request_id){
 				};	
 				
 				if(request_id===false){
-					if(sendMessage(toId, {text: "🎓 Here is your student list"})){
+					if(total>2){
+					if(showMore(toId,"🎓 Here is your student list","student","1")){
 						sendMessage(toId,message);
+					}
+					}else{
+						if(sendMessage(toId, {text: "🎓 Here is your student list"})){
+							sendMessage(toId,message);
+						}
 					}
 				}else{
 					sendMessage(toId,message);
