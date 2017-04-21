@@ -9,6 +9,13 @@ var url = require('url');
 var app = express();
 
 var started=false;
+var message_count=0;
+var total_student=0;
+var total_tutor=0;
+var total_expertise=0;
+var total_reminder=0;
+
+
 var backurl="http://surrogation.com.ng/surrogateapp/";
 var senderContext = {};
 var greetings_pool = ["how are you","how far","wassup","kilonshele","bawo ni","wetin dey happen","wetin dey","what is happening","how are you?","how far?","what is happening?"];
@@ -798,6 +805,22 @@ function endConversation(senderId,msg){
 sendMessage(senderId,message);
 return true;
 }
+
+
+function showMore(senderId,msg,type,page){
+	message = {
+			"text":msg,
+			"quick_replies":[{
+							"content_type":"text",
+							"title":"show more",
+							"payload":"SHOW_MORE-"+type+"-"+page
+							}]
+		};
+		sendMessage(senderId,message);
+return true;
+}
+
+
 
 function startConversation(toId,fromm,subject,msg){
 
@@ -2194,7 +2217,7 @@ function showStudents(toId,request_id){
 					sendMessage(toId, {text: "Oh! your student list is empty"});
 				}else{	
 					var j=0;				
-					for(i = 0; i<output.length; i++){
+					for(i = 0; i< (total%10); i++){
 						j=i;
 						level = output[i].level;//.split("_");
 						if(level!=null){
