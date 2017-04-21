@@ -2223,17 +2223,6 @@ function showStudents(toId,request_id){
                         };				
 					}
 					
-
-				elementss[j]={                           
-							"title":"Show more",   
-                            "buttons": [{
-								"type": "postback",
-                                "title": "More",
-                                "payload": "show_more",
-                                }]
-                        };				
-
-					
 				message = {
 					"attachment": {
                     "type": "template",
