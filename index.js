@@ -2056,16 +2056,18 @@ function showReminders(recipientId){
 						day = output[i].day;//.split("_");
 						time = output[i].time;
 						rtype =  output[i].type;
+						rtype="Class with: "+output[i].from_name;
+						/*
 						if(rtype=="type_remind_expert"){
-							rtype="CLASS WITH TUTOR";
+							rtype="Class with: "+output[i].from_name;
 						}else{
 							rtype="CLASS WITH STUDENT";
-						}
+						}*/
 						if(day!=null){
 							day = output[i].day.split("_");
 							day=day[1].toLowerCase();
 							if(day=="allday"){
-								day ="every day";
+								day ="Everyday";
 							}
 						}else{
 							day="";
@@ -2258,8 +2260,14 @@ function showStudents(toId,request_id){
 				};	
 				
 				if(request_id===false){
-					if(sendMessage(toId, {text: "🎓 Here is your student list"})){
-						sendMessage(toId,message);
+					if(total<2){
+						if(sendMessage(toId, {text: "🎓 Here is your student list"})){
+							sendMessage(toId,message);
+						}
+					}else{
+						if(showMore(toId, "🎓 Here is your student list","student",total)){
+							sendMessage(toId,message);
+						}
 					}
 				}else{
 					sendMessage(toId,message);
