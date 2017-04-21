@@ -2224,12 +2224,12 @@ function showStudents(toId,request_id){
 					}
 					
 
-				elementss[j+1]={                           
+				elementss[j]={                           
 							"title":"Show more",   
                             "buttons": [{
 								"type": "postback",
                                 "title": "More",
-                                "payload": "remind_student-"+output[i].request_id,
+                                "payload": "show_more",
                                 }]
                         };				
 
