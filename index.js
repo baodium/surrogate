@@ -9,6 +9,13 @@ var url = require('url');
 var app = express();
 
 var started=false;
+var message_count=0;
+var total_student=0;
+var total_tutor=0;
+var total_expertise=0;
+var total_reminder=0;
+
+
 var backurl="http://surrogation.com.ng/surrogateapp/";
 var senderContext = {};
 var greetings_pool = ["how are you","how far","wassup","kilonshele","bawo ni","wetin dey happen","wetin dey","what is happening","how are you?","how far?","what is happening?"];
@@ -208,7 +215,8 @@ app.post('/webhook', function (req, res) {
 	
 	getStarted();
 	var helprequest = false;
-	var message_count=0;
+
+	
     var events = req.body.entry[0].messaging;
     for (i = 0; i < events.length; i++) {		
         var event = events[i];	
@@ -2206,10 +2214,9 @@ function showStudents(toId,request_id){
 				elementss = new Array();
 				if(total<1){
 					sendMessage(toId, {text: "Oh! your student list is empty"});
-				}else{	
-					var j=0;				
-					for(i = 0; i<output.length; i++){
-						j=i;
+				}else{				
+					for(i = 0; i < (total%10); i++){
+						total_student++;
 						level = output[i].level;//.split("_");
 						if(level!=null){
 							level = output[i].level.split("_");
@@ -2250,9 +2257,9 @@ function showStudents(toId,request_id){
 				
 				if(request_id===false){
 					if(total>2){
-					if(showMore(toId,"🎓 Here is your student list","student","1")){
-						sendMessage(toId,message);
-					}
+						if(showMore(toId,"🎓 Here is your student list","student",total_student)){
+							sendMessage(toId,message);
+						}
 					}else{
 						if(sendMessage(toId, {text: "🎓 Here is your student list"})){
 							sendMessage(toId,message);
