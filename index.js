@@ -282,7 +282,7 @@ app.post('/webhook', function (req, res) {
 						if(sent){
 							sendBusy(to,"typing_off");
 							//endConversation(event.sender.id,"✔� ");		
-							endConversation(event.sender.id,"✔� ");						
+							endConversation(event.sender.id,"✔️ ");						
 						}
 				  }			 				  
 				  				  
