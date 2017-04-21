@@ -74,7 +74,8 @@ app.get('/EAAJeiL9sIu4BANZAqkGafo', function (req, res) {
 		}
 		var dayName = days[dayy];
 		dayName  = dayName.toUpperCase();
-		
+		//time="12";
+		//dayName="THURSDAY";
 		var post_data = querystring.stringify({'status' : 'completed','day':'REMINDER_'+dayName,'time':time});	
 		//var post_data = querystring.stringify({'status' : 'completed','day':'REMINDER_'+dayName,'time':'REMINDER_TIME_TWELVE_PM'});			
 		var sent = new Array();
