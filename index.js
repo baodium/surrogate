@@ -31,7 +31,7 @@ var menu_pool=["show menu","menu","my menu","show me menu","show me the menu","w
 var hi_pool=["hello","hi","hey","may i know you","tell me something"];
 var welcome_pool=["thank","thanks","thank you","oshe","thanks a bunch"];
 var wellwish_pool=["god bless","god bless you","bless you","you are great","you are good","you are too much","wish you the best","good luck"];
-var hours = ["","","","three","","","six","","","nine","","","twelve"];	
+var hours = ["","","","THREE","","","SIX","","","NINE","","","TWELVE"];	
 app.use(bodyParser.urlencoded({extended: false}));  
 app.use(bodyParser.json());  
 app.listen((process.env.PORT || 3000));
@@ -2073,7 +2073,7 @@ function showReminders(recipientId){
 							day="";
 						}						
 						if(time!=null){
-							time = output[i].time.toLowerCase();
+							//time = output[i].time.toLowerCase();
 							time = time.split("_");							
 							tm=time[2];
 							var hr = (hours.indexOf(tm));						
