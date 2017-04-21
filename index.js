@@ -2256,7 +2256,10 @@ function showStudents(toId,request_id){
 				};	
 				
 				if(request_id===false){
-					if(total>2){
+					if(sendMessage(toId, {text: "🎓 Here is your student list"})){
+							sendMessage(toId,message);
+					}
+					/*if(total>2){
 						if(showMore(toId,"🎓 Here is your student list","student",total_student)){
 							sendMessage(toId,message);
 						}
@@ -2264,7 +2267,7 @@ function showStudents(toId,request_id){
 						if(sendMessage(toId, {text: "🎓 Here is your student list"})){
 							sendMessage(toId,message);
 						}
-					}
+					}*/
 				}else{
 					sendMessage(toId,message);
 				}
