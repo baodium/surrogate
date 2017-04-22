@@ -871,11 +871,9 @@ function checkHelper(subject,senderId,page){
 							"title":"🎓 "+subject+" request list",
 							"subtitle": "Here is what I found",								
 					};
-					page = parseFloat(page);
-					var i=(page>0)?1:0;
-					if(i<j){
-						i++;
-					//for(i=0; i<j ; i++){					
+					//var i=(page>0)?1:0;
+					
+					for(i=0; i<j ; i++){					
 					//for(i = 0; i<output.length; i++){
 						level = output[i].level;//.split("_");
 						if(level!=null){
