@@ -422,7 +422,7 @@ app.post('/webhook', function (req, res) {
 			}else if(reply.payload=="my_experts"){
 				showExperts(event.sender.id,false);
 			}else if(reply.payload=="my_students"){
-				showStudents(event.sender.id,false,student_page);
+				showStudents(event.sender.id,false,"0");
 			}else if(reply.payload=="my_reminders"){
 				showReminders(event.sender.id);//postback_viewmore_student
 			}else if(reply.payload.indexOf("postback_viewmore_student")>-1){
@@ -566,7 +566,7 @@ app.post('/webhook', function (req, res) {
 				}				
 			}else if(reply.payload=="postback_student_meeting"){
 				if(senderContext[event.sender.id]!=null){
-					showStudents(event.sender.id,false,student_page);
+					showStudents(event.sender.id,false,"0");
 				}
 			}else if(reply.payload=="postback_tutor_meeting"){
 				if(senderContext[event.sender.id]!=null){
@@ -2430,7 +2430,7 @@ function showStudents(toId,request_id,page){
 				if(total<1){
 					sendMessage(toId, {text: "Oh! your student list is empty"});
 				}else{	
-				if(total>4){
+				if(total>2){
 					student_page++;
 				}
 					var j=(total>2)?2:total;				
