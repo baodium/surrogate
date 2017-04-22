@@ -2433,26 +2433,6 @@ function showStudents(toId,request_id){
 							level="";
 						}
 
-						elementss[i]={                           
-							"title": output[i].name, 
-							"image_url": output[i].profile_pic,                  
-							"subtitle": output[i].subject+" student",   
-                            "buttons": [{
-								"type": "postback",
-                                "title": "Set class reminder",
-                                "payload": "remind_student-"+output[i].request_id,
-                                },{
-								"type": "postback",
-                                "title": "Send Message",
-                                "payload": "postback_message_yes-"+output[i].to_id+"-"+output[i].from_id+"-"+output[i].subject+"-student:"+output[i].expertise_id,
-                                },{
-								"type": "postback",
-                                "title": "Remove",
-                                "payload": "remove_student-"+output[i].from_id+"-"+output[i].expertise_id,
-                                }]
-                        };
-
-						
 						elementss[i]={
 							"title": output[i].name,
 							"image_url": output[i].profile_pic,
