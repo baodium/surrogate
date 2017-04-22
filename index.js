@@ -864,7 +864,7 @@ function checkHelper(subject,senderId,page){
 					elementss = new Array();
 
 					if(total>3){
-						request_page++;
+						page++;
 					}
 					var j=(total>3)?3:total;
 					elementss[0]={
@@ -922,7 +922,7 @@ function checkHelper(subject,senderId,page){
 						"buttons":[{
 									"title": (total<4)?"Close":"View More",
 									"type": "postback",
-									"payload": (total<4)?"postback_no":"postback_viewmore_request-"+request_page+"-"+subject,                        
+									"payload": (total<4)?"postback_no":"postback_viewmore_request-"+page+"-"+subject,                        
 						}]
 						}
 					}
@@ -2443,7 +2443,7 @@ function showStudents(toId,request_id,page){
 					sendMessage(toId, {text: "Oh! your student list is empty"});
 				}else{	
 				if(total>3){
-					student_page++;
+					page++;
 				}
 					var j=(total>3)?3:total;
 
@@ -2484,7 +2484,7 @@ function showStudents(toId,request_id,page){
 						"buttons":[{
 									"title": (total<4)?"Close":"View More",
 									"type": "postback",
-									"payload": (total<4)?"postback_no":"postback_viewmore_student-"+student_page,                        
+									"payload": (total<4)?"postback_no":"postback_viewmore_student-"+page,                        
 						}]
 						}
 					}
@@ -2534,7 +2534,7 @@ function showExperts(fromId,request_id,page){
 					sendMessage(fromId, {text: "Oh! your tutor list is empty"});
 				}else{	
 				if(total>3){
-					expert_page++;
+					page++;
 				}
 					var j=(total>3)?3:total;
 
@@ -2575,7 +2575,7 @@ function showExperts(fromId,request_id,page){
 						"buttons":[{
 									"title": (total<4)?"Close":"View More",
 									"type": "postback",
-									"payload": (total<4)?"postback_no":"postback_viewmore_expert-"+expert_page,                        
+									"payload": (total<4)?"postback_no":"postback_viewmore_expert-"+page,                        
 						}]
 						}
 					}
