@@ -2395,7 +2395,7 @@ function showStudents2(toId,request_id){
 
 
 
-function showStudents(toId){
+function showStudents(toId,request_id){
 
 	var post_data = querystring.stringify({'to_id':toId});	
 	if(request_id!==false){
