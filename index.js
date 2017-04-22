@@ -473,6 +473,10 @@ app.post('/webhook', function (req, res) {
 				var id = reply.payload.split("-");
 				 reqId = id[1];
 				 showStudentDetail(event.sender.id,reqId); 
+			}else if(reply.payload.indexOf("show_expert_detail")>-1){
+				var id = reply.payload.split("-");
+				 reqId = id[1];
+				 showExpertDetail(event.sender.id,reqId); 
 			}else if(reply.payload.indexOf("remove_expert")>-1){
 				var id = reply.payload.split("-");
 				 toId = id[1];
@@ -2330,8 +2334,8 @@ function showStudentDetail(toId,request_id){
 function showExpertDetail(fromId,request_id){
 	var post_data = querystring.stringify({'from_id':fromId,'status':'completed'});
 	if(request_id!==false){
-		post_data = querystring.stringify({'request_id':request_id});	
-		//post_data = querystring.stringify({'request_id':request_id,'from_id':fromId});	
+		//post_data = querystring.stringify({'request_id':request_id});	
+		post_data = querystring.stringify({'request_id':request_id,'from_id':fromId});	
 	}	
 	
 		request({
