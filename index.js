@@ -459,8 +459,12 @@ app.post('/webhook', function (req, res) {
 				 if(type=="type_remind_expert"){
 					showExperts(event.sender.id,reqId); 
 				 }else{
-					showStudents(event.sender.id,reqId); 
+					showStudentDetail(event.sender.id,reqId); 
 				 }
+			}else if(reply.payload.indexOf("show_student_detail")>-1){
+				var id = reply.payload.split("-");
+				 reqId = id[1];
+				 showStudentDetail(event.sender.id,reqId); 
 			}else if(reply.payload.indexOf("remove_expert")>-1){
 				var id = reply.payload.split("-");
 				 toId = id[1];
@@ -2314,7 +2318,7 @@ return sendMessage(message,senderId);
 }
 
 
-function showStudents2(toId,request_id){
+function showStudentDetail(toId,request_id){
 	var post_data = querystring.stringify({'to_id':toId});	
 	if(request_id!==false){
 		post_data = querystring.stringify({'request_id':request_id,'to_id':toId});	
@@ -2440,7 +2444,7 @@ function showStudents(toId,request_id){
 							"buttons": [{
 										"type": "postback",
 										"title": "Show Detail",
-										"payload": "show_student_student-"+output[i].request_id,
+										"payload": "show_student_detail-"+output[i].request_id+"-"+toId,
 										}]                
 							};
 					}
