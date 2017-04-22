@@ -977,7 +977,7 @@ function checkHelper(subject,senderId){
 							"subtitle": "Here is what I found",								
 							};
 
-					for(i = 0; i<2 ; i++){					
+					for(i = 0; i<j ; i++){					
 					//for(i = 0; i<output.length; i++){
 						level = output[i].level;//.split("_");
 						if(level!=null){
