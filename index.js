@@ -853,7 +853,7 @@ return true;
 }
 
 
-function checkHelper(subject,senderId){
+function checkHelper2(subject,senderId){
 	
 	var post_data = querystring.stringify({'facebook_id_not' : senderId,'subject':subject});	
 	request({
@@ -942,9 +942,8 @@ function checkHelper(subject,senderId){
 					
 		});
 }
-/*
-function checkHelper(subject,senderId){
-	
+
+function checkHelper(subject,senderId){		
 	var post_data = querystring.stringify({'facebook_id_not' : senderId,'subject':subject});	
 	request({
 			url: backurl+"expertise/getwherenot",
@@ -955,7 +954,6 @@ function checkHelper(subject,senderId){
 				'Content-Length':post_data.length
 				}
 		}, function(error, response, body) {
-			//sendMessage(senderId, {text: "" + JSON.stringify(body)});
 			if (error) {
 				console.log('Error sending message: ', error);
 			} else if (response.body.error) {
@@ -968,18 +966,18 @@ function checkHelper(subject,senderId){
 							senderContext[senderId].state = "provide_subject_done";	
 						
 					var total = output.length;
-					elementss = new Array();	
+					elementss = new Array();
+
 					if(total>3){
 						request_page++;
 					}
 					var j=(total>3)?3:total;
-
 					elementss[0]={
 							"title":"🎓 "+subject+" request list",							               
 							};
 					
-					for(i = 0; i<j ; i++){
-					
+					for(i = 0; i<j ; i++){					
+					//for(i = 0; i<output.length; i++){
 						level = output[i].level;//.split("_");
 						if(level!=null){
 							level = output[i].level.split("_");
@@ -1004,7 +1002,7 @@ function checkHelper(subject,senderId){
 							con+="🌟";
 						}
 						
-					elementss[i]={                           
+					elementss[i+1]={                           
 							"title": output[i].name, 
 							"image_url": output[i].profile_pic,                  
 							"subtitle":  "Expert in:"+output[i].subject+", \n\n Level:"+level+"\n\n"+con,   
@@ -1017,6 +1015,7 @@ function checkHelper(subject,senderId){
 				
 					}
 					
+				
 				message = {
 					"attachment": {
                     "type": "template",
@@ -1043,13 +1042,13 @@ function checkHelper(subject,senderId){
 					}catch(err){
 						sendMessage(senderId, {text: "Error fetching expert "+JSON.stringify(err)});
 					}	
-	
-					
+
 			}
 					
 		});
+	
 }
-*/
+
 
 function sendHelpRequest(senderId,requestId){
 	var post_data = querystring.stringify({'expertise_id' : requestId});
