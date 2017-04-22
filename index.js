@@ -10,10 +10,10 @@ var app = express();
 
 var started=false;
 var message_count=0;
-var total_student=0;
-var total_tutor=0;
-var total_expertise=0;
-var total_reminder=0;
+var student_page=0;
+var tutor_page=0;
+var expert_page=0;
+var expertise_page=0;
 
 
 var backurl="http://surrogation.com.ng/surrogateapp/";
@@ -2426,8 +2426,11 @@ function showStudents(toId,request_id){
 				if(total<1){
 					sendMessage(toId, {text: "Oh! your student list is empty"});
 				}else{	
+				if(total>4){
+					student_page++;
+				}
 					var j=0;				
-					for(i = 0; i<2 ; i++){
+					for(i = 0; i<(total%2) ; i++){
 						j=i;
 						level = output[i].level;//.split("_");
 						if(level!=null){
@@ -2460,7 +2463,7 @@ function showStudents(toId,request_id){
 						"buttons":[{
 									"title": (total<5)?"Close":"View More",
 									"type": "postback",
-									"payload": (total<5)?"postback_no":"postbeck_view_more",                        
+									"payload": (total<5)?"postback_no":"postbeck_view_more-"+student_page,                        
 						}]
 						}
 					}
