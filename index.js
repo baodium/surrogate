@@ -2494,9 +2494,9 @@ function showStudents(toId,request_id,page){
 
 
 function showExperts(fromId,request_id,page){
-	var post_data = querystring.stringify({'from_id':fromId,'status':'completed'});
+	var post_data = querystring.stringify({'from_id':fromId,'status':'completed','page':page});
 	if(request_id!==false){
-		post_data = querystring.stringify({'request_id':request_id});	
+		//post_data = querystring.stringify({'request_id':request_id});	
 		post_data = querystring.stringify({'request_id':request_id,'from_id':fromId});	
 	}	
 
