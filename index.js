@@ -368,7 +368,7 @@ app.post('/webhook', function (req, res) {
 						defaultMsg ="You are welcome "+senderContext[event.sender.id].firstName+".";
 					}else if(contains.call(cancellation_pool, msgin)){
 						defaultMsg ="Okay.";
-					}else if(contain.call(time_pool, msgin)){
+					}else if(contains.call(time_pool, msgin)){
 						var d = new Date();
 						var n = d.getHours();
 						if(msgin.indexOf("morning")>-1 || msgin.indexOf("afternoon")>-1 || msgin.indexOf("evening")>-1){
