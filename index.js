@@ -2473,7 +2473,7 @@ function showStudents(toId,request_id,page){
 				};	
 				
 				if(request_id===false){
-						if(sendMessage(toId, {text: "🎓 Here is your student list"})){
+						if(sendMessage(toId, {text: "🎓 Here is your student list"+student_page})){
 							sendMessage(toId,message);
 						}
 				}else{
