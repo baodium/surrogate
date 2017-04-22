@@ -1144,11 +1144,11 @@ function welcomeUser(recipientId) {
 		}, function(error, response, body) {
 		
         if (error) {
-            console.log('Error sending message: ', error);
+            console.log('Error sending message @ welcome user: ', error);
         } else if (response.body.error) {
-            console.log('Error: ', response.body.error);
+            console.log('Error: @welcome user', response.body.error);
         }else{
-			
+			try{
 			var bodyObject = JSON.parse(body);
 			firstName = bodyObject.first_name;
 			lastName = bodyObject.last_name;
@@ -1195,8 +1195,13 @@ function welcomeUser(recipientId) {
 			sendMessage(recipientId, {text: "" + msg});	
 				showMenu(recipientId);
 			}
-            return true;		
+            return true;
+		}catch(err){
+			console.log("Error here @ welcome user");
+			sendMessage(recipientId, {text: "" + err});	
+		}			
 		}
+		
 		});
 			
     return true;
