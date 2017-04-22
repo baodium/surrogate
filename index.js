@@ -873,7 +873,7 @@ function checkHelper(subject,senderId,page){
 					};
 					//var i=(page>0)?1:0;
 					
-					for(i=(page>0)?1:0; i<j ; i++){					
+					for(i=0; i<j ; i++){					
 					//for(i = 0; i<output.length; i++){
 						level = output[i].level;//.split("_");
 						if(level!=null){
