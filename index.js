@@ -2429,9 +2429,8 @@ function showStudents(toId,request_id){
 				if(total>4){
 					student_page++;
 				}
-					var j=0;				
-					for(i = 0; i<3 ; i++){
-						j=i;
+					var j=(total%4);				
+					for(i = 0; i<j ; i++){
 						level = output[i].level;//.split("_");
 						if(level!=null){
 							level = output[i].level.split("_");
