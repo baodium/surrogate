@@ -806,36 +806,7 @@ return true;
 }
 
 
-function showMore(senderId,msg,type,page){
-	message = {
-			"text":msg,
-			"quick_replies":[{
-							"content_type":"text",
-							"title":"show more",
-							"payload":"SHOW_MORE-"+type+"-"+page
-							}]
-		};
-		sendMessage(senderId,message);
-return true;
-}
 
-
-
-function startConversation(toId,fromm,subject,msg){
-
-	message = {
-			"text":msg,
-			"quick_replies":[{
-							"content_type":"text",
-							"title":"Reply message",
-							"payload":"START_CONVERSATION-"+toId+"-"+fromm+"-"+subject+"-all:0"
-							}]
-		};
-//if(senderContext[toId].conversation_started==null){
-	sendMessage(toId,message);
-//}
-return true;
-}
 
 
 function checkHelper(subject,senderId,page){		
@@ -1801,8 +1772,10 @@ function submitForm(post_data,url,userId,action){
 				console.log('Error: ', response.body.error);
 			}else{
 				var output = JSON.parse(body);
+				
 				//sendMessage(userId, {text: "" + body+"-"+output.status});
 				var exists = (output.status=="ok")?false:true;
+				var messg = output.message;
 				if(senderContext[userId]!=null){
 
 						if(action=="update_expertise" && !exists){
@@ -1819,9 +1792,15 @@ function submitForm(post_data,url,userId,action){
 								getExpertiseLevel(userId);
 								senderContext[userId].state = "type_expertise_done";
 							}else{
-								sendMessage(userId, {text: "You have added this expertise before. Please specify another expertise"});
-								getOut(userId);								
-								senderContext[userId].state = "type_expertise";
+								if(messg=="limit exceeded"){
+									sendMessage(userId, {text: "Sorry, you can not have more than 10 expertise"});
+									getOut(userId);	
+									senderContext[userId].state = "begin_again";									
+								}else{
+									sendMessage(userId, {text: "You have added this expertise before. Please specify another expertise"});
+									getOut(userId);								
+									senderContext[userId].state = "type_expertise";
+								}
 							}
 							return true;
 						}
@@ -1866,15 +1845,25 @@ function submitForm(post_data,url,userId,action){
 							if(!exists){
 								pickTime(userId);
 								senderContext[userId].status="pick_reminder_time";
-							}else{
-								var period = post_data.split("=");
-								period = period[period.length-1];
-								period = period.split("_");
-								period = period[1].toLowerCase();
-								msg = "You have already set up a reminder for "+period+" \n. Please pick another day \n\n";
+							}else{							
+								
+								if(messg=="limit exceeded"){
+									sendMessage(userId, {text: "Sorry, you can not have more than 10 expertise"});
+									senderContext[userId].state = "begin_again";									
+								}else{
+									var period = post_data.split("=");
+									period = period[period.length-1];
+									period = period.split("_");
+									period = period[1].toLowerCase();
+									msg = "You have already set up a reminder for "+period+" \n. Please pick another day \n\n";
 								//if(sendMessage(userId, {text: "You have already set up a reminder for "+period+" \n\n please select another day"})){
 									pickPeriod(userId,msg);
 								//}
+								}
+								
+								
+								
+								
 							}
 							return true;
 						}
