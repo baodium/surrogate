@@ -20,7 +20,7 @@ var expertise_page=0;
 var backurl="http://surrogation.com.ng/surrogateapp/";
 var senderContext = {};
 var greetings_pool = ["how are you","how far","wassup","kilonshele","bawo ni","how you dey","wetin dey happen","wetin dey","what is happening","how are you?","how far?","what is happening?"];
-var time_pool=["morning","afternoon","evening"];
+var time_pool=["morning","afternoon","evening","good morning","good afternoon","good evening"];
 var cancellation_pool=["quit","cancel","exit","abort","no","end","terminate","stop"];
 var abuse_pool=["damn","fuck","insane","crazy","mad","shit","oloriburuku","mugun","idiot"];
 var students_pool=["show student","show my student","my student","show me my student","who are my student","who is my student"];
@@ -368,7 +368,7 @@ app.post('/webhook', function (req, res) {
 						defaultMsg ="You are welcome "+senderContext[event.sender.id].firstName+".";
 					}else if(contains.call(cancellation_pool, msgin)){
 						defaultMsg ="Okay.";
-					}else if(time_pool.call(cancellation_pool, msgin)){
+					}else if(contain.call(time_pool, msgin)){
 						var d = new Date();
 						var n = d.getHours();
 						if(msgin.indexOf("morning")>-1 || msgin.indexOf("afternoon")>-1 || msgin.indexOf("evening")>-1){
