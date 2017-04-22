@@ -368,23 +368,6 @@ app.post('/webhook', function (req, res) {
 						defaultMsg ="You are welcome "+senderContext[event.sender.id].firstName+".";
 					}else if(contains.call(cancellation_pool, msgin)){
 						defaultMsg ="Okay.";
-					}else if(contains.call(time_pool, msgin)){
-						//
-						var d = new Date();
-						var n = d.getHours();
-						if(msgin.indexOf("morning")>-1 || msgin.indexOf("afternoon")>-1 || msgin.indexOf("evening")>-1){
-							if(n<12){
-								defaultMsg ="Good morning ";
-							}else if(n >=12 && n < 17){
-								defaultMsg ="Good afternoon ";
-							}else{
-								defaultMsg ="Good evening ";
-							}
-							defaultMsg+=""+senderContext[event.sender.id].firstName+"."
-						}else{
-							defaultMsg = msgin+" "+senderContext[event.sender.id].firstName;
-						}
-						
 					}else if(contains.call(hi_pool, msgin)){
 						defaultMsg ="Hi "+senderContext[event.sender.id].firstName+", how are you doing? I am surrogate bot. I am an artificial intelligent designed to assist students learn from experts on messenger.\n\n You can also render help to someone based on your proficiency. \n\n ";
 					}else if(contains.call(wellwish_pool, msgin)){
