@@ -973,10 +973,11 @@ function checkHelper(subject,senderId){
 					}
 					var j=(total>3)?3:total;
 					elementss[0]={
-							"title":"🎓 "+subject+" request list",							               
+							"title":"🎓 "+subject+" request list",
+							"subtitle": "🎓 Here is your student list",								
 							};
-					
-					for(i = 0; i<j ; i++){					
+
+					for(i = 0; i<2 ; i++){					
 					//for(i = 0; i<output.length; i++){
 						level = output[i].level;//.split("_");
 						if(level!=null){
@@ -1005,7 +1006,7 @@ function checkHelper(subject,senderId){
 					elementss[i+1]={                           
 							"title": output[i].name, 
 							"image_url": output[i].profile_pic,                  
-							"subtitle":  "Expert in:"+output[i].subject+", \n\n Level:"+level+"\n\n"+con,   
+							//"subtitle":  "Expert in:"+output[i].subject+", \n\n Level:"+level+"\n\n"+con,   
                             "buttons": [{
 											"title": "Request Expertise",
 											"type": "postback",
