@@ -369,6 +369,7 @@ app.post('/webhook', function (req, res) {
 					}else if(contains.call(cancellation_pool, msgin)){
 						defaultMsg ="Okay.";
 					}else if(contains.call(time_pool, msgin)){
+						//
 						var d = new Date();
 						var n = d.getHours();
 						if(msgin.indexOf("morning")>-1 || msgin.indexOf("afternoon")>-1 || msgin.indexOf("evening")>-1){
