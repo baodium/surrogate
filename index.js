@@ -2444,7 +2444,7 @@ function showStudents(toId,request_id){
 							"buttons": [{
 										"type": "postback",
 										"title": "Show Detail",
-										"payload": "show_student_detail-"+output[i].request_id+"-"+toId,
+										"payload": "show_student_detail-"+output[i].request_id,
 										}]                
 							};
 					}
