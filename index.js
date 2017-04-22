@@ -234,7 +234,7 @@ app.post('/webhook', function (req, res) {
 				}				 
 								
 				if(senderContext[event.sender.id].state === "provide_subject"){									
-					checkHelper(event.message.text,event.sender.id);									
+					checkHelper(event.message.text,event.sender.id,"0");									
 				}else if(senderContext[event.sender.id].state === "type_expertise"){
 					var subject = event.message.text;
 					senderContext[event.sender.id].subject = subject;
@@ -434,26 +434,11 @@ app.post('/webhook', function (req, res) {
 				var id = reply.payload.split("-");
 				 page = id[1];
 				 showExperts(event.sender.id,false,page);
-			}else if(reply.payload=="next_expertise"){
-				if(senderContext[event.sender.id]!=null){
-					senderContext[event.sender.id].next++;
-					showExpertise(event.sender.id);
-				}
-			}else if(reply.payload=="previous_expertise"){
-				if(senderContext[event.sender.id]!=null){
-					senderContext[event.sender.id].next--;
-					showExpertise(event.sender.id);
-				}
-			}else if(reply.payload=="next_expert_list"){
-				if(senderContext[event.sender.id]!=null){
-					senderContext[event.sender.id].nextexp++;
-					showExpertise(event.sender.id);
-				}
-			}else if(reply.payload=="previous_expert_list"){
-				if(senderContext[event.sender.id]!=null){
-					senderContext[event.sender.id].nextexp--;
-					showExpertise(event.sender.id);
-				}
+			}else if(reply.payload.indexOf("postback_viewmore_request")>-1){
+				var id = reply.payload.split("-");
+				 page = id[1];
+				 sub = id[2];				 
+				 checkHelper(sub,event.sender.id,page);
 			}else if(reply.payload.indexOf("delete_expertise")>-1){
 				var id = reply.payload.split("-");
 				 expertiseId = id[1];
@@ -943,7 +928,7 @@ function checkHelper2(subject,senderId){
 		});
 }
 
-function checkHelper(subject,senderId){		
+function checkHelper(subject,senderId,page){		
 	var post_data = querystring.stringify({'facebook_id_not' : senderId,'subject':subject});	
 	request({
 			url: backurl+"expertise/getwherenot",
@@ -1027,7 +1012,7 @@ function checkHelper(subject,senderId){
 						"buttons":[{
 									"title": (total<4)?"Close":"View More",
 									"type": "postback",
-									"payload": (total<4)?"postback_no":"postback_viewmore_request-"+request_page,                        
+									"payload": (total<4)?"postback_no":"postback_viewmore_request-"+request_page+"-"+subject,                        
 						}]
 						}
 					}
