@@ -870,9 +870,10 @@ function checkHelper(subject,senderId,page){
 					elementss[0]={
 							"title":"🎓 "+subject+" request list",
 							"subtitle": "Here is what I found",								
-							};
-
-					for(i = 0; i<j ; i++){					
+					};
+					var i=(page>0)?1:0;
+					
+					for(i; i<j ; i++){					
 					//for(i = 0; i<output.length; i++){
 						level = output[i].level;//.split("_");
 						if(level!=null){
