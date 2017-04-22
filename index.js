@@ -1041,7 +1041,7 @@ function checkHelper(subject,senderId){
 					}
 					
 					}catch(err){
-						//sendMessage(senderId, {text: "Error fetching expert "+JSON.stringify(err)});
+						sendMessage(senderId, {text: "Error fetching expert "+JSON.stringify(err)});
 					}	
 	
 					
