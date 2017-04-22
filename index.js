@@ -376,6 +376,21 @@ app.post('/webhook', function (req, res) {
 						defaultMsg ="I'm cool! "+senderContext[event.sender.id].firstName+". \n\n";
 					}else if(msgin.indexOf("damn")>-1 || msgin.indexOf("fuck")>-1 || msgin.indexOf("fool")>-1 || msgin.indexOf("insane")>-1 || msgin.indexOf("crazy")>-1 || msgin.indexOf("mad")>-1 ){					
 						defaultMsg ="Oh "+senderContext[event.sender.id].firstName+", that is not a very nice thing to say. \n\n Maybe you will feel better by providing help to someone on a subject you are proficient at. \n\n ";
+					}else if(contains.call(time_pool, msgin)){
+						var d = new Date();
+						var n = d.getHours();
+						if(msgin.indexOf("morning")>-1 || msgin.indexOf("afternoon")>-1 || msgin.indexOf("evening")>-1){
+							if(n<12){
+								defaultMsg ="Good morning ";
+							}else if(n >=12 && n < 17){
+								defaultMsg ="Good afternoon ";
+							}else{
+								defaultMsg ="Good evening ";
+							}
+							defaultMsg+=""+senderContext[event.sender.id].firstName+"."
+						}else{
+							defaultMsg = msgin+" "+senderContext[event.sender.id].firstName;
+						}						
 					}
 										
 					sendMessage(event.sender.id, {text: "" + defaultMsg+"This is what I have on my menu "});
