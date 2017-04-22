@@ -1794,7 +1794,7 @@ function submitForm(post_data,url,userId,action){
 							}else{
 								if(messg=="limit exceeded"){
 									sendMessage(userId, {text: "Sorry, you can not have more than 10 expertise"});
-									getOut(userId);	
+									//getOut(userId);	
 									senderContext[userId].state = "begin_again";									
 								}else{
 									sendMessage(userId, {text: "You have added this expertise before. Please specify another expertise"});
@@ -1848,16 +1848,16 @@ function submitForm(post_data,url,userId,action){
 							}else{							
 								
 								if(messg=="limit exceeded"){
-									sendMessage(userId, {text: "Sorry, you can not have more than 10 expertise"});
+									sendMessage(userId, {text: "Sorry, you can not have more than 10 reminders"});
 									senderContext[userId].state = "begin_again";									
 								}else{
 									var period = post_data.split("=");
 									period = period[period.length-1];
 									period = period.split("_");
-									period = period[1].toLowerCase();
-									msg = "You have already set up a reminder for "+period+" \n. Please pick another day \n\n";
-								//if(sendMessage(userId, {text: "You have already set up a reminder for "+period+" \n\n please select another day"})){
-									pickPeriod(userId,msg);
+										period = period[1].toLowerCase();
+										msg = "You have already set up a reminder for "+period+" \n. Please pick another day \n\n";
+									//if(sendMessage(userId, {text: "You have already set up a reminder for "+period+" \n\n please select another day"})){
+										pickPeriod(userId,msg);
 								//}
 								}
 								
