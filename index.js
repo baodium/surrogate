@@ -2423,7 +2423,7 @@ function showStudents(toId,request_id){
 					sendMessage(toId, {text: "Oh! your student list is empty"});
 				}else{	
 					var j=0;				
-					for(i = 0; i< (total%10); i++){
+					for(i = 0; i< (total%3); i++){
 						j=i;
 						level = output[i].level;//.split("_");
 						if(level!=null){
@@ -2473,6 +2473,9 @@ function showStudents(toId,request_id){
 		});	
     
 }
+
+
+
 
 var contains = function(needle) {
     var findNaN = needle !== needle;
