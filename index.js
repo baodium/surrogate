@@ -853,7 +853,7 @@ return true;
 }
 
 
-function checkHelper2(subject,senderId){
+function checkHelper(subject,senderId){
 	
 	var post_data = querystring.stringify({'facebook_id_not' : senderId,'subject':subject});	
 	request({
@@ -942,7 +942,7 @@ function checkHelper2(subject,senderId){
 					
 		});
 }
-
+/*
 function checkHelper(subject,senderId){
 	
 	var post_data = querystring.stringify({'facebook_id_not' : senderId,'subject':subject});	
@@ -1049,6 +1049,7 @@ function checkHelper(subject,senderId){
 					
 		});
 }
+*/
 
 function sendHelpRequest(senderId,requestId){
 	var post_data = querystring.stringify({'expertise_id' : requestId});
