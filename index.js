@@ -347,10 +347,10 @@ app.post('/webhook', function (req, res) {
 					showExpertise(event.sender.id);
 				}else if(contains.call(experts_pool, msgin) || contains.call(experts_pool, msgin2)){
 					senderContext[event.sender.id].state="begin";
-					showExperts(event.sender.id,false);
+					showExperts(event.sender.id,false,"0");
 				}else if(contains.call(students_pool, msgin) || contains.call(students_pool, msgin2)){
 					senderContext[event.sender.id].state="begin";
-					showStudents(event.sender.id,false,student_page);
+					showStudents(event.sender.id,false,"0");
 				}else if(contains.call(menu_pool, msgin) || contains.call(menu_pool, msgin2)){
 					senderContext[event.sender.id].state="begin";
 					showMenu(event.sender.id);
@@ -420,7 +420,7 @@ app.post('/webhook', function (req, res) {
 			}else if(reply.payload=="my_expertise"){
 				showExpertise(event.sender.id);
 			}else if(reply.payload=="my_experts"){
-				showExperts(event.sender.id,false);
+				showExperts(event.sender.id,false,"0");
 			}else if(reply.payload=="my_students"){
 				showStudents(event.sender.id,false,"0");
 			}else if(reply.payload=="my_reminders"){
@@ -429,6 +429,10 @@ app.post('/webhook', function (req, res) {
 				var id = reply.payload.split("-");
 				 page = id[1];
 				 showStudents(event.sender.id,false,page);
+			}else if(reply.payload.indexOf("postback_viewmore_expert")>-1){
+				var id = reply.payload.split("-");
+				 page = id[1];
+				 showExperts(event.sender.id,false,page);
 			}else if(reply.payload=="next_expertise"){
 				if(senderContext[event.sender.id]!=null){
 					senderContext[event.sender.id].next++;
@@ -461,7 +465,7 @@ app.post('/webhook', function (req, res) {
 				 type = id[3];
 
 				 if(type=="type_remind_expert"){
-					showExperts(event.sender.id,reqId); 
+					showExpertDetail(event.sender.id,reqId); 
 				 }else{
 					showStudentDetail(event.sender.id,reqId); 
 				 }
@@ -2098,87 +2102,7 @@ function showReminders(recipientId){
 		});	
 }
 
-function showExperts(fromId,request_id){
-	var post_data = querystring.stringify({'from_id':fromId,'status':'completed'});
-	if(request_id!==false){
-		post_data = querystring.stringify({'request_id':request_id});	
-		post_data = querystring.stringify({'request_id':request_id,'from_id':fromId});	
-	}	
 
-	request({
-			url: backurl+"requests/get",
-			method: 'POST',
-			body: post_data,
-			headers: {
-				'Content-Type': 'application/x-www-form-urlencoded',
-				'Content-Length':post_data.length
-				}
-		}, function(error, response, body) {
-			if (error) {
-				console.log('Error sending message: ', error);
-				sendMessage(fromId, {text: error+""});
-			} else if (response.body.error) {
-				console.log('Error: ', response.body.error);
-			}else{
-				output = JSON.parse(body);
-				var total = output.length;
-				elementss = new Array();
-				if(total<1){
-					sendMessage(fromId, {text: "Oh! your tutor list is empty"});
-				}else{										
-					for(i = 0; i<output.length; i++){
-						level = output[i].level;//.split("_");
-						if(level!=null){
-							level = output[i].level.split("_");
-							level=level[0];
-						}else{
-							level="";
-						}
-						
-						elementss[i]={                           
-							"title": output[i].name, 
-							"image_url": output[i].profile_pic,                  
-							"subtitle": output[i].subject+" expert, Level:"+level,   
-                            "buttons": [{
-								"type": "postback",
-                                "title": "Set class reminder",
-                                "payload": "remind_expert-"+output[i].request_id,
-                                },{
-								"type": "postback",
-                                "title": "Send Message",
-                                "payload": "postback_message_yes-"+output[i].from_id+"-"+output[i].to_id+"-"+output[i].subject+"-expert:"+output[i].expertise_id,
-                                },{
-								"type": "postback",
-                                "title": "Remove",
-                                "payload": "remove_expert-"+output[i].to_id+"-"+output[i].expertise_id,
-                                }]
-                        };				
-					}
-										
-					message = {
-								"attachment": {
-								"type": "template",
-								"payload": {
-											"template_type": "generic",
-											"elements": elementss
-											}
-									}
-								};
-					senderContext[fromId].state="send message";
-					
-					
-					if(request_id==false){
-						if(sendMessage(fromId, {text: "🚻 Here is your expert list"})){
-							sendMessage(fromId,message);
-						}	
-					}else{
-						sendMessage(fromId,message);
-					}
-							
-				}					
-			}			
-		});	
-}
 
 
 
@@ -2403,6 +2327,88 @@ function showStudentDetail(toId,request_id){
 
 
 
+function showExpertDetail(fromId,request_id){
+	var post_data = querystring.stringify({'from_id':fromId,'status':'completed'});
+	if(request_id!==false){
+		post_data = querystring.stringify({'request_id':request_id});	
+		//post_data = querystring.stringify({'request_id':request_id,'from_id':fromId});	
+	}	
+	
+		request({
+			url: backurl+"requests/get",
+			method: 'POST',
+			body: post_data,
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded',
+				'Content-Length':post_data.length
+				}
+		}, function(error, response, body) {
+			if (error) {
+				console.log('Error sending message: ', error);
+				sendMessage(fromId, {text: error+""});
+			} else if (response.body.error) {
+				console.log('Error: ', response.body.error);
+			}else{
+				output = JSON.parse(body);
+				var total = output.length;
+				elementss = new Array();
+				if(total<1){
+					sendMessage(fromId, {text: "Oh! your tutor list is empty"});
+				}else{										
+					for(i = 0; i<output.length; i++){
+						level = output[i].level;//.split("_");
+						if(level!=null){
+							level = output[i].level.split("_");
+							level=level[0];
+						}else{
+							level="";
+						}
+						
+						elementss[i]={                           
+							"title": output[i].name, 
+							"image_url": output[i].profile_pic,                  
+							"subtitle": output[i].subject+" expert, Level:"+level,   
+                            "buttons": [{
+								"type": "postback",
+                                "title": "Set class reminder",
+                                "payload": "remind_expert-"+output[i].request_id,
+                                },{
+								"type": "postback",
+                                "title": "Send Message",
+                                "payload": "postback_message_yes-"+output[i].from_id+"-"+output[i].to_id+"-"+output[i].subject+"-expert:"+output[i].expertise_id,
+                                },{
+								"type": "postback",
+                                "title": "Remove",
+                                "payload": "remove_expert-"+output[i].to_id+"-"+output[i].expertise_id,
+                                }]
+                        };				
+					}
+										
+					message = {
+								"attachment": {
+								"type": "template",
+								"payload": {
+											"template_type": "generic",
+											"elements": elementss
+											}
+									}
+								};
+					senderContext[fromId].state="send message";
+					
+					
+					if(request_id==false){
+						if(sendMessage(fromId, {text: "🚻 Here is your expert list"})){
+							sendMessage(fromId,message);
+						}	
+					}else{
+						sendMessage(fromId,message);
+					}
+							
+				}					
+			}			
+		});
+}
+
 function showStudents(toId,request_id,page){
 
 	var post_data = querystring.stringify({'to_id':toId,'page':page});	
@@ -2430,10 +2436,10 @@ function showStudents(toId,request_id,page){
 				if(total<1){
 					sendMessage(toId, {text: "Oh! your student list is empty"});
 				}else{	
-				if(total>2){
+				if(total>3){
 					student_page++;
 				}
-					var j=(total>2)?2:total;
+					var j=(total>3)?3:total;
 
 					elementss[0]={
 							"title":"Hey "+senderContext[toId].firstName,
@@ -2470,9 +2476,9 @@ function showStudents(toId,request_id,page){
 						"top_element_style": "compact",
                         "elements": elementss,
 						"buttons":[{
-									"title": (total<3)?"Close":"View More",
+									"title": (total<4)?"Close":"View More",
 									"type": "postback",
-									"payload": (total<3)?"postback_no":"postback_viewmore_student-"+student_page,                        
+									"payload": (total<4)?"postback_no":"postback_viewmore_student-"+student_page,                        
 						}]
 						}
 					}
@@ -2492,70 +2498,96 @@ function showStudents(toId,request_id,page){
 }
 
 
-/*
-message = {
-    "attachment": {
-        "type": "template",
-        "payload": {
-            "template_type": "list",
-            "top_element_style": "compact",
-            "elements": [
-                {
-                    "title": "Classic White T-Shirt",
-                    "image_url": "https://peterssendreceiveapp.ngrok.io/img/white-t-shirt.png",
-                    "subtitle": "100% Cotton, 200% Comfortable",
-                    "default_action": {
-                        "type": "web_url",
-                        "url": "https://peterssendreceiveapp.ngrok.io/view?item=100",
-                        "messenger_extensions": true,
-                        "webview_height_ratio": "tall",
-                        "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
-                    },
-                    "buttons": [
-                        {
-                            "title": "Buy",
-                            "type": "web_url",
-                            "url": "https://peterssendreceiveapp.ngrok.io/shop?item=100",
-                            "messenger_extensions": true,
-                            "webview_height_ratio": "tall",
-                            "fallback_url": "https://peterssendreceiveapp.ngrok.io/"                        
-                        }
-                    ]                
-                },
-                {
-                    "title": "Classic Blue T-Shirt",
-                    "image_url": "https://peterssendreceiveapp.ngrok.io/img/blue-t-shirt.png",
-                    "subtitle": "100% Cotton, 200% Comfortable",
-                    "default_action": {
-                        "type": "web_url",
-                        "url": "https://peterssendreceiveapp.ngrok.io/view?item=101",
-                        "messenger_extensions": true,
-                        "webview_height_ratio": "tall",
-                        "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
-                    },
-                    "buttons": [
-                        {
-                            "title": "Buy",
-                            "type": "web_url",
-                            "url": "https://peterssendreceiveapp.ngrok.io/shop?item=101",
-                            "messenger_extensions": true,
-                            "webview_height_ratio": "tall",
-                            "fallback_url": "https://peterssendreceiveapp.ngrok.io/"                        
-                        }
-                    ]                
-                }],
-				"buttons": [
-                {
-                    "title": "View More",
-                    "type": "postback",
-                    "payload": "payload"                        
-                }
-            ]  
-        }
-    }
-};
+function showExperts(fromId,request_id,page){
+	var post_data = querystring.stringify({'from_id':fromId,'status':'completed'});
+	if(request_id!==false){
+		post_data = querystring.stringify({'request_id':request_id});	
+		post_data = querystring.stringify({'request_id':request_id,'from_id':fromId});	
+	}	
 
-*/
+	request({
+			url: backurl+"requests/get",
+			method: 'POST',
+			body: post_data,
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded',
+				'Content-Length':post_data.length
+				}
+		}, function(error, response, body) {
+			if (error) {
+				console.log('Error sending message: ', error);
+				sendMessage(fromId, {text: error+""});
+			} else if (response.body.error) {
+				console.log('Error: ', response.body.error);
+			}else{
+									
+				output = JSON.parse(body);
+				var total = output.length;
+				elementss = new Array();
+				if(total<1){
+					sendMessage(fromId, {text: "Oh! your tutor list is empty"});
+				}else{	
+				if(total>3){
+					expert_page++;
+				}
+					var j=(total>3)?3:total;
+
+					elementss[0]={
+							"title":"Hey "+senderContext[fromId].firstName,
+							"subtitle": "🚻 Here is your expert list",							               
+							};
+					
+					for(i = 0; i<j ; i++){
+						level = output[i].level;//.split("_");
+						if(level!=null){
+							level = output[i].level.split("_");
+							level=level[0];
+						}else{
+							level="";
+						}
+
+						elementss[i+1]={
+							"title": output[i].name,
+							"image_url": output[i].profile_pic,
+							"subtitle": output[i].subject+" tutor",							
+							"buttons": [{
+										"type": "postback",
+										"title": "Show Detail",
+										"payload": "show_expert_detail-"+output[i].request_id,
+										}]                
+							};
+					}
+					
+				var buttons = new Array();
+				message = {
+					"attachment": {
+                    "type": "template",
+                    "payload": {
+                        "template_type": "list",
+						"top_element_style": "compact",
+                        "elements": elementss,
+						"buttons":[{
+									"title": (total<4)?"Close":"View More",
+									"type": "postback",
+									"payload": (total<4)?"postback_no":"postback_viewmore_expert-"+expert_page,                        
+						}]
+						}
+					}
+				};	
+				
+				if(request_id===false){
+							sendMessage(fromId,message);
+				}else{
+					sendMessage(fromId,message);
+				}
+			  }	
+
+
+
+				
+			}			
+		});	
+}
 
 var contains = function(needle) {
     var findNaN = needle !== needle;
