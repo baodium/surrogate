@@ -2466,7 +2466,7 @@ function showStudents(toId,request_id){
                         "template_type": "list",
 						"top_element_style": "compact",
                         "elements": elementss,
-						"buttons": buttons;
+						"buttons": buttons
 						}
 					}
 				};	
