@@ -2429,7 +2429,7 @@ function showStudents(toId,request_id){
 				if(total>4){
 					student_page++;
 				}
-					var j=(total%4);				
+					var j=(total>4)?4:total;				
 					for(i = 0; i<j ; i++){
 						level = output[i].level;//.split("_");
 						if(level!=null){
