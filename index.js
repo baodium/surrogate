@@ -2430,7 +2430,7 @@ function showStudents(toId,request_id){
 					student_page++;
 				}
 					var j=0;				
-					for(i = 0; i<(total%2) ; i++){
+					for(i = 0; i<3 ; i++){
 						j=i;
 						level = output[i].level;//.split("_");
 						if(level!=null){
