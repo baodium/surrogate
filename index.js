@@ -2423,7 +2423,7 @@ function showStudents(toId,request_id){
 					sendMessage(toId, {text: "Oh! your student list is empty"});
 				}else{	
 					var j=0;				
-					for(i = 0; i< 2; i++){
+					for(i = 0; i<(total%3) ; i++){
 						j=i;
 						level = output[i].level;//.split("_");
 						if(level!=null){
@@ -2445,6 +2445,20 @@ function showStudents(toId,request_id){
 							};
 					}
 					
+				var buttons = new Array();
+				if(total<5){
+					buttons[0] = {
+									"title": "Close",
+									"type": "postback",
+									"payload": "postback_no"                        
+						}; 
+				}else{
+					buttons[0] = {
+									"title": "View More",
+									"type": "postback",
+									"payload": "postback_view_more"                        
+						}; 
+				}
 				message = {
 					"attachment": {
                     "type": "template",
@@ -2452,11 +2466,7 @@ function showStudents(toId,request_id){
                         "template_type": "list",
 						"top_element_style": "compact",
                         "elements": elementss,
-						"buttons": [{
-									"title": "View More",
-									"type": "postback",
-									"payload": "payload"                        
-						}]  
+						"buttons": buttons;
 						}
 					}
 				};	
