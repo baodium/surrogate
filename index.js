@@ -41,10 +41,8 @@ app.listen((process.env.PORT || 3000));
 */
 
 
-app.get('/', function (req, res) { 
-					
-	res.send('Surrogate Bot'+time);	
-	
+app.get('/', function (req, res) { 					
+	res.send('Surrogate Bot');		
 });
 
 app.get('/resources/', function (req, res) { 
@@ -395,7 +393,6 @@ app.post('/webhook', function (req, res) {
 			reply = JSON.parse(reply);
 			
 			if(reply.payload=="get_started_button"){
-				showPersistence();
 				welcomeUser(event.sender.id);
 			}else if(reply.payload=="help_me"){
 				help(event.sender.id);
@@ -1708,29 +1705,8 @@ function getStarted(){
 						}],
 				"target_audience": {
 						"audience_type":"all"
-					}
-				};
-					
-		request({
-        url: 'https://graph.facebook.com/v2.8/me/messenger_profile',			
-        qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
-        method: 'POST',	
-        json: message
-		}, function(error, response, body) {
-			if (error) {
-				console.log('Error sending message: ', error);
-			} else if (response.body.error) {
-				console.log('Error: ', response.body.error);
-			}else{
-					console.log(body);
-			}
-		});
-				
-}
-
-function showPersistence(){
-	var message = {
-				"persistent_menu": [{
+					},
+					"persistent_menu": [{
 						"locale":"default",
 						"composer_input_disabled":false,
 						"call_to_actions":[
@@ -1786,6 +1762,7 @@ function showPersistence(){
 		});
 				
 }
+
 
 
 
@@ -2196,95 +2173,6 @@ function showExperts(fromId,request_id){
 }
 
 
-function showStudents(toId,request_id){
-	var post_data = querystring.stringify({'to_id':toId});	
-	if(request_id!==false){
-		post_data = querystring.stringify({'request_id':request_id,'to_id':toId});	
-	}
-
-	request({
-			url: backurl+"requests/get",
-			method: 'POST',
-			body: post_data,
-			headers: {
-				'Content-Type': 'application/x-www-form-urlencoded',
-				'Content-Length':post_data.length
-				}
-		}, function(error, response, body) {
-			if (error) {
-				console.log('Error sending message: ', error);
-			} else if (response.body.error) {
-				console.log('Error: ', response.body.error);
-			}else{
-				output = JSON.parse(body);
-				var total = output.length;
-				elementss = new Array();
-				if(total<1){
-					sendMessage(toId, {text: "Oh! your student list is empty"});
-				}else{	
-					var j=0;				
-					for(i = 0; i< (total%10); i++){
-						j=i;
-						level = output[i].level;//.split("_");
-						if(level!=null){
-							level = output[i].level.split("_");
-							level=level[0];
-						}else{
-							level="";
-						}
-
-						elementss[i]={                           
-							"title": output[i].name, 
-							"image_url": output[i].profile_pic,                  
-							"subtitle": output[i].subject+" student",   
-                            "buttons": [{
-								"type": "postback",
-                                "title": "Set class reminder",
-                                "payload": "remind_student-"+output[i].request_id,
-                                },{
-								"type": "postback",
-                                "title": "Send Message",
-                                "payload": "postback_message_yes-"+output[i].to_id+"-"+output[i].from_id+"-"+output[i].subject+"-student:"+output[i].expertise_id,
-                                },{
-								"type": "postback",
-                                "title": "Remove",
-                                "payload": "remove_student-"+output[i].from_id+"-"+output[i].expertise_id,
-                                }]
-                        };				
-					}
-					
-				message = {
-					"attachment": {
-                    "type": "template",
-                    "payload": {
-                        "template_type": "generic",
-                        "elements": elementss
-                    }
-					}
-				};	
-				
-				if(request_id===false){
-					//if(total<2){
-						if(sendMessage(toId, {text: "🎓 Here is your student list"})){
-							sendMessage(toId,message);
-						}
-						/*
-						if(total>2){
-							showMore(toId,"Hey","student",total);
-						}*/
-						/*
-					}else{ 
-						if(showMore(toId, "🎓 Here is your student list","student",total)){
-							sendMessage(toId,message);
-						}
-					}*/
-				}else{
-					sendMessage(toId,message);
-				}
-			  }					
-			}			
-		});	
-}
 
 function removeExpertise(recipientId,expertise_id,subject){
 	var post_data = querystring.stringify({'facebook_id' : recipientId,'expertise_id':expertise_id});
@@ -2426,6 +2314,185 @@ return sendMessage(message,senderId);
 }
 
 
+function showStudents2(toId,request_id){
+	var post_data = querystring.stringify({'to_id':toId});	
+	if(request_id!==false){
+		post_data = querystring.stringify({'request_id':request_id,'to_id':toId});	
+	}
+
+	request({
+			url: backurl+"requests/get",
+			method: 'POST',
+			body: post_data,
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded',
+				'Content-Length':post_data.length
+				}
+		}, function(error, response, body) {
+			if (error) {
+				console.log('Error sending message: ', error);
+			} else if (response.body.error) {
+				console.log('Error: ', response.body.error);
+			}else{
+				output = JSON.parse(body);
+				var total = output.length;
+				elementss = new Array();
+				if(total<1){
+					sendMessage(toId, {text: "Oh! your student list is empty"});
+				}else{	
+					var j=0;				
+					for(i = 0; i< (total%10); i++){
+						j=i;
+						level = output[i].level;//.split("_");
+						if(level!=null){
+							level = output[i].level.split("_");
+							level=level[0];
+						}else{
+							level="";
+						}
+
+						elementss[i]={                           
+							"title": output[i].name, 
+							"image_url": output[i].profile_pic,                  
+							"subtitle": output[i].subject+" student",   
+                            "buttons": [{
+								"type": "postback",
+                                "title": "Set class reminder",
+                                "payload": "remind_student-"+output[i].request_id,
+                                },{
+								"type": "postback",
+                                "title": "Send Message",
+                                "payload": "postback_message_yes-"+output[i].to_id+"-"+output[i].from_id+"-"+output[i].subject+"-student:"+output[i].expertise_id,
+                                },{
+								"type": "postback",
+                                "title": "Remove",
+                                "payload": "remove_student-"+output[i].from_id+"-"+output[i].expertise_id,
+                                }]
+                        };				
+					}
+					
+				message = {
+					"attachment": {
+                    "type": "template",
+                    "payload": {
+                        "template_type": "generic",
+                        "elements": elementss
+                    }
+					}
+				};	
+				
+				if(request_id===false){
+						if(sendMessage(toId, {text: "🎓 Here is your student list"})){
+							sendMessage(toId,message);
+						}
+				}else{
+					sendMessage(toId,message);
+				}
+			  }					
+			}			
+		});	
+}
+
+
+
+function showStudents(toId){
+
+	var post_data = querystring.stringify({'to_id':toId});	
+	if(request_id!==false){
+		post_data = querystring.stringify({'request_id':request_id,'to_id':toId});	
+	}
+
+	request({
+			url: backurl+"requests/get",
+			method: 'POST',
+			body: post_data,
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded',
+				'Content-Length':post_data.length
+				}
+		}, function(error, response, body) {
+			if (error) {
+				console.log('Error sending message: ', error);
+			} else if (response.body.error) {
+				console.log('Error: ', response.body.error);
+			}else{
+				output = JSON.parse(body);
+				var total = output.length;
+				elementss = new Array();
+				if(total<1){
+					sendMessage(toId, {text: "Oh! your student list is empty"});
+				}else{	
+					var j=0;				
+					for(i = 0; i< (total%10); i++){
+						j=i;
+						level = output[i].level;//.split("_");
+						if(level!=null){
+							level = output[i].level.split("_");
+							level=level[0];
+						}else{
+							level="";
+						}
+
+						elementss[i]={                           
+							"title": output[i].name, 
+							"image_url": output[i].profile_pic,                  
+							"subtitle": output[i].subject+" student",   
+                            "buttons": [{
+								"type": "postback",
+                                "title": "Set class reminder",
+                                "payload": "remind_student-"+output[i].request_id,
+                                },{
+								"type": "postback",
+                                "title": "Send Message",
+                                "payload": "postback_message_yes-"+output[i].to_id+"-"+output[i].from_id+"-"+output[i].subject+"-student:"+output[i].expertise_id,
+                                },{
+								"type": "postback",
+                                "title": "Remove",
+                                "payload": "remove_student-"+output[i].from_id+"-"+output[i].expertise_id,
+                                }]
+                        };
+
+						
+						elementss[i]={
+							"title": output[i].name,
+							"image_url": output[i].profile_pic,
+							"subtitle": output[i].subject+" student",							
+							"buttons": [{
+										"type": "postback",
+										"title": "Show Detail",
+										"payload": "show_student_student-"+output[i].request_id,
+										}]                
+							};
+					}
+					
+				message = {
+					"attachment": {
+                    "type": "template",
+                    "payload": {
+                        "template_type": "list",
+						"top_element_style": "compact",
+                        "elements": elementss,
+						"buttons": [{
+									"title": "View More",
+									"type": "postback_view_more-1",
+									"payload": "payload"                        
+						}]  
+						}
+					}
+				};	
+				
+				if(request_id===false){
+						if(sendMessage(toId, {text: "🎓 Here is your student list"})){
+							sendMessage(toId,message);
+						}
+				}else{
+					sendMessage(toId,message);
+				}
+			  }					
+			}			
+		});	
+    
+}
 
 var contains = function(needle) {
     var findNaN = needle !== needle;
