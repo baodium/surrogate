@@ -498,7 +498,7 @@ app.post('/webhook', function (req, res) {
 				if(senderContext[event.sender.id]!=null){  
 					sendAcceptance(fromId,expertiseId,event.sender.id);
 				}								
-			}else if(reply.payload=="home"){
+			}else if(reply.payload=="my_home"){
 				showMenu(event.sender.id);				
 			}else if(reply.payload.indexOf("postback_message_yes")>-1){				
 				var members_id = reply.payload.split("-");
@@ -1611,78 +1611,6 @@ function rateOption(fromm,expertise_id){
 	return true;
 }
 
-/*
-function getStarted(){
-	var message = {
-				"get_started":{
-						"payload":"get_started_button"
-						},
-				"greeting":[{
-						"locale":"default",
-						"text":"Good to have you {{user_first_name}}! I can help you learn from experts or render help to people based on your proficiencies"
-						}],
-				"target_audience": {
-						"audience_type":"all"
-					},
-				"persistent_menu": [{
-						"locale":"default",
-						"composer_input_disabled":true,
-						"call_to_actions":[
-						{
-									"type":"postback",
-									"title":"Home",
-									"payload":"home"
-						},
-						{
-									"type":"postback",
-									"title":"💡 About",
-									"payload":"about_me"
-						},
-						{
-						"title":"Dashboard",
-						"type":"nested",
-						"call_to_actions":[
-									{
-									"type":"postback",
-									"title":"📕 Expertise",
-									"payload":"my_expertise"
-									},{
-									"type":"postback",
-									"title":"Tutors",
-									"payload":"my_experts"
-									},{
-									"type":"postback",
-									"title":"Students",
-									"payload":"my_students"
-									},
-									{
-									"type":"postback",
-									"title":"My Reminders",
-									"payload":"my_reminders"
-									}]
-								}]
-						}]
-				};
-					
-		request({
-        url: 'https://graph.facebook.com/v2.8/me/messenger_profile',			
-        qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
-        method: 'POST',	
-        json: message
-		}, function(error, response, body) {
-			if (error) {
-				console.log('Error sending message: ', error);
-			} else if (response.body.error) {
-				console.log('Error: ', response.body.error);
-			}else{
-					console.log(body);
-			}
-		});
-				
-}
-
-
-*/
 function getStarted(){
 	var message = {
 				"get_started":{
@@ -1702,7 +1630,7 @@ function getStarted(){
 						{
 									"type":"postback",
 									"title":"🏡 Home",
-									"payload":"home"
+									"payload":"my_home"
 						},
 						{
 									"type":"postback",
@@ -1772,8 +1700,6 @@ function submitForm(post_data,url,userId,action){
 				console.log('Error: ', response.body.error);
 			}else{
 				var output = JSON.parse(body);
-				
-				//sendMessage(userId, {text: "" + body+"-"+output.status});
 				var exists = (output.status=="ok")?false:true;
 				var messg = output.message;
 				if(senderContext[userId]!=null){
