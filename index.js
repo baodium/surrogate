@@ -2433,7 +2433,13 @@ function showStudents(toId,request_id,page){
 				if(total>2){
 					student_page++;
 				}
-					var j=(total>2)?2:total;				
+					var j=(total>2)?2:total;
+
+					elementss[0]={
+							"title":"Hey "+senderContext[toId].firstName,
+							"subtitle": "🎓 Here is your student list",							               
+							};
+					
 					for(i = 0; i<j ; i++){
 						level = output[i].level;//.split("_");
 						if(level!=null){
@@ -2443,7 +2449,7 @@ function showStudents(toId,request_id,page){
 							level="";
 						}
 
-						elementss[i]={
+						elementss[i+1]={
 							"title": output[i].name,
 							"image_url": output[i].profile_pic,
 							"subtitle": output[i].subject+" student",							
@@ -2473,9 +2479,9 @@ function showStudents(toId,request_id,page){
 				};	
 				
 				if(request_id===false){
-						if(sendMessage(toId, {text: "🎓 Here is your student list"+student_page})){
+						//if(sendMessage(toId, {text: "🎓 Here is your student list"})){
 							sendMessage(toId,message);
-						}
+						//}
 				}else{
 					sendMessage(toId,message);
 				}
