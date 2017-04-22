@@ -2405,7 +2405,7 @@ function showStudentDetail(toId,request_id){
 
 function showStudents(toId,request_id,page){
 
-	var post_data = querystring.stringify({'to_id':toId});	
+	var post_data = querystring.stringify({'to_id':toId,'page':page});	
 	if(request_id!==false){
 		post_data = querystring.stringify({'request_id':request_id,'to_id':toId});	
 	}
