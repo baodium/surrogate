@@ -828,7 +828,7 @@ function checkHelper(subject,senderId,page){
 				try{
 					output = JSON.parse(body);	
 					if(output.length>0){
-							sendMessage(senderId, {text: "Oh! that is nice, I know people that can help you in "+subject+".\n\n Here is the list"});
+							sendMessage(senderId, {text: "Oh! that is nice, I know people that can help you in "+subject+".\n\n"});
 							senderContext[senderId].state = "provide_subject_done";	
 						
 					var total = output.length;
