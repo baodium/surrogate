@@ -929,7 +929,7 @@ function checkHelper2(subject,senderId){
 }
 
 function checkHelper(subject,senderId,page){		
-	var post_data = querystring.stringify({'facebook_id_not' : senderId,'subject':subject});	
+	var post_data = querystring.stringify({'facebook_id_not' : senderId,'subject':subject,'page':page});	
 	request({
 			url: backurl+"expertise/getwherenot",
 			method: 'POST',
