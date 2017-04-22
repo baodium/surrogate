@@ -2446,19 +2446,6 @@ function showStudents(toId,request_id){
 					}
 					
 				var buttons = new Array();
-				if(total<5){
-					buttons[0] = {
-									"title": "Close",
-									"type": "postback",
-									"payload": "postback_no"                        
-						}; 
-				}else{
-					buttons[0] = {
-									"title": "View More",
-									"type": "postback",
-									"payload": "postback_view_more"                        
-						}; 
-				}
 				message = {
 					"attachment": {
                     "type": "template",
@@ -2466,7 +2453,11 @@ function showStudents(toId,request_id){
                         "template_type": "list",
 						"top_element_style": "compact",
                         "elements": elementss,
-						"buttons": buttons
+						"buttons":[{
+									"title": (total<5)?"Close":"View More",
+									"type": "postback",
+									"payload": (total<5)?"postback_no":"postbeck_view_more",                        
+						}]
 						}
 					}
 				};	
