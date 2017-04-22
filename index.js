@@ -11,6 +11,7 @@ var app = express();
 var started=false;
 var message_count=0;
 var student_page=0;
+var request_page=0;
 var tutor_page=0;
 var expert_page=0;
 var expertise_page=0;
@@ -852,8 +853,7 @@ return true;
 }
 
 
-
-function checkHelper(subject,senderId){
+function checkHelper2(subject,senderId){
 	
 	var post_data = querystring.stringify({'facebook_id_not' : senderId,'subject':subject});	
 	request({
@@ -941,7 +941,113 @@ function checkHelper(subject,senderId){
 			}
 					
 		});
+}
+
+function checkHelper(subject,senderId){
 	
+	var post_data = querystring.stringify({'facebook_id_not' : senderId,'subject':subject});	
+	request({
+			url: backurl+"expertise/getwherenot",
+			method: 'POST',
+			body: post_data,
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded',
+				'Content-Length':post_data.length
+				}
+		}, function(error, response, body) {
+			//sendMessage(senderId, {text: "" + JSON.stringify(body)});
+			if (error) {
+				console.log('Error sending message: ', error);
+			} else if (response.body.error) {
+				console.log('Error: ', response.body.error);
+			}else{
+				try{
+					output = JSON.parse(body);	
+					if(output.length>0){
+							sendMessage(senderId, {text: "Oh! that is nice, I know people that can help you in "+subject+".\n\n Here is the list"});
+							senderContext[senderId].state = "provide_subject_done";	
+						
+					var total = output.length;
+					elementss = new Array();	
+					if(total>3){
+						request_page++;
+					}
+					var j=(total>3)?3:total;
+
+					elementss[0]={
+							"title":"🎓 "+subject+" request list",							               
+							};
+					
+					for(i = 0; i<j ; i++){
+					
+						level = output[i].level;//.split("_");
+						if(level!=null){
+							level = output[i].level.split("_");
+							level=level[0];
+						}else{
+							level="";
+						}
+						
+						con="";
+						var rating = output[i].rating;						
+						var totalr = output[i].total_rating;
+						if(rating==null || rating=="NULL"){
+							rating = 0;
+						}
+						
+						if(totalr==null || totalr=="NULL"){
+							totalr=1;
+						}
+						
+						rate = Math.round(rating/totalr);
+						for(k=0; k<rate; k++){
+							con+="🌟";
+						}
+						
+					elementss[i]={                           
+							"title": output[i].name, 
+							"image_url": output[i].profile_pic,                  
+							"subtitle":  "Expert in:"+output[i].subject+", \n\n Level:"+level+"\n\n"+con,   
+                            "buttons": [{
+											"title": "Request Expertise",
+											"type": "postback",
+											"payload": "request_expertise-"+output[i].expertise_id                     
+										}]
+                        };
+				
+					}
+					
+				message = {
+					"attachment": {
+                    "type": "template",
+                    "payload": {
+                        "template_type": "list",
+						"top_element_style": "compact",
+                        "elements": elementss,
+						"buttons":[{
+									"title": (total<4)?"Close":"View More",
+									"type": "postback",
+									"payload": (total<4)?"postback_no":"postback_viewmore_request-"+request_page,                        
+						}]
+						}
+					}
+				};	
+					
+					sendMessage(senderId,message);	
+							
+					}else{
+						sendMessage(senderId, {text: "Sorry, I don't know anyone that is proficient in "+subject+", kindly tell your friends about me so I can render help to more people"});
+						displayOption(senderId,"Do you want to try another subject?","yes_no");
+					}
+					
+					}catch(err){
+						//sendMessage(senderId, {text: "Error fetching expert "+JSON.stringify(err)});
+					}	
+	
+					
+			}
+					
+		});
 }
 
 function sendHelpRequest(senderId,requestId){
