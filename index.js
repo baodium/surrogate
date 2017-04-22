@@ -974,7 +974,7 @@ function checkHelper(subject,senderId){
 					var j=(total>3)?3:total;
 					elementss[0]={
 							"title":"🎓 "+subject+" request list",
-							"subtitle": "🎓 Here is your student list",								
+							"subtitle": "Here is what I found",								
 							};
 
 					for(i = 0; i<2 ; i++){					
@@ -1006,7 +1006,7 @@ function checkHelper(subject,senderId){
 					elementss[i+1]={                           
 							"title": output[i].name, 
 							"image_url": output[i].profile_pic,                  
-							"subtitle":  "Expert in:"+output[i].subject+", Level:"+level+", "+con,   
+							"subtitle":  "Expert in:"+output[i].subject+", Level:"+level+"\n"+con,   
                             "buttons": [{
 											"title": "Request Expertise",
 											"type": "postback",
