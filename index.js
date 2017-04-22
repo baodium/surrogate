@@ -350,7 +350,7 @@ app.post('/webhook', function (req, res) {
 					showExperts(event.sender.id,false);
 				}else if(contains.call(students_pool, msgin) || contains.call(students_pool, msgin2)){
 					senderContext[event.sender.id].state="begin";
-					showStudents(event.sender.id,false);
+					showStudents(event.sender.id,false,student_page);
 				}else if(contains.call(menu_pool, msgin) || contains.call(menu_pool, msgin2)){
 					senderContext[event.sender.id].state="begin";
 					showMenu(event.sender.id);
@@ -422,9 +422,13 @@ app.post('/webhook', function (req, res) {
 			}else if(reply.payload=="my_experts"){
 				showExperts(event.sender.id,false);
 			}else if(reply.payload=="my_students"){
-				showStudents(event.sender.id,false);
+				showStudents(event.sender.id,false,student_page);
 			}else if(reply.payload=="my_reminders"){
-				showReminders(event.sender.id);
+				showReminders(event.sender.id);//postback_viewmore_student
+			}else if(reply.payload.indexOf("postback_viewmore_student")>-1){
+				var id = reply.payload.split("-");
+				 page = id[1];
+				 showStudents(event.sender.id,false,page);
 			}else if(reply.payload=="next_expertise"){
 				if(senderContext[event.sender.id]!=null){
 					senderContext[event.sender.id].next++;
@@ -562,7 +566,7 @@ app.post('/webhook', function (req, res) {
 				}				
 			}else if(reply.payload=="postback_student_meeting"){
 				if(senderContext[event.sender.id]!=null){
-					showStudents(event.sender.id,false);
+					showStudents(event.sender.id,false,student_page);
 				}
 			}else if(reply.payload=="postback_tutor_meeting"){
 				if(senderContext[event.sender.id]!=null){
@@ -2399,7 +2403,7 @@ function showStudentDetail(toId,request_id){
 
 
 
-function showStudents(toId,request_id){
+function showStudents(toId,request_id,page){
 
 	var post_data = querystring.stringify({'to_id':toId});	
 	if(request_id!==false){
@@ -2429,7 +2433,7 @@ function showStudents(toId,request_id){
 				if(total>4){
 					student_page++;
 				}
-					var j=(total>4)?4:total;				
+					var j=(total>2)?2:total;				
 					for(i = 0; i<j ; i++){
 						level = output[i].level;//.split("_");
 						if(level!=null){
@@ -2460,9 +2464,9 @@ function showStudents(toId,request_id){
 						"top_element_style": "compact",
                         "elements": elementss,
 						"buttons":[{
-									"title": (total<5)?"Close":"View More",
+									"title": (total<3)?"Close":"View More",
 									"type": "postback",
-									"payload": (total<5)?"postback_no":"postbeck_view_more-"+student_page,                        
+									"payload": (total<3)?"postback_no":"postback_viewmore_student-"+student_page,                        
 						}]
 						}
 					}
