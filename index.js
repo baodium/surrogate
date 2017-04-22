@@ -2318,9 +2318,9 @@ function showStudentDetail(toId,request_id){
 				};	
 				
 				if(request_id===false){
-						if(sendMessage(toId, {text: "🎓 Here is your student list"})){
+						//if(sendMessage(toId, {text: "🎓 Here is your student list"})){
 							sendMessage(toId,message);
-						}
+						//}
 				}else{
 					sendMessage(toId,message);
 				}
@@ -2401,9 +2401,9 @@ function showExpertDetail(fromId,request_id){
 					
 					
 					if(request_id==false){
-						if(sendMessage(fromId, {text: "🚻 Here is your expert list"})){
+						//if(sendMessage(fromId, {text: "🚻 Here is your expert list"})){
 							sendMessage(fromId,message);
-						}	
+						//}	
 					}else{
 						sendMessage(fromId,message);
 					}
