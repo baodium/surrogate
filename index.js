@@ -1027,10 +1027,10 @@ function sendAcceptance(fromId,requestId,senderId){
 			reqId = bodyObject.request_id;
 			
 			sendMessage(senderId, {text: name+" is now your "+subject+" student."});
-			messageOption(senderId,"Would you like to message "+name+"?",senderId,fromId,subject,"student");
+			messageOption(senderId,"Would you like to message "+name+"?",senderId,fromId,subject,"student",requestId);
 			
 			sendMessage(fromId, {text: senderContext[senderId].firstName+" "+senderContext[senderId].lastName+" has accepted your "+subject+" expertise request. He's now in your tutors list."});
-			messageOption(fromId,"Would you like to message "+senderContext[senderId].firstName+"?",fromId,senderId,subject,"expert");
+			messageOption(fromId,"Would you like to message "+senderContext[senderId].firstName+"?",fromId,senderId,subject,"expert",requestId);
 						
 			var p_data = querystring.stringify({'request_id' : reqId,'status':'completed'});
 			submitForm(p_data,backurl+"requests/update",senderId,"update_request2");
@@ -1218,7 +1218,8 @@ function showDefault(recipientId) {
             console.log('Error sending message: ', error);
         } else if (response.body.error) {
             console.log('Error: ', response.body.error);
-        }else{			
+        }else{	
+			try{
 			var bodyObject = JSON.parse(body);
 			firstName = bodyObject.first_name;
 			lastName = bodyObject.last_name;
@@ -1234,6 +1235,9 @@ function showDefault(recipientId) {
 				defaultMsg ="Hello "+firstName+"!  This is what I have on my menu";
 				sendMessage(recipientId, {text: ""+defaultMsg});									
 				showMenu(recipientId);
+			}catch(err){
+				console.log("error at show default");
+			}
 		}
 		});
 			
@@ -1477,7 +1481,7 @@ function reminderOptionYesNo(recipientId){
 }
 
 
-function messageOption(recipientId,msg,fromm,to,subject,usertype){
+function messageOption(recipientId,msg,fromm,to,subject,usertype,exp_id){
 	message = {
                 "attachment": {
                     "type": "template",
@@ -1488,7 +1492,7 @@ function messageOption(recipientId,msg,fromm,to,subject,usertype){
                             "buttons": [{
 								"type": "postback",
                                 "title": "Yes",
-                                "payload": "postback_message_yes-"+fromm+"-"+to+"-"+subject+"-"+usertype+":0",
+                                "payload": "postback_message_yes-"+fromm+"-"+to+"-"+subject+"-"+usertype+":"+exp_id,
                                 },
 								{
 								"type": "postback",
