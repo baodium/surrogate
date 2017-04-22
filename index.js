@@ -19,9 +19,10 @@ var expertise_page=0;
 
 var backurl="http://surrogation.com.ng/surrogateapp/";
 var senderContext = {};
-var greetings_pool = ["how are you","how far","wassup","kilonshele","bawo ni","wetin dey happen","wetin dey","what is happening","how are you?","how far?","what is happening?"];
+var greetings_pool = ["how are you","how far","wassup","kilonshele","bawo ni","how you dey","wetin dey happen","wetin dey","what is happening","how are you?","how far?","what is happening?"];
+var time_pool=["morning","afternoon","evening"];
 var cancellation_pool=["quit","cancel","exit","abort","no","end","terminate","stop"];
-var abuse_pool=["damn","fuck","insane","crazy","mad","shit","oloriburuku","mugun"];
+var abuse_pool=["damn","fuck","insane","crazy","mad","shit","oloriburuku","mugun","idiot"];
 var students_pool=["show student","show my student","my student","show me my student","who are my student","who is my student"];
 var experts_pool=["show tutor","show my tutor","my tutor","show me my tutor","who are my tutor","show expert","show my expert","my expert","show me my expert","who are my expert","who is my expert","show expert","show my expert","my expert","show me my expert"];
 var expertise_pool=["show expertise","show my expertise","my expertise","show me my expertise","show subject","show my subject","my subject","show me my subject"];
@@ -367,6 +368,22 @@ app.post('/webhook', function (req, res) {
 						defaultMsg ="You are welcome "+senderContext[event.sender.id].firstName+".";
 					}else if(contains.call(cancellation_pool, msgin)){
 						defaultMsg ="Okay.";
+					}else if(time_pool.call(cancellation_pool, msgin)){
+						var d = new Date();
+						var n = d.getHours();
+						if(msgin.indexOf("morning")>-1 || msgin.indexOf("afternoon")>-1 || msgin.indexOf("evening")>-1){
+							if(n<12){
+								defaultMsg ="Good morning ";
+							}else if(n >=12 && n < 17){
+								defaultMsg ="Good afternoon ";
+							}else{
+								defaultMsg ="Good evening ";
+							}
+							defaultMsg+=""+senderContext[event.sender.id].firstName+"."
+						}else{
+							defaultMsg = msgin+" "+senderContext[event.sender.id].firstName;
+						}
+						
 					}else if(contains.call(hi_pool, msgin)){
 						defaultMsg ="Hi "+senderContext[event.sender.id].firstName+", how are you doing? I am surrogate bot. I am an artificial intelligent designed to assist students learn from experts on messenger.\n\n You can also render help to someone based on your proficiency. \n\n ";
 					}else if(contains.call(wellwish_pool, msgin)){
