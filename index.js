@@ -1305,12 +1305,12 @@ function showStatistic(recipientId,name) {
           {
             "title":"💡 Surrogate Bot Statistics",
 			"image_url": "http://surrogation.com.ng/surrogateapp/image?name="+name,
-          } ],
-		  "buttons": [{
+			"buttons": [{
                       "type": "web_url",
                       "url": "http://surrogation.com.ng/surrogateapp/image?name="+name, 
                       "title": "View in full"
                     }]
+          } ]
       }
     }
   };	
