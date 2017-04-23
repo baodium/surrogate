@@ -32,6 +32,7 @@ var about_pool=["about","about me","about surrogate","who are you","who are you?
 var menu_pool=["show menu","menu","my menu","show me menu","show me the menu","where is the menu","menu please","the menu"];
 var hi_pool=["hello","hi","hey","may i know you","tell me something"];
 var welcome_pool=["thank","thanks","thank you","oshe","thanks a bunch"];
+var statistics_pool=["my statistics","statistics","show stats","show statistics"];
 var wellwish_pool=["god bless","god bless you","bless you","you are great","you are good","you are too much","wish you the best","good luck"];
 var hours = ["","","","THREE","","","SIX","","","NINE","","","TWELVE"];	
 app.use(bodyParser.urlencoded({extended: false}));  
@@ -344,6 +345,9 @@ app.post('/webhook', function (req, res) {
 				}else if(contains.call(reminder_pool, msgin) || contains.call(reminder_pool, msgin2) ){
 					senderContext[event.sender.id].state="begin";
 					showReminders(event.sender.id);
+				}else if(contains.call(statistics_pool, msgin)){
+					senderContext[event.sender.id].state="begin";
+					showStatistic(event.sender.id,senderContext[event.sender.id].firstName);
 				}else if(contains.call(expertise_pool, msgin) || contains.call(expertise_pool, msgin2)){
 					senderContext[event.sender.id].state="begin";
 					showExpertise(event.sender.id);
@@ -387,7 +391,7 @@ app.post('/webhook', function (req, res) {
 							}else{
 								defaultMsg ="Good evening ";
 							}
-							defaultMsg+=""+senderContext[event.sender.id].firstName+"."
+							defaultMsg+=" "+senderContext[event.sender.id].firstName+"."
 						}else{
 							defaultMsg = msgin+" "+senderContext[event.sender.id].firstName;
 						}						
@@ -1290,25 +1294,31 @@ function showMenu(recipientId){
 			return true;
 }
 
+
+function showStatistic(recipientId,name) {
+ message = {
+    "attachment":{
+      "type":"template",
+      "payload":{
+        "template_type":"generic",
+        "elements":[
+          {
+            "title":"💡 Surrogate Bot Statistics",
+			"image_url": "http://surrogation.com.ng/surrogateapp/image?name="+name,
+          }
+        ]
+      }
+    }
+  };			
+ sendMessage(recipientId, message);
+ return true;		
+}
+
+
+
 function about(recipientId) {
-		msg="My name is Surrogate, I am an artificial intelligent designed to assist students learn from experts on messenger. \n\n I also allow experts or tutors to render help to people based on their proficiencies.\n\n";
-	/*		message = {
-                "attachment": {
-                    "type": "template",
-                    "payload": {
-						"template_type":"button",
-						"text":msg,
-                        "buttons": [{
-								"type": "postback",
-                                "title": "I got it!",
-                                "payload": "postback_no",
-                                }]
-                    }
-                }
-             };
-		*/	
-			
-			// "type":"element_share"
+	msg="My name is Surrogate, I am an artificial intelligent designed to assist students learn from experts on messenger. \n\n I also allow experts or tutors to render help to people based on their proficiencies.\n\n";
+
   message = {
     "attachment":{
       "type":"template",
@@ -1338,8 +1348,7 @@ function about(recipientId) {
         ]
       }
     }
-  };
-			
+  };			
 			sendMessage(recipientId, message);
             return true;		
 }
