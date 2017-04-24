@@ -1684,7 +1684,7 @@ function getStarted(){
 									"payload":"help_me"
 									},{
 									"type":"postback",
-									"title":"✌� Statistics",
+									"title":"💎 Statistics",
 									"payload":"my_statistics"
 									}]									
 						},
