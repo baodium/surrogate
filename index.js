@@ -522,7 +522,9 @@ app.post('/webhook', function (req, res) {
 			}else if(reply.payload=="my_home"){
 				showMenu(event.sender.id);				
 			}else if(reply.payload=="my_statistics"){
-				showStatistic(event.sender.id);				
+				if(senderContext[event.sender.id]!=null){
+						showStatistic(event.sender.id,senderContext[event.sender.id].firstName);
+				}				
 			}else if(reply.payload.indexOf("postback_message_yes")>-1){				
 				var members_id = reply.payload.split("-");
 				 fromId = members_id[1];
