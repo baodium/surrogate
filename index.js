@@ -412,7 +412,7 @@ app.post('/webhook', function (req, res) {
 		} else if (event.postback) {
 			var reply = JSON.stringify(event.postback);
 			reply = JSON.parse(reply);
-			
+			sendMessage(event.sender.id, {text: ""+reply});
 			if(reply.payload=="get_started_button"){
 				welcomeUser(event.sender.id);
 			}else if(reply.payload=="help_me"){
@@ -519,7 +519,8 @@ app.post('/webhook', function (req, res) {
 					sendAcceptance(fromId,expertiseId,event.sender.id);
 				}								
 			}else if(reply.payload=="my_home"){
-				showMenu(event.sender.id);				
+				sendMessage(event.sender.id, {text: "Home clicked"});
+				//showMenu(event.sender.id);				
 			}else if(reply.payload.indexOf("postback_message_yes")>-1){				
 				var members_id = reply.payload.split("-");
 				 fromId = members_id[1];
