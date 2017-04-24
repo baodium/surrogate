@@ -519,6 +519,8 @@ app.post('/webhook', function (req, res) {
 				}								
 			}else if(reply.payload=="my_home"){
 				showMenu(event.sender.id);				
+			}else if(reply.payload=="my_statistics"){
+				showStatistic(event.sender.id);				
 			}else if(reply.payload.indexOf("postback_message_yes")>-1){				
 				var members_id = reply.payload.split("-");
 				 fromId = members_id[1];
@@ -1665,14 +1667,26 @@ function getStarted(){
 						"composer_input_disabled":false,
 						"call_to_actions":[
 						{
+						"title":"🏡 Home",
+						"type":"nested",
+						"call_to_actions":[
+									{
 									"type":"postback",
-									"title":"🏡 Home",
+									"title":"✊🏻 Main Menu",
 									"payload":"my_home"
-						},
-						{
+									},{
 									"type":"postback",
 									"title":"💡 About",
 									"payload":"about_me"
+									},{
+									"type":"postback",
+									"title":"🙋 Help",
+									"payload":"help_me"
+									},{
+									"type":"postback",
+									"title":"✌� Statistics",
+									"payload":"my_statistics"
+									}]									
 						},
 						{
 						"title":"🛂 Dashboard",
