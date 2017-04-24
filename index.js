@@ -415,7 +415,9 @@ app.post('/webhook', function (req, res) {
 			if(reply.payload=="get_started_button"){
 				welcomeUser(event.sender.id);
 			}else if(reply.payload=="help_me"){
-				help(event.sender.id);
+				if(senderContext[event.sender.id]!=null){
+						help(event.sender.id,senderContext[event.sender.id].firstName);
+				}				
 			}else if(reply.payload=="about_me"){
 				about(event.sender.id);
 			}else if(reply.payload=="get_assignment_help" || (reply.payload=="postback_yes" && senderContext[event.sender.id]!=null && senderContext[event.sender.id].state == "provide_subject")){
