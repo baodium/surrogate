@@ -415,7 +415,7 @@ app.post('/webhook', function (req, res) {
 				}
 			}else if(reply.payload=="about_me"){
 				about(event.sender.id);
-			}else if(reply.payload=="get_assignment_help" || (reply.payload=="postback_yes" && senderContext[event.sender.id]!=null && senderContext[event.sender.id].state == "provide_subject")){
+			}else if(reply.payload=="get_assignment_help" || reply.payload=="postback_expertise_request_yes" || (reply.payload=="postback_yes" && senderContext[event.sender.id]!=null && senderContext[event.sender.id].state == "provide_subject")){
 				if(senderContext[event.sender.id]!=null){
 					sendMessage(event.sender.id, {text: "Which subject do you need help on?"});
 					senderContext[event.sender.id].state = "provide_subject";
@@ -923,7 +923,7 @@ function checkHelper(subject,senderId,page){
 
 					}else{
 						sendMessage(senderId, {text: "Sorry, I don't know anyone that is proficient in "+subject+", kindly tell your friends about me so I can render help to more people"});
-						displayOption(senderId,"Do you want to try another subject?","yes_no");
+						displayExpertiseOption(senderId,"Do you want to try another subject?","yes_no");
 						senderContext[senderId].state = "stop_subject_selection";	
 					}
 
@@ -1457,9 +1457,34 @@ function displayOption(recipientId,msg,option_type){
             };
 			sendMessage(recipientId, message);
             return false;
-
 }
 
+function displayExpertiseOption(recipientId,msg,option_type){
+	message = {
+                "attachment": {
+                    "type": "template",
+                    "payload": {
+                        "template_type": "generic",
+                        "elements": [{
+                            "title": msg,
+                            "buttons": [{
+								"type": "postback",
+                                "title": "Yes",
+                                "payload": "postback_expertise_request_yes",
+                                },
+								{
+								"type": "postback",
+                                "title": "No",
+                                "payload": "postback_no",
+                                }
+								]
+                        }]
+                    }
+                }
+            };
+			sendMessage(recipientId, message);
+            return false;
+}
 
 function reminderOption(recipientId){
 	message = {
