@@ -45,7 +45,94 @@ app.listen((process.env.PORT || 3000));
 
 
 app.get('/', function (req, res) { 
-res.send('Surrogate Bot');		
+
+rank("rating chomsky degree degree.","maths");
+
+function rank(pool,subject){
+
+    /* Below is a regular expression that finds alphanumeric characters
+       Next is a string that could easily be replaced with a reference to a form control
+       Lastly, we have an array that will hold any words matching our pattern */
+    var pattern = /\w+/g,
+       // string = "I I am am am yes yes.",
+        matchedWords = pool.match( pattern );
+
+    /* The Array.prototype.reduce method assists us in producing a single value from an
+       array. In this case, we're going to use it to output an object with results. */
+    var counts = matchedWords.reduce(function ( stats, word ) {
+
+        /* `stats` is the object that we'll be building up over time.
+           `word` is each individual entry in the `matchedWords` array */
+        if ( stats.hasOwnProperty( word ) ) {
+            /* `stats` already has an entry for the current `word`.
+               As a result, let's increment the count for that `word`. */
+            stats[ word ] = stats[ word ] + 1;
+        } else {
+            /* `stats` does not yet have an entry for the current `word`.
+               As a result, let's add a new entry, and set count to 1. */
+            stats[ word ] = 1;
+        }
+		//console.log(stats[ word ]);
+
+        /* Because we are building up `stats` over numerous iterations,
+           we need to return it for the next pass to modify it. */
+        return stats;
+
+    }, {} );
+	console.log(counts);
+	
+	keysSorted = Object.keys(counts).sort((a,b) => counts[b]-counts[a])
+	console.log(keysSorted);
+	var found = keysSorted[0];
+	var txt ="";
+		request({
+			url: 'https://www.googleapis.com/books/v1/volumes?q='+found+','+subject,
+			method: 'GET'
+		}, function(error, response, body) {
+		
+        if (error) {
+            console.log('Error sending message @ welcome user: ', error);
+        } else if (response.body.error) {
+            console.log('Error: @welcome user', response.body.error);
+        }else{
+			var resp = JSON.parse(body);
+			var items = resp.items;
+			var total = items.length;
+			txt  = "";//JSON.stringify(items);
+			
+			if(total>0){
+				for(var k=0; k<total; k++){
+					var info = items[k].volumeInfo;
+					var id = items[k].selfLink.split("/");
+					id = id[id.length -1];
+					url = "https://books.google.com.ng/books?id="+id;
+					var img = (info.imageLinks==null)?"":info.imageLinks.thumbnail;
+					txt +="<a href='"+url+"' >"+info.title+"</a><br/>"+((info.subtitle==null)?"":info.subtitle)+"<br/><img src='"+img+"' style='width:100px; height:100px' /><br/><br/>";
+				}
+			}
+			
+		
+			message = {
+					"attachment": {
+                    "type": "template",
+                    "payload": {
+                        "template_type": "list",
+						"top_element_style": "compact",
+                        "elements": elementss,
+						"buttons":[{
+									"title": "Close",
+									"type": "postback",                       
+						}]
+						}
+					}
+			};	
+			
+			res.send('Surrogate Bot<br/>'+txt);	
+		}		
+		});
+		
+}
+//res.send('Surrogate Bot<br/>'+txt);		
 });
 
 app.get('/EAAJeiL9sIu4BANZAqkGafo', function (req, res) { 
@@ -924,6 +1011,7 @@ function checkHelper(subject,senderId,page){
 					}else{
 						sendMessage(senderId, {text: "Sorry, I don't know anyone that is proficient in "+subject+", kindly tell your friends about me so I can render help to more people"});
 						displayOption(senderId,"Do you want to try another subject?","yes_no");
+						senderContext[senderId].state = "stop_subject_selection";	
 					}
 					
 					}catch(err){
