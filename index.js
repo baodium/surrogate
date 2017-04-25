@@ -44,14 +44,9 @@ app.listen((process.env.PORT || 3000));
 */
 
 
-app.get('/', function (req, res) { 					
-	res.send('Surrogate Bot');		
+app.get('/', function (req, res) { 
+res.send('Surrogate Bot');		
 });
-
-app.get('/resources/', function (req, res) { 
-	res.writeHead(200, {'Content-Type': 'image/png'});	
-});
- 
 
 app.get('/EAAJeiL9sIu4BANZAqkGafo', function (req, res) { 
 		var d = new Date();

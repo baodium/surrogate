@@ -19,18 +19,20 @@ var expertise_page=0;
 
 var backurl="http://surrogation.com.ng/surrogateapp/";
 var senderContext = {};
-var greetings_pool = ["how are you","how far","wassup","kilonshele","bawo ni","wetin dey happen","wetin dey","what is happening","how are you?","how far?","what is happening?"];
+var greetings_pool = ["how are you","how far","wassup","kilonshele","bawo ni","how you dey","wetin dey happen","wetin dey","what is happening","how are you?","how far?","what is happening?"];
+var time_pool=["morning","afternoon","evening","good morning","good afternoon","good evening"];
 var cancellation_pool=["quit","cancel","exit","abort","no","end","terminate","stop"];
-var abuse_pool=["damn","fuck","insane","crazy","mad","shit","oloriburuku","mugun"];
+var abuse_pool=["damn","fuck","insane","crazy","mad","shit","oloriburuku","mugun","idiot"];
 var students_pool=["show student","show my student","my student","show me my student","who are my student","who is my student"];
 var experts_pool=["show tutor","show my tutor","my tutor","show me my tutor","who are my tutor","show expert","show my expert","my expert","show me my expert","who are my expert","who is my expert","show expert","show my expert","my expert","show me my expert"];
 var expertise_pool=["show expertise","show my expertise","my expertise","show me my expertise","show subject","show my subject","my subject","show me my subject"];
 var reminder_pool=["reminder","show reminder","show my reminder","my reminder","show me my reminder","show reminder"];
-var help_pool=["help","help me","help please","please help","i need help","how to","how to use","i want help"];
+var help_pool=["help","help me","show help","show me help","help please","please help","please help me","i need help","how to","how to use","i want help"];
 var about_pool=["about","about me","about surrogate","who are you","who are you?","what is surrogate","what is surrogate app","about you"];
 var menu_pool=["show menu","menu","my menu","show me menu","show me the menu","where is the menu","menu please","the menu"];
 var hi_pool=["hello","hi","hey","may i know you","tell me something"];
 var welcome_pool=["thank","thanks","thank you","oshe","thanks a bunch"];
+var statistics_pool=["my statistics","statistics","show stats","show statistics"];
 var wellwish_pool=["god bless","god bless you","bless you","you are great","you are good","you are too much","wish you the best","good luck"];
 var hours = ["","","","THREE","","","SIX","","","NINE","","","TWELVE"];	
 app.use(bodyParser.urlencoded({extended: false}));  
@@ -42,8 +44,95 @@ app.listen((process.env.PORT || 3000));
 */
 
 
-app.get('/', function (req, res) { 					
-	res.send('Surrogate Bot');		
+app.get('/', function (req, res) { 
+
+rank("rating chomsky degree degree.","maths");
+
+function rank(pool,subject){
+
+    /* Below is a regular expression that finds alphanumeric characters
+       Next is a string that could easily be replaced with a reference to a form control
+       Lastly, we have an array that will hold any words matching our pattern */
+    var pattern = /\w+/g,
+       // string = "I I am am am yes yes.",
+        matchedWords = pool.match( pattern );
+
+    /* The Array.prototype.reduce method assists us in producing a single value from an
+       array. In this case, we're going to use it to output an object with results. */
+    var counts = matchedWords.reduce(function ( stats, word ) {
+
+        /* `stats` is the object that we'll be building up over time.
+           `word` is each individual entry in the `matchedWords` array */
+        if ( stats.hasOwnProperty( word ) ) {
+            /* `stats` already has an entry for the current `word`.
+               As a result, let's increment the count for that `word`. */
+            stats[ word ] = stats[ word ] + 1;
+        } else {
+            /* `stats` does not yet have an entry for the current `word`.
+               As a result, let's add a new entry, and set count to 1. */
+            stats[ word ] = 1;
+        }
+		//console.log(stats[ word ]);
+
+        /* Because we are building up `stats` over numerous iterations,
+           we need to return it for the next pass to modify it. */
+        return stats;
+
+    }, {} );
+	console.log(counts);
+	
+	keysSorted = Object.keys(counts).sort((a,b) => counts[b]-counts[a])
+	console.log(keysSorted);
+	var found = keysSorted[0];
+	var txt ="";
+		request({
+			url: 'https://www.googleapis.com/books/v1/volumes?q='+found+','+subject,
+			method: 'GET'
+		}, function(error, response, body) {
+		
+        if (error) {
+            console.log('Error sending message @ welcome user: ', error);
+        } else if (response.body.error) {
+            console.log('Error: @welcome user', response.body.error);
+        }else{
+			var resp = JSON.parse(body);
+			var items = resp.items;
+			var total = items.length;
+			txt  = "";//JSON.stringify(items);
+			
+			if(total>0){
+				for(var k=0; k<total; k++){
+					var info = items[k].volumeInfo;
+					var id = items[k].selfLink.split("/");
+					id = id[id.length -1];
+					url = "https://books.google.com.ng/books?id="+id;
+					var img = (info.imageLinks==null)?"":info.imageLinks.thumbnail;
+					txt +="<a href='"+url+"' >"+info.title+"</a><br/>"+((info.subtitle==null)?"":info.subtitle)+"<br/><img src='"+img+"' style='width:100px; height:100px' /><br/><br/>";
+				}
+			}
+			
+			/*
+			message = {
+					"attachment": {
+                    "type": "template",
+                    "payload": {
+                        "template_type": "list",
+						"top_element_style": "compact",
+                        "elements": elementss,
+						"buttons":[{
+									"title": "Close",
+									"type": "postback",                       
+						}]
+						}
+					}
+			};	
+			*/
+			res.send('Surrogate Bot<br/>'+txt);	
+		}		
+		});
+		
+}
+//res.send('Surrogate Bot<br/>'+txt);		
 });
 
 app.get('/resources/', function (req, res) { 
@@ -234,7 +323,7 @@ app.post('/webhook', function (req, res) {
 				}				 
 								
 				if(senderContext[event.sender.id].state === "provide_subject"){									
-					checkHelper(event.message.text,event.sender.id);									
+					checkHelper(event.message.text,event.sender.id,"0");									
 				}else if(senderContext[event.sender.id].state === "type_expertise"){
 					var subject = event.message.text;
 					senderContext[event.sender.id].subject = subject;
@@ -343,6 +432,9 @@ app.post('/webhook', function (req, res) {
 				}else if(contains.call(reminder_pool, msgin) || contains.call(reminder_pool, msgin2) ){
 					senderContext[event.sender.id].state="begin";
 					showReminders(event.sender.id);
+				}else if(contains.call(statistics_pool, msgin)){
+					senderContext[event.sender.id].state="begin";
+					showStatistic(event.sender.id,senderContext[event.sender.id].firstName);
 				}else if(contains.call(expertise_pool, msgin) || contains.call(expertise_pool, msgin2)){
 					senderContext[event.sender.id].state="begin";
 					showExpertise(event.sender.id);
@@ -375,6 +467,21 @@ app.post('/webhook', function (req, res) {
 						defaultMsg ="I'm cool! "+senderContext[event.sender.id].firstName+". \n\n";
 					}else if(msgin.indexOf("damn")>-1 || msgin.indexOf("fuck")>-1 || msgin.indexOf("fool")>-1 || msgin.indexOf("insane")>-1 || msgin.indexOf("crazy")>-1 || msgin.indexOf("mad")>-1 ){					
 						defaultMsg ="Oh "+senderContext[event.sender.id].firstName+", that is not a very nice thing to say. \n\n Maybe you will feel better by providing help to someone on a subject you are proficient at. \n\n ";
+					}else if(contains.call(time_pool, msgin)){
+						var d = new Date();
+						var n = d.getHours();
+						if(msgin.indexOf("morning")>-1 || msgin.indexOf("afternoon")>-1 || msgin.indexOf("evening")>-1){
+							if(n<12){
+								defaultMsg ="Good morning ";
+							}else if(n >=12 && n < 17){
+								defaultMsg ="Good afternoon ";
+							}else{
+								defaultMsg ="Good evening ";
+							}
+							defaultMsg+=" "+senderContext[event.sender.id].firstName+"."
+						}else{
+							defaultMsg = msgin+" "+senderContext[event.sender.id].firstName;
+						}						
 					}
 										
 					sendMessage(event.sender.id, {text: "" + defaultMsg+"This is what I have on my menu "});
@@ -392,11 +499,12 @@ app.post('/webhook', function (req, res) {
 		} else if (event.postback) {
 			var reply = JSON.stringify(event.postback);
 			reply = JSON.parse(reply);
-			
 			if(reply.payload=="get_started_button"){
 				welcomeUser(event.sender.id);
 			}else if(reply.payload=="help_me"){
-				help(event.sender.id);
+				if(senderContext[event.sender.id]!=null){
+						help(event.sender.id,senderContext[event.sender.id].firstName);
+				}				
 			}else if(reply.payload=="about_me"){
 				about(event.sender.id);
 			}else if(reply.payload=="get_assignment_help" || (reply.payload=="postback_yes" && senderContext[event.sender.id]!=null && senderContext[event.sender.id].state == "provide_subject")){
@@ -434,26 +542,11 @@ app.post('/webhook', function (req, res) {
 				var id = reply.payload.split("-");
 				 page = id[1];
 				 showExperts(event.sender.id,false,page);
-			}else if(reply.payload=="next_expertise"){
-				if(senderContext[event.sender.id]!=null){
-					senderContext[event.sender.id].next++;
-					showExpertise(event.sender.id);
-				}
-			}else if(reply.payload=="previous_expertise"){
-				if(senderContext[event.sender.id]!=null){
-					senderContext[event.sender.id].next--;
-					showExpertise(event.sender.id);
-				}
-			}else if(reply.payload=="next_expert_list"){
-				if(senderContext[event.sender.id]!=null){
-					senderContext[event.sender.id].nextexp++;
-					showExpertise(event.sender.id);
-				}
-			}else if(reply.payload=="previous_expert_list"){
-				if(senderContext[event.sender.id]!=null){
-					senderContext[event.sender.id].nextexp--;
-					showExpertise(event.sender.id);
-				}
+			}else if(reply.payload.indexOf("postback_viewmore_request")>-1){
+				var id = reply.payload.split("-");
+				 page = id[1];
+				 sub = id[2];				 
+				 checkHelper(sub,event.sender.id,page);
 			}else if(reply.payload.indexOf("delete_expertise")>-1){
 				var id = reply.payload.split("-");
 				 expertiseId = id[1];
@@ -513,8 +606,12 @@ app.post('/webhook', function (req, res) {
 				if(senderContext[event.sender.id]!=null){  
 					sendAcceptance(fromId,expertiseId,event.sender.id);
 				}								
-			}else if(reply.payload=="home"){
+			}else if(reply.payload=="my_home"){
 				showMenu(event.sender.id);				
+			}else if(reply.payload=="my_statistics"){
+				if(senderContext[event.sender.id]!=null){
+						showStatistic(event.sender.id,senderContext[event.sender.id].firstName);
+				}				
 			}else if(reply.payload.indexOf("postback_message_yes")>-1){				
 				var members_id = reply.payload.split("-");
 				 fromId = members_id[1];
@@ -821,130 +918,11 @@ return true;
 }
 
 
-function showMore(senderId,msg,type,page){
-	message = {
-			"text":msg,
-			"quick_replies":[{
-							"content_type":"text",
-							"title":"show more",
-							"payload":"SHOW_MORE-"+type+"-"+page
-							}]
-		};
-		sendMessage(senderId,message);
-return true;
-}
 
 
 
-function startConversation(toId,fromm,subject,msg){
-
-	message = {
-			"text":msg,
-			"quick_replies":[{
-							"content_type":"text",
-							"title":"Reply message",
-							"payload":"START_CONVERSATION-"+toId+"-"+fromm+"-"+subject+"-all:0"
-							}]
-		};
-//if(senderContext[toId].conversation_started==null){
-	sendMessage(toId,message);
-//}
-return true;
-}
-
-
-function checkHelper2(subject,senderId){
-	
-	var post_data = querystring.stringify({'facebook_id_not' : senderId,'subject':subject});	
-	request({
-			url: backurl+"expertise/getwherenot",
-			method: 'POST',
-			body: post_data,
-			headers: {
-				'Content-Type': 'application/x-www-form-urlencoded',
-				'Content-Length':post_data.length
-				}
-		}, function(error, response, body) {
-			//sendMessage(senderId, {text: "" + JSON.stringify(body)});
-			if (error) {
-				console.log('Error sending message: ', error);
-			} else if (response.body.error) {
-				console.log('Error: ', response.body.error);
-			}else{
-				try{
-					output = JSON.parse(body);	
-					if(output.length>0){
-							sendMessage(senderId, {text: "Oh! that is nice, I know people that can help you in "+subject+".\n\n Here is the list"});
-							senderContext[senderId].state = "provide_subject_done";	
-						
-					var total = output.length;
-					elementss = new Array();	
-					for(i = 0; i<output.length; i++){
-						level = output[i].level;//.split("_");
-						if(level!=null){
-							level = output[i].level.split("_");
-							level=level[0];
-						}else{
-							level="";
-						}
-						
-						con="";
-						var rating = output[i].rating;						
-						var totalr = output[i].total_rating;
-						if(rating==null || rating=="NULL"){
-							rating = 0;
-						}
-						
-						if(totalr==null || totalr=="NULL"){
-							totalr=1;
-						}
-						
-						rate = Math.round(rating/totalr);
-						for(k=0; k<rate; k++){
-							con+="ðŸŒŸ";
-						}
-						
-					elementss[i]={                           
-							"title": output[i].name, 
-							"image_url": output[i].profile_pic,                  
-							"subtitle":  "Expert in:"+output[i].subject+", \n\n Level:"+level+"\n\n"+con,   
-                            "buttons": [{
-											"title": "Request Expertise",
-											"type": "postback",
-											"payload": "request_expertise-"+output[i].expertise_id                     
-										}]
-                        };
-				
-					}
-					
-				message = {
-					"attachment": {
-                    "type": "template",
-                    "payload": {
-                        "template_type": "generic",
-                        "elements": elementss
-                    }
-					}
-				};
-					
-					sendMessage(senderId,message);	
-							
-					}else{
-						sendMessage(senderId, {text: "Sorry, I don't know anyone that is proficient in "+subject+", kindly tell your friends about me so I can render help to more people"});
-						displayOption(senderId,"Do you want to try another subject?","yes_no");
-					}
-					
-					}catch(err){
-						sendMessage(senderId, {text: "Error fetching expert "+JSON.stringify(err)});
-					}	
-
-			}
-					
-		});
-}
-
-function checkHelper(subject,senderId){		
-	var post_data = querystring.stringify({'facebook_id_not' : senderId,'subject':subject});	
+function checkHelper(subject,senderId,page){		
+	var post_data = querystring.stringify({'facebook_id_not' : senderId,'subject':subject,'page':page});	
 	request({
 			url: backurl+"expertise/getwherenot",
 			method: 'POST',
@@ -962,20 +940,21 @@ function checkHelper(subject,senderId){
 				try{
 					output = JSON.parse(body);	
 					if(output.length>0){
-							sendMessage(senderId, {text: "Oh! that is nice, I know people that can help you in "+subject+".\n\n Here is the list"});
+							sendMessage(senderId, {text: "Oh! that is nice, I know people that can help you in "+subject+".\n\n"});
 							senderContext[senderId].state = "provide_subject_done";	
 						
 					var total = output.length;
 					elementss = new Array();
 
 					if(total>3){
-						request_page++;
+						page++;
 					}
 					var j=(total>3)?3:total;
 					elementss[0]={
-							"title":"ðŸŽ“ "+subject+" request list",							               
-							};
-					
+							"title":"ðŸŽ“ "+subject+" request list",
+							"subtitle": "Here is what I found",								
+					};
+					//var i=0;
 					for(i = 0; i<j ; i++){					
 					//for(i = 0; i<output.length; i++){
 						level = output[i].level;//.split("_");
@@ -1005,7 +984,7 @@ function checkHelper(subject,senderId){
 					elementss[i+1]={                           
 							"title": output[i].name, 
 							"image_url": output[i].profile_pic,                  
-							"subtitle":  "Expert in:"+output[i].subject+", \n\n Level:"+level+"\n\n"+con,   
+							"subtitle":  ""+output[i].subject+", "+level+" level \n"+con,   
                             "buttons": [{
 											"title": "Request Expertise",
 											"type": "postback",
@@ -1026,7 +1005,7 @@ function checkHelper(subject,senderId){
 						"buttons":[{
 									"title": (total<4)?"Close":"View More",
 									"type": "postback",
-									"payload": (total<4)?"postback_no":"postback_viewmore_request-"+request_page,                        
+									"payload": (total<4)?"postback_no":"postback_viewmore_request-"+page+"-"+subject,                        
 						}]
 						}
 					}
@@ -1160,10 +1139,10 @@ function sendAcceptance(fromId,requestId,senderId){
 			reqId = bodyObject.request_id;
 			
 			sendMessage(senderId, {text: name+" is now your "+subject+" student."});
-			messageOption(senderId,"Would you like to message "+name+"?",senderId,fromId,subject,"student");
+			messageOption(senderId,"Would you like to message "+name+"?",senderId,fromId,subject,"student",requestId);
 			
 			sendMessage(fromId, {text: senderContext[senderId].firstName+" "+senderContext[senderId].lastName+" has accepted your "+subject+" expertise request. He's now in your tutors list."});
-			messageOption(fromId,"Would you like to message "+senderContext[senderId].firstName+"?",fromId,senderId,subject,"expert");
+			messageOption(fromId,"Would you like to message "+senderContext[senderId].firstName+"?",fromId,senderId,subject,"expert",requestId);
 						
 			var p_data = querystring.stringify({'request_id' : reqId,'status':'completed'});
 			submitForm(p_data,backurl+"requests/update",senderId,"update_request2");
@@ -1277,11 +1256,11 @@ function welcomeUser(recipientId) {
 		}, function(error, response, body) {
 		
         if (error) {
-            console.log('Error sending message: ', error);
+            console.log('Error sending message @ welcome user: ', error);
         } else if (response.body.error) {
-            console.log('Error: ', response.body.error);
+            console.log('Error: @welcome user', response.body.error);
         }else{
-			
+			try{
 			var bodyObject = JSON.parse(body);
 			firstName = bodyObject.first_name;
 			lastName = bodyObject.last_name;
@@ -1328,8 +1307,13 @@ function welcomeUser(recipientId) {
 			sendMessage(recipientId, {text: "" + msg});	
 				showMenu(recipientId);
 			}
-            return true;		
+            return true;
+		}catch(err){
+			console.log("Error here @ welcome user");
+			sendMessage(recipientId, {text: "" + err});	
+		}			
 		}
+		
 		});
 			
     return true;
@@ -1346,7 +1330,8 @@ function showDefault(recipientId) {
             console.log('Error sending message: ', error);
         } else if (response.body.error) {
             console.log('Error: ', response.body.error);
-        }else{			
+        }else{	
+			try{
 			var bodyObject = JSON.parse(body);
 			firstName = bodyObject.first_name;
 			lastName = bodyObject.last_name;
@@ -1362,6 +1347,9 @@ function showDefault(recipientId) {
 				defaultMsg ="Hello "+firstName+"!  This is what I have on my menu";
 				sendMessage(recipientId, {text: ""+defaultMsg});									
 				showMenu(recipientId);
+			}catch(err){
+				console.log("error at show default");
+			}
 		}
 		});
 			
@@ -1398,25 +1386,35 @@ function showMenu(recipientId){
 			return true;
 }
 
+
+function showStatistic(recipientId,name) {
+ message = {
+    "attachment":{
+      "type":"template",
+      "payload":{
+        "template_type":"generic",
+        "elements":[
+          {
+            "title":"ðŸ’¡ Surrogate Bot Statistics",
+			"image_url": "http://surrogation.com.ng/surrogateapp/image?name="+name,
+			"buttons": [{
+                      "type": "web_url",
+                      "url": "http://surrogation.com.ng/surrogateapp/image?name="+name, 
+                      "title": "View in full"
+                    }]
+          } ]
+      }
+    }
+  };	
+ sendMessage(recipientId, message);
+ return true;		
+}
+
+
+
 function about(recipientId) {
-		msg="My name is Surrogate, I am an artificial intelligent designed to assist students learn from experts on messenger. \n\n I also allow experts or tutors to render help to people based on their proficiencies.\n\n";
-	/*		message = {
-                "attachment": {
-                    "type": "template",
-                    "payload": {
-						"template_type":"button",
-						"text":msg,
-                        "buttons": [{
-								"type": "postback",
-                                "title": "I got it!",
-                                "payload": "postback_no",
-                                }]
-                    }
-                }
-             };
-		*/	
-			
-			// "type":"element_share"
+	msg="My name is Surrogate, I am an artificial intelligent designed to assist students learn from experts on messenger. \n\n I also allow experts or tutors to render help to people based on their proficiencies.\n\n";
+
   message = {
     "attachment":{
       "type":"template",
@@ -1446,8 +1444,7 @@ function about(recipientId) {
         ]
       }
     }
-  };
-			
+  };			
 			sendMessage(recipientId, message);
             return true;		
 }
@@ -1473,7 +1470,7 @@ function showMoreAbout(recipientId){
 
 
 function help(recipientId,name) {
-			msg="Hi "+name+", I am Surrogate, you can use the following commands to communicate with me.\n\n -Type menu to access the main menu.\n\n -Type cancel or exit to cancel current operation. \n\n -Type my expertise to access your subject list. \n\n -Type my tutors to access your tutor list. \n\n -Type my students to access your student list. \n\n -Type my reminders to access your reminder list. \n\n -Type about to know more about me. \n\n Thank you.";	
+			msg="Hi "+name+", I am Surrogate, you can use the following commands to communicate with me.\n\n -Type menu to access the main menu.\n\n -Type cancel or exit to cancel current operation. \n\n -Type my expertise to access your subject list. \n\n -Type my tutors to access your tutor list. \n\n -Type my students to access your student list. \n\n -Type my reminders to access your reminder list. \n\n -Type about to know more about me. \n\n -Type statistics to show my current statistics. \n\n Thank you.";	
 			message = {
                 "attachment": {
                     "type": "template",
@@ -1605,7 +1602,7 @@ function reminderOptionYesNo(recipientId){
 }
 
 
-function messageOption(recipientId,msg,fromm,to,subject,usertype){
+function messageOption(recipientId,msg,fromm,to,subject,usertype,exp_id){
 	message = {
                 "attachment": {
                     "type": "template",
@@ -1616,7 +1613,7 @@ function messageOption(recipientId,msg,fromm,to,subject,usertype){
                             "buttons": [{
 								"type": "postback",
                                 "title": "Yes",
-                                "payload": "postback_message_yes-"+fromm+"-"+to+"-"+subject+"-"+usertype+":0",
+                                "payload": "postback_message_yes-"+fromm+"-"+to+"-"+subject+"-"+usertype+":"+exp_id,
                                 },
 								{
 								"type": "postback",
@@ -1744,78 +1741,6 @@ function rateOption(fromm,expertise_id){
 	return true;
 }
 
-/*
-function getStarted(){
-	var message = {
-				"get_started":{
-						"payload":"get_started_button"
-						},
-				"greeting":[{
-						"locale":"default",
-						"text":"Good to have you {{user_first_name}}! I can help you learn from experts or render help to people based on your proficiencies"
-						}],
-				"target_audience": {
-						"audience_type":"all"
-					},
-				"persistent_menu": [{
-						"locale":"default",
-						"composer_input_disabled":true,
-						"call_to_actions":[
-						{
-									"type":"postback",
-									"title":"Home",
-									"payload":"home"
-						},
-						{
-									"type":"postback",
-									"title":"ðŸ’¡ About",
-									"payload":"about_me"
-						},
-						{
-						"title":"Dashboard",
-						"type":"nested",
-						"call_to_actions":[
-									{
-									"type":"postback",
-									"title":"ðŸ“• Expertise",
-									"payload":"my_expertise"
-									},{
-									"type":"postback",
-									"title":"Tutors",
-									"payload":"my_experts"
-									},{
-									"type":"postback",
-									"title":"Students",
-									"payload":"my_students"
-									},
-									{
-									"type":"postback",
-									"title":"My Reminders",
-									"payload":"my_reminders"
-									}]
-								}]
-						}]
-				};
-					
-		request({
-        url: 'https://graph.facebook.com/v2.8/me/messenger_profile',			
-        qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
-        method: 'POST',	
-        json: message
-		}, function(error, response, body) {
-			if (error) {
-				console.log('Error sending message: ', error);
-			} else if (response.body.error) {
-				console.log('Error: ', response.body.error);
-			}else{
-					console.log(body);
-			}
-		});
-				
-}
-
-
-*/
 function getStarted(){
 	var message = {
 				"get_started":{
@@ -1833,14 +1758,26 @@ function getStarted(){
 						"composer_input_disabled":false,
 						"call_to_actions":[
 						{
+						"title":"ðŸ¡ Home",
+						"type":"nested",
+						"call_to_actions":[
+									{
 									"type":"postback",
-									"title":"ðŸ¡ Home",
-									"payload":"home"
-						},
-						{
+									"title":"âœŠðŸ» Main Menu",
+									"payload":"my_home"
+									},{
 									"type":"postback",
 									"title":"ðŸ’¡ About",
 									"payload":"about_me"
+									},{
+									"type":"postback",
+									"title":"ðŸ™‹ Help",
+									"payload":"help_me"
+									},{
+									"type":"postback",
+									"title":"ðŸ’Ž Statistics",
+									"payload":"my_statistics"
+									}]									
 						},
 						{
 						"title":"ðŸ›‚ Dashboard",
@@ -1905,8 +1842,8 @@ function submitForm(post_data,url,userId,action){
 				console.log('Error: ', response.body.error);
 			}else{
 				var output = JSON.parse(body);
-				//sendMessage(userId, {text: "" + body+"-"+output.status});
 				var exists = (output.status=="ok")?false:true;
+				var messg = output.message;
 				if(senderContext[userId]!=null){
 
 						if(action=="update_expertise" && !exists){
@@ -1923,9 +1860,15 @@ function submitForm(post_data,url,userId,action){
 								getExpertiseLevel(userId);
 								senderContext[userId].state = "type_expertise_done";
 							}else{
-								sendMessage(userId, {text: "You have added this expertise before. Please specify another expertise"});
-								getOut(userId);								
-								senderContext[userId].state = "type_expertise";
+								if(messg=="limit exceeded"){
+									sendMessage(userId, {text: "Sorry, you can not have more than 10 expertise"});
+									//getOut(userId);	
+									senderContext[userId].state = "begin_again";									
+								}else{
+									sendMessage(userId, {text: "You have added this expertise before. Please specify another expertise"});
+									getOut(userId);								
+									senderContext[userId].state = "type_expertise";
+								}
 							}
 							return true;
 						}
@@ -1970,15 +1913,25 @@ function submitForm(post_data,url,userId,action){
 							if(!exists){
 								pickTime(userId);
 								senderContext[userId].status="pick_reminder_time";
-							}else{
-								var period = post_data.split("=");
-								period = period[period.length-1];
-								period = period.split("_");
-								period = period[1].toLowerCase();
-								msg = "You have already set up a reminder for "+period+" \n. Please pick another day \n\n";
-								//if(sendMessage(userId, {text: "You have already set up a reminder for "+period+" \n\n please select another day"})){
-									pickPeriod(userId,msg);
+							}else{							
+								
+								if(messg=="limit exceeded"){
+									sendMessage(userId, {text: "Sorry, you can not have more than 10 reminders"});
+									senderContext[userId].state = "begin_again";									
+								}else{
+									var period = post_data.split("=");
+									period = period[period.length-1];
+									period = period.split("_");
+										period = period[1].toLowerCase();
+										msg = "You have already set up a reminder for "+period+" \n. Please pick another day \n\n";
+									//if(sendMessage(userId, {text: "You have already set up a reminder for "+period+" \n\n please select another day"})){
+										pickPeriod(userId,msg);
 								//}
+								}
+								
+								
+								
+								
 							}
 							return true;
 						}
@@ -2547,7 +2500,7 @@ function showStudents(toId,request_id,page){
 					sendMessage(toId, {text: "Oh! your student list is empty"});
 				}else{	
 				if(total>3){
-					student_page++;
+					page++;
 				}
 					var j=(total>3)?3:total;
 
@@ -2588,7 +2541,7 @@ function showStudents(toId,request_id,page){
 						"buttons":[{
 									"title": (total<4)?"Close":"View More",
 									"type": "postback",
-									"payload": (total<4)?"postback_no":"postback_viewmore_student-"+student_page,                        
+									"payload": (total<4)?"postback_no":"postback_viewmore_student-"+page,                        
 						}]
 						}
 					}
@@ -2609,9 +2562,9 @@ function showStudents(toId,request_id,page){
 
 
 function showExperts(fromId,request_id,page){
-	var post_data = querystring.stringify({'from_id':fromId,'status':'completed'});
+	var post_data = querystring.stringify({'from_id':fromId,'status':'completed','page':page});
 	if(request_id!==false){
-		post_data = querystring.stringify({'request_id':request_id});	
+		//post_data = querystring.stringify({'request_id':request_id});	
 		post_data = querystring.stringify({'request_id':request_id,'from_id':fromId});	
 	}	
 
@@ -2638,7 +2591,7 @@ function showExperts(fromId,request_id,page){
 					sendMessage(fromId, {text: "Oh! your tutor list is empty"});
 				}else{	
 				if(total>3){
-					expert_page++;
+					page++;
 				}
 					var j=(total>3)?3:total;
 
@@ -2679,7 +2632,7 @@ function showExperts(fromId,request_id,page){
 						"buttons":[{
 									"title": (total<4)?"Close":"View More",
 									"type": "postback",
-									"payload": (total<4)?"postback_no":"postback_viewmore_expert-"+expert_page,                        
+									"payload": (total<4)?"postback_no":"postback_viewmore_expert-"+page,                        
 						}]
 						}
 					}
