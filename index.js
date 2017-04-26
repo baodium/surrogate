@@ -942,11 +942,10 @@ function checkHelper(subject,senderId,page){
 
 					}else{
 						//kindly tell your friends about me so I can render help to more people
-						sendMessage(senderId, {text: "Sorry, I don't know anyone that is proficient in "+subject+""});						
+						sendMessage(senderId, {text: "Sorry, I don't know anyone that is proficient in "+subject+"\n\n"});						
 						senderContext[senderId].state = "stop_subject_selection";
-						if(!suggestBooks(senderId,subject)){
-							displayExpertiseOption(senderId,"Do you want to try another subject?","yes_no");
-						}																		
+						suggestBooks(senderId,subject);
+							//displayExpertiseOption(senderId,"Do you want to try another subject?","yes_no");																		
 					}
 
 					}catch(err){
@@ -2620,6 +2619,7 @@ function suggestBooks(recipientId,subject){
         } else if (response.body.error) {
             console.log('Error: @welcome user', response.body.error);
         }else{
+			try{
 			var resp = JSON.parse(body);
 			var items = resp.items;
 			var total = items.length;
@@ -2666,9 +2666,15 @@ function suggestBooks(recipientId,subject){
 				
 				return sendMessage(recipientId,message);
 			}else{
+				displayExpertiseOption(recipientId,"Do you want to try another subject?","yes_no");
 				return false;
-			}							
-		}		
+			}
+			}catch(err){
+				displayExpertiseOption(recipientId,"Do you want to try another subject?","yes_no");
+				return false;
+			}				
+		}
+			
 		});	
 }
 
