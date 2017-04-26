@@ -34,7 +34,7 @@ var menu_pool=["show menu","menu","my menu","show me menu","show me the menu","w
 var hi_pool=["hello","hi","hey","may i know you","tell me something"];
 var welcome_pool=["thank","thanks","thank you","oshe","thanks a bunch"];
 var statistics_pool=["my statistics","statistics","show stats","show statistics"];
-var wellwish_pool=["god bless","god bless you","bless you","you are great","you are good","you are too much","wish you the best","good luck"];
+var wellwish_pool=["god bless","god bless you","bless you","you are the best","you are the awesome","you are great","you are good","you are too much","wish you the best","good luck"];
 var hours = ["","","","THREE","","","SIX","","","NINE","","","TWELVE"];
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
