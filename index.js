@@ -364,6 +364,11 @@ app.post('/webhook', function (req, res) {
 					senderContext[event.sender.id].state="begin";
 				}else if(contains.call(about_pool, msgin) || contains.call(about_pool, msgin2)){
 					about(event.sender.id);
+				}else if(msgin=="set expertise" || msgin=="add expertise" ){
+				sendMessage(event.sender.id, {text: "Please type the subject you are expert in"});
+				if(senderContext[event.sender.id]!=null){
+					senderContext[event.sender.id].state = "type_expertise";
+				}
 				}else{
 					defaultMsg ="Hello "+senderContext[event.sender.id].firstName+"! \n\n";
 					if(contains.call(welcome_pool, msgin)){
