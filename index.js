@@ -369,6 +369,17 @@ app.post('/webhook', function (req, res) {
 				if(senderContext[event.sender.id]!=null){
 					senderContext[event.sender.id].state = "type_expertise";
 				}
+				}else if(msgin=="set class reminder" || msgin=="add reminder" || msgin=="set reminder"){				
+				if(senderContext[event.sender.id]!=null){
+					sendMessage(event.sender.id, {text: "Cool! you can now setup a class reminder for meetings with your tutor(s) or student(s) \n\n\n"});
+					reminderOption(event.sender.id);
+					senderContext[event.sender.id].status = "select_reminder";
+				}				
+				}else if(msgin=="get subject help" ){				
+					if(senderContext[event.sender.id]!=null){
+						sendMessage(event.sender.id, {text: "Which subject do you need help on?"});
+						senderContext[event.sender.id].state = "provide_subject";
+					}
 				}else{
 					defaultMsg ="Hello "+senderContext[event.sender.id].firstName+"! \n\n";
 					if(contains.call(welcome_pool, msgin)){
