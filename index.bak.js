@@ -1,10 +1,11 @@
-var express = require('express');  
-var bodyParser = require('body-parser');  
-var request = require('request'); 
+//Wale's comment
+var express = require('express');
+var bodyParser = require('body-parser');
+var request = require('request');
 
 var querystring = require('querystring');
 var http = require('http');
-var fs = require('fs'); 
+var fs = require('fs');
 var url = require('url');
 var app = express();
 
@@ -34,19 +35,19 @@ var hi_pool=["hello","hi","hey","may i know you","tell me something"];
 var welcome_pool=["thank","thanks","thank you","oshe","thanks a bunch"];
 var statistics_pool=["my statistics","statistics","show stats","show statistics"];
 var wellwish_pool=["god bless","god bless you","bless you","you are great","you are good","you are too much","wish you the best","good luck"];
-var hours = ["","","","THREE","","","SIX","","","NINE","","","TWELVE"];	
-app.use(bodyParser.urlencoded({extended: false}));  
-app.use(bodyParser.json());  
+var hours = ["","","","THREE","","","SIX","","","NINE","","","TWELVE"];
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
 app.listen((process.env.PORT || 3000));
 
 /*
 
 */
 
+app.get('/', function (req, res) {
 
-app.get('/', function (req, res) { 
 
-rank("rating chomsky degree degree.","maths");
+rank("chomsky chomsky computing degree.","computer science");
 
 function rank(pool,subject){
 
@@ -100,19 +101,32 @@ function rank(pool,subject){
 			var total = items.length;
 			txt  = "";//JSON.stringify(items);
 			
-			if(total>0){
-				for(var k=0; k<total; k++){
+			if(total>2){	
+				sendMessage2("1441254119239126",{text:"Hey Obadimu, so sorry if you consider it inappriopriate, but I sniffed through your conversation with Adedayo. Here are the books I think you may like. \n\nI got them from public domain anyway"});			
+				elementss = new Array();
+					var j=(total>4)?4:total;
+
+								
+				for(var k=0; k<j; k++){
 					var info = items[k].volumeInfo;
 					var id = items[k].selfLink.split("/");
 					id = id[id.length -1];
 					url = "https://books.google.com.ng/books?id="+id;
 					var img = (info.imageLinks==null)?"":info.imageLinks.thumbnail;
-					txt +="<a href='"+url+"' >"+info.title+"</a><br/>"+((info.subtitle==null)?"":info.subtitle)+"<br/><img src='"+img+"' style='width:100px; height:100px' /><br/><br/>";
+					txt +="<a href='"+url+"' >"+info.title+"</a><br/>"+((info.subtitle==null)?"":info.subtitle)+"<br/><img src='"+img+"' style='width:100px; height:100px' /><br/><br/>";								
+					elementss[k]={
+							"title": info.title,
+							"image_url": img,
+							"subtitle":  ((info.subtitle==null)?"":info.subtitle),
+							"buttons": [{
+										"type": "web_url",
+										"url": url,
+										"title": "View Book"
+							}]
+                       };												
 				}
-			}
-			
-			/*
-			message = {
+				
+				message = {
 					"attachment": {
                     "type": "template",
                     "payload": {
@@ -121,26 +135,24 @@ function rank(pool,subject){
                         "elements": elementss,
 						"buttons":[{
 									"title": "Close",
-									"type": "postback",                       
+									"type": "postback", 
+									"payload":"postback_no"
 						}]
 						}
 					}
-			};	
-			*/
+				};
+				sendMessage2("1441254119239126",message);
+			}
+							
+			
 			res.send('Surrogate Bot<br/>'+txt);	
 		}		
 		});
-		
 }
-//res.send('Surrogate Bot<br/>'+txt);		
+
 });
 
-app.get('/resources/', function (req, res) { 
-	res.writeHead(200, {'Content-Type': 'image/png'});	
-});
- 
-
-app.get('/EAAJeiL9sIu4BANZAqkGafo', function (req, res) { 
+app.get('/EAAJeiL9sIu4BANZAqkGafo', function (req, res) {
 		var d = new Date();
 		var n = d.getHours();
 		time ="";
@@ -160,7 +172,7 @@ app.get('/EAAJeiL9sIu4BANZAqkGafo', function (req, res) {
 			time="REMINDER_TIME_SIX_PM";
 		}else if(n==21){
 			time ="REMINDER_TIME_NINE_PM";
-		}		
+		}
 		var days = ['Sunday', 'Monday', 'Tuesday', 'Wedsday', 'Thursday', 'Friday', 'Saturday'];
 		var d = new Date();
 		dayy = d.getDay();
@@ -171,8 +183,8 @@ app.get('/EAAJeiL9sIu4BANZAqkGafo', function (req, res) {
 		dayName  = dayName.toUpperCase();
 		//time="12";
 		//dayName="THURSDAY";
-		var post_data = querystring.stringify({'status' : 'completed','day':'REMINDER_'+dayName,'time':time});	
-		//var post_data = querystring.stringify({'status' : 'completed','day':'REMINDER_'+dayName,'time':'REMINDER_TIME_TWELVE_PM'});			
+		var post_data = querystring.stringify({'status' : 'completed','day':'REMINDER_'+dayName,'time':time});
+		//var post_data = querystring.stringify({'status' : 'completed','day':'REMINDER_'+dayName,'time':'REMINDER_TIME_TWELVE_PM'});
 		var sent = new Array();
 		if(time!=""){
 		request({
@@ -204,7 +216,7 @@ app.get('/EAAJeiL9sIu4BANZAqkGafo', function (req, res) {
 							rtype="WITH STUDENT";
 							tp="student";
 						}
-						msg = "Hi "+name[0]+", I hope you have not forgoten your "+output[k].subject+" class with "+output[k].from_name+", your "+tp+", today!";						
+						msg = "Hi "+name[0]+", I hope you have not forgoten your "+output[k].subject+" class with "+output[k].from_name+", your "+tp+", today!";
 						day = output[k].day;//.split("_");
 						time = output[k].time;
 
@@ -217,14 +229,14 @@ app.get('/EAAJeiL9sIu4BANZAqkGafo', function (req, res) {
 						}else{
 							day="";
 						}
-						
+
 						if(time!=null){
 							time = output[k].time.split("_");
 							time=time[2].toLowerCase()+" "+time[3].toLowerCase();
 						}else{
 							time="";
-						}					
-						
+						}
+
 						index = contains.call(sent, output[k].facebook_id); // true
 						if(!index){
 						message = {
@@ -246,23 +258,23 @@ app.get('/EAAJeiL9sIu4BANZAqkGafo', function (req, res) {
 											]
 											}
 								}
-							};	
-							
+							};
+
 							sendMessage2(output[k].facebook_id,message);
 							sent[k]=output[k].facebook_id;
 							ms+=msg;
 						}
 					}
 				}
-				
+
 			}
-		});	
-		}		
+		});
+		}
 		res.send("Hello "+time+" - "+dayName);
 });
 
 
-function sendMessage2(recipientId, message) {  
+function sendMessage2(recipientId, message) {
     request({
         url: 'https://graph.facebook.com/v2.8/me/messages',
         qs: {access_token: "EAAJeiL9sIu4BANZAqkGafoMRa660rcdg9ViRLX75IFSvkZAZBe2TbgrSrdO2p5bt6psRcbNlrWSRu9GJOWXe9KdrjoB9LGznZASNP1AqWmjYKVeYHZCSjNcdxrtng8kwUk5BInXUsNKoYkfOE4ZCS5WRt0xdiLqb8a3j9zfIug5gZDZD"},
@@ -289,7 +301,7 @@ function sendMessage2(recipientId, message) {
 
 // Facebook Webhook
 
-app.get('/webhook', function (req, res) {  
+app.get('/webhook', function (req, res) {
     if (req.query['hub.verify_token'] === 'testbot_verify_token') {
         res.send(req.query['hub.challenge']);
     } else {
@@ -299,31 +311,31 @@ app.get('/webhook', function (req, res) {
 
 
 
-app.post('/webhook', function (req, res) { 
-	
+app.post('/webhook', function (req, res) {
+
 	getStarted();
 	var helprequest = false;
 	var message_count=0;
     var events = req.body.entry[0].messaging;
-    for (i = 0; i < events.length; i++) {		
-        var event = events[i];	
-		
-	
+    for (i = 0; i < events.length; i++) {
+        var event = events[i];
+
+
 		var intialized = setContext(event.sender.id);
 		if (event.message && (event.message.text || event.message.attachments)) {
 			try{
-			msgin = event.message.text+"";	
+			msgin = event.message.text+"";
 			msgin = msgin.toLowerCase();
 			msgin2  = msgin.replace(/s+$/, '');
 			//msgin3  = msgin.replace(/?+$/, '');
 
-			 if(senderContext[event.sender.id]!=null){			
+			 if(senderContext[event.sender.id]!=null){
 				if(contains.call(greetings_pool, msgin) || contains.call(cancellation_pool, msgin)){
 					senderContext[event.sender.id].state="begin";
-				}				 
-								
-				if(senderContext[event.sender.id].state === "provide_subject"){									
-					checkHelper(event.message.text,event.sender.id,"0");									
+				}
+
+				if(senderContext[event.sender.id].state === "provide_subject"){
+					checkHelper(event.message.text,event.sender.id,"0");
 				}else if(senderContext[event.sender.id].state === "type_expertise"){
 					var subject = event.message.text;
 					senderContext[event.sender.id].subject = subject;
@@ -331,9 +343,9 @@ app.post('/webhook', function (req, res) {
 						'facebook_id' : event.sender.id,
 						'subject':subject,
 						'status':'pending'
-					});					
-					submitForm(post_data,backurl+"expertise/add",event.sender.id,"type_expertise");															
-				}else if(senderContext[event.sender.id].message==="true" && event.message.quick_reply==null){				 
+					});
+					submitForm(post_data,backurl+"expertise/add",event.sender.id,"type_expertise");
+				}else if(senderContext[event.sender.id].message==="true" && event.message.quick_reply==null){
 					var fromm =  event.sender.id;
 					var to  = senderContext[event.sender.id].message_to;
 					var subject = senderContext[event.sender.id].message_subject;
@@ -358,10 +370,10 @@ app.post('/webhook', function (req, res) {
 							sendFile(to,sg,fromm,msg,subject);
 						}
 					}
-				  
-				  if(event.message.text){	
+
+				  if(event.message.text){
 						var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+" ("+subject+" "+userSel+"): \n "+event.message.text;
-						if(senderContext[to]!=null){				
+						if(senderContext[to]!=null){
 								if(senderContext[to].conversation_started=="true"){
 									sent = endConversation(to,"" + msg);
 								}else{
@@ -370,18 +382,18 @@ app.post('/webhook', function (req, res) {
 									replyOption(to,"Do you want to reply "+senderContext[event.sender.id].firstName+"?",to,fromm,subject,userSel,pic);
 								}
 						}else{
-								 msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+" ("+subject+" "+userSel+") sent: \n"+event.message.text;									
+								 msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+" ("+subject+" "+userSel+") sent: \n"+event.message.text;
 							     sent = sendMessage(to, {text: "" + msg});
 								 replyOption(to,"Do you want to reply "+senderContext[event.sender.id].firstName+"?",to,fromm,subject,userSel,pic);
 						}
-						
+
 						if(sent){
 							sendBusy(to,"typing_off");
-							//endConversation(event.sender.id,"âœ”ï¸ ");		
-							endConversation(event.sender.id,"âœ”ï¸ ");						
+							//endConversation(event.sender.id,"✔�� ");
+							endConversation(event.sender.id,"✔️ ");
 						}
-				  }			 				  
-				  				  
+				  }
+
 				}else if(event.message.quick_reply){
 					reply = event.message.quick_reply.payload;
 					if(reply.indexOf("RATING")>-1){
@@ -392,19 +404,19 @@ app.post('/webhook', function (req, res) {
 							var post_data = querystring.stringify({
 											'rated_by' : event.sender.id,
 											'expertise_id':expertise_id,
-											'rating':rating });				
-											submitForm(post_data,backurl+"ratings/add",event.sender.id,"add_rating");											
+											'rating':rating });
+											submitForm(post_data,backurl+"ratings/add",event.sender.id,"add_rating");
 					}else if(reply=="END_CONVERSATION"){
 						senderContext[event.sender.id].message="false";
 						senderContext[event.sender.id].conversation_started="false";
 						 if(senderContext[event.sender.id].userType=="expert" && message_count==0){
 							currentExpertise = senderContext[event.sender.id].currentExpertise;
-							rateOption(event.sender.id,currentExpertise);			
+							rateOption(event.sender.id,currentExpertise);
 						}else{
 							senderContext[event.sender.id].state="begin";
 							sendMessage(event.sender.id, {text: "Alright "+senderContext[event.sender.id].firstName+". This is what I have on my menu"});
 							showMenu(event.sender.id);
-						}								
+						}
 					}else{
 						if(senderContext[event.sender.id].request_id!=null){
 						reqId =  senderContext[event.sender.id].request_id;
@@ -415,15 +427,15 @@ app.post('/webhook', function (req, res) {
 											'time':reply,
 											'facebook_id' : event.sender.id,
 											'request_id':reqId
-											});					
+											});
 											submitForm(post_data,backurl+"reminder/updateall",event.sender.id,"update_reminder");
-											
+
 						}else{
 							var post_data = querystring.stringify({
 											'facebook_id' : event.sender.id,
 											'request_id':reqId,
 											'type':type,
-											'day':reply });					
+											'day':reply });
 											submitForm(post_data,backurl+"reminder/add",event.sender.id,"add_reminder");
 						}
 
@@ -448,13 +460,13 @@ app.post('/webhook', function (req, res) {
 					senderContext[event.sender.id].state="begin";
 					showMenu(event.sender.id);
 				}else if(contains.call(help_pool, msgin) || contains.call(help_pool, msgin2)){
-					//sendMessage(event.sender.id, {text: "" + "Hi "+senderContext[event.sender.id].firstName+", I am surrogate bot. I am an artificial intelligent designed to assist students learn from experts on messenger. \n\n You can also render help to someone based on your proficiency.\n\n Here are the things I can do "});					
+					//sendMessage(event.sender.id, {text: "" + "Hi "+senderContext[event.sender.id].firstName+", I am surrogate bot. I am an artificial intelligent designed to assist students learn from experts on messenger. \n\n You can also render help to someone based on your proficiency.\n\n Here are the things I can do "});
 					help(event.sender.id,senderContext[event.sender.id].firstName);
 					senderContext[event.sender.id].state="begin";
 				}else if(contains.call(about_pool, msgin) || contains.call(about_pool, msgin2)){
 					about(event.sender.id);
 				}else{
-					defaultMsg ="Hello "+senderContext[event.sender.id].firstName+"! \n\n";					
+					defaultMsg ="Hello "+senderContext[event.sender.id].firstName+"! \n\n";
 					if(contains.call(welcome_pool, msgin)){
 						defaultMsg ="You are welcome "+senderContext[event.sender.id].firstName+".";
 					}else if(contains.call(cancellation_pool, msgin)){
@@ -465,7 +477,7 @@ app.post('/webhook', function (req, res) {
 						defaultMsg ="And you too, "+senderContext[event.sender.id].firstName+". \n\n";
 					}else if(contains.call(greetings_pool, msgin)){
 						defaultMsg ="I'm cool! "+senderContext[event.sender.id].firstName+". \n\n";
-					}else if(msgin.indexOf("damn")>-1 || msgin.indexOf("fuck")>-1 || msgin.indexOf("fool")>-1 || msgin.indexOf("insane")>-1 || msgin.indexOf("crazy")>-1 || msgin.indexOf("mad")>-1 ){					
+					}else if(msgin.indexOf("damn")>-1 || msgin.indexOf("fuck")>-1 || msgin.indexOf("fool")>-1 || msgin.indexOf("insane")>-1 || msgin.indexOf("crazy")>-1 || msgin.indexOf("mad")>-1 ){
 						defaultMsg ="Oh "+senderContext[event.sender.id].firstName+", that is not a very nice thing to say. \n\n Maybe you will feel better by providing help to someone on a subject you are proficient at. \n\n ";
 					}else if(contains.call(time_pool, msgin)){
 						var d = new Date();
@@ -481,16 +493,16 @@ app.post('/webhook', function (req, res) {
 							defaultMsg+=" "+senderContext[event.sender.id].firstName+"."
 						}else{
 							defaultMsg = msgin+" "+senderContext[event.sender.id].firstName;
-						}						
+						}
 					}
-										
+
 					sendMessage(event.sender.id, {text: "" + defaultMsg+"This is what I have on my menu "});
 					senderContext[event.sender.id].state="begin";
 					showMenu(event.sender.id);
 				}
-				
-				
-				
+
+
+
 			 }else{
 				showDefault(event.sender.id);
 			 }
@@ -504,10 +516,10 @@ app.post('/webhook', function (req, res) {
 			}else if(reply.payload=="help_me"){
 				if(senderContext[event.sender.id]!=null){
 						help(event.sender.id,senderContext[event.sender.id].firstName);
-				}				
+				}
 			}else if(reply.payload=="about_me"){
 				about(event.sender.id);
-			}else if(reply.payload=="get_assignment_help" || (reply.payload=="postback_yes" && senderContext[event.sender.id]!=null && senderContext[event.sender.id].state == "provide_subject")){
+			}else if(reply.payload=="get_assignment_help" || reply.payload=="postback_expertise_request_yes" || (reply.payload=="postback_yes" && senderContext[event.sender.id]!=null && senderContext[event.sender.id].state == "provide_subject")){
 				if(senderContext[event.sender.id]!=null){
 					sendMessage(event.sender.id, {text: "Which subject do you need help on?"});
 					senderContext[event.sender.id].state = "provide_subject";
@@ -517,8 +529,8 @@ app.post('/webhook', function (req, res) {
 				if(senderContext[event.sender.id]!=null){
 					senderContext[event.sender.id].state = "type_expertise";
 				}
-			}else if(reply.payload=="professional_expertise_level" || reply.payload=="intermediate_expertise_level" || reply.payload=="amateur_expertise_level"){					
-					subject = senderContext[event.sender.id].subject;				
+			}else if(reply.payload=="professional_expertise_level" || reply.payload=="intermediate_expertise_level" || reply.payload=="amateur_expertise_level"){
+					subject = senderContext[event.sender.id].subject;
 				    checkExpertise(event.sender.id,reply.payload,subject);
 			}else if(reply.payload=="postback_no"){
 				if(senderContext[event.sender.id]!=null){
@@ -545,7 +557,7 @@ app.post('/webhook', function (req, res) {
 			}else if(reply.payload.indexOf("postback_viewmore_request")>-1){
 				var id = reply.payload.split("-");
 				 page = id[1];
-				 sub = id[2];				 
+				 sub = id[2];
 				 checkHelper(sub,event.sender.id,page);
 			}else if(reply.payload.indexOf("delete_expertise")>-1){
 				var id = reply.payload.split("-");
@@ -559,18 +571,18 @@ app.post('/webhook', function (req, res) {
 				 type = id[3];
 
 				 if(type=="type_remind_expert"){
-					showExpertDetail(event.sender.id,reqId); 
+					showExpertDetail(event.sender.id,reqId);
 				 }else{
-					showStudentDetail(event.sender.id,reqId); 
+					showStudentDetail(event.sender.id,reqId);
 				 }
 			}else if(reply.payload.indexOf("show_student_detail")>-1){
 				var id = reply.payload.split("-");
 				 reqId = id[1];
-				 showStudentDetail(event.sender.id,reqId); 
+				 showStudentDetail(event.sender.id,reqId);
 			}else if(reply.payload.indexOf("show_expert_detail")>-1){
 				var id = reply.payload.split("-");
 				 reqId = id[1];
-				 showExpertDetail(event.sender.id,reqId); 
+				 showExpertDetail(event.sender.id,reqId);
 			}else if(reply.payload.indexOf("remove_expert")>-1){
 				var id = reply.payload.split("-");
 				 toId = id[1];
@@ -588,31 +600,31 @@ app.post('/webhook', function (req, res) {
 				 reminderId = id[1];
 				 title = id[2];
 				 removeReminder(event.sender.id,reminderId,title);
-			}else if(reply.payload.indexOf("request_expertise")>-1){				
+			}else if(reply.payload.indexOf("request_expertise")>-1){
 				var expertise_id = reply.payload.split("-");
 				 expertise_id = expertise_id[1];
 				 sendHelpRequest(event.sender.id,expertise_id);
-			}else if(reply.payload.indexOf("reject_request")>-1){				
+			}else if(reply.payload.indexOf("reject_request")>-1){
 				var expertise_id = reply.payload.split("-");
 				 expertiseId = expertise_id[1];
 				 fromId = expertise_id[2];
-				 if(senderContext[event.sender.id]!=null){ 
+				 if(senderContext[event.sender.id]!=null){
 					 sendRejection(fromId,expertiseId,event.sender.id);
-				}				
+				}
 			}else if(reply.payload.indexOf("accept_request")>-1){
 				var expertise_id = reply.payload.split("-");
 				 expertiseId = expertise_id[1];
 				 fromId = expertise_id[2];
-				if(senderContext[event.sender.id]!=null){  
+				if(senderContext[event.sender.id]!=null){
 					sendAcceptance(fromId,expertiseId,event.sender.id);
-				}								
+				}
 			}else if(reply.payload=="my_home"){
-				showMenu(event.sender.id);				
+				showMenu(event.sender.id);
 			}else if(reply.payload=="my_statistics"){
 				if(senderContext[event.sender.id]!=null){
 						showStatistic(event.sender.id,senderContext[event.sender.id].firstName);
-				}				
-			}else if(reply.payload.indexOf("postback_message_yes")>-1){				
+				}
+			}else if(reply.payload.indexOf("postback_message_yes")>-1){
 				var members_id = reply.payload.split("-");
 				 fromId = members_id[1];
 				 toId = members_id[2];
@@ -633,43 +645,43 @@ app.post('/webhook', function (req, res) {
 					 senderContext[event.sender.id].conversation_started="true";
 					 senderContext[event.sender.id].message_to=toId;
 					 senderContext[event.sender.id].message_subject=sub;
-					 
-				}				
-			}else if(reply.payload.indexOf("postback_message_no")>-1){				
+
+				}
+			}else if(reply.payload.indexOf("postback_message_no")>-1){
 				 if(senderContext[event.sender.id].userType=="expert" && message_count==0){
 					currentExpertise = senderContext[event.sender.id].currentExpertise;
-					rateOption(event.sender.id,currentExpertise);			
+					rateOption(event.sender.id,currentExpertise);
 				}else{
 					sendMessage(event.sender.id, {text: "Alright "+senderContext[event.sender.id].firstName+". This is what I have on my menu"});
 					showMenu(event.sender.id);
 					senderContext[event.sender.id].state="begin";
-				}				 		 
-			}else if(reply.payload.indexOf("postback_rate_yes")>-1){				
+				}
+			}else if(reply.payload.indexOf("postback_rate_yes")>-1){
 				 var members_id = reply.payload.split("-");
 				 expId = members_id[1];
-				 pickRating(event.sender.id,expId);					 
+				 pickRating(event.sender.id,expId);
 			}else if(reply.payload=="set_class_reminder"){
 				if(senderContext[event.sender.id]!=null){
 					sendMessage(event.sender.id, {text: "Cool! you can now setup a class reminder for meetings with your tutor(s) or student(s) \n\n\n"});
 					reminderOption(event.sender.id);
 					senderContext[event.sender.id].status = "select_reminder";
 				}
-			}else if(reply.payload.indexOf("remind_expert")>-1){				
-				var members_id = reply.payload.split("-");
-				 request_id = members_id[1];				
-				 if(senderContext[event.sender.id]!=null){  
-					 senderContext[event.sender.id].request_id=request_id;
-					 senderContext[event.sender.id].reminder_type="type_remind_expert";
-					 pickPeriod(event.sender.id,"");
-				}				
-			}else if(reply.payload.indexOf("remind_student")>-1){				
+			}else if(reply.payload.indexOf("remind_expert")>-1){
 				var members_id = reply.payload.split("-");
 				 request_id = members_id[1];
 				 if(senderContext[event.sender.id]!=null){
-					 senderContext[event.sender.id].request_id=request_id;				 
+					 senderContext[event.sender.id].request_id=request_id;
+					 senderContext[event.sender.id].reminder_type="type_remind_expert";
+					 pickPeriod(event.sender.id,"");
+				}
+			}else if(reply.payload.indexOf("remind_student")>-1){
+				var members_id = reply.payload.split("-");
+				 request_id = members_id[1];
+				 if(senderContext[event.sender.id]!=null){
+					 senderContext[event.sender.id].request_id=request_id;
 					 senderContext[event.sender.id].reminder_type="type_remind_student";
 					 pickPeriod(event.sender.id,"");
-				}				
+				}
 			}else if(reply.payload=="postback_student_meeting"){
 				if(senderContext[event.sender.id]!=null){
 					showStudents(event.sender.id,false,"0");
@@ -692,18 +704,18 @@ app.post('/webhook', function (req, res) {
 			}else{
 				//sendMessage(event.sender.id, {text: reply.payload+" "});
 				defaultMsg ="This is what I have on my menu";
-				sendMessage(event.sender.id, {text: ""+defaultMsg});									
+				sendMessage(event.sender.id, {text: ""+defaultMsg});
 				showMenu(event.sender.id);
 			}
 			//postback_just_registered
 			 continue;
-		}		
+		}
     }
     res.sendStatus(200);
 });
 
 // generic function sending messages
-function sendMessage(recipientId, message) {  
+function sendMessage(recipientId, message) {
     request({
         url: 'https://graph.facebook.com/v2.8/me/messages',
         qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
@@ -720,13 +732,13 @@ function sendMessage(recipientId, message) {
             console.log('Error-here: ', response.body.error);
 			return false;
         }else{
-				 
+
 		}
     });
 return true;
 }
 // Notify message recipient of current user action
-function sendBusy(recipientId,type) {  
+function sendBusy(recipientId,type) {
     request({
         url: 'https://graph.facebook.com/v2.8/me/messages',
         qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
@@ -748,7 +760,7 @@ return true;
 }
 
 // generic function sending messages
-function sendFile(recipientId, message,thirdParty,msg,subject) {  
+function sendFile(recipientId, message,thirdParty,msg,subject) {
     request({
         url: 'https://graph.facebook.com/v2.8/me/messages',
         qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
@@ -764,15 +776,15 @@ function sendFile(recipientId, message,thirdParty,msg,subject) {
         } else if (response.body.error) {
             console.log('Error: ', response.body.error);
 			return false;
-        }else{				  										 
+        }else{
 					//	if(sendMessage(to,sg)){
 							if(sendMessage(recipientId, {text: "" + msg})){
 								//messageOption(recipientId,"Do you want to reply this message?",recipientId,thirdParty,subject);
 							}
-							if(sendMessage(thirdParty, {text: "âœ”ï¸ "})){
-								//messageOption(thirdParty,"Do you want to send another message?",thirdParty,recipientId,subject);	
-							}								
-					//	}	
+							if(sendMessage(thirdParty, {text: "✔️ "})){
+								//messageOption(thirdParty,"Do you want to send another message?",thirdParty,recipientId,subject);
+							}
+					//	}
 						return true;
 		}
     });
@@ -921,8 +933,8 @@ return true;
 
 
 
-function checkHelper(subject,senderId,page){		
-	var post_data = querystring.stringify({'facebook_id_not' : senderId,'subject':subject,'page':page});	
+function checkHelper(subject,senderId,page){
+	var post_data = querystring.stringify({'facebook_id_not' : senderId,'subject':subject,'page':page});
 	request({
 			url: backurl+"expertise/getwherenot",
 			method: 'POST',
@@ -938,11 +950,11 @@ function checkHelper(subject,senderId,page){
 				console.log('Error: ', response.body.error);
 			}else{
 				try{
-					output = JSON.parse(body);	
+					output = JSON.parse(body);
 					if(output.length>0){
 							sendMessage(senderId, {text: "Oh! that is nice, I know people that can help you in "+subject+".\n\n"});
-							senderContext[senderId].state = "provide_subject_done";	
-						
+							senderContext[senderId].state = "provide_subject_done";
+
 					var total = output.length;
 					elementss = new Array();
 
@@ -951,11 +963,11 @@ function checkHelper(subject,senderId,page){
 					}
 					var j=(total>3)?3:total;
 					elementss[0]={
-							"title":"ðŸŽ“ "+subject+" request list",
-							"subtitle": "Here is what I found",								
+							"title":"🎓 "+subject+" request list",
+							"subtitle": "Here is what I found",
 					};
 					//var i=0;
-					for(i = 0; i<j ; i++){					
+					for(i = 0; i<j ; i++){
 					//for(i = 0; i<output.length; i++){
 						level = output[i].level;//.split("_");
 						if(level!=null){
@@ -964,37 +976,37 @@ function checkHelper(subject,senderId,page){
 						}else{
 							level="";
 						}
-						
+
 						con="";
-						var rating = output[i].rating;						
+						var rating = output[i].rating;
 						var totalr = output[i].total_rating;
 						if(rating==null || rating=="NULL"){
 							rating = 0;
 						}
-						
+
 						if(totalr==null || totalr=="NULL"){
 							totalr=1;
 						}
-						
+
 						rate = Math.round(rating/totalr);
 						for(k=0; k<rate; k++){
-							con+="ðŸŒŸ";
+							con+="🌟";
 						}
-						
-					elementss[i+1]={                           
-							"title": output[i].name, 
-							"image_url": output[i].profile_pic,                  
-							"subtitle":  ""+output[i].subject+", "+level+" level \n"+con,   
+
+					elementss[i+1]={
+							"title": output[i].name,
+							"image_url": output[i].profile_pic,
+							"subtitle":  ""+output[i].subject+", "+level+" level \n"+con,
                             "buttons": [{
 											"title": "Request Expertise",
 											"type": "postback",
-											"payload": "request_expertise-"+output[i].expertise_id                     
+											"payload": "request_expertise-"+output[i].expertise_id
 										}]
                         };
-				
+
 					}
-					
-				
+
+
 				message = {
 					"attachment": {
                     "type": "template",
@@ -1005,27 +1017,28 @@ function checkHelper(subject,senderId,page){
 						"buttons":[{
 									"title": (total<4)?"Close":"View More",
 									"type": "postback",
-									"payload": (total<4)?"postback_no":"postback_viewmore_request-"+page+"-"+subject,                        
+									"payload": (total<4)?"postback_no":"postback_viewmore_request-"+page+"-"+subject,
 						}]
 						}
 					}
-				};	
-					
-					sendMessage(senderId,message);	
-							
+				};
+
+					sendMessage(senderId,message);
+
 					}else{
 						sendMessage(senderId, {text: "Sorry, I don't know anyone that is proficient in "+subject+", kindly tell your friends about me so I can render help to more people"});
-						displayOption(senderId,"Do you want to try another subject?","yes_no");
+						displayExpertiseOption(senderId,"Do you want to try another subject?","yes_no");
+						senderContext[senderId].state = "stop_subject_selection";	
 					}
-					
+
 					}catch(err){
 						sendMessage(senderId, {text: "Error fetching expert "+JSON.stringify(err)});
-					}	
+					}
 
 			}
-					
+
 		});
-	
+
 }
 
 
@@ -1040,38 +1053,38 @@ function sendHelpRequest(senderId,requestId){
 				'Content-Length':post_data.length
 				}
 		}, function(error, response, body) {
-		
+
         if (error) {
 			sendMessage(senderId, {text: "hey "+error});
         } else if (response.body.error) {
            sendMessage(senderId, {text: "hey "+error});
         }else{
 			//sendMessage(senderId, {text: "hey "+body});
-			
+
 			var bodyObject = JSON.parse(body);
 			bodyObject = bodyObject[0];
 			subject = bodyObject.subject;
 			level = bodyObject.level;
 			ownerId=bodyObject.facebook_id;
-			
+
 			var post_data = querystring.stringify({
 				'from_id' : senderId,
 				'to_id':ownerId,
 				'subject':subject,
 				'expertise_id':requestId
 			});
-			
+
 			//sendMessage(senderId, {text: "hey "+post_data});
-			if(senderContext[senderId]!=null){	
+			if(senderContext[senderId]!=null){
 				senderContext[senderId].requestSubject = subject;
 				senderContext[senderId].requestTo = ownerId;
 				senderContext[senderId].expertiseId = requestId;
 				submitForm(post_data,backurl+"requests/add",senderId,"save_request");
 			}
-          		
+
 		}
 		});
-			
+
     return true;
 }
 
@@ -1087,28 +1100,28 @@ function sendRejection(fromId,requestId,senderId){
 				'Content-Length':post_data.length
 				}
 		}, function(error, response, body) {
-		
+
         if (error) {
 			//
         } else if (response.body.error) {
            //
         }else{
-		try{		
+		try{
 			var bodyObject = JSON.parse(body);
 			bodyObject = bodyObject[0];
 			subject = bodyObject.subject;
 			to = bodyObject.to_id;
-			name = bodyObject.name;	
+			name = bodyObject.name;
 			reqId = bodyObject.request_id;
 			sendMessage(fromId, {text: senderContext[senderId].firstName+" "+senderContext[senderId].lastName+" has rejected your "+subject+" expertise request"});
 			var p_data = querystring.stringify({'request_id' : reqId});
 			submitForm(p_data,backurl+"requests/remove",senderId,"update_request");
 		}catch(err){
-			sendMessage(fromId, {text: body+""});  
-		}       		
+			sendMessage(fromId, {text: body+""});
+		}
 		}
 		});
-			
+
     return true;
 }
 
@@ -1124,48 +1137,48 @@ function sendAcceptance(fromId,requestId,senderId){
 				'Content-Length':post_data.length
 				}
 		}, function(error, response, body) {
-		
+
         if (error) {
 			//
         } else if (response.body.error) {
            //
         }else{
-		try{		
+		try{
 			var bodyObject = JSON.parse(body);
-			bodyObject = bodyObject[0]; 		
+			bodyObject = bodyObject[0];
 			subject = bodyObject.subject;
 			to = bodyObject.to_id;
-			name = bodyObject.name;	
+			name = bodyObject.name;
 			reqId = bodyObject.request_id;
-			
+
 			sendMessage(senderId, {text: name+" is now your "+subject+" student."});
 			messageOption(senderId,"Would you like to message "+name+"?",senderId,fromId,subject,"student",requestId);
-			
+
 			sendMessage(fromId, {text: senderContext[senderId].firstName+" "+senderContext[senderId].lastName+" has accepted your "+subject+" expertise request. He's now in your tutors list."});
 			messageOption(fromId,"Would you like to message "+senderContext[senderId].firstName+"?",fromId,senderId,subject,"expert",requestId);
-						
+
 			var p_data = querystring.stringify({'request_id' : reqId,'status':'completed'});
 			submitForm(p_data,backurl+"requests/update",senderId,"update_request2");
-						
+
 		}catch(err){
-			sendMessage(senderId, {text: " exception "+err});  
-		}       		
+			sendMessage(senderId, {text: " exception "+err});
+		}
 		}
 		});
-			
+
     return true;
 }
 
 
 function checkExpertise(senderId,payload,subject){
-	
+
 				var post_data = querystring.stringify({
 						'status':'completed',
 						'level':payload,
 						'facebook_id' : senderId,
 						'subject':subject
-				});					
-				
+				});
+
 			request({
 			url: backurl+"expertise/get",
 			method: 'POST',
@@ -1175,40 +1188,40 @@ function checkExpertise(senderId,payload,subject){
 				'Content-Length':post_data.length
 				}
 		}, function(error, response, body) {
-		
+
         if (error) {
 			//
         } else if (response.body.error) {
            //
         }else{
-      		
-		try{		
+
+		try{
 			var bodyObject = JSON.parse(body);
 			if(bodyObject.length>0){
-				sendMessage(senderId, {text: "Oh! did you forget? you have already added this subject. Please specify another subject"}); 
+				sendMessage(senderId, {text: "Oh! did you forget? you have already added this subject. Please specify another subject"});
 				var p_data = querystring.stringify({
 						'status':'pending',
 						'facebook_id' : senderId,
 						'subject':subject,
 						'level':payload
-				});	
-				getOut(senderId);								
+				});
+				getOut(senderId);
 				senderContext[senderId].state = "type_expertise";
-				submitForm(p_data,backurl+"expertise/remove",senderId,"remove_expertise");				
+				submitForm(p_data,backurl+"expertise/remove",senderId,"remove_expertise");
 			}else{
 				var post_data = querystring.stringify({
 						'status':'completed',
 						'level':payload,
 						'facebook_id' : senderId,
 						'subject':subject
-				});		
+				});
 				submitForm(post_data,backurl+"expertise/updateall",senderId,"update_expertise");
 			}
 		}catch(err){
-			sendMessage(senderId, {text: body+""});  
-		}       				
+			sendMessage(senderId, {text: body+""});
 		}
-		});			
+		}
+		});
     return true;
 }
 
@@ -1220,19 +1233,19 @@ function setContext(recipientId) {
 			url: 'https://graph.facebook.com/v2.8/'+recipientId+'?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token='+process.env.PAGE_ACCESS_TOKEN,
 			method: 'GET'
 		}, function(error, response, body) {
-		
+
         if (error) {
             console.log('Error sending message: ', error);
 			return false;
         } else if (response.body.error) {
             console.log('Error: ', response.body.error);
 			return false;
-        }else{			
+        }else{
 			var bodyObject = JSON.parse(body);
 			firstName = bodyObject.first_name;
 			lastName = bodyObject.last_name;
 			profilePic=bodyObject.profile_pic;
-			locale = bodyObject.locale;			
+			locale = bodyObject.locale;
 			senderContext[recipientId] = {};
 			senderContext[recipientId].firstName = firstName;
 			senderContext[recipientId].lastName = lastName;
@@ -1242,10 +1255,10 @@ function setContext(recipientId) {
 			senderContext[recipientId].message="false";
 			senderContext[recipientId].userType="anonymous";
 			senderContext[recipientId].conversation_started="false";
-            return true;		
+            return true;
 		}
 		});
-			
+
 };
 
 function welcomeUser(recipientId) {
@@ -1254,7 +1267,7 @@ function welcomeUser(recipientId) {
 			url: 'https://graph.facebook.com/v2.8/'+recipientId+'?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token='+process.env.PAGE_ACCESS_TOKEN,
 			method: 'GET'
 		}, function(error, response, body) {
-		
+
         if (error) {
             console.log('Error sending message @ welcome user: ', error);
         } else if (response.body.error) {
@@ -1266,7 +1279,7 @@ function welcomeUser(recipientId) {
 			lastName = bodyObject.last_name;
 			profilePic=bodyObject.profile_pic;
 			locale = bodyObject.locale;
-			
+
 			senderContext[recipientId] = {};
 			senderContext[recipientId].firstName = firstName;
 			senderContext[recipientId].lastName = lastName;
@@ -1276,20 +1289,20 @@ function welcomeUser(recipientId) {
 			senderContext[recipientId].message="false";
 			senderContext[recipientId].userType="anonymous";
 			senderContext[recipientId].conversation_started="false";
-			
+
 			//{"first_name":"Adedayo","last_name":"Olubunmi","profile_pic":"https:\/\/scontent.xx.fbcdn.net\/v\/t1.0-1\/180239_1589652066179_7006637_n.jpg?oh=7ca52055172d91e1c914fcd1110d17a6&oe=596F62FA","locale":"en_US","timezone":1,"gender":"male"}
 			var post_data = querystring.stringify({
 				'facebook_id' : recipientId,
 				'name':firstName+" "+lastName,
 				'profile_pic':profilePic
 			});
-			
+
 			if(firstName!=null){
 				submitForm(post_data,backurl+"users/add",recipientId,"add_user");
-				//var msg = "Hi "+firstName+"! I am excited to have you around. I can help you get tutors on subjects you need help on. \n\n I can also assist you to render help to people based on your proficiency. \n\n You'll get recognition for that, you know?";			
+				//var msg = "Hi "+firstName+"! I am excited to have you around. I can help you get tutors on subjects you need help on. \n\n I can also assist you to render help to people based on your proficiency. \n\n You'll get recognition for that, you know?";
 				//sendMessage(recipientId, {text: "" + msg});
-				var msg="Hi "+firstName+"! ðŸ˜ƒ \nMy name is Surrogate bot, I believe together we can build a stronger learning community on messenger ðŸ“–";
-				
+				var msg="Hi "+firstName+"! 😃 \nMy name is Surrogate bot, I believe together we can build a stronger learning community on messenger 📖";
+
 				message = {
                 "attachment": {
                     "type": "template",
@@ -1303,19 +1316,19 @@ function welcomeUser(recipientId) {
                                 }]
                     }
                 }
-             };			
-			sendMessage(recipientId, {text: "" + msg});	
+             };
+			sendMessage(recipientId, {text: "" + msg});
 				showMenu(recipientId);
 			}
             return true;
 		}catch(err){
 			console.log("Error here @ welcome user");
-			sendMessage(recipientId, {text: "" + err});	
-		}			
+			sendMessage(recipientId, {text: "" + err});
 		}
-		
+		}
+
 		});
-			
+
     return true;
 }
 
@@ -1325,34 +1338,34 @@ function showDefault(recipientId) {
 			url: 'https://graph.facebook.com/v2.8/'+recipientId+'?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token='+process.env.PAGE_ACCESS_TOKEN,
 			method: 'GET'
 		}, function(error, response, body) {
-		
+
         if (error) {
             console.log('Error sending message: ', error);
         } else if (response.body.error) {
             console.log('Error: ', response.body.error);
-        }else{	
+        }else{
 			try{
 			var bodyObject = JSON.parse(body);
 			firstName = bodyObject.first_name;
 			lastName = bodyObject.last_name;
 			profilePic=bodyObject.profile_pic;
-			locale = bodyObject.locale;			
+			locale = bodyObject.locale;
 			senderContext[recipientId] = {};
 			senderContext[recipientId].firstName = firstName;
 			senderContext[recipientId].lastName = lastName;
 			senderContext[recipientId].profilePic = profilePic;
 			senderContext[recipientId].state = "newly_welcomed";
 			senderContext[recipientId].next=0;
-			senderContext[recipientId].message="false";			
+			senderContext[recipientId].message="false";
 				defaultMsg ="Hello "+firstName+"!  This is what I have on my menu";
-				sendMessage(recipientId, {text: ""+defaultMsg});									
+				sendMessage(recipientId, {text: ""+defaultMsg});
 				showMenu(recipientId);
 			}catch(err){
 				console.log("error at show default");
 			}
 		}
 		});
-			
+
     return true;
 }
 
@@ -1395,19 +1408,19 @@ function showStatistic(recipientId,name) {
         "template_type":"generic",
         "elements":[
           {
-            "title":"ðŸ’¡ Surrogate Bot Statistics",
+            "title":"💡 Surrogate Bot Statistics",
 			"image_url": "http://surrogation.com.ng/surrogateapp/image?name="+name,
 			"buttons": [{
                       "type": "web_url",
-                      "url": "http://surrogation.com.ng/surrogateapp/image?name="+name, 
+                      "url": "http://surrogation.com.ng/surrogateapp/image?name="+name,
                       "title": "View in full"
                     }]
           } ]
       }
     }
-  };	
+  };
  sendMessage(recipientId, message);
- return true;		
+ return true;
 }
 
 
@@ -1422,7 +1435,7 @@ function about(recipientId) {
         "template_type":"generic",
         "elements":[
           {
-            "title":"ðŸ’¡ Surrogate Bot",
+            "title":"💡 Surrogate Bot",
             "subtitle":"Building a stronger learning community.",
 			"image_url": "http://surrogation.com.ng/surrogateapp/resources/images/logo.jpg",
             "buttons":[
@@ -1444,9 +1457,9 @@ function about(recipientId) {
         ]
       }
     }
-  };			
+  };
 			sendMessage(recipientId, message);
-            return true;		
+            return true;
 }
 
 function showMoreAbout(recipientId){
@@ -1464,13 +1477,13 @@ function showMoreAbout(recipientId){
                                 }]
                     }
                 }
-             };			
-			sendMessage(recipientId, message);	
+             };
+			sendMessage(recipientId, message);
 }
 
 
 function help(recipientId,name) {
-			msg="Hi "+name+", I am Surrogate, you can use the following commands to communicate with me.\n\n -Type menu to access the main menu.\n\n -Type cancel or exit to cancel current operation. \n\n -Type my expertise to access your subject list. \n\n -Type my tutors to access your tutor list. \n\n -Type my students to access your student list. \n\n -Type my reminders to access your reminder list. \n\n -Type about to know more about me. \n\n -Type statistics to show my current statistics. \n\n Thank you.";	
+			msg="Hi "+name+", I am Surrogate, you can use the following commands to communicate with me.\n\n -Type menu to access the main menu.\n\n -Type cancel or exit to cancel current operation. \n\n -Type my expertise to access your subject list. \n\n -Type my tutors to access your tutor list. \n\n -Type my students to access your student list. \n\n -Type my reminders to access your reminder list. \n\n -Type about to know more about me. \n\n -Type statistics to show my current statistics. \n\n Thank you.";
 			message = {
                 "attachment": {
                     "type": "template",
@@ -1485,9 +1498,9 @@ function help(recipientId,name) {
                     }
                 }
              };
-			
+
 			sendMessage(recipientId, message);
-            return true;		
+            return true;
 };
 
 function getExpertiseLevel(recipientId){
@@ -1518,9 +1531,9 @@ function getExpertiseLevel(recipientId){
                     }
                 }
             };
-			
-			sendMessage(recipientId, message);			
-            return false;		
+
+			sendMessage(recipientId, message);
+            return false;
 }
 
 function displayOption(recipientId,msg,option_type){
@@ -1545,12 +1558,37 @@ function displayOption(recipientId,msg,option_type){
                         }]
                     }
                 }
-            };			
-			sendMessage(recipientId, message);			
+            };
+			sendMessage(recipientId, message);
             return false;
-			
 }
 
+function displayExpertiseOption(recipientId,msg,option_type){
+	message = {
+                "attachment": {
+                    "type": "template",
+                    "payload": {
+                        "template_type": "generic",
+                        "elements": [{
+                            "title": msg,
+                            "buttons": [{
+								"type": "postback",
+                                "title": "Yes",
+                                "payload": "postback_expertise_request_yes",
+                                },
+								{
+								"type": "postback",
+                                "title": "No",
+                                "payload": "postback_no",
+                                }
+								]
+                        }]
+                    }
+                }
+            };
+			sendMessage(recipientId, message);
+            return false;
+}
 
 function reminderOption(recipientId){
 	message = {
@@ -1571,8 +1609,8 @@ function reminderOption(recipientId){
                                 }]
                     }
                 }
-            };			
-			sendMessage(recipientId, message);			
+            };
+			sendMessage(recipientId, message);
             return false;
 }
 
@@ -1596,8 +1634,8 @@ function reminderOptionYesNo(recipientId){
                                 }]
                     }
                 }
-            };			
-			sendMessage(recipientId, message);			
+            };
+			sendMessage(recipientId, message);
             return false;
 }
 
@@ -1628,7 +1666,7 @@ function messageOption(recipientId,msg,fromm,to,subject,usertype,exp_id){
 	if( senderContext[recipientId]!=null){
 		senderContext[recipientId].state = "send message";
 	}
-		sendMessage(recipientId, message);			
+		sendMessage(recipientId, message);
         return true;
 }
 
@@ -1640,7 +1678,7 @@ function replyOption(recipientId,msg,fromm,to,subject,fromtype,profilePic){
                         "template_type": "generic",
                         "elements": [{
                             "title": msg,
-							"image_url": profilePic,    
+							"image_url": profilePic,
                             "buttons": [{
 								"type": "postback",
                                 "title": "Reply",
@@ -1656,7 +1694,7 @@ function replyOption(recipientId,msg,fromm,to,subject,fromtype,profilePic){
                     }
                 }
             };
-			
+
 		return sendMessage(recipientId, message);
 }
 
@@ -1678,15 +1716,15 @@ function getOut(recipientId){
                         }]
                     }
                 }
-            };		
-			sendMessage(recipientId, message);			
+            };
+			sendMessage(recipientId, message);
             return true;
 }
 
 
 
 function rateOption(fromm,expertise_id){
-	
+
 	var post_data = querystring.stringify({'rated_by' : fromm,'expertise_id':expertise_id});
 	request({
 			url: backurl+"ratings/get",
@@ -1729,15 +1767,15 @@ function rateOption(fromm,expertise_id){
 			if( senderContext[fromm]!=null){
 				senderContext[fromm].state = "rate_expertise";
 			}
-			sendMessage(fromm, message);							
+			sendMessage(fromm, message);
 			}else{
 				sendMessage(fromm, {text: "Alright "+senderContext[fromm].firstName+". This is what I have on my menu"});
 				showMenu(fromm);
 				senderContext[fromm].state="begin";
-			}			
+			}
 		}
 		});
-	
+
 	return true;
 }
 
@@ -1758,57 +1796,57 @@ function getStarted(){
 						"composer_input_disabled":false,
 						"call_to_actions":[
 						{
-						"title":"ðŸ¡ Home",
+						"title":"🏡 Home",
 						"type":"nested",
 						"call_to_actions":[
 									{
 									"type":"postback",
-									"title":"âœŠðŸ» Main Menu",
+									"title":"✊🏻 Main Menu",
 									"payload":"my_home"
 									},{
 									"type":"postback",
-									"title":"ðŸ’¡ About",
+									"title":"💡 About",
 									"payload":"about_me"
 									},{
 									"type":"postback",
-									"title":"ðŸ™‹ Help",
+									"title":"🙋 Help",
 									"payload":"help_me"
 									},{
 									"type":"postback",
-									"title":"ðŸ’Ž Statistics",
+									"title":"💎 Statistics",
 									"payload":"my_statistics"
-									}]									
+									}]
 						},
 						{
-						"title":"ðŸ›‚ Dashboard",
+						"title":"🛂 Dashboard",
 						"type":"nested",
 						"call_to_actions":[
 									{
 									"type":"postback",
-									"title":"ðŸ“• Expertise",
+									"title":"📕 Expertise",
 									"payload":"my_expertise"
 									},{
 									"type":"postback",
-									"title":"ðŸš» Tutors",
+									"title":"🚻 Tutors",
 									"payload":"my_experts"
 									},{
 									"type":"postback",
-									"title":"ðŸŽ“ Students",
+									"title":"🎓 Students",
 									"payload":"my_students"
 									},
 									{
 									"type":"postback",
-									"title":"â° Reminders",
+									"title":"⏰ Reminders",
 									"payload":"my_reminders"
 									}]
 								}]
 						}]
 				};
-					
+
 		request({
-        url: 'https://graph.facebook.com/v2.8/me/messenger_profile',			
+        url: 'https://graph.facebook.com/v2.8/me/messenger_profile',
         qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
-        method: 'POST',	
+        method: 'POST',
         json: message
 		}, function(error, response, body) {
 			if (error) {
@@ -1819,7 +1857,7 @@ function getStarted(){
 					console.log(body);
 			}
 		});
-				
+
 }
 
 
@@ -1835,7 +1873,7 @@ function submitForm(post_data,url,userId,action){
 				'Content-Length':post_data.length
 				}
 		}, function(error, response, body) {
-		
+
 			if (error) {
 				console.log('Error sending message: ', error);
 			} else if (response.body.error) {
@@ -1850,39 +1888,39 @@ function submitForm(post_data,url,userId,action){
 							senderContext[userId].error = false;
 							sendMessage(userId, {text: "I have successfully saved your expertise"});
 							displayOption(userId,"Do you want to add another expertise?","yes_no");
-							senderContext[userId].state = "expertise_saved"; 
+							senderContext[userId].state = "expertise_saved";
 							return true;
 						}
-						
+
 						if(action == "type_expertise"){
 							if(!exists){
-								sendMessage(userId, {text: "Please select your expertise level in "+senderContext[userId].subject});				
+								sendMessage(userId, {text: "Please select your expertise level in "+senderContext[userId].subject});
 								getExpertiseLevel(userId);
 								senderContext[userId].state = "type_expertise_done";
 							}else{
 								if(messg=="limit exceeded"){
 									sendMessage(userId, {text: "Sorry, you can not have more than 10 expertise"});
-									//getOut(userId);	
-									senderContext[userId].state = "begin_again";									
+									//getOut(userId);
+									senderContext[userId].state = "begin_again";
 								}else{
 									sendMessage(userId, {text: "You have added this expertise before. Please specify another expertise"});
-									getOut(userId);								
+									getOut(userId);
 									senderContext[userId].state = "type_expertise";
 								}
 							}
 							return true;
 						}
-						
+
 						if(action == "save_request"){
-							if(!exists){		
+							if(!exists){
 								name = senderContext[userId].firstName + " "+senderContext[userId].lastName;
 								subject = senderContext[userId].requestSubject;
 								ownerId = senderContext[userId].requestTo;
 								requestId = senderContext[userId].expertiseId;
-								sendMessage(userId, {text: "I have sent your request. Hopefully, you will get a reply very soon."});				
-								//sendMessage(userId, {text: "You have a new request. "+name+" wants to learn "+subject+" from you"});	
-								sendMessage(ownerId, {text: "You have a new request. "+name+" wants to learn "+subject+" from you"});									
-								
+								sendMessage(userId, {text: "I have sent your request. Hopefully, you will get a reply very soon."});
+								//sendMessage(userId, {text: "You have a new request. "+name+" wants to learn "+subject+" from you"});
+								sendMessage(ownerId, {text: "You have a new request. "+name+" wants to learn "+subject+" from you"});
+
 								message = {"attachment": {
 											"type": "template",
 											"payload": {
@@ -1902,22 +1940,22 @@ function submitForm(post_data,url,userId,action){
 													}
 												}
 											};
-								sendMessage(ownerId, message);									
+								sendMessage(ownerId, message);
 							}else{
-								sendMessage(userId, {text: "Oh! did you forget? You have already requested this expertise!"});																
+								sendMessage(userId, {text: "Oh! did you forget? You have already requested this expertise!"});
 							}
 							return true;
 						}
-						
+
 						if(action=="add_reminder"){
 							if(!exists){
 								pickTime(userId);
 								senderContext[userId].status="pick_reminder_time";
-							}else{							
-								
+							}else{
+
 								if(messg=="limit exceeded"){
 									sendMessage(userId, {text: "Sorry, you can not have more than 10 reminders"});
-									senderContext[userId].state = "begin_again";									
+									senderContext[userId].state = "begin_again";
 								}else{
 									var period = post_data.split("=");
 									period = period[period.length-1];
@@ -1928,33 +1966,33 @@ function submitForm(post_data,url,userId,action){
 										pickPeriod(userId,msg);
 								//}
 								}
-								
-								
-								
-								
+
+
+
+
 							}
 							return true;
 						}
-						
+
 						if(action=="update_reminder"){
 							sendMessage(userId, {text: "Your reminder has been saved"});
 							reminderOptionYesNo(userId);
 							return true;
 						}
-						
+
 						if(action=="add_rating"){
 							sendMessage(userId, {text: "Thanks! your rating has been saved"});
 							return true;
 						}
-							
-				} 
+
+				}
 			}
 		});
 		return true;
 }
 
 function showExpertise(recipientId){
-	var post_data = querystring.stringify({'facebook_id' : recipientId});	
+	var post_data = querystring.stringify({'facebook_id' : recipientId});
 	request({
 			url: backurl+"expertise/get",
 			method: 'POST',
@@ -1974,7 +2012,7 @@ function showExpertise(recipientId){
 				elementss = new Array();
 				if(total<1){
 					sendMessage(recipientId, {text: "Oh! your expertise list is empty"});
-					
+
 				message = {
                 "attachment": {
                     "type": "template",
@@ -1996,12 +2034,12 @@ function showExpertise(recipientId){
                         }]
                     }
                 }
-				};			
-			sendMessage(recipientId, message);	
-					
-					
+				};
+			sendMessage(recipientId, message);
+
+
 				}else{
-					sendMessage(recipientId, {text: "ðŸ“• Here is your expertise list"});
+					sendMessage(recipientId, {text: "📕 Here is your expertise list"});
 					for(i = 0; i<output.length; i++){
 						level = output[i].level;//.split("_");
 						if(level!=null){
@@ -2010,35 +2048,35 @@ function showExpertise(recipientId){
 						}else{
 							level="";
 						}
-						
+
 						con="";
-						var rating = output[i].rating;						
+						var rating = output[i].rating;
 						var totalr = output[i].total_rating;
 						if(rating==null || rating=="NULL"){
 							rating = 0;
 						}
-						
+
 						if(totalr==null || totalr=="NULL"){
 							totalr=1;
 						}
-						
+
 						rate = Math.round(rating/totalr);
 						for(k=0; k<rate; k++){
-							con+="ðŸŒŸ";
+							con+="🌟";
 						}
-						
-						elementss[i]={                           
-							"title": output[i].subject.toUpperCase(),                  
-							"subtitle": level+" level \n\n"+con,   
+
+						elementss[i]={
+							"title": output[i].subject.toUpperCase(),
+							"subtitle": level+" level \n\n"+con,
                             "buttons": [{
 								"type": "postback",
                                 "title": "Delete",
                                 "payload": "delete_expertise-"+output[i].expertise_id+"-"+output[i].subject,
                                 }]
                         };
-				
+
 					}
-										
+
 				message = {
 					"attachment": {
                     "type": "template",
@@ -2048,18 +2086,18 @@ function showExpertise(recipientId){
                     }
 					}
 				};
-				
+
 				sendMessage(recipientId,message);
 				}
-					
-			}			
+
+			}
 		});
-	
+
 }
 
 
 function showReminders(recipientId){
-	var post_data = querystring.stringify({'facebook_id' : recipientId});	
+	var post_data = querystring.stringify({'facebook_id' : recipientId});
 	request({
 			url: backurl+"reminder/getreminders",
 			method: 'POST',
@@ -2074,11 +2112,11 @@ function showReminders(recipientId){
 			} else if (response.body.error) {
 				console.log('Error: ', response.body.error);
 			}else{
-				output = JSON.parse(body);			
+				output = JSON.parse(body);
 				var total = output.length;
 				elementss = new Array();
 				if(total<1){
-					sendMessage(recipientId, {text: "Oh! your class reminder list is empty"});					
+					sendMessage(recipientId, {text: "Oh! your class reminder list is empty"});
 				message = {
                 "attachment": {
                     "type": "template",
@@ -2099,10 +2137,10 @@ function showReminders(recipientId){
                         }]
                     }
                 }
-				};			
-				sendMessage(recipientId, message);											
+				};
+				sendMessage(recipientId, message);
 				}else{
-					sendMessage(recipientId, {text: "â° Here is your class reminder list "});					
+					sendMessage(recipientId, {text: "⏰ Here is your class reminder list "});
 					try{
 					for(i = 0; i<output.length; i++){
 						day = output[i].day;//.split("_");
@@ -2123,30 +2161,30 @@ function showReminders(recipientId){
 							}
 						}else{
 							day="";
-						}						
+						}
 						if(time!=null){
 							//time = output[i].time.toLowerCase();
-							time = time.split("_");							
+							time = time.split("_");
 							tm=time[2];
-							var hr = (hours.indexOf(tm));						
+							var hr = (hours.indexOf(tm));
 							hr = hr+" "+time[3];
 							time = hr;
 						}else{
 							time="";
 						}
-					
-												
-						elementss[i]={                           
-							"title": output[i].subject.toUpperCase(),                  
-							"subtitle":rtype+"\n\nDAY:"+day+"\n\n TIME:"+time,   
+
+
+						elementss[i]={
+							"title": output[i].subject.toUpperCase(),
+							"subtitle":rtype+"\n\nDAY:"+day+"\n\n TIME:"+time,
                             "buttons": [{
 								"type": "postback",
                                 "title": "Delete",
                                 "payload": "delete_reminder-"+output[i].reminder_id+"-"+output[i].subject+", "+day+", "+time
                                 }]
-                        };				
+                        };
 					}
-										
+
 				message = {
 					"attachment": {
                     "type": "template",
@@ -2155,14 +2193,14 @@ function showReminders(recipientId){
                         "elements": elementss
                     }
 					}
-				};				
+				};
 				sendMessage(recipientId,message);
 				}catch(err){
 				sendMessage(recipientId,{text: err+" "+body});
 				}
-			}	
-			}			
-		});	
+			}
+			}
+		});
 }
 
 
@@ -2186,8 +2224,8 @@ function removeExpertise(recipientId,expertise_id,subject){
 				console.log('Error: ', response.body.error);
 			}else{
 				sendMessage(recipientId, {text: "I have successfully removed "+subject+"  as one of your expertise  \n\n "});
-				showExpertise(recipientId);	
-			}			
+				showExpertise(recipientId);
+			}
 		});
 }
 
@@ -2207,18 +2245,18 @@ function removeExpertOrStudent(fromId,senderId,requestId,type){
 				'Content-Length':post_data.length
 				}
 		}, function(error, response, body) {
-		
+
         if (error) {
 			//
         } else if (response.body.error) {
            //
         }else{
-		try{		
+		try{
 			var bodyObject = JSON.parse(body);
 			bodyObject = bodyObject[0];
 			subject = bodyObject.subject;
 			to = bodyObject.to_id;
-			name = bodyObject.name;	
+			name = bodyObject.name;
 			reqId = bodyObject.request_id;
 			type2=(type=="tutor")?"student":"tutor";
 			sendMessage(fromId, {text: senderContext[senderId].firstName+" "+senderContext[senderId].lastName+" has removed you from his "+subject+" "+type+" list"});
@@ -2228,11 +2266,11 @@ function removeExpertOrStudent(fromId,senderId,requestId,type){
 			submitForm(p_data,backurl+"requests/remove",senderId,"update_request");
 			submitForm(p_data2,backurl+"reminder/remove",senderId,"update_request");
 		}catch(err){
-			sendMessage(senderId, {text: body+""});  
-		}       		
+			sendMessage(senderId, {text: body+""});
+		}
 		}
 		});
-			
+
     return true;
 }
 
@@ -2254,8 +2292,8 @@ function removeReminder(recipientId,reminder_id,title){
 				console.log('Error: ', response.body.error);
 			}else{
 				sendMessage(recipientId, {text: title+ " reminder has been successfully deleted \n\n "});
-				showReminders(recipientId);	
-			}			
+				showReminders(recipientId);
+			}
 		});
 }
 
@@ -2271,11 +2309,11 @@ function shareIt(senderId){
           {
             "title":"Hi Adedayo",
             "subtitle":"I hope you have not forgotten your maths class today",
-            
+
 			    "buttons": [
       {
         "type": "element_share",
-        "share_contents": { 
+        "share_contents": {
           "attachment": {
             "type": "template",
             "payload": {
@@ -2287,7 +2325,7 @@ function shareIt(senderId){
                   "buttons": [
                     {
                       "type": "web_url",
-                      "url": "https://m.me/petershats?ref=invited_by_24601", 
+                      "url": "https://m.me/petershats?ref=invited_by_24601",
                       "title": "Take Quiz"
                     }
                   ]
@@ -2298,21 +2336,21 @@ function shareIt(senderId){
         }
       }
     ]
-			
+
           }
         ]
       }
     }
   };
-  
+
 return sendMessage(message,senderId);
 }
 
 
 function showStudentDetail(toId,request_id){
-	var post_data = querystring.stringify({'to_id':toId});	
+	var post_data = querystring.stringify({'to_id':toId});
 	if(request_id!==false){
-		post_data = querystring.stringify({'request_id':request_id,'to_id':toId});	
+		post_data = querystring.stringify({'request_id':request_id,'to_id':toId});
 	}
 
 	request({
@@ -2334,8 +2372,8 @@ function showStudentDetail(toId,request_id){
 				elementss = new Array();
 				if(total<1){
 					sendMessage(toId, {text: "Oh! your student list is empty"});
-				}else{	
-					var j=0;				
+				}else{
+					var j=0;
 					for(i = 0; i< (total%10); i++){
 						j=i;
 						level = output[i].level;//.split("_");
@@ -2346,10 +2384,10 @@ function showStudentDetail(toId,request_id){
 							level="";
 						}
 
-						elementss[i]={                           
-							"title": output[i].name, 
-							"image_url": output[i].profile_pic,                  
-							"subtitle": output[i].subject+" student",   
+						elementss[i]={
+							"title": output[i].name,
+							"image_url": output[i].profile_pic,
+							"subtitle": output[i].subject+" student",
                             "buttons": [{
 								"type": "postback",
                                 "title": "Set class reminder",
@@ -2363,9 +2401,9 @@ function showStudentDetail(toId,request_id){
                                 "title": "Remove",
                                 "payload": "remove_student-"+output[i].from_id+"-"+output[i].expertise_id,
                                 }]
-                        };				
+                        };
 					}
-					
+
 				message = {
 					"attachment": {
                     "type": "template",
@@ -2374,18 +2412,18 @@ function showStudentDetail(toId,request_id){
                         "elements": elementss
                     }
 					}
-				};	
-				
+				};
+
 				if(request_id===false){
-						//if(sendMessage(toId, {text: "ðŸŽ“ Here is your student list"})){
+						//if(sendMessage(toId, {text: "🎓 Here is your student list"})){
 							sendMessage(toId,message);
 						//}
 				}else{
 					sendMessage(toId,message);
 				}
-			  }					
-			}			
-		});	
+			  }
+			}
+		});
 }
 
 
@@ -2393,10 +2431,10 @@ function showStudentDetail(toId,request_id){
 function showExpertDetail(fromId,request_id){
 	var post_data = querystring.stringify({'from_id':fromId,'status':'completed'});
 	if(request_id!==false){
-		//post_data = querystring.stringify({'request_id':request_id});	
-		post_data = querystring.stringify({'request_id':request_id,'from_id':fromId});	
-	}	
-	
+		//post_data = querystring.stringify({'request_id':request_id});
+		post_data = querystring.stringify({'request_id':request_id,'from_id':fromId});
+	}
+
 		request({
 			url: backurl+"requests/get",
 			method: 'POST',
@@ -2417,7 +2455,7 @@ function showExpertDetail(fromId,request_id){
 				elementss = new Array();
 				if(total<1){
 					sendMessage(fromId, {text: "Oh! your tutor list is empty"});
-				}else{										
+				}else{
 					for(i = 0; i<output.length; i++){
 						level = output[i].level;//.split("_");
 						if(level!=null){
@@ -2426,11 +2464,11 @@ function showExpertDetail(fromId,request_id){
 						}else{
 							level="";
 						}
-						
-						elementss[i]={                           
-							"title": output[i].name, 
-							"image_url": output[i].profile_pic,                  
-							"subtitle": output[i].subject+" expert, Level:"+level,   
+
+						elementss[i]={
+							"title": output[i].name,
+							"image_url": output[i].profile_pic,
+							"subtitle": output[i].subject+" expert, Level:"+level,
                             "buttons": [{
 								"type": "postback",
                                 "title": "Set class reminder",
@@ -2444,9 +2482,9 @@ function showExpertDetail(fromId,request_id){
                                 "title": "Remove",
                                 "payload": "remove_expert-"+output[i].to_id+"-"+output[i].expertise_id,
                                 }]
-                        };				
+                        };
 					}
-										
+
 					message = {
 								"attachment": {
 								"type": "template",
@@ -2457,26 +2495,26 @@ function showExpertDetail(fromId,request_id){
 									}
 								};
 					senderContext[fromId].state="send message";
-					
-					
+
+
 					if(request_id==false){
-						//if(sendMessage(fromId, {text: "ðŸš» Here is your expert list"})){
+						//if(sendMessage(fromId, {text: "🚻 Here is your expert list"})){
 							sendMessage(fromId,message);
-						//}	
+						//}
 					}else{
 						sendMessage(fromId,message);
 					}
-							
-				}					
-			}			
+
+				}
+			}
 		});
 }
 
 function showStudents(toId,request_id,page){
 
-	var post_data = querystring.stringify({'to_id':toId,'page':page});	
+	var post_data = querystring.stringify({'to_id':toId,'page':page});
 	if(request_id!==false){
-		post_data = querystring.stringify({'request_id':request_id,'to_id':toId});	
+		post_data = querystring.stringify({'request_id':request_id,'to_id':toId});
 	}
 
 	request({
@@ -2498,7 +2536,7 @@ function showStudents(toId,request_id,page){
 				elementss = new Array();
 				if(total<1){
 					sendMessage(toId, {text: "Oh! your student list is empty"});
-				}else{	
+				}else{
 				if(total>3){
 					page++;
 				}
@@ -2506,9 +2544,9 @@ function showStudents(toId,request_id,page){
 
 					elementss[0]={
 							"title":"Hey "+senderContext[toId].firstName,
-							"subtitle": "ðŸŽ“ Here is your student list",							               
+							"subtitle": "🎓 Here is your student list",
 							};
-					
+
 					for(i = 0; i<j ; i++){
 						level = output[i].level;//.split("_");
 						if(level!=null){
@@ -2521,15 +2559,15 @@ function showStudents(toId,request_id,page){
 						elementss[i+1]={
 							"title": output[i].name,
 							"image_url": output[i].profile_pic,
-							"subtitle": output[i].subject+" student",							
+							"subtitle": output[i].subject+" student",
 							"buttons": [{
 										"type": "postback",
 										"title": "Show Detail",
 										"payload": "show_student_detail-"+output[i].request_id,
-										}]                
+										}]
 							};
 					}
-					
+
 				var buttons = new Array();
 				message = {
 					"attachment": {
@@ -2541,32 +2579,32 @@ function showStudents(toId,request_id,page){
 						"buttons":[{
 									"title": (total<4)?"Close":"View More",
 									"type": "postback",
-									"payload": (total<4)?"postback_no":"postback_viewmore_student-"+page,                        
+									"payload": (total<4)?"postback_no":"postback_viewmore_student-"+page,
 						}]
 						}
 					}
-				};	
-				
+				};
+
 				if(request_id===false){
-						//if(sendMessage(toId, {text: "ðŸŽ“ Here is your student list"})){
+						//if(sendMessage(toId, {text: "🎓 Here is your student list"})){
 							sendMessage(toId,message);
 						//}
 				}else{
 					sendMessage(toId,message);
 				}
-			  }					
-			}			
-		});	
-    
+			  }
+			}
+		});
+
 }
 
 
 function showExperts(fromId,request_id,page){
 	var post_data = querystring.stringify({'from_id':fromId,'status':'completed','page':page});
 	if(request_id!==false){
-		//post_data = querystring.stringify({'request_id':request_id});	
-		post_data = querystring.stringify({'request_id':request_id,'from_id':fromId});	
-	}	
+		//post_data = querystring.stringify({'request_id':request_id});
+		post_data = querystring.stringify({'request_id':request_id,'from_id':fromId});
+	}
 
 	request({
 			url: backurl+"requests/get",
@@ -2583,13 +2621,13 @@ function showExperts(fromId,request_id,page){
 			} else if (response.body.error) {
 				console.log('Error: ', response.body.error);
 			}else{
-									
+
 				output = JSON.parse(body);
 				var total = output.length;
 				elementss = new Array();
 				if(total<1){
 					sendMessage(fromId, {text: "Oh! your tutor list is empty"});
-				}else{	
+				}else{
 				if(total>3){
 					page++;
 				}
@@ -2597,9 +2635,9 @@ function showExperts(fromId,request_id,page){
 
 					elementss[0]={
 							"title":"Hey "+senderContext[fromId].firstName,
-							"subtitle": "ðŸš» Here is your expert list",							               
+							"subtitle": "🚻 Here is your expert list",
 							};
-					
+
 					for(i = 0; i<j ; i++){
 						level = output[i].level;//.split("_");
 						if(level!=null){
@@ -2612,15 +2650,15 @@ function showExperts(fromId,request_id,page){
 						elementss[i+1]={
 							"title": output[i].name,
 							"image_url": output[i].profile_pic,
-							"subtitle": output[i].subject+" tutor",							
+							"subtitle": output[i].subject+" tutor",
 							"buttons": [{
 										"type": "postback",
 										"title": "Show Detail",
 										"payload": "show_expert_detail-"+output[i].request_id,
-										}]                
+										}]
 							};
 					}
-					
+
 				var buttons = new Array();
 				message = {
 					"attachment": {
@@ -2632,24 +2670,24 @@ function showExperts(fromId,request_id,page){
 						"buttons":[{
 									"title": (total<4)?"Close":"View More",
 									"type": "postback",
-									"payload": (total<4)?"postback_no":"postback_viewmore_expert-"+page,                        
+									"payload": (total<4)?"postback_no":"postback_viewmore_expert-"+page,
 						}]
 						}
 					}
-				};	
-				
+				};
+
 				if(request_id===false){
 							sendMessage(fromId,message);
 				}else{
 					sendMessage(fromId,message);
 				}
-			  }	
+			  }
 
 
 
-				
-			}			
-		});	
+
+			}
+		});
 }
 
 var contains = function(needle) {

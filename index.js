@@ -20,7 +20,7 @@ var expertise_page=0;
 
 var backurl="http://surrogation.com.ng/surrogateapp/";
 var senderContext = {};
-var greetings_pool = ["how are you","how far","wassup","kilonshele","bawo ni","how you dey","wetin dey happen","wetin dey","what is happening","how are you?","how far?","what is happening?"];
+var greetings_pool = ["how are you","how far","wassup","kilonshele","bawo ni","how you dey","wetin dey happen","wassup?","wetin dey happen?","wetin dey","what is happening","how are you?","how far?","what is happening?"];
 var time_pool=["morning","afternoon","evening","good morning","good afternoon","good evening"];
 var cancellation_pool=["quit","cancel","exit","abort","no","end","terminate","stop"];
 var abuse_pool=["damn","fuck","insane","crazy","mad","shit","oloriburuku","mugun","idiot"];
@@ -29,7 +29,7 @@ var experts_pool=["show tutor","show my tutor","my tutor","show me my tutor","wh
 var expertise_pool=["show expertise","show my expertise","my expertise","show me my expertise","show subject","show my subject","my subject","show me my subject"];
 var reminder_pool=["reminder","show reminder","show my reminder","my reminder","show me my reminder","show reminder"];
 var help_pool=["help","help me","show help","show me help","help please","please help","please help me","i need help","how to","how to use","i want help"];
-var about_pool=["about","about me","about surrogate","who are you","who are you?","what is surrogate","what is surrogate app","about you"];
+var about_pool=["about","what can i do","what can you do","about me","about surrogate","who are you","who are you?","what can i do?","what can you do?","what is surrogate","what is surrogate app","about you"];
 var menu_pool=["show menu","menu","my menu","show me menu","show me the menu","where is the menu","menu please","the menu"];
 var hi_pool=["hello","hi","hey","may i know you","tell me something"];
 var welcome_pool=["thank","thanks","thank you","oshe","thanks a bunch"];
@@ -45,7 +45,9 @@ app.listen((process.env.PORT || 3000));
 */
 
 app.get('/', function (req, res) {
-res.send('Surrogate Bot');
+
+res.send('Surrogate Bot<br/>'+txt);	
+
 });
 
 app.get('/EAAJeiL9sIu4BANZAqkGafo', function (req, res) {
@@ -223,6 +225,7 @@ app.post('/webhook', function (req, res) {
 			msgin = event.message.text+"";
 			msgin = msgin.toLowerCase();
 			msgin2  = msgin.replace(/s+$/, '');
+			
 			//msgin3  = msgin.replace(/?+$/, '');
 
 			 if(senderContext[event.sender.id]!=null){
