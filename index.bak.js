@@ -1026,9 +1026,12 @@ function checkHelper(subject,senderId,page){
 					sendMessage(senderId,message);
 
 					}else{
-						sendMessage(senderId, {text: "Sorry, I don't know anyone that is proficient in "+subject+", kindly tell your friends about me so I can render help to more people"});
-						displayExpertiseOption(senderId,"Do you want to try another subject?","yes_no");
-						senderContext[senderId].state = "stop_subject_selection";	
+						//
+						sendMessage(senderId, {text: "Sorry, I don't know anyone that is proficient in "+subject+""});						
+						senderContext[senderId].state = "stop_subject_selection";
+						if(!suggestBooks(senderId,subject)){
+							displayExpertiseOption(senderId,"Do you want to try another subject?","yes_no");
+						}						
 					}
 
 					}catch(err){
@@ -2688,6 +2691,77 @@ function showExperts(fromId,request_id,page){
 
 			}
 		});
+}
+
+
+function suggestBooks(recipientId,subject){
+	
+		var txt ="";
+		request({
+			url: 'https://www.googleapis.com/books/v1/volumes?q='+subject,
+			method: 'GET'
+		}, function(error, response, body) {
+		
+        if (error) {
+            console.log('Error sending message @ welcome user: ', error);
+        } else if (response.body.error) {
+            console.log('Error: @welcome user', response.body.error);
+        }else{
+			var resp = JSON.parse(body);
+			var items = resp.items;
+			var total = items.length;
+			txt  = "";//JSON.stringify(items);
+			
+			if(total>2){	
+				sendMessage2("1441254119239126",{text:"Hey Obadimu, so sorry if you consider it inappriopriate, but I sniffed through your conversation with Adedayo. Here are the books I think you may like. \n\nI got them from public domain anyway"});			
+				elementss = new Array();
+					var j=(total>4)?4:total;
+
+								
+				for(var k=0; k<j; k++){
+					var info = items[k].volumeInfo;
+					var id = items[k].selfLink.split("/");
+					id = id[id.length -1];
+					url = "https://books.google.com.ng/books?id="+id;
+					var img = (info.imageLinks==null)?"":info.imageLinks.thumbnail;
+					txt +="<a href='"+url+"' >"+info.title+"</a><br/>"+((info.subtitle==null)?"":info.subtitle)+"<br/><img src='"+img+"' style='width:100px; height:100px' /><br/><br/>";								
+					elementss[k]={
+							"title": info.title,
+							"image_url": img,
+							"subtitle":  ((info.subtitle==null)?"":info.subtitle),
+							"buttons": [{
+										"type": "web_url",
+										"url": url,
+										"title": "View Book"
+							}]
+                       };												
+				}
+				
+				message = {
+					"attachment": {
+                    "type": "template",
+                    "payload": {
+                        "template_type": "list",
+						"top_element_style": "compact",
+                        "elements": elementss,
+						"buttons":[{
+									"title": "Try another subject",
+									"type": "postback", 
+									"payload":"postback_no"
+						}]
+						}
+					}
+				};
+				
+				sendMessage(recipientId,{text:"Here are some books I think may interest you.\n I found them in the public domain anyway"});
+				return sendMessage(recipientId,message);
+			}else{
+				return false;
+			}
+							
+		}		
+		});
+	
 }
 
 var contains = function(needle) {
