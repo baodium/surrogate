@@ -431,9 +431,13 @@ app.post('/webhook', function (req, res) {
 				welcomeUser(event.sender.id);
 			}else if(reply.payload=="help_me"){
 				if(senderContext[event.sender.id]!=null){
+						senderContext[event.sender.id].state = "stop_subject_selection";
 						help(event.sender.id,senderContext[event.sender.id].firstName);
 				}
 			}else if(reply.payload=="about_me"){
+				if(senderContext[event.sender.id]!=null){
+						senderContext[event.sender.id].state = "stop_subject_selection";						
+				}
 				about(event.sender.id);
 			}else if(reply.payload=="get_assignment_help" || reply.payload=="postback_expertise_request_yes" || (reply.payload=="postback_yes" && senderContext[event.sender.id]!=null && senderContext[event.sender.id].state == "provide_subject")){
 				if(senderContext[event.sender.id]!=null){
@@ -455,12 +459,24 @@ app.post('/webhook', function (req, res) {
 					senderContext[event.sender.id].state="begin";
 				}
 			}else if(reply.payload=="my_expertise"){
+				if(senderContext[event.sender.id]!=null){
+					senderContext[event.sender.id].state = "stop_subject_selection";
+				}
 				showExpertise(event.sender.id);
 			}else if(reply.payload=="my_experts"){
+				if(senderContext[event.sender.id]!=null){
+					senderContext[event.sender.id].state = "stop_subject_selection";
+				}
 				showExperts(event.sender.id,false,"0");
 			}else if(reply.payload=="my_students"){
+				if(senderContext[event.sender.id]!=null){
+					senderContext[event.sender.id].state = "stop_subject_selection";
+				}
 				showStudents(event.sender.id,false,"0");
 			}else if(reply.payload=="my_reminders"){
+				if(senderContext[event.sender.id]!=null){
+					senderContext[event.sender.id].state = "stop_subject_selection";
+				}
 				showReminders(event.sender.id);//postback_viewmore_student
 			}else if(reply.payload.indexOf("postback_viewmore_student")>-1){
 				var id = reply.payload.split("-");
@@ -534,10 +550,14 @@ app.post('/webhook', function (req, res) {
 				if(senderContext[event.sender.id]!=null){
 					sendAcceptance(fromId,expertiseId,event.sender.id);
 				}
-			}else if(reply.payload=="my_home"){
+			}else if(reply.payload=="my_home"){				
+				if(senderContext[event.sender.id]!=null){
+					senderContext[event.sender.id].state = "stop_subject_selection";
+				}
 				showMenu(event.sender.id);
 			}else if(reply.payload=="my_statistics"){
 				if(senderContext[event.sender.id]!=null){
+						senderContext[event.sender.id].state = "stop_subject_selection";
 						showStatistic(event.sender.id,senderContext[event.sender.id].firstName);
 				}
 			}else if(reply.payload.indexOf("postback_message_yes")>-1){
