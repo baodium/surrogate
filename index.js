@@ -1762,8 +1762,8 @@ function getStarted(){
 				};
 
 		request({
-        url: 'https://graph.facebook.com/v2.8/me/messenger_profile',
-        qs: {access_token: "EAAJeiL9sIu4BANZAqkGafoMRa660rcdg9ViRLX75IFSvkZAZBe2TbgrSrdO2p5bt6psRcbNlrWSRu9GJOWXe9KdrjoB9LGznZASNP1AqWmjYKVeYHZCSjNcdxrtng8kwUk5BInXUsNKoYkfOE4ZCS5WRt0xdiLqb8a3j9zfIug5gZDZD"},
+        url: 'https://graph.facebook.com/v2.8/1881830615427378/messenger_profile',
+        qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
         method: 'POST',
         json: message
 		}, function(error, response, body) {
