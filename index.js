@@ -432,10 +432,12 @@ app.post('/webhook', function (req, res) {
 			}else if(reply.payload=="help_me"){
 				if(senderContext[event.sender.id]!=null){
 						senderContext[event.sender.id].state = "stop_subject_selection";
+						senderContext[event.sender.id].message="false";
 						help(event.sender.id,senderContext[event.sender.id].firstName);
 				}
 			}else if(reply.payload=="about_me"){
 				if(senderContext[event.sender.id]!=null){
+						senderContext[event.sender.id].message="false";
 						senderContext[event.sender.id].state = "stop_subject_selection";						
 				}
 				about(event.sender.id);
@@ -460,21 +462,25 @@ app.post('/webhook', function (req, res) {
 				}
 			}else if(reply.payload=="my_expertise"){
 				if(senderContext[event.sender.id]!=null){
+					senderContext[event.sender.id].message="false";
 					senderContext[event.sender.id].state = "stop_subject_selection";
 				}
 				showExpertise(event.sender.id);
 			}else if(reply.payload=="my_experts"){
 				if(senderContext[event.sender.id]!=null){
+					senderContext[event.sender.id].message="false";
 					senderContext[event.sender.id].state = "stop_subject_selection";
 				}
 				showExperts(event.sender.id,false,"0");
 			}else if(reply.payload=="my_students"){
 				if(senderContext[event.sender.id]!=null){
+					senderContext[event.sender.id].message="false";
 					senderContext[event.sender.id].state = "stop_subject_selection";
 				}
 				showStudents(event.sender.id,false,"0");
 			}else if(reply.payload=="my_reminders"){
 				if(senderContext[event.sender.id]!=null){
+					senderContext[event.sender.id].message="false";
 					senderContext[event.sender.id].state = "stop_subject_selection";
 				}
 				showReminders(event.sender.id);//postback_viewmore_student
@@ -553,11 +559,13 @@ app.post('/webhook', function (req, res) {
 			}else if(reply.payload=="my_home"){				
 				if(senderContext[event.sender.id]!=null){
 					senderContext[event.sender.id].state = "stop_subject_selection";
+					senderContext[event.sender.id].message="false";
 				}
 				showMenu(event.sender.id);
 			}else if(reply.payload=="my_statistics"){
 				if(senderContext[event.sender.id]!=null){
 						senderContext[event.sender.id].state = "stop_subject_selection";
+						senderContext[event.sender.id].message="false";
 						showStatistic(event.sender.id,senderContext[event.sender.id].firstName);
 				}
 			}else if(reply.payload.indexOf("postback_message_yes")>-1){
