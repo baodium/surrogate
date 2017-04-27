@@ -35,6 +35,7 @@ var hi_pool=["hello","hi","hey","may i know you","tell me something"];
 var welcome_pool=["thank","thanks","thank you","oshe","thanks a bunch"];
 var statistics_pool=["my statistics","statistics","show stats","show statistics"];
 var wellwish_pool=["god bless","god bless you","bless you","you're cool","you are the best","you are cool","you are awesome","you're the best","you're great","you are great","you are good","you are too much","wish you the best","good luck"];
+var love_pool =["love you","missed you","in love with you"];
 var hours = ["","","","THREE","","","SIX","","","NINE","","","TWELVE"];
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
@@ -549,7 +550,7 @@ app.post('/webhook', function (req, res) {
 				 usertype=usertype[0];
 				 if(senderContext[event.sender.id]!=null){
 					 sendBusy(toId,"typing_on");
-					 sendMessage(event.sender.id, {text: "Okay then! please type your messege "});
+					 sendMessage(event.sender.id, {text: "Okay then! please type your message "});
 					 senderContext[event.sender.id].message="true";
 					 senderContext[event.sender.id].userType=usertype;
 					 senderContext[event.sender.id].currentExpertise=expertise_id;
@@ -1762,7 +1763,7 @@ function getStarted(){
 
 		request({
         url: 'https://graph.facebook.com/v2.8/me/messenger_profile',
-        qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
+        qs: {access_token: "EAAJeiL9sIu4BANZAqkGafoMRa660rcdg9ViRLX75IFSvkZAZBe2TbgrSrdO2p5bt6psRcbNlrWSRu9GJOWXe9KdrjoB9LGznZASNP1AqWmjYKVeYHZCSjNcdxrtng8kwUk5BInXUsNKoYkfOE4ZCS5WRt0xdiLqb8a3j9zfIug5gZDZD"},
         method: 'POST',
         json: message
 		}, function(error, response, body) {
