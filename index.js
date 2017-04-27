@@ -115,7 +115,7 @@ app.get('/EAAJeiL9sIu4BANZAqkGafo', function (req, res) {
 							rtype="WITH STUDENT";
 							tp="student";
 						}
-						msg = "Hi "+name[0]+", I hope you have not forgoten your "+output[k].subject+" class with "+output[k].from_name+", your "+tp+", today!";
+						msg = "Hi "+name[0]+", I hope you have not forgotten your "+output[k].subject+" class with "+output[k].from_name+", your "+tp+", today!";
 						day = output[k].day;//.split("_");
 						time = output[k].time;
 
