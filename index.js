@@ -35,7 +35,7 @@ var hi_pool=["hello","hi","hey","may i know you","tell me something"];
 var welcome_pool=["thank","thanks","thank you","oshe","thanks a bunch"];
 var statistics_pool=["my statistics","statistics","show stats","show statistics"];
 var wellwish_pool=["god bless","god bless you","bless you","you're cool","you are the best","you are cool","you are awesome","you're the best","you're great","you are great","you are good","you are too much","wish you the best","good luck"];
-var love_pool =["love you","missed you","in love with you"];
+var love_pool =["love you","missed you","in love with you","i am in love with you","i missed you","i love you","miss you"];
 var hours = ["","","","THREE","","","SIX","","","NINE","","","TWELVE"];
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
@@ -47,7 +47,7 @@ app.listen((process.env.PORT || 3000));
 
 app.get('/', function (req, res) {
 
-res.send('Surrogate Bot<br/>'+txt);	
+res.send('Surrogate Bot<br/>');	
 
 });
 
@@ -363,7 +363,7 @@ app.post('/webhook', function (req, res) {
 					//sendMessage(event.sender.id, {text: "" + "Hi "+senderContext[event.sender.id].firstName+", I am surrogate bot. I am an artificial intelligent designed to assist students learn from experts on messenger. \n\n You can also render help to someone based on your proficiency.\n\n Here are the things I can do "});
 					help(event.sender.id,senderContext[event.sender.id].firstName);
 					senderContext[event.sender.id].state="begin";
-				}else if(contains.call(about_pool, msgin) || contains.call(about_pool, msgin2)){
+				}else if(contains.call(about_pool, msgin) || contains.call(about_pool, msgin2) || msgin.indexOf("about")>-1){
 					about(event.sender.id);
 				}else if(msgin=="set expertise" || msgin=="add expertise" ){
 				sendMessage(event.sender.id, {text: "Please type the subject you are expert in"});
@@ -395,6 +395,8 @@ app.post('/webhook', function (req, res) {
 						defaultMsg ="I'm cool! "+senderContext[event.sender.id].firstName+". \n\n";
 					}else if(msgin.indexOf("damn")>-1 || msgin.indexOf("fuck")>-1 || msgin.indexOf("fool")>-1 || msgin.indexOf("insane")>-1 || msgin.indexOf("crazy")>-1 || msgin.indexOf("mad")>-1 ){
 						defaultMsg ="Oh "+senderContext[event.sender.id].firstName+", that is not a very nice thing to say. \n\n Maybe you will feel better by providing help to someone on a subject you are proficient at. \n\n ";
+					}else if(contains.call(love_pool, msgin)){
+						defaultMsg ="That's awesome! actually, I feel the same way too. \n\n";
 					}else if(contains.call(time_pool, msgin)){
 						var d = new Date();
 						var n = d.getHours();
@@ -1373,7 +1375,7 @@ function showStatistic(recipientId,name) {
 
 function about(recipientId) {
 	msg="My name is Surrogate, I am an artificial intelligent designed to assist students learn from experts on messenger. \n\n I also allow experts or tutors to render help to people based on their proficiencies.\n\n";
-
+	sendMessage(recipientId, {text:msg});
   message = {
     "attachment":{
       "type":"template",
