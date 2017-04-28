@@ -2527,9 +2527,9 @@ function showStudents(toId,request_id,page){
 						"top_element_style": "compact",
                         "elements": elementss,
 						"buttons":[{
-									"title": (total<4 || total==3)?"Close":"View More",
+									"title": (total<4)?"Close":"View More",
 									"type": "postback",
-									"payload": (total<4 || total==3)?"postback_no":"postback_viewmore_student-"+page,
+									"payload": (total<4)?"postback_no":"postback_viewmore_student-"+page,
 						}]
 						}
 					}
