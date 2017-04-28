@@ -268,7 +268,7 @@ app.post('/webhook', function (req, res) {
 							};
 
 							var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+" sent this file"
-							//sendFile(to,sg,fromm,msg,subject);
+							sendFile(to,sg,fromm,msg,subject);
 							
 						if(senderContext[to]!=null){
 								if(senderContext[to].conversation_started=="true"){
@@ -706,7 +706,7 @@ function sendMessage(recipientId, message) {
             console.log('Error-here: ', response.body.error);
 			return false;
         }else{
-
+			return true;
 		}
     });
 return true;
@@ -751,6 +751,7 @@ function sendFile(recipientId, message,thirdParty,msg,subject) {
             console.log('Error: ', response.body.error);
 			return false;
         }else{
+			/*
 					//	if(sendMessage(to,sg)){
 							if(sendMessage(recipientId, {text: "" + msg})){
 								//messageOption(recipientId,"Do you want to reply this message?",recipientId,thirdParty,subject);
@@ -759,6 +760,7 @@ function sendFile(recipientId, message,thirdParty,msg,subject) {
 								//messageOption(thirdParty,"Do you want to send another message?",thirdParty,recipientId,subject);
 							}
 					//	}
+					*/
 						return true;
 		}
     });
