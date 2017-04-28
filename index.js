@@ -268,7 +268,7 @@ app.post('/webhook', function (req, res) {
 							};
 
 							var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+" sent this file"
-							sendFile(to,sg,fromm,msg,subject);
+							//sendFile(to,sg,fromm,msg,subject);
 							
 						if(senderContext[to]!=null){
 								if(senderContext[to].conversation_started=="true"){
