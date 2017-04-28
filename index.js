@@ -433,7 +433,7 @@ app.post('/webhook', function (req, res) {
 			reply = JSON.parse(reply);
 			if(reply.payload=="get_started_button"){
 				welcomeUser(event.sender.id);
-			}else if(reply.payload=="help_me"){
+			}else if(reply.payload=="help_me" ||  msgin.indexOf("help")>-1){
 				if(senderContext[event.sender.id]!=null){
 						senderContext[event.sender.id].state = "stop_subject_selection";
 						senderContext[event.sender.id].message="false";
