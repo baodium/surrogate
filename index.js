@@ -363,7 +363,7 @@ app.post('/webhook', function (req, res) {
 					//sendMessage(event.sender.id, {text: "" + "Hi "+senderContext[event.sender.id].firstName+", I am surrogate bot. I am an artificial intelligent designed to assist students learn from experts on messenger. \n\n You can also render help to someone based on your proficiency.\n\n Here are the things I can do "});
 					help(event.sender.id,senderContext[event.sender.id].firstName);
 					senderContext[event.sender.id].state="begin";
-				}else if(contains.call(about_pool, msgin) || contains.call(about_pool, msgin2) || msgin.indexOf("about")>-1){
+				}else if(contains.call(about_pool, msgin) || contains.call(about_pool, msgin2) || msgin.indexOf("about")>-1 || msgin.indexOf("what")>-1 || msgin.indexOf("who")>-1){
 					about(event.sender.id);
 				}else if(msgin=="set expertise" || msgin=="add expertise" ){
 				sendMessage(event.sender.id, {text: "Please type the subject you are expert in"});
