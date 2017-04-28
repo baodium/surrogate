@@ -2485,7 +2485,11 @@ function showStudents(toId,request_id,page){
 				var total = output.length;
 				elementss = new Array();
 				if(total<1){
-					sendMessage(toId, {text: "Oh! your student list is empty"});
+					if(page>0){
+						sendMessage(toId, {text: "Oh! that is all I could find"});
+					}else{
+						sendMessage(toId, {text: "Oh! your student list is empty"});
+					}
 				}else{
 				if(total>3){
 					page++;
@@ -2505,7 +2509,7 @@ function showStudents(toId,request_id,page){
 						}else{
 							level="";
 						}
-
+						student_page=1;
 						elementss[i+1]={
 							"title": output[i].name,
 							"image_url": output[i].profile_pic,
@@ -2576,7 +2580,11 @@ function showExperts(fromId,request_id,page){
 				var total = output.length;
 				elementss = new Array();
 				if(total<1){
-					sendMessage(fromId, {text: "Oh! your tutor list is empty"});
+					if(page>0){
+						sendMessage(toId, {text: "Oh! that is all I could find"});
+					}else{
+						sendMessage(fromId, {text: "Oh! your tutor list is empty"});
+					}					
 				}else{
 				if(total>3){
 					page++;
