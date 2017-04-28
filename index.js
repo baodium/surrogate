@@ -251,7 +251,6 @@ app.post('/webhook', function (req, res) {
 					var subject = senderContext[event.sender.id].message_subject;
 					var userSel = senderContext[event.sender.id].userType;
 					var pic =  senderContext[event.sender.id].profilePic;
-					//var sent = false;
 						if(userSel=="expert" || userSel=="tutor"){
 							userSel="student";
 						}else{
@@ -266,49 +265,28 @@ app.post('/webhook', function (req, res) {
 										"payload":{"url":rp[j].payload.url}
 										}
 							};
-
-							var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+" sent this file"
-							//sendFile(to,sg,fromm,msg,subject);
+							//var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+"("+subject+" "+userSel+") sent this file.";
+							var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+"";
+							sent = sendFile(to,sg,fromm,msg,subject);
 							
-						if(senderContext[to]!=null){
+							if(senderContext[to]!=null){
 								if(senderContext[to].conversation_started=="true"){
-									if(sendFile(to,sg,fromm,msg,subject)){
-										//endConversation(to,msg);
-										sent=true;
-									}
-								}else{
-									msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+" ("+subject+" "+userSel+") sent this file";
-									if(sendFile(to,sg,fromm,msg,subject)){//sendMessage(to, {text: "" + msg});
-										replyOption(to,"Do you want to reply "+senderContext[event.sender.id].firstName+"?",to,fromm,subject,userSel,pic);
-										sent = true;
-									}
+									endConversation(to,"sent this file");
 								}
-						}else{
-								 msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+" ("+subject+" "+userSel+") sent this file";
-							   if(sendFile(to,sg,fromm,msg,subject)){
+							}else{
 								 replyOption(to,"Do you want to reply "+senderContext[event.sender.id].firstName+"?",to,fromm,subject,userSel,pic);
-								 sent=true;
-							   }
-						}
-
-						if(sent){
-							sendBusy(to,"typing_off");
-							endConversation(event.sender.id,"✔️ ");
-							if(senderContext[to].conversation_started=="true"){
-								endConversation(to,msg);
 							}
 							
-						}
-							
-							
-							
+							if(sent){
+								sendBusy(to,"typing_off");
+								endConversation(event.sender.id,"✔️ ");
+							}
 							
 							
 						}
 					}
 
 				  if(event.message.text){
-					  
 						var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+" ("+subject+" "+userSel+"): \n "+event.message.text;
 						if(senderContext[to]!=null){
 								if(senderContext[to].conversation_started=="true"){
@@ -717,7 +695,7 @@ function sendMessage(recipientId, message) {
             console.log('Error-here: ', response.body.error);
 			return false;
         }else{
-			return true;
+
 		}
     });
 return true;
@@ -762,7 +740,6 @@ function sendFile(recipientId, message,thirdParty,msg,subject) {
             console.log('Error: ', response.body.error);
 			return false;
         }else{
-			/*
 					//	if(sendMessage(to,sg)){
 							if(sendMessage(recipientId, {text: "" + msg})){
 								//messageOption(recipientId,"Do you want to reply this message?",recipientId,thirdParty,subject);
@@ -771,7 +748,6 @@ function sendFile(recipientId, message,thirdParty,msg,subject) {
 								//messageOption(thirdParty,"Do you want to send another message?",thirdParty,recipientId,subject);
 							}
 					//	}
-					*/
 						return true;
 		}
     });
