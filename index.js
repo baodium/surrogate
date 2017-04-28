@@ -22,7 +22,7 @@ var backurl="http://surrogation.com.ng/surrogateapp/";
 var senderContext = {};
 var greetings_pool = ["how are you","how far","wassup","kilonshele","bawo ni","how you dey","wetin dey happen","wassup?","wetin dey happen?","wetin dey","what is happening","how are you?","how far?","what is happening?"];
 var time_pool=["morning","afternoon","evening","good morning","good afternoon","good evening"];
-var cancellation_pool=["quit","cancel","exit","abort","no","end","terminate","stop"];
+var cancellation_pool=["quit","cancel","get out","out","exit","abort","no","end","terminate","stop"];
 var abuse_pool=["damn","fuck","insane","crazy","mad","shit","oloriburuku","mugun","idiot"];
 var students_pool=["show student","show my student","message student","send message to student","send student message","my student","show me my student","who are my student","who is my student"];
 var experts_pool=["show tutor","message expert","message tutor","send message to tutor","send tutor message","message expert","send message to expert","send expert message","show my tutor","my tutor","show me my tutor","who are my tutor","show expert","show my expert","my expert","show me my expert","who are my expert","who is my expert","show expert","show my expert","my expert","show me my expert"];
@@ -384,9 +384,9 @@ app.post('/webhook', function (req, res) {
 				}else{
 					defaultMsg ="Hello "+senderContext[event.sender.id].firstName+"! \n\n";
 					if(contains.call(welcome_pool, msgin)){
-						defaultMsg ="You are welcome "+senderContext[event.sender.id].firstName+".";
+						defaultMsg ="You are welcome "+senderContext[event.sender.id].firstName+".\n\n";
 					}else if(contains.call(cancellation_pool, msgin)){
-						defaultMsg ="Okay.";
+						defaultMsg ="Okay. ";
 					}else if(contains.call(hi_pool, msgin)){
 						defaultMsg ="Hi "+senderContext[event.sender.id].firstName+", how are you doing? I am surrogate bot. I am an artificial intelligent designed to assist students learn from experts on messenger.\n\n You can also render help to someone based on your proficiency. \n\n ";
 					}else if(contains.call(wellwish_pool, msgin)){
