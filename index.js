@@ -2509,7 +2509,7 @@ function showStudents(toId,request_id,page){
 						}else{
 							level="";
 						}
-						student_page=1;
+
 						elementss[i+1]={
 							"title": output[i].name,
 							"image_url": output[i].profile_pic,
