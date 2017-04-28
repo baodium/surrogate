@@ -273,7 +273,7 @@ app.post('/webhook', function (req, res) {
 						if(senderContext[to]!=null){
 								if(senderContext[to].conversation_started=="true"){
 									if(sendFile(to,sg,fromm,msg,subject)){
-										endConversation(to,"" + msg);
+										//endConversation(to,msg);
 										sent=true;
 									}
 								}else{
@@ -294,6 +294,10 @@ app.post('/webhook', function (req, res) {
 						if(sent){
 							sendBusy(to,"typing_off");
 							endConversation(event.sender.id,"✔️ ");
+							if(senderContext[to].conversation_started=="true"){
+								endConversation(to,msg);
+							}
+							
 						}
 							
 							
