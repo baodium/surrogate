@@ -272,17 +272,23 @@ app.post('/webhook', function (req, res) {
 							
 						if(senderContext[to]!=null){
 								if(senderContext[to].conversation_started=="true"){
-									sent = sendFile(to,sg,fromm,msg,subject);
-									sent = endConversation(to,"" + msg);
+									if(sendFile(to,sg,fromm,msg,subject)){
+										endConversation(to,"" + msg);
+										sent=true;
+									}
 								}else{
 									msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+" ("+subject+" "+userSel+") sent this file";
-									sent = sendFile(to,sg,fromm,msg,subject);//sendMessage(to, {text: "" + msg});
-									replyOption(to,"Do you want to reply "+senderContext[event.sender.id].firstName+"?",to,fromm,subject,userSel,pic);
+									if(sendFile(to,sg,fromm,msg,subject)){//sendMessage(to, {text: "" + msg});
+										replyOption(to,"Do you want to reply "+senderContext[event.sender.id].firstName+"?",to,fromm,subject,userSel,pic);
+										sent = true;
+									}
 								}
 						}else{
 								 msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+" ("+subject+" "+userSel+") sent this file";
-							    sent = sendFile(to,sg,fromm,msg,subject);
+							   if(sendFile(to,sg,fromm,msg,subject)){
 								 replyOption(to,"Do you want to reply "+senderContext[event.sender.id].firstName+"?",to,fromm,subject,userSel,pic);
+								 sent=true;
+							   }
 						}
 
 						if(sent){
