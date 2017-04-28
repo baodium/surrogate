@@ -251,7 +251,7 @@ app.post('/webhook', function (req, res) {
 					var subject = senderContext[event.sender.id].message_subject;
 					var userSel = senderContext[event.sender.id].userType;
 					var pic =  senderContext[event.sender.id].profilePic;
-					var sent = false;
+					//var sent = false;
 						if(userSel=="expert" || userSel=="tutor"){
 							userSel="student";
 						}else{
@@ -272,6 +272,7 @@ app.post('/webhook', function (req, res) {
 							
 						if(senderContext[to]!=null){
 								if(senderContext[to].conversation_started=="true"){
+									sent = sendFile(to,sg,fromm,msg,subject);
 									sent = endConversation(to,"" + msg);
 								}else{
 									msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+" ("+subject+" "+userSel+") sent this file";
