@@ -239,6 +239,8 @@ app.post('/webhook', function (req, res) {
 					checkHelper(event.message.text,event.sender.id,"0");
 				}else if(senderContext[event.sender.id].state === "type_expertise"){
 					var subject = event.message.text;
+					subject = subject.split(",");
+					subject = subject[0];
 					senderContext[event.sender.id].subject = subject;
 					var post_data = querystring.stringify({
 						'facebook_id' : event.sender.id,
