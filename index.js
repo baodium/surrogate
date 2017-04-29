@@ -34,6 +34,7 @@ var menu_pool=["show menu","menu","my menu","show me menu","show me the menu","w
 var hi_pool=["hello","hi","hey","may i know you","tell me something"];
 var welcome_pool=["thank","thanks","thank you","oshe","thanks a bunch"];
 var appreciative_pool=["wonderful","awesome"];
+var allsubject_pool=["show all subject","show all subjects","all subjects","all expertise","show all expertise","available subjects","available subject","available expertise"];
 var statistics_pool=["my statistics","statistics","show stats","show statistics"];
 var wellwish_pool=["god bless","god bless you","bless you","you're cool","you are the best","you are cool","you are awesome","you're the best","you're great","you are great","you are good","you are too much","wish you the best","good luck"];
 var love_pool =["love you","missed you","in love with you","i am in love with you","i missed you","i love you","miss you"];
@@ -47,9 +48,7 @@ app.listen((process.env.PORT || 3000));
 */
 
 app.get('/', function (req, res) {
-
-res.send('Surrogate Bot<br/>');	
-
+	res.send('Surrogate Bot<br/>');	
 });
 
 app.get('/EAAJeiL9sIu4BANZAqkGafo', function (req, res) {
@@ -272,6 +271,7 @@ app.post('/webhook', function (req, res) {
 					}
 
 				  if(event.message.text){
+					  
 						var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+" ("+subject+" "+userSel+"): \n "+event.message.text;
 						if(senderContext[to]!=null){
 								if(senderContext[to].conversation_started=="true"){
@@ -359,6 +359,9 @@ app.post('/webhook', function (req, res) {
 				}else if(contains.call(menu_pool, msgin) || contains.call(menu_pool, msgin2)){
 					senderContext[event.sender.id].state="begin";
 					showMenu(event.sender.id);
+				}else if(contains.call(allsubject_pool, msgin)){
+					senderContext[event.sender.id].state="begin";
+					showAllSubjects(event.sender.id,senderContext[event.sender.id].firstName);
 				}else if(msgin=="get subject help" ){				
 					if(senderContext[event.sender.id]!=null){
 						sendMessage(event.sender.id, {text: "Which subject do you need help on?"});
@@ -572,6 +575,10 @@ app.post('/webhook', function (req, res) {
 						senderContext[event.sender.id].state = "stop_subject_selection";
 						senderContext[event.sender.id].message="false";
 						showStatistic(event.sender.id,senderContext[event.sender.id].firstName);
+				}
+			}else if(reply.payload=="postback_show_all_subjects"){
+				if(senderContext[event.sender.id]!=null){
+						showAllSubjects(event.sender.id,senderContext[event.sender.id].firstName);
 				}
 			}else if(reply.payload.indexOf("postback_message_yes")>-1){
 				var members_id = reply.payload.split("-");
@@ -1372,7 +1379,11 @@ function showStatistic(recipientId,name) {
                       "type": "web_url",
                       "url": "http://surrogation.com.ng/surrogateapp/image?name="+name,
                       "title": "View in full"
-                    }]
+                    },{
+					"type": "postback",
+                    "title": "View available subjects",
+                    "payload": "postback_show_all_subjects",
+					}]
           } ]
       }
     }
@@ -2719,6 +2730,40 @@ function suggestBooks(recipientId,subject){
 		});	
 }
 
+function showAllSubjects(recipientId,name){
+	var su ="Hi "+name+". Here are the subjects I can help you with:\n\n";
+			request({
+			url: backurl+"expertise/getall",
+			method: 'GET'
+		}, function(error, response, body) {
+
+        if (error) {
+            console.log('Error sending message: ', error);
+        } else if (response.body.error) {
+            console.log('Error: ', response.body.error);
+        }else{
+			try{
+			var result = JSON.parse(body);
+				var tot = result.length;
+				if(tot>0){
+					for(i=0; i<tot; i++){
+						su+=result[i].subject+", ";
+					}
+					var ms = su;
+					if(ms.length>640){
+						var lastcomma=su.lastIndexOf(",");
+						ms = ms.substring(0,lastcomma)+", and so on";
+					}
+				sendMessage(recipientId,{text:ms});
+				return true;
+				}			
+			}catch(err){
+				console.log("error at show all subjects");
+				return false;
+			}
+		}
+		});
+}
 
 
 var contains = function(needle) {
