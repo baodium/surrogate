@@ -33,6 +33,7 @@ var about_pool=["about","what can i do","what can you do","about me","about surr
 var menu_pool=["show menu","menu","my menu","show me menu","show me the menu","where is the menu","menu please","the menu"];
 var hi_pool=["hello","hi","hey","may i know you","tell me something"];
 var welcome_pool=["thank","thanks","thank you","oshe","thanks a bunch"];
+var appreciative_pool=["wonderful","awesome"];
 var statistics_pool=["my statistics","statistics","show stats","show statistics"];
 var wellwish_pool=["god bless","god bless you","bless you","you're cool","you are the best","you are cool","you are awesome","you're the best","you're great","you are great","you are good","you are too much","wish you the best","good luck"];
 var love_pool =["love you","missed you","in love with you","i am in love with you","i missed you","i love you","miss you"];
@@ -391,8 +392,10 @@ app.post('/webhook', function (req, res) {
 						defaultMsg ="Hi "+senderContext[event.sender.id].firstName+", how are you doing? I am surrogate bot. I am an artificial intelligent designed to assist students learn from experts on messenger.\n\n You can also render help to someone based on your proficiency. \n\n ";
 					}else if(contains.call(wellwish_pool, msgin)){
 						defaultMsg ="And you too, "+senderContext[event.sender.id].firstName+". \n\n";
-					}else if(contains.call(greetings_pool, msgin)){
+					}else if(contains.call(greetings_pool, msgin) || msgin.indexOf("thanks")>-1){
 						defaultMsg ="I'm cool! "+senderContext[event.sender.id].firstName+". \n\n";
+					}else if(msgin.indexOf("wonderful")>-1 || msgin.indexOf("awesome")>-1){
+						defaultMsg ="Thank you "+senderContext[event.sender.id].firstName+". \n\n";
 					}else if(msgin.indexOf("damn")>-1 || msgin.indexOf("fuck")>-1 || msgin.indexOf("fool")>-1 || msgin.indexOf("insane")>-1 || msgin.indexOf("crazy")>-1 || msgin.indexOf("mad")>-1 ){
 						defaultMsg ="Oh "+senderContext[event.sender.id].firstName+", that is not a very nice thing to say. \n\n Maybe you will feel better by providing help to someone on a subject you are proficient at. \n\n ";
 					}else if(contains.call(love_pool, msgin)){
