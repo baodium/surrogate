@@ -1214,7 +1214,7 @@ function setContext(recipientId) {
 			});
 
 			if(firstName!=null){
-				submitForm(post_data,backurl+"users/add",recipientId,"add_user");
+				//submitForm(post_data,backurl+"users/add",recipientId,"add_user");
 			}		
 			
             return true;
