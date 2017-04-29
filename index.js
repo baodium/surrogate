@@ -359,8 +359,12 @@ app.post('/webhook', function (req, res) {
 				}else if(contains.call(menu_pool, msgin) || contains.call(menu_pool, msgin2)){
 					senderContext[event.sender.id].state="begin";
 					showMenu(event.sender.id);
+				}else if(msgin=="get subject help" ){				
+					if(senderContext[event.sender.id]!=null){
+						sendMessage(event.sender.id, {text: "Which subject do you need help on?"});
+						senderContext[event.sender.id].state = "provide_subject";
+					}
 				}else if(contains.call(help_pool, msgin) || contains.call(help_pool, msgin2) || msgin.indexOf("help")>-1 || msgin.indexOf("how")>-1){
-					//sendMessage(event.sender.id, {text: "" + "Hi "+senderContext[event.sender.id].firstName+", I am surrogate bot. I am an artificial intelligent designed to assist students learn from experts on messenger. \n\n You can also render help to someone based on your proficiency.\n\n Here are the things I can do "});
 					help(event.sender.id,senderContext[event.sender.id].firstName);
 					senderContext[event.sender.id].state="begin";
 				}else if(contains.call(about_pool, msgin) || contains.call(about_pool, msgin2) || msgin.indexOf("about")>-1 || msgin.indexOf("what")>-1 || msgin.indexOf("who")>-1 || msgin.indexOf("know")>-1){
@@ -376,11 +380,6 @@ app.post('/webhook', function (req, res) {
 					reminderOption(event.sender.id);
 					senderContext[event.sender.id].status = "select_reminder";
 				}				
-				}else if(msgin=="get subject help" ){				
-					if(senderContext[event.sender.id]!=null){
-						sendMessage(event.sender.id, {text: "Which subject do you need help on?"});
-						senderContext[event.sender.id].state = "provide_subject";
-					}
 				}else{
 					defaultMsg ="Hello "+senderContext[event.sender.id].firstName+"! \n\n";
 					if(contains.call(welcome_pool, msgin)  || msgin.indexOf("thanks")>-1){
