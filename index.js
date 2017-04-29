@@ -1849,9 +1849,7 @@ function submitForm(post_data,url,userId,action){
 							displayOption(userId,"Do you want to add another expertise?","yes_no");
 							senderContext[userId].state = "expertise_saved";
 							return true;
-						}
-
-						if(action == "type_expertise"){
+						}else if(action == "type_expertise"){
 							if(!exists){
 								sendMessage(userId, {text: "Please select your expertise level in "+senderContext[userId].subject});
 								getExpertiseLevel(userId);
@@ -1868,9 +1866,7 @@ function submitForm(post_data,url,userId,action){
 								}
 							}
 							return true;
-						}
-
-						if(action == "save_request"){
+						}else if(action == "save_request"){
 							if(!exists){
 								name = senderContext[userId].firstName + " "+senderContext[userId].lastName;
 								subject = senderContext[userId].requestSubject;
@@ -1904,9 +1900,7 @@ function submitForm(post_data,url,userId,action){
 								sendMessage(userId, {text: "Oh! did you forget? You have already requested this expertise!"});
 							}
 							return true;
-						}
-
-						if(action=="add_reminder"){
+						}else if(action=="add_reminder"){
 							if(!exists){
 								pickTime(userId);
 								senderContext[userId].status="pick_reminder_time";
@@ -1931,16 +1925,14 @@ function submitForm(post_data,url,userId,action){
 
 							}
 							return true;
-						}
-
-						if(action=="update_reminder"){
+						}else if(action=="update_reminder"){
 							sendMessage(userId, {text: "Your reminder has been saved"});
 							reminderOptionYesNo(userId);
 							return true;
-						}
-
-						if(action=="add_rating"){
+						}else if(action=="add_rating"){
 							sendMessage(userId, {text: "Thanks! your rating has been saved"});
+							return true;
+						}else{
 							return true;
 						}
 
