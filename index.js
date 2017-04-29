@@ -212,15 +212,12 @@ app.get('/webhook', function (req, res) {
 
 
 app.post('/webhook', function (req, res) {
-
 	getStarted();
 	var helprequest = false;
 	var message_count=0;
     var events = req.body.entry[0].messaging;
     for (i = 0; i < events.length; i++) {
         var event = events[i];
-
-
 		var intialized = setContext(event.sender.id);
 		if (event.message && (event.message.text || event.message.attachments)) {
 			try{
@@ -1210,6 +1207,17 @@ function setContext(recipientId) {
 			senderContext[recipientId].message="false";
 			senderContext[recipientId].userType="anonymous";
 			senderContext[recipientId].conversation_started="false";
+			
+			var post_data = querystring.stringify({
+				'facebook_id' : recipientId,
+				'name':firstName+" "+lastName,
+				'profile_pic':profilePic
+			});
+
+			if(firstName!=null){
+				submitForm(post_data,backurl+"users/add",recipientId,"add_user");
+			}		
+			
             return true;
 		}
 		});
@@ -1245,7 +1253,6 @@ function welcomeUser(recipientId) {
 			senderContext[recipientId].userType="anonymous";
 			senderContext[recipientId].conversation_started="false";
 
-			//{"first_name":"Adedayo","last_name":"Olubunmi","profile_pic":"https:\/\/scontent.xx.fbcdn.net\/v\/t1.0-1\/180239_1589652066179_7006637_n.jpg?oh=7ca52055172d91e1c914fcd1110d17a6&oe=596F62FA","locale":"en_US","timezone":1,"gender":"male"}
 			var post_data = querystring.stringify({
 				'facebook_id' : recipientId,
 				'name':firstName+" "+lastName,
@@ -1254,10 +1261,7 @@ function welcomeUser(recipientId) {
 
 			if(firstName!=null){
 				submitForm(post_data,backurl+"users/add",recipientId,"add_user");
-				//var msg = "Hi "+firstName+"! I am excited to have you around. I can help you get tutors on subjects you need help on. \n\n I can also assist you to render help to people based on your proficiency. \n\n You'll get recognition for that, you know?";
-				//sendMessage(recipientId, {text: "" + msg});
 				var msg="Hi "+firstName+"! 😃 \nMy name is Surrogate bot, I believe together we can build a stronger learning community on messenger 📖";
-
 				message = {
                 "attachment": {
                     "type": "template",
