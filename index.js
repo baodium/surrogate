@@ -1441,7 +1441,7 @@ function showMoreAbout(recipientId){
 
 
 function help(recipientId,name) {
-			msg="Hi "+name+", I am Surrogate, you can use the following commands to communicate with me.\n -Type menu to access the main menu.\n -Type cancel or exit to cancel current operation. \n -Type my expertise to access your subject list. \n -Type my tutors to access your tutor list. \n -Type my students to access your student list. \n -Type my reminders to access your reminder list. \n -Type about to know more about me. \n -Type statistics to show my current statistics. \n NOTE: Your student or tutor list will only be populated if a user has requested your expertise or an expert has accepted your expertise request respectively. Also, you cannot request your own expertise.\n Thank you.";
+			msg="Hi "+name+", I am Surrogate, you can use the following commands to communicate with me.\n -Type menu to access the main menu.\n -Type cancel or exit to cancel current operation. \n -Type my expertise to access your subject list. \n -Type my tutors to access your tutor list. \n -Type my students to access your student list. \n -Type my reminders to access your reminder list. \n -Type about to know more about me. \n -Type statistics to show my current statistics. \n \n Thank you.";
 			message = {
                 "attachment": {
                     "type": "template",
