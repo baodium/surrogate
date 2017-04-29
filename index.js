@@ -983,7 +983,8 @@ function checkHelper(subject,senderId,page){
 
 					}else{
 						//kindly tell your friends about me so I can render help to more people
-						sendMessage(senderId, {text: "Sorry, I don't know anyone that is proficient in "+subject+"\n\n"});						
+						sendMessage(senderId, {text: "Sorry, I don't know anyone that is proficient in "+subject+"\n\n"});
+						sendMessage(senderId, {text: "Note that your own expertise would not be listed"});						
 						senderContext[senderId].state = "stop_subject_selection";
 						suggestBooks(senderId,subject);
 							//displayExpertiseOption(senderId,"Do you want to try another subject?","yes_no");																		
@@ -1452,7 +1453,7 @@ function showMoreAbout(recipientId){
 
 
 function help(recipientId,name) {
-			msg="Hi "+name+", I am Surrogate, you can use the following commands to communicate with me.\n\n -Type menu to access the main menu.\n\n -Type cancel or exit to cancel current operation. \n\n -Type my expertise to access your subject list. \n\n -Type my tutors to access your tutor list. \n\n -Type my students to access your student list. \n\n -Type my reminders to access your reminder list. \n\n -Type about to know more about me. \n\n -Type statistics to show my current statistics. \n\n Thank you.";
+			msg="Hi "+name+", I am Surrogate, you can use the following commands to communicate with me.\n\n -Type menu to access the main menu.\n\n -Type cancel or exit to cancel current operation. \n\n -Type my expertise to access your subject list. \n\n -Type my tutors to access your tutor list. \n\n -Type my students to access your student list. \n\n -Type my reminders to access your reminder list. \n\n -Type about to know more about me. \n\n -Type statistics to show my current statistics. \n\n -Type show all subjects to show available subjects. \n\n Thank you.";
 			message = {
                 "attachment": {
                     "type": "template",
