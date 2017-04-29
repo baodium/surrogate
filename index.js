@@ -1381,7 +1381,7 @@ function showStatistic(recipientId,name) {
                       "title": "View in full"
                     },{
 					"type": "postback",
-                    "title": "View available subjects",
+                    "title": "View all subjects",
                     "payload": "postback_show_all_subjects",
 					}]
           } ]
