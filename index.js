@@ -983,8 +983,8 @@ function checkHelper(subject,senderId,page){
 
 					}else{
 						//kindly tell your friends about me so I can render help to more people
-						sendMessage(senderId, {text: "Sorry, I don't know anyone that is proficient in "+subject+"\n\n"});
-						sendMessage(senderId, {text: "Note that your own expertise would not be listed for you"});						
+						sendMessage(senderId, {text: "Sorry, I don't know anyone that is proficient in "+subject+"\n\n Note that your own expertise would not be listed for you"});
+						//sendMessage(senderId, {text: "Note that your own expertise would not be listed for you"});						
 						senderContext[senderId].state = "stop_subject_selection";
 						suggestBooks(senderId,subject);
 							//displayExpertiseOption(senderId,"Do you want to try another subject?","yes_no");																		
