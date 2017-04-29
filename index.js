@@ -429,7 +429,7 @@ app.post('/webhook', function (req, res) {
 			 }else{
 				showDefault(event.sender.id);
 			 }
-			}catch(err){sendMessage(event.sender.id, {text: "" +"Error:"+err});}
+			}catch(err){sendMessage(event.sender.id, {text: "Oh! I'm having some problem handling your request"});}
 			continue;
 		} else if (event.postback) {
 			var reply = JSON.stringify(event.postback);
@@ -985,7 +985,7 @@ function checkHelper(subject,senderId,page){
 					}
 
 					}catch(err){
-						sendMessage(senderId, {text: "Error fetching expert "+JSON.stringify(err)});
+						sendMessage(senderId, {text: "Oh I'm having some problem handling your request"});
 					}
 
 			}
@@ -1070,7 +1070,7 @@ function sendRejection(fromId,requestId,senderId){
 			var p_data = querystring.stringify({'request_id' : reqId});
 			submitForm(p_data,backurl+"requests/remove",senderId,"update_request");
 		}catch(err){
-			sendMessage(fromId, {text: body+""});
+			sendMessage(fromId, {text: "Oh! I'm having some problem handling your request"});
 		}
 		}
 		});
