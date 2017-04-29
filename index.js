@@ -1114,7 +1114,7 @@ function sendAcceptance(fromId,requestId,senderId){
 			submitForm(p_data,backurl+"requests/update",senderId,"update_request2");
 
 		}catch(err){
-			sendMessage(senderId, {text: " exception "+err});
+			sendMessage(senderId, {text: "Oh, I'm having a little problem handling your request"});
 		}
 		}
 		});
@@ -1171,7 +1171,7 @@ function checkExpertise(senderId,payload,subject){
 				submitForm(post_data,backurl+"expertise/updateall",senderId,"update_expertise");
 			}
 		}catch(err){
-			sendMessage(senderId, {text: body+""});
+			sendMessage(senderId, {text:"Oh I'm having a little problem handling your request"});
 		}
 		}
 		});
@@ -1276,7 +1276,7 @@ function welcomeUser(recipientId) {
             return true;
 		}catch(err){
 			console.log("Error here @ welcome user");
-			sendMessage(recipientId, {text: "" + err});
+			sendMessage(recipientId, {text: "Oh I'm having problem handling your request"});
 		}
 		}
 
@@ -2149,7 +2149,7 @@ function showReminders(recipientId){
 				};
 				sendMessage(recipientId,message);
 				}catch(err){
-				sendMessage(recipientId,{text: err+" "+body});
+				sendMessage(recipientId,{text: " Oh! I'm having some problem handling your request"});
 				}
 			}
 			}
@@ -2219,7 +2219,7 @@ function removeExpertOrStudent(fromId,senderId,requestId,type){
 			submitForm(p_data,backurl+"requests/remove",senderId,"update_request");
 			submitForm(p_data2,backurl+"reminder/remove",senderId,"update_request");
 		}catch(err){
-			sendMessage(senderId, {text: body+""});
+			sendMessage(senderId, {text:"Oh! I'm having some problem handling your request"});
 		}
 		}
 		});
