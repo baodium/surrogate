@@ -1961,7 +1961,7 @@ function showExpertise(recipientId){
 				var total = output.length;
 				elementss = new Array();
 				if(total<1){
-					sendMessage(recipientId, {text: "Oh! your expertise list is empty"});
+					sendMessage(recipientId, {text: "Oh! your expertise list is empty."});
 
 				message = {
                 "attachment": {
@@ -2321,7 +2321,7 @@ function showStudentDetail(toId,request_id){
 				var total = output.length;
 				elementss = new Array();
 				if(total<1){
-					sendMessage(toId, {text: "Oh! your student list is empty"});
+					sendMessage(toId, {text: "Oh! your student list is empty. \n Note that your student list would be populated only after a user has requested at least one of your expertise"});
 				}else{
 					var j=0;
 					for(i = 0; i< (total%10); i++){
@@ -2404,7 +2404,7 @@ function showExpertDetail(fromId,request_id){
 				var total = output.length;
 				elementss = new Array();
 				if(total<1){
-					sendMessage(fromId, {text: "Oh! your tutor list is empty"});
+					sendMessage(fromId, {text: "Oh! your tutor list is empty. \n Note that your tutor list would be populated only after an expert has accepted your expertise request"});
 				}else{
 					for(i = 0; i<output.length; i++){
 						level = output[i].level;//.split("_");
@@ -2488,7 +2488,7 @@ function showStudents(toId,request_id,page){
 					if(page>0){
 						sendMessage(toId, {text: "Oh! that is all I could find"});
 					}else{
-						sendMessage(toId, {text: "Oh! your student list is empty"});
+						sendMessage(toId, {text: "Oh! your student list is empty. \n Note that your student list would be populated only after a user has requested at least one of your expertise"});
 					}
 				}else{
 				if(total>3){
@@ -2583,7 +2583,7 @@ function showExperts(fromId,request_id,page){
 					if(page>0){
 						sendMessage(toId, {text: "Oh! that is all I could find"});
 					}else{
-						sendMessage(fromId, {text: "Oh! your tutor list is empty"});
+						sendMessage(fromId, {text: "Oh! your tutor list is empty. \n Note that your tutor list would be populated only after an expert has accepted your expertise request"});
 					}					
 				}else{
 				if(total>3){
