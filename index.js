@@ -384,7 +384,7 @@ app.post('/webhook', function (req, res) {
 					}
 				}else{
 					defaultMsg ="Hello "+senderContext[event.sender.id].firstName+"! \n\n";
-					if(contains.call(welcome_pool, msgin)){
+					if(contains.call(welcome_pool, msgin)  || msgin.indexOf("thanks")>-1){
 						defaultMsg ="You are welcome "+senderContext[event.sender.id].firstName+".\n\n";
 					}else if(contains.call(cancellation_pool, msgin)){
 						defaultMsg ="Okay. ";
@@ -392,7 +392,7 @@ app.post('/webhook', function (req, res) {
 						defaultMsg ="Hi "+senderContext[event.sender.id].firstName+", how are you doing? I am surrogate bot. I am an artificial intelligent designed to assist students learn from experts on messenger.\n\n You can also render help to someone based on your proficiency. \n\n ";
 					}else if(contains.call(wellwish_pool, msgin)){
 						defaultMsg ="And you too, "+senderContext[event.sender.id].firstName+". \n\n";
-					}else if(contains.call(greetings_pool, msgin) || msgin.indexOf("thanks")>-1){
+					}else if(contains.call(greetings_pool, msgin)){
 						defaultMsg ="I'm cool! "+senderContext[event.sender.id].firstName+". \n\n";
 					}else if(msgin.indexOf("wonderful")>-1 || msgin.indexOf("awesome")>-1){
 						defaultMsg ="Thank you "+senderContext[event.sender.id].firstName+". \n\n";
