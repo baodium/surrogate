@@ -48,6 +48,7 @@ app.listen((process.env.PORT || 3000));
 */
 
 app.get('/', function (req, res) {
+	var msgi ="how are you no";
 	res.send('Surrogate Bot<br/>');	
 });
 
@@ -367,7 +368,7 @@ app.post('/webhook', function (req, res) {
 						sendMessage(event.sender.id, {text: "Which subject do you need help on?"});
 						senderContext[event.sender.id].state = "provide_subject";
 					}
-				}else if(contains.call(help_pool, msgin) || contains.call(help_pool, msgin2) || msgin.indexOf("help")>-1 || msgin.indexOf("how")>-1){
+				}else if(contains.call(help_pool, msgin) || contains.call(help_pool, msgin2) ||((msgin.indexOf("help")>-1 || msgin.indexOf("how")>-1) && !contains.call(greetings_pool, msgin))){
 					help(event.sender.id,senderContext[event.sender.id].firstName);
 					senderContext[event.sender.id].state="begin";
 				}else if(contains.call(about_pool, msgin) || contains.call(about_pool, msgin2) || msgin.indexOf("about")>-1 || msgin.indexOf("what")>-1 || msgin.indexOf("who")>-1 || msgin.indexOf("know")>-1){
