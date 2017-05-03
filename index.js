@@ -36,7 +36,7 @@ var welcome_pool=["thank","thanks","thank you","oshe","thanks a bunch"];
 var appreciative_pool=["wonderful","awesome"];
 var allsubject_pool=["show all subject","show all subjects","all subjects","all expertise","show all expertise","available subjects","available subject","available expertise"];
 var statistics_pool=["my statistics","statistics","show stats","show statistics"];
-var wellwish_pool=["god bless","god bless you","bless you","you're cool","you are the best","you are cool","you are awesome","you're the best","you're great","you are great","you are good","you are too much","wish you the best","good luck"];
+var wellwish_pool=["god bless","god bless you","bless you","you're cool","have a nice day","you are the best","you are cool","you are awesome","you're the best","you're great","you are great","you are good","you are too much","wish you the best","good luck"];
 var love_pool =["love you","missed you","in love with you","i am in love with you","i missed you","i love you","miss you"];
 var hours = ["","","","THREE","","","SIX","","","NINE","","","TWELVE"];
 app.use(bodyParser.urlencoded({extended: false}));
@@ -2760,7 +2760,8 @@ function showAllSubjects(recipientId,name){
 				return true;
 				}			
 			}catch(err){
-				console.log("error at show all subjects");
+				//console.log("error at show all subjects");
+				sendMessage(recipientId,{text:"Oh! I'm having some problem handling your request"});
 				return false;
 			}
 		}
