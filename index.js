@@ -2741,8 +2741,12 @@ function showAllSubjects(recipientId,name){
 
         if (error) {
             console.log('Error sending message: ', error);
+			sendMessage(recipientId,{text:"Oh! I'm having some problem handling your request"});
+			return false;
         } else if (response.body.error) {
             console.log('Error: ', response.body.error);
+			sendMessage(recipientId,{text:"Oh! I'm having some problem handling your request"});
+			return false;
         }else{
 			try{
 			var result = JSON.parse(body);
