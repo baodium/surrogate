@@ -49,6 +49,7 @@ app.listen((process.env.PORT || 3000));
 
 app.get('/', function (req, res) {
 	var msgi ="how are you no";
+	showAllSubjects("1293223117426959","Adedayo");
 	res.send('Surrogate Bot<br/>');	
 });
 
@@ -2756,10 +2757,12 @@ function showAllSubjects(recipientId,name){
 						su+=result[i].subject+", ";
 					}
 					var ms = su;
+					console.log(ms.length);
 					if(ms.length>640){
 						var lastcomma=su.lastIndexOf(",");
-						ms = ms.substring(0,lastcomma)+", and so on";
+						ms = ms.substring(0,610)+"... and so on";
 					}
+				console.log(ms);
 				sendMessage(recipientId,{text:ms});
 				return true;
 				}			
