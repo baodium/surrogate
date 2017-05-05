@@ -275,19 +275,20 @@ app.post('/webhook', function (req, res) {
 				  if(event.message.text){
 					  
 						var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+" ("+subject+" "+userSel+"): \n "+event.message.text;
-						if(msg.length>560){
-							msg = msg.substring(0,560)+"...";
+						var mssg = event.message.text;
+						if(mssg.length>560){
+							mssg = mssg.substring(0,560)+"...";
 						}
 						if(senderContext[to]!=null){
 								if(senderContext[to].conversation_started=="true"){
 									sent = endConversation(to,"" + msg);
 								}else{
-									msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+" ("+subject+" "+userSel+") sent: \n"+msg;
+									msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+" ("+subject+" "+userSel+") sent: \n"+mssg;
 									sent = sendMessage(to, {text: "" + msg});
 									replyOption(to,"Do you want to reply "+senderContext[event.sender.id].firstName+"?",to,fromm,subject,userSel,pic);
 								}
 						}else{
-								 msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+" ("+subject+" "+userSel+") sent: \n"+msg;
+								 msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+" ("+subject+" "+userSel+") sent: \n"+mssg;
 							     sent = sendMessage(to, {text: "" + msg});
 								 replyOption(to,"Do you want to reply "+senderContext[event.sender.id].firstName+"?",to,fromm,subject,userSel,pic);
 						}
