@@ -275,8 +275,8 @@ app.post('/webhook', function (req, res) {
 				  if(event.message.text){
 					  
 						var msg = senderContext[event.sender.id].firstName+" "+senderContext[event.sender.id].lastName+" ("+subject+" "+userSel+"): \n "+event.message.text;
-						if(msg.length>639){
-							msg = msg.substring(0,635)+"...";
+						if(msg.length>560){
+							msg = msg.substring(0,560)+"...";
 						}
 						if(senderContext[to]!=null){
 								if(senderContext[to].conversation_started=="true"){
